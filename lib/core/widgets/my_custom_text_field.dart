@@ -1,0 +1,65 @@
+import 'package:dazaha_app/core/constant/exports_libraries.dart';
+
+Widget MyTextField({
+  keyboardType,
+  controller,
+  obscureText,
+  hintText,
+  suffixIcon,
+  maxLines,
+  readOnly,
+  prefixIcon,
+  onSubmitted,
+  Radius,
+  initialValue,
+  fillColor,
+  hintStyleColor,
+  enabledBorderColor,
+  HintTextFontFamily,
+  HintTextFontSize,
+  maxLength,
+  textAlign,
+  textDirection,
+  hintTextDirection,
+  BorderSideColor,
+  onTap,
+}) {
+  return TextFormField(
+    onFieldSubmitted: onSubmitted,
+    initialValue: initialValue,
+    textAlign: textAlign == null ? TextAlign.start : textAlign,
+    readOnly: readOnly,
+    onTap: onTap,
+    maxLength: maxLength,
+    keyboardType: keyboardType,
+    controller: controller,
+    maxLines: maxLines,
+    obscureText: obscureText,
+    textDirection: textDirection,
+    decoration: InputDecoration(
+      filled: true,
+      fillColor: fillColor,
+      hintText: hintText,
+      hintStyle: TextStyle(
+        // decorationStyle: TextDecorationStyle.dotted,
+        //  fontFamily: HintTextFontFamily,
+        color: hintStyleColor,
+        decoration: hintTextDirection,
+        fontSize: HintTextFontSize,
+      ),
+      suffixIcon: suffixIcon,
+      prefixIcon: prefixIcon,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Radius),
+        borderSide: BorderSide(width: 1, color: enabledBorderColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Radius),
+        borderSide: BorderSide(
+          width: 1,
+          color: BorderSideColor == null ? Colors.blue : BorderSideColor,
+        ),
+      ),
+    ),
+  );
+}

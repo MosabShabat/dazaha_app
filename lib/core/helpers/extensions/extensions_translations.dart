@@ -1,0 +1,197 @@
+// translations_extensions.dart
+
+import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+extension TranslationsExtension on BuildContext {
+  String get appName => tr('app_name');
+  String get login => tr('login');
+  String get enterMobileNumberToRegisterOrLogin =>
+      tr('enter_mobile_number_to_register_or_login');
+  String get mobileNumber => tr('mobile_number');
+  String get continuation => tr('continuation');
+  String get registerNewUser => tr('register_new_user');
+  String get firstName => tr('first_name');
+  String get enterFirstName => tr('enter_first_name');
+  String get lastName => tr('last_name');
+  String get enterLastName => tr('enter_last_name');
+  String get email => tr('email');
+  String get enterYourEmail => tr('enter_email');
+  String get iAgreeTo => tr('i_agree_to');
+  String get termsAndConditions => tr('terms_and_conditions');
+  String get verification => tr('verification');
+  String get confirm => tr('confirm');
+  String get yes => tr('yes');
+  String get no => tr('no');
+  String get areYouSureYouWantToLeave => tr('are_you_sure_you_want_to_leave');
+  String get transportationAndDelivery => tr('transportation_and_delivery');
+  String get buyForMe => tr('buy_for_me');
+  String get removal => tr('removal');
+  String get dedication => tr('dedication');
+  String get latestAnnouncements => tr('latest_announcements');
+  String get viewAll => tr('view_all');
+  String get trackingLog => tr('tracking_log');
+  String get deliveryFrom => tr('delivery_from');
+  String get deliveryTo => tr('delivery_to');
+  String get weDeliverBuyAndHandleEverythingForYou =>
+      tr('we_deliver_buy_and_handle_everything_for_you');
+  String get needSomethingDontWorry => tr('need_something_dont_worry');
+  String get weDeliverYourItemsQuicklyAndSafely =>
+      tr('we_deliver_your_items_quickly_and_safely');
+  String get wellBringYouWhatYouNeed => tr('we_will_bring_you_what_you_need');
+  String get removeAndRecycle => tr('remove_and_recycle');
+  String get wellGetRidOfYourOldItems =>
+      tr('we_will_get_rid_of_your_old_items');
+  String get wellDeliverYourDonationsToThoseInNeed =>
+      tr('we_will_deliver_your_donations_to_those_in_need');
+  String get returnLostItems => tr('return_lost_items');
+  String get pickUpFromMarket => tr('pick_up_from_market');
+  String get deliverPurchases => tr('deliver_purchases');
+  String get transportOfSmallItems => tr('transport_small_items');
+  String get chooseTheDay => tr('choose_the_day');
+  String get chooseTheAppropriateTimeForTransportation =>
+      tr('choose_appropriate_time_for_transportation');
+  String get youCanChooseSpecificTimesDuringTheDay =>
+      tr('you_can_choose_specific_times_during_the_day');
+  String get receiptPoint => tr('receipt_point');
+  String get myCurrentLocation => tr('my_current_location');
+  String get savedAddresses => tr('saved_addresses');
+  String get addAddress => tr('add_address');
+  String get placeName => tr('place_name');
+  String get exampleWorkHome => tr('example_work_home');
+  String get city => tr('city');
+  String get selectCity => tr('select_city');
+  String get neighborhood => tr('neighborhood');
+  String get selectNeighborhood => tr('select_neighborhood');
+  String get street => tr('street');
+  String get enterStreetName => tr('enter_street_name');
+  String get locationOnMap => tr('location_on_map');
+  String get selectLocation => tr('select_location');
+  String get saveAddress => tr('save_address');
+  String get receiptMethod => tr('receipt_method');
+  String get location => tr('location');
+  String get homeDoor => tr('home_door');
+  String get stairs => tr('stairs');
+  String get movingItemsRequiresClimbingStairs =>
+      tr('moving_items_requires_climbing_stairs');
+  String get garden => tr('garden');
+  String get iWillMeetAndShowYouThePlace =>
+      tr('i_will_meet_and_show_you_the_place');
+  String get extra => tr('extra');
+  String get carryingAssistanceAvailableUponReceipt =>
+      tr('carrying_assistance_available_upon_receipt');
+  String get deliveryPoint => tr('delivery_point');
+  String get adDetails => tr('ad_details');
+  String get whatDoYouNeedHelpWith => tr('what_do_you_need_help_with');
+  String get forExampleACookAStoveABrokenPotABagOfFlour =>
+      tr('for_example_a_cook_a_stove_a_broken_pot_a_bag_of_flour');
+  String get aSimpleExplanationOfTheItems =>
+      tr('a_simple_explanation_of_the_items');
+  String get forExampleSize => tr('example_size_weight');
+  String get whatAreTheSizesOfTheItems => tr('what_are_the_sizes_of_the_items');
+  String get small => tr('small');
+  String get mediumText => tr('medium');
+  String get large => tr('large');
+  String get aLotOfItems => tr('a_lot_of_items');
+  String get doYouNeedHelpers => tr('do_you_need_helpers');
+  String get priceDetails => tr('price_details');
+  String get ourPriceEstimate => tr('our_price_estimate');
+  String get howMuchWouldYouLikeToPay => tr('how_much_would_you_like_to_pay');
+  String get theHigherYourPrice => tr('the_higher_your_price');
+  String get adSummary => tr('ad_summary');
+  String get convenientTimeForMoving => tr('convenient_time_for_moving');
+  String get date => tr('date');
+  String get time => tr('time');
+  String get address => tr('address');
+  String get details => tr('details');
+  String get aBriefExplanationOfTheItems =>
+      tr('brief_explanation_of_the_items');
+  String get postTheAd => tr('post_the_ad');
+  String get weWillPublishYourAdAfterReviewingTheDetails =>
+      tr('we_will_publish_your_ad_after_reviewing_the_details');
+  String get youWillReceiveANotificationWithEveryUpdate =>
+      tr('you_will_receive_notification');
+  String get myAds => tr('my_ads');
+  String get home => tr('home');
+  String get choice => tr('choice');
+  String get startYourJourneyNow => tr('start_your_journey_now!');
+  String get enterPickupAndDropOffLocationDetailsToProceed =>
+      tr('enter_pickup_and_drop_off_location_details_to_proceed');
+  String get storeName => tr('store_name');
+  String get chooseFromMap => tr('choose_from_map');
+  String get enterStoreName => tr('enter_store_name');
+  String get writeAnyStore => tr('write_any_store');
+  String get recentAddresses => tr('recent_addresses');
+  String get clearAll => tr('clear_all');
+  String get historyEmpty => tr('history_empty');
+  String get writeTheNameOfTheItemEgTomatoBreadSoap =>
+      tr('write_the_name_of_the_item_eg_tomato_bread_soap');
+  String get piece => tr('piece');
+  String get kilo => tr('kilo');
+  String get addANewCategory => tr('add_a_new_category');
+  String get deletedSuccessfully => tr('deleted_successfully');
+  String get toRetreat => tr('to_retreat');
+  String get summary => tr('summary');
+  String get shoppingList => tr('shopping_list');
+  String get send => tr('send');
+  String get all => tr('all');
+  String get receiveOffers => tr('receive_offers');
+  String get underDelivery => tr('under_delivery');
+  String get complete => tr('complete');
+  String get today => tr('today');
+  String get yesterday => tr('yesterday');
+  String get search => tr('search');
+  String get filter => tr('filter');
+  String get reset => tr('reset');
+  String get ViewYourRequestsByServiceType =>
+      tr('view_your_requests_by_service_type');
+  String get orderDetails => tr('order_details');
+  String get thePrice => tr('the_price');
+  String get highestRated => tr('highest_rated');
+  String get acceptance => tr('acceptance');
+  String get sizeOfItems => tr('size_of_items');
+  String get assistants => tr('Assistants');
+  String get acceptTheOffer => tr('accept_the_offer');
+  String get doYouWantToAcceptTheOffer => tr('do_you_want_to_accept_the_offer');
+  String get offeredPriceQuote => tr('offered_price_quote');
+  String get transferDate => tr('transfer_date');
+  String get presenter => tr('presenter');
+  String get ifYouAcceptTheOfferTheOrder =>
+      tr('if_you_accept_the_offer_the_order');
+  String get payment => tr('payment');
+  String get discountCoupon => tr('discount_coupon');
+  String get enterTheCoupon => tr('enter_the_coupon');
+  String get implementation => tr('implementation');
+  String get paymentMethod => tr('payment_method');
+  String get applePay => tr('apple_pay');
+  String get zainCash => tr('zain_cash');
+  String get cardPayment => tr('card_payment');
+  String get paymentSummary => tr('payment_summary');
+  String get subtotal => tr('sub_total');
+  String get valueAddedTax => tr('value_added_tax');
+  String get totalAmount => tr('total_amount');
+  String get payNow => tr('pay_now');
+  String get paymentCompletedSuccessfully =>
+      tr('payment_completed_successfully');
+  String get trackYourOrderStatusAndSee =>
+      tr('track_your_order_status_and_see');
+  String get orderTracking => tr('order_tracking');
+  String get verificationCode => tr('verification_code');
+  String get enterTheDigitCode => tr('enter_the_digit_code_sent_to_you_on');
+  String get iDidNotReceiveTheCode => tr('i_did_not_receive_the_code');
+  String get resend => tr('resend');
+  String get trackTheFlight => tr('track_the_flight');
+  String get tracking => tr('tracking');
+  String get deliveryPoints => tr('delivery_points');
+  String get flightCaptain => tr('flight_captain');
+  String get invoice => tr('invoice');
+  String get invoiceNumber => tr('invoice_number');
+  String get serviceAmount => tr('service_amount');
+  String get reportAProblem => tr('report_a_problem');
+  String get message => tr('message');
+  String get rateYourExperience => tr('rate_your_experience');
+  String get submitEvaluation => tr('submit_evaluation');
+  String get createYourAd => tr('create_your_ad');
+
+  //size_of_items
+}
