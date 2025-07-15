@@ -18,14 +18,15 @@ class AddADeliveryAddressScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBarWidget(
         text: context.saveAddress,
         context,
-        GetScreen: () {},
+        GetScreen: () {
+          Get.back();
+        },
       ),
       body: GeneralScreenWidget(
         context,
         wid: [
           TopTextWidget(context, Title: context.addAddress, SubTitle: ''),
           AddressInfoWidget(context),
-       
         ],
       ),
     );

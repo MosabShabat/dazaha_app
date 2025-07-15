@@ -22,7 +22,7 @@ class PriceCatDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TobColumnWidget(context, horizontalPadding: 16.0.w),
+            TobColumnWidget(context, horizontalPadding: 16.0.w, caseItem: 0),
             Divider(color: context.colorsCustom.CardBorder, thickness: 1),
             verticalSpace(20.h),
             Container(

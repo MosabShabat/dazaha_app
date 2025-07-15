@@ -18,7 +18,6 @@ class pickUpPointScreen extends StatelessWidget {
     required this.isAppBar,
     required this.pageArgs,
   });
-  // ✅ Use a factory constructor to receive arguments via Get
   factory pickUpPointScreen.fromRoute() {
     final args = Get.arguments as Map<String, dynamic>? ?? {};
     return pickUpPointScreen(
@@ -29,6 +28,9 @@ class pickUpPointScreen extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    print('1111111111111 ${page} 2222222222222222');
+    print('9999999999999999 ${pageArgs} 000000000000');
+
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: isAppBar
@@ -65,9 +67,6 @@ class pickUpPointScreen extends StatelessWidget {
                 Get.toNamed(page, arguments: pageArgs);
               }
             },
-            //  () {
-            //   Get.toNamed(Routes.pickUpMethodUpOnDeliveryScreen);
-            // },
           ),
         ],
       ),

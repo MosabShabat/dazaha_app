@@ -19,6 +19,7 @@ class PriceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('666666666666 ${Page} 7777777777777777');
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: CustomAppBarWidget(
@@ -33,7 +34,7 @@ class PriceDetailsScreen extends StatelessWidget {
         context,
         text: context.continuation,
         GetScreen: () {
-          Page;
+          Get.toNamed(Page);
         },
       ),
       body: GeneralScreenWidget(

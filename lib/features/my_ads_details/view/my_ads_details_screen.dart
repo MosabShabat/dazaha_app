@@ -6,7 +6,8 @@ import 'package:dazaha_app/features/my_ads_details/widgets/tab_body_widget.dart'
 import 'package:dazaha_app/features/my_ads_details/widgets/tob_column_widget.dart';
 
 class MyAdsDetailsScreen extends StatelessWidget {
-  const MyAdsDetailsScreen({super.key});
+  final int caseItem;
+  const MyAdsDetailsScreen({super.key, required this.caseItem});
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +18,20 @@ class MyAdsDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TobColumnWidget(context,horizontalPadding: 16.0.w),
+            TobColumnWidget(context, horizontalPadding: 16.0.w,caseItem: caseItem),
             Divider(color: context.colorsCustom.CardBorder, thickness: 1),
             verticalSpace(20.h),
-            Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MedCusWidget(context),
-                    verticalSpace(20.h),
-                    TabBodyWidget(context),
-                  ],
-                ).box
-                .padding(EdgeInsetsGeometry.symmetric(horizontal: 16.w))
-                .make(),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MedCusWidget(context),
+                  verticalSpace(20.h),
+                  TabBodyWidget(context),
+                ],
+              ),
+            ),
           ],
         ),
       ),

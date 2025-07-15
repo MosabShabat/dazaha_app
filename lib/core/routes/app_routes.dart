@@ -1,5 +1,11 @@
+import 'package:dazaha_app/features/about_the_application/binding/about_the_application_binding.dart';
+import 'package:dazaha_app/features/about_the_application/view/about_the_application_screen.dart';
 import 'package:dazaha_app/features/ad_details/bindings/ad_details_bindings.dart';
 import 'package:dazaha_app/features/ad_details/view/ad_details_screen.dart';
+import 'package:dazaha_app/features/add_a_delivery_address/bindings/add_a_delivery_address_bindings.dart';
+import 'package:dazaha_app/features/add_a_delivery_address/view/add_a_delivery_address_screen.dart';
+import 'package:dazaha_app/features/add_cus_loac/binding/add_cus_loac_binding.dart';
+import 'package:dazaha_app/features/add_cus_loac/view/add_cus_loac_screen.dart';
 import 'package:dazaha_app/features/auth/login/binding/login_binding.dart';
 import 'package:dazaha_app/features/auth/login/view/login_screen.dart';
 import 'package:dazaha_app/features/auth/register/binding/register_binding.dart';
@@ -13,8 +19,6 @@ import 'package:dazaha_app/features/buy_me/select_store_name/bindings/select_sto
 import 'package:dazaha_app/features/buy_me/store_name/bindings/buy_me_binding.dart';
 import 'package:dazaha_app/features/buy_me/store_name/views/buy_me_screen.dart';
 import 'package:dazaha_app/features/buy_me/summary/bindings/summary_binding.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/ad_details/bindings/ad_details_bindings.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/ad_details/view/ad_details_screen.dart';
 import 'package:dazaha_app/features/advertisement_summary/bindings/advertisement_summary_bindings.dart';
 import 'package:dazaha_app/features/advertisement_summary/view/advertisement_summary_screen.dart';
 import 'package:dazaha_app/features/booking_date/bindings/booking_date_bindings.dart';
@@ -25,8 +29,6 @@ import 'package:dazaha_app/features/direct_suppor_map/binding/direct_support_map
 import 'package:dazaha_app/features/direct_suppor_map/views/direct_support_map_screen.dart';
 import 'package:dazaha_app/features/direct_support/binding/direct_support_binding.dart';
 import 'package:dazaha_app/features/direct_support/views/direct_support_screen.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/drop_dff_point/bindings/drop_dff_point_bindings.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/drop_dff_point/view/drop_dff_point_screen.dart';
 import 'package:dazaha_app/features/pick_up_method_upon_delivery/bindings/pick_up_method_upon_delivery_bindings.dart';
 import 'package:dazaha_app/features/pick_up_method_upon_delivery/view/pick_up_method_upon_delivery_screen.dart';
 import 'package:dazaha_app/features/pick_up_point/bindings/pick_up_point_bindings.dart';
@@ -37,10 +39,6 @@ import 'package:dazaha_app/features/price_details_review/binding/price_details_r
 import 'package:dazaha_app/features/price_details_review/view/price_details_review_screen.dart';
 import 'package:dazaha_app/features/remove_and_recycle_service_features/binding/remove_and_recycle_service_features_binding.dart';
 import 'package:dazaha_app/features/remove_and_recycle_service_features/view/remove_and_recycle_service_features_screen.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/pick_up_point/bindings/pick_up_point_bindings.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/pick_up_point/view/pick_up_point_screen.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/price_details/bindings/price_details_bindings.dart';
-// import 'package:dazaha_app/features/choose_the_service/transportation_and_delivery/price_details/view/price_details_screen.dart';
 import 'package:dazaha_app/features/review_details/bindings/review_details_bindings.dart';
 import 'package:dazaha_app/features/review_details/view/review_details_screen.dart';
 import 'package:dazaha_app/features/select_a_location_on_the_map/bindings/select_a_location_on_the_map_bindings.dart';
@@ -51,11 +49,10 @@ import 'package:dazaha_app/features/home/bindings/home_bindings.dart';
 import 'package:dazaha_app/features/home/view/home_screen.dart';
 import 'package:dazaha_app/features/home_page/bindings/home_page_bindings.dart';
 import 'package:dazaha_app/features/home_page/view/home_page_screen.dart';
-import 'package:dazaha_app/features/person/bindings/person_bindings.dart';
-import 'package:dazaha_app/features/person/view/person_screen.dart';
+import 'package:dazaha_app/features/profile/bindings/profile_bindings.dart';
+import 'package:dazaha_app/features/profile/view/profile_screen.dart';
 import 'package:dazaha_app/features/select_a_location_on_the_map_store/view/select_a_location_on_the_map_store_screen.dart';
 import 'package:dazaha_app/features/select_store_name/view/select_store_name_screen.dart';
-// import 'package:dazaha_app/features/splash/splash_screen.dart';
 import 'package:dazaha_app/features/item_ad_details/bindings/item_ad_details_binding.dart';
 import 'package:dazaha_app/features/item_ad_details/view/item_ad_details_screen.dart';
 import 'package:dazaha_app/features/my_ad_pay_ment/binding/my_ad_pay_ment_binding.dart';
@@ -69,6 +66,14 @@ import 'package:dazaha_app/features/price_cat_details/view/price_cat_details_scr
 import 'package:dazaha_app/features/review_pay_ment/binding/review_pay_ment_binding.dart';
 import 'package:dazaha_app/features/review_pay_ment/view/review_pay_ment_sreen.dart';
 import 'package:dazaha_app/features/summary/view/summary_screen.dart';
+import 'package:dazaha_app/features/summary_my_ad_det/binding/summary_my_ad_det_binding.dart';
+import 'package:dazaha_app/features/summary_my_ad_det/view/summary_my_ad_det_screen.dart';
+import 'package:dazaha_app/features/update_mobile_number/binding/update_mobile_number_binding.dart';
+import 'package:dazaha_app/features/update_mobile_number/view/update_mobile_number_screen.dart';
+import 'package:dazaha_app/features/user_info/binding/user_info_binding.dart';
+import 'package:dazaha_app/features/user_info/view/user_info_screen.dart';
+import 'package:dazaha_app/features/ver_code_mobile/binding/ver_code_mobile_binding.dart';
+import 'package:dazaha_app/features/ver_code_mobile/view/ver_code_mobile_screen.dart';
 import 'package:get/get.dart';
 import 'routes.dart';
 
@@ -116,9 +121,9 @@ class AppRouter {
       binding: DocumentBindings(),
     ),
     GetPage(
-      name: Routes.personScreen,
-      page: () => PersonScreen(),
-      binding: PersonBindings(),
+      name: Routes.profileScreen,
+      page: () => ProfileScreen(),
+      binding: ProfileBindings(),
     ),
     GetPage(
       name: Routes.chooseTheServiceScreen,
@@ -126,12 +131,7 @@ class AppRouter {
       binding: ChooseTheServiceBindings(),
       transition: Transition.downToUp,
     ),
-    GetPage(
-      name: Routes.bookingDateScreen,
-      page: () => BookingDateScreen(),
-      binding: BookingDateBindings(),
-      transition: Transition.fade,
-    ),
+
     GetPage(
       name: Routes.reviewPayMentScreen,
       page: () => ReviewPayMentScreen(),
@@ -158,10 +158,14 @@ class AppRouter {
     ),
     GetPage(
       name: Routes.myAdsDetailsScreen,
-      page: () => MyAdsDetailsScreen(),
+      page: () {
+        final caseItem = Get.arguments as int; // make sure it's an int
+        return MyAdsDetailsScreen(caseItem: caseItem);
+      },
       binding: MyAdsDetailsBindings(),
       transition: Transition.rightToLeft,
     ),
+
     GetPage(
       name: Routes.advertisementSummaryScreen,
       page: () => AdvertisementSummaryScreen(),
@@ -242,7 +246,6 @@ class AppRouter {
       name: Routes.removeAndRecycleServiceFeaturesScreen,
       page: () => RemoveAndRecycleServiceFeaturesScreen(),
       binding: RemoveAndRecycleServiceFeaturesBinding(),
-
       transition: Transition.downToUp,
     ),
     GetPage(
@@ -257,14 +260,64 @@ class AppRouter {
       binding: AdDetailsBindings(),
       transition: Transition.rightToLeft,
     ),
-
+    GetPage(
+      name: Routes.bookingDateScreen,
+      page: () => BookingDateScreen.fromRoute(),
+      binding: BookingDateBindings(),
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
       name: Routes.priceDetailsScreen,
       page: () => PriceDetailsScreen.fromRoute(),
       binding: PriceDetailsBindings(),
       transition: Transition.rightToLeft,
     ),
-    //adDetailsScreen
+
+    GetPage(
+      name: Routes.summaryMyAdDetScreen,
+      page: () => SummaryMyAdDetScreen(),
+      binding: SummaryMyAdDetBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: Routes.userInfoScreen,
+      page: () => UserInfoScreen(),
+      binding: UserInfoBinding(),
+      transition: Transition.leftToRight,
+    ),
+    GetPage(
+      name: Routes.updateMobileNumberScreen,
+      page: () => UpdateMobileNumberScreen(),
+      binding: UpdateMobileNumberBinding(),
+      transition: Transition.leftToRight,
+    ),
+
+    GetPage(
+      name: Routes.verCodeMobileScreen,
+      page: () => VerCodeMobileScreen(),
+      binding: VerCodeMobileBinding(),
+      transition: Transition.leftToRight,
+    ),
+    GetPage(
+      name: Routes.addADeliveryAddressScreen,
+      page: () => AddADeliveryAddressScreen(),
+      binding: AddADeliveryAddressBindings(),
+      transition: Transition.leftToRight,
+    ),
+    GetPage(
+      name: Routes.addCusLoacScreen,
+      page: () => AddCusLoacScreen(),
+      binding: AddCusLoacBinding(),
+      transition: Transition.leftToRight,
+    ),
+     GetPage(
+      name: Routes.aboutTheApplicationScreen,
+      page: () => AboutTheApplicationScreen(),
+      binding: AboutTheApplicationBinding(),
+      transition: Transition.leftToRight,
+    ),
+
+    //AboutTheApplicationScreen
     // GetPage(
     //   name: Routes.moyasarPaymentMethodScreen,
     //   binding: MoyasarPaymentMethodBinding(),

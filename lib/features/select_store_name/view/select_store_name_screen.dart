@@ -29,24 +29,6 @@ class SelectStoreNameScreen extends StatelessWidget {
         text: context.continuation,
         context,
         GetScreen: () {
-          // Get.to(
-          //   () => pickUpPointScreen(
-          //     page: () {
-          //       Get.to(
-          //         () => AdDetailsScreen(
-          //           isSwitchShow: false,
-          //           page: () {
-          //             Get.toNamed(Routes.summaryScreen);
-          //           },
-          //         ),
-          //         transition: Transition.rightToLeft,
-          //       );
-          //     },
-          //     isAppBar: false,
-          //   ),
-          //   transition: Transition.rightToLeft,
-          // );
-
           Get.toNamed(
             Routes.pickUpPointScreen,
             arguments: {

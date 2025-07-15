@@ -10,11 +10,10 @@ Widget LoginTextWidget(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       verticalSpace(60.h),
-      Text(title, style: context.textStyles.headlineSmall.extraBold),
+      Text(title, style: context.textStyles.headlineSmall.bold),
       verticalSpace(15.h),
       Text(
         subTitle,
-
         style: context.textStyles.titleSmall.medium.copyWith(
           color: context.colorsCustom.TextSecondary,
           height: 2.h,

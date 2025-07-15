@@ -28,8 +28,9 @@ class AppColors {
     LightYellow: Color(0xFFFFF8E1),
     LightTealGreen: Color(0xFFE7F5F4),
     LightOrange: Color(0xFFFFF6E9),
+    LightRed: Color(0xFFFFF0F0),
 
-    //LightOrange
+    //LightRed
     // INPUT
 
     // inputBorderSelected: Color(0xFFB9CFFF),
@@ -115,6 +116,7 @@ class AppColors {
     LightYellow: Color(0xFFFFF8E1),
     LightTealGreen: Color(0xFFE7F5F4),
     LightOrange: Color(0xFFFFF6E9),
+    LightRed: Color(0xFFFFF0F0),
 
     // inputBg: Color(0xFF000A29),
     // inputBorder: Color(0xFF26428B),
@@ -203,6 +205,7 @@ class TokenPalette {
   final Color LightYellow;
   final Color LightTealGreen;
   final Color LightOrange;
+  final Color LightRed;
 
   //LightYellow
 
@@ -225,8 +228,9 @@ class TokenPalette {
     required this.LightYellow,
     required this.LightTealGreen,
     required this.LightOrange,
+    required this.LightRed,
 
-    //LightOrange
+    //LightRed
   });
 }
 

@@ -8,7 +8,7 @@ class Routes {
   static const String transportationAndDeliveryScreen =
       '/transportationAndDeliveryScreen';
   static const String documentScreen = '/documentScreen';
-  static const String personScreen = '/personScreen';
+  static const String profileScreen = '/profileScreen';
   static const String chooseTheServiceScreen = '/chooseTheServiceScreen';
   static const String bookingDateScreen = '/bookingDateScreen';
   static const String pickUpPointScreen = '/pickUpPointScreen';
@@ -35,7 +35,14 @@ class Routes {
   static const String directSupportMapScreen = '/directSupportMapScreen';
   static const String priceDetailsReviewScreen = '/priceDetailsReviewScreen';
   static const String removeAndRecycleServiceFeaturesScreen = '/removeAndRecycleServiceFeaturesScreen';
+  static const String summaryMyAdDetScreen = '/summaryMyAdDetScreen';
+  static const String userInfoScreen = '/userInfoScreen';
+  static const String updateMobileNumberScreen = '/updateMobileNumberScreen';
+  static const String verCodeMobileScreen = '/verCodeMobileScreen';
+  static const String addADeliveryAddressScreen = '/addADeliveryAddressScreen';
+  static const String addCusLoacScreen = '/addCusLoacScreen';
+  static const String aboutTheApplicationScreen = '/aboutTheApplicationScreen';
 
 
-  //RemoveAndRecycleServiceFeaturesScreen
+  //AboutTheApplicationScreen
 }

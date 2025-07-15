@@ -17,7 +17,17 @@ class RemoveAndRecycleServiceFeaturesScreen extends StatelessWidget {
         child: GeneralBottomAppWidget(
           context,
           text: context.createYourAd,
-          onTap: () => controller.openCameraWithPermission(context),
+          onTap: () => controller.openCameraWithPermission(
+            context,
+            page: Routes.bookingDateScreen,
+            arguments: {
+              'page': Routes.adDetailsScreen,
+              'pageArgs': {
+                'page': Routes.advertisementSummaryScreen,
+                'isSwitchShow': true,
+              },
+            },
+          ),
         ),
       ),
       body: SafeArea(

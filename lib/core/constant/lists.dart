@@ -1,4 +1,3 @@
-
 //images_List
 import 'package:dazaha_app/core/helpers/app_assets.dart';
 
@@ -28,6 +27,17 @@ final ListImagesListViewAdDetails = [
   AppAssets.svgs.group30_icon,
   AppAssets.svgs.group31_icon,
   AppAssets.svgs.group32_icon,
+];
+
+final ListProfileIcons = [
+  AppAssets.svgs.Group120788,
+  AppAssets.svgs.wallet_2_icon,
+  AppAssets.svgs.global_icon,
+  AppAssets.svgs.location_icon,
+  AppAssets.svgs.lifebuoy_icon,
+  AppAssets.svgs.info_circle_icon,
+  AppAssets.svgs.setting_icon,
+  AppAssets.svgs.logout_icon,
 ];
 
 //==============================================================

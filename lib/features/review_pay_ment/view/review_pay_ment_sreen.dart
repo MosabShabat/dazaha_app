@@ -27,16 +27,11 @@ class ReviewPayMentScreen extends StatelessWidget {
                   title: context.paymentCompletedSuccessfully,
                   subTitle: context.trackYourOrderStatusAndSee,
                 ),
-
                 GeneralBottomAppWidget(
                   context,
                   text: context.orderTracking,
                   onTap: () {
                     Get.toNamed(Routes.priceCatDetailsScreen);
-                    // Get.offAll(
-                    //   () => HomeScreen(initialTabIndex: 1),
-                    //   transition: Transition.downToUp,
-                    // );
                   },
                 ),
                 verticalSpace(40.h),

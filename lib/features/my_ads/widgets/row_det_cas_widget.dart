@@ -85,7 +85,18 @@ Widget RowDetCasWidget(BuildContext context) {
                 ),
               ],
             ).onTap(() {
-              Get.toNamed(Routes.myAdsDetailsScreen);
+              // Get.toNamed(Routes.myAdsDetailsScreen);
+              if (index == 0) {
+                Get.toNamed(Routes.myAdsDetailsScreen, arguments: 0);
+              }
+              if (index == 1) {
+                Get.toNamed(Routes.myAdsDetailsScreen, arguments: 1);
+              }
+              if (index == 2) {
+                Get.toNamed(Routes.myAdsDetailsScreen, arguments: 2);
+              }
+              // or any int you want
+
               print('000000000000000 ${index} 000000000000000');
             }),
       );

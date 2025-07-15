@@ -36,7 +36,7 @@ class RegisterScreen extends StatelessWidget {
           verticalSpace(20.h),
           Text(
             context.registerNewUser,
-            style: context.textStyles.headlineSmall.extraBold.copyWith(
+            style: context.textStyles.headlineSmall.bold.copyWith(
               color: context.colorsCustom.surfacePrimaryBlack,
             ),
           ),

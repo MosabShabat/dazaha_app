@@ -192,6 +192,28 @@ extension TranslationsExtension on BuildContext {
   String get rateYourExperience => tr('rate_your_experience');
   String get submitEvaluation => tr('submit_evaluation');
   String get createYourAd => tr('create_your_ad');
+  String get profile => tr('profile');
+  String get goArriveEarn => tr('go_arrive_earn');
+  String get placeOrdersAnd => tr('place_orders_and_start_earning_easily');
+  String get joinNow => tr('join_now');
+  String get wallet => tr('wallet');
+  String get theLanguage => tr('the_language');
+  String get arabic => tr('arabic');
+  String get english => tr('english');
+  String get deliveryAddresses => tr('delivery_addresses');
+  String get help => tr('help');
+  String get aboutTheApp => tr('about_the_app');
+  String get settings => tr('settings');
+  String get logOut => tr('log_out');
+  String get chooseLanguage => tr('choose_language');
+  String get personalInformation => tr('personal_information');
+  String get update => tr('update');
+  String get saveChanges => tr('save_changes');
+  String get updateMobileNumber => tr('update_mobile_number');
+  String get enterTheNewMobileNumberToUpdate => tr('enter_the_new_mobile_number_to_update');
+  String get next => tr('next');
+  String get edit => tr('edit');
+  String get delete => tr('delete');
 
   //size_of_items
 }

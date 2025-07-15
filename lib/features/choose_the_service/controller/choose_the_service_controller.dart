@@ -7,7 +7,11 @@ import 'package:permission_handler/permission_handler.dart';
 class ChooseTheServiceController extends GetxController {
   List<MediaModel> images = [];
 
-  Future<void> openCameraWithPermission(BuildContext context) async {
+  Future<void> openCameraWithPermission(
+    BuildContext context, {
+    required page,
+    required Map<String, dynamic> arguments,
+  }) async {
     var status = await Permission.camera.request();
     if (status.isGranted) {
       images = await MultipleImageCamera.capture(context: context);
@@ -20,7 +24,9 @@ class ChooseTheServiceController extends GetxController {
           bgColor: context.colorsCustom.TealGreenSecondary,
           textColor: context.colorsCustom.surfacePrimaryWhite,
         );
-        Get.toNamed(Routes.bookingDateScreen,);
+        Get.toNamed(page, arguments: arguments);
+
+        // Get.toNamed(Routes.bookingDateScreen);
       } else {
         print(
           '***************************** Captured ${images.length} images. and this the second line **********************************',

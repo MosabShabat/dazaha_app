@@ -24,7 +24,6 @@ class AdvertisementSummaryScreen extends StatelessWidget {
           Get.toNamed(Routes.reviewDetailsScreen);
         },
       ),
-
       body: GeneralScreenWidget(
         context,
         wid: [
@@ -37,27 +36,15 @@ class AdvertisementSummaryScreen extends StatelessWidget {
               fontSize: 20.sp,
             ),
           ),
-
-        
-
           verticalSpace(10.h),
           ImageListViewBuilderWidget(context),
           verticalSpace(10.h),
           TimeDateWidget(context),
           verticalSpace(10.h),
-          AddressWidget(context,isShow: false),
+          AddressWidget(context, isShow: false),
           verticalSpace(10.h),
           MapWidget(context),
           verticalSpace(10.h),
-          Text(
-            context.details,
-            textAlign: TextAlign.start,
-            maxLines: 1,
-            style: context.textStyles.titleMedium.medium.copyWith(
-              color: context.colorsCustom.TextPrimary,
-              //  fontSize: 20.sp,
-            ),
-          ),
           DetColumnWidget(context),
         ],
       ),

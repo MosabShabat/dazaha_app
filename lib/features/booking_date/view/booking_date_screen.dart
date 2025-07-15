@@ -5,20 +5,21 @@ import 'package:dazaha_app/core/widgets/custom_app_bar_widget.dart';
 import 'package:dazaha_app/core/widgets/general_screen_widget.dart';
 import 'package:dazaha_app/features/booking_date/widgets/grid_view_day_booking_date_widget.dart';
 import 'package:dazaha_app/features/booking_date/widgets/list_view_day_booking_date_widget.dart';
-// import 'package:dazaha_app/features/pick_up_point/view/pick_up_point_screen.dart';
 
-class BookingDateScreen extends StatefulWidget {
-  // final dynamic page;
-  const BookingDateScreen({
-    super.key,
-    // required this.page
-  });
+class BookingDateScreen extends StatelessWidget {
+  final String? page;
+  final Map<String, dynamic>? pageArgs;
 
-  @override
-  State<BookingDateScreen> createState() => _BookingDateScreenState();
-}
+  const BookingDateScreen({super.key, required this.page, this.pageArgs});
 
-class _BookingDateScreenState extends State<BookingDateScreen> {
+  factory BookingDateScreen.fromRoute() {
+    final args = Get.arguments as Map<String, dynamic>? ?? {};
+    return BookingDateScreen(
+      page: args['page'] as String?,
+      pageArgs: args['pageArgs'] as Map<String, dynamic>?,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,24 +36,15 @@ class _BookingDateScreenState extends State<BookingDateScreen> {
         text: context.continuation,
         context,
         GetScreen: () {
-          // Get.to(
-          //   () => pickUpPointScreen(
-          //     page: () {
-          //       Get.toNamed(Routes.pickUpMethodUpOnDeliveryScreen);
-          //     },
-          //     isAppBar: true,
-          //   ),
-          //   transition: Transition.rightToLeft,
-          // );
-          Get.toNamed(
-            Routes.pickUpPointScreen,
-            arguments: {
-              'page': Routes.pickUpMethodUpOnDeliveryScreen,
-              'isAppBar': true, // or false
-            },
-          );
-
-          // Get.toNamed(Routes.pickUpPointScreen);
+          if (page != null) {
+            Get.toNamed(
+              Routes.pickUpPointScreen,
+              arguments: {'page': page, 'pageArgs': pageArgs, 'isAppBar': true},
+            );
+          } else {
+            // Optional fallback screen or warning
+            Get.snackbar("Error", "Target page not defined.");
+          }
         },
       ),
       body: GeneralScreenWidget(
@@ -67,7 +59,6 @@ class _BookingDateScreenState extends State<BookingDateScreen> {
               fontSize: 20.sp,
             ),
           ),
-
           verticalSpace(10.h),
           ListViewDayBookingDateWidget(context: context),
           verticalSpace(20.h),

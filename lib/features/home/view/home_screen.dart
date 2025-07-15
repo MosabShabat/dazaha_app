@@ -6,7 +6,7 @@ import 'package:dazaha_app/core/widgets/exit_dialog.dart';
 import 'package:dazaha_app/core/widgets/nav_bars_items_widget.dart';
 import 'package:dazaha_app/features/document/view/document_screen.dart';
 import 'package:dazaha_app/features/home_page/view/home_page_screen.dart';
-import 'package:dazaha_app/features/person/view/person_screen.dart';
+import 'package:dazaha_app/features/profile/view/profile_screen.dart';
 import 'package:dazaha_app/features/my_ads/views/transportation_and_delivery_screen.dart';
 
 // ignore: must_be_immutable
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       TransportationAndDeliveryScreen(),
       Container(),
       DocumentScreen(),
-      PersonScreen(),
+      ProfileScreen(),
     ];
 
     // ignore: deprecated_member_use
@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             elevation: 0,
-
             backgroundColor: context.colorsCustom.surfacePrimaryWhite,
             currentIndex: currentIndex.value,
             selectedItemColor: context.colorsCustom.TealGreenSecondary,

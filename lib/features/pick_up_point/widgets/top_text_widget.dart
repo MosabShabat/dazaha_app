@@ -6,20 +6,23 @@ Widget TopTextWidget(
   BuildContext context, {
   required Title,
   required SubTitle,
+  isShow,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
-        '${Title}',
-        textAlign: TextAlign.center,
-        maxLines: 1,
-        style: context.textStyles.titleLarge.bold.copyWith(
-          color: context.colorsCustom.TextPrimary,
-          fontSize: 20.sp,
-        ),
-      ),
-      verticalSpace(10.h),
+      isShow != null || isShow == true
+          ? Text(
+              '${Title}',
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: context.textStyles.titleLarge.bold.copyWith(
+                color: context.colorsCustom.TextPrimary,
+                fontSize: 20.sp,
+              ),
+            )
+          : Container(),
+      isShow != null || isShow == true ? verticalSpace(10.h) : Container(),
       Text(
         '${SubTitle}',
         textAlign: TextAlign.center,

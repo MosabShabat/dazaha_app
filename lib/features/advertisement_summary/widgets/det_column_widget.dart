@@ -6,6 +6,14 @@ Widget DetColumnWidget(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
+      Text(
+        context.details,
+        textAlign: TextAlign.start,
+        maxLines: 1,
+        style: context.textStyles.titleMedium.medium.copyWith(
+          color: context.colorsCustom.TextPrimary,
+        ),
+      ),
       DetInfoWidget(
         context,
         textTitle: context.whatDoYouNeedHelpWith,

@@ -164,7 +164,31 @@
   "message": "الرسالة",
   "rate_your_experience": "قيّم تجربتك من نجمة إلى 5 نجمات",
   "submit_evaluation": "إرسال التقييم",
-  "create_your_ad": "أنشئ إعلانك"
+  "create_your_ad": "أنشئ إعلانك",
+  "profile": "الملف الشخصي",
+  "go_arrive_earn": "انطلق، وصل، وحقق دخل",
+  "place_orders_and_start_earning_easily": "وصل الطلبات، وابدأ تربح بسهولة",
+  "join_now": "انضم الآن",
+  "wallet": "المحفظة",
+  "the_language": "اللغة",
+  "arabic": "Arabic",
+  "english": "English",
+  "delivery_addresses": "عناوين التوصيل",
+  "help": "المساعدة",
+  "about_the_app": "عن التطبيق",
+  "settings": "الإعدادات",
+  "log_out":"تسجيل خروج",
+  "choose_language":"اختيار اللغة",
+  "personal_information": "المعلومات الشخصية",
+  "update": "تحديث",
+  "save_changes": "حفظ التغييرات",
+  "update_mobile_number": "تحديث رقم الجوال",
+  "enter_the_new_mobile_number_to_update": "أدخل رقم الجوال الجديد للتحديث",
+  "next": "التالي",
+  "edit": "تعديل",
+  "delete": "حذف"
+
+
 
   
 

@@ -18,6 +18,13 @@ class AdDetailsScreen extends StatelessWidget {
     required this.isSwitchShow,
     required this.page,
   });
+  // factory AdDetailsScreen.fromRoute() {
+  //   final args = Get.arguments as Map<String, dynamic>? ?? {};
+  //   return AdDetailsScreen(
+  //     page: args['page'],
+  //     isSwitchShow: args['isSwitchShow'] ?? true,
+  //   );
+  // }
   factory AdDetailsScreen.fromRoute() {
     final args = Get.arguments as Map<String, dynamic>? ?? {};
     return AdDetailsScreen(
@@ -28,6 +35,8 @@ class AdDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('5555555555555555 ${page} 333333333333333');
+    print('5555555555555555 ${isSwitchShow} 333333333333333');
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: CustomAppBarWidget(
@@ -43,17 +52,6 @@ class AdDetailsScreen extends StatelessWidget {
         context,
         GetScreen: () {
           Get.toNamed(Routes.priceDetailsScreen, arguments: {'page': page});
-
-          // Get.to(
-          //   () => PriceDetailsScreen(
-          //     Page: page,
-          //     //  () {
-          //     //   Get.toNamed(Routes.summaryScreen);
-          //     // },
-          //   ),
-          //   transition: Transition.rightToLeft,
-          // );
-          //  Get.toNamed(Routes.priceDetailsScreen);
         },
       ),
       body: GeneralScreenWidget(

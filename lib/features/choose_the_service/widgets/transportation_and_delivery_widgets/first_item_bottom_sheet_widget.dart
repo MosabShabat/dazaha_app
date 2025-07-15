@@ -53,7 +53,13 @@ Future<dynamic> FirstItemBottomSheetWidget(BuildContext context) {
               GeneralBottomAppWidget(
                 context,
                 text: context.continuation,
-                onTap: () => controller.openCameraWithPermission(context),
+                onTap: () => controller.openCameraWithPermission(
+                  context,
+                  page: Get.toNamed(
+                    Routes.bookingDateScreen,
+                    arguments: {'page': Routes.pickUpMethodUpOnDeliveryScreen},
+                  ), arguments: {},
+                ),
               ),
             ],
           ),

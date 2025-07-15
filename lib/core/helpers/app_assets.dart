@@ -78,9 +78,19 @@ class _SvgAssets {
   final group_tow_icon = 'assets/images/svg_images/group_tow_icon.svg';
   final group_120858_icon = 'assets/images/svg_images/group_120858_icon.svg';
   final group_for_icon = 'assets/images/svg_images/group_for_icon.svg';
+  final envato_labs_image_edit_icon = 'assets/images/svg_images/envato_labs_image_edit_icon.svg';
+  final wallet_2_icon = 'assets/images/svg_images/wallet_2_icon.svg';
+  final global_icon = 'assets/images/svg_images/global_icon.svg';
+  final lifebuoy_icon = 'assets/images/svg_images/lifebuoy_icon.svg';
+  final setting_icon = 'assets/images/svg_images/setting_icon.svg';
+  final logout_icon = 'assets/images/svg_images/logout_icon.svg';
+  final mask_group_icon = 'assets/images/svg_images/mask_group_icon.svg';
+  final gallery_edit_icon = 'assets/images/svg_images/gallery_edit_icon.svg';
+  final edit_icon = 'assets/images/svg_images/edit_icon.svg';
+  final trash_icon = 'assets/images/svg_images/trash_icon.svg';
 
-  //group_for_icon
-  //SvgPicture.asset(AppAssets.svgs.group_for_icon),
+  //trash_icon
+  //SvgPicture.asset(AppAssets.svgs.trash_icon),
 }
 
 class _ImageAssets {

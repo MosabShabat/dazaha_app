@@ -1,12 +1,13 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
-import 'package:dazaha_app/core/helpers/theme_exports.dart';
 
 Widget CusRegisterInfoWidget(
   BuildContext context, {
   required titleText,
   required titleTextColor,
   required HintText,
+  HintTextColor,
+  HintTextFontFamily,
   required maxLines,
   required maxLength,
 }) {
@@ -31,8 +32,10 @@ Widget CusRegisterInfoWidget(
         // controller: _LastNameTextController,
         keyboardType: TextInputType.name,
         hintText: HintText,
-        hintStyleColor: context.colorsCustom.TextSecondary,
-        HintTextFontFamily: context.textStyles.bodySmall.regular,
+        hintStyleColor: HintTextColor ?? context.colorsCustom.TextSecondary,
+        HintTextFontFamily:
+            HintTextFontFamily ??
+            context.textStyles.bodySmall.regular.fontFamily,
         HintTextFontSize: 12.0.sp,
         fillColor: context.colorsCustom.surfacePrimaryWhite,
       ),

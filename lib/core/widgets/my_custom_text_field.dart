@@ -24,40 +24,43 @@ Widget MyTextField({
   BorderSideColor,
   onTap,
 }) {
-  return TextFormField(
-    onFieldSubmitted: onSubmitted,
-    initialValue: initialValue,
-    textAlign: textAlign == null ? TextAlign.start : textAlign,
-    readOnly: readOnly,
-    onTap: onTap,
-    maxLength: maxLength,
-    keyboardType: keyboardType,
-    controller: controller,
-    maxLines: maxLines,
-    obscureText: obscureText,
-    textDirection: textDirection,
-    decoration: InputDecoration(
-      filled: true,
-      fillColor: fillColor,
-      hintText: hintText,
-      hintStyle: TextStyle(
-        // decorationStyle: TextDecorationStyle.dotted,
-        //  fontFamily: HintTextFontFamily,
-        color: hintStyleColor,
-        decoration: hintTextDirection,
-        fontSize: HintTextFontSize,
-      ),
-      suffixIcon: suffixIcon,
-      prefixIcon: prefixIcon,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(Radius),
-        borderSide: BorderSide(width: 1, color: enabledBorderColor),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(Radius),
-        borderSide: BorderSide(
-          width: 1,
-          color: BorderSideColor == null ? Colors.blue : BorderSideColor,
+  return SizedBox(
+    height: 56.h,
+    child: TextFormField(
+      onFieldSubmitted: onSubmitted,
+      initialValue: initialValue,
+      textAlign: textAlign == null ? TextAlign.start : textAlign,
+      readOnly: readOnly,
+      onTap: onTap,
+      maxLength: maxLength,
+      keyboardType: keyboardType,
+      controller: controller,
+      maxLines: maxLines,
+      obscureText: obscureText,
+      textDirection: textDirection,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: fillColor,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          // decorationStyle: TextDecorationStyle.dotted,
+          fontFamily: HintTextFontFamily,
+          color: hintStyleColor,
+          decoration: hintTextDirection,
+          fontSize: HintTextFontSize,
+        ),
+        suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Radius),
+          borderSide: BorderSide(width: 1, color: enabledBorderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Radius),
+          borderSide: BorderSide(
+            width: 1,
+            color: BorderSideColor == null ? Colors.blue : BorderSideColor,
+          ),
         ),
       ),
     ),
