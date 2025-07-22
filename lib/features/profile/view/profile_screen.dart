@@ -14,17 +14,10 @@ class ProfileScreen extends StatelessWidget {
       appBar: ProfileAppBarWidget(context),
       body: Column(
         children: [
-          verticalSpace(20.h),
+          verticalSpace(10.h),
           TopContainerWidget(context),
-          verticalSpace(20.h),
-          //ListProfileIcons
+          verticalSpace(10.h),
           ProfileListViewItemsWidget(context),
-          Text(
-            'PersonScreen',
-            style: context.textStyles.headlineSmall.extraBold.copyWith(
-              color: context.colorsCustom.TextPrimary,
-            ),
-          ),
         ],
       ),
     );

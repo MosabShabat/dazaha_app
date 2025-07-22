@@ -2,7 +2,7 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/core/widgets/back_arrow_widget.dart';
 import 'package:dazaha_app/core/widgets/bottom_navigation_bar_widget.dart';
-import 'package:dazaha_app/features/buy_me/select_a_location_on_the_map/widgets/enter_store_name_widget.dart';
+import 'package:dazaha_app/features/select_a_location_on_the_map_store/widgets/enter_store_name_widget.dart';
 
 class SelectALocationOnTheMapStoreScreen extends StatelessWidget {
   const SelectALocationOnTheMapStoreScreen({super.key});

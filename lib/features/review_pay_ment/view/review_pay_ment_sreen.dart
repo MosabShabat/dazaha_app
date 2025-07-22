@@ -31,7 +31,10 @@ class ReviewPayMentScreen extends StatelessWidget {
                   context,
                   text: context.orderTracking,
                   onTap: () {
-                    Get.toNamed(Routes.priceCatDetailsScreen);
+                    Get.toNamed(
+                      Routes.priceCatDetailsScreen,
+                      arguments: {'isShow': true},
+                    );
                   },
                 ),
                 verticalSpace(40.h),

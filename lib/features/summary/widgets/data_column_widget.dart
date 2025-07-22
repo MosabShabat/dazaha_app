@@ -2,7 +2,7 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/features/advertisement_summary/widgets/det_info_widget.dart';
 
-Widget DataColumnWidget(BuildContext context) {
+Widget DataColumnWidget(BuildContext context,{required isShow}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -29,11 +29,11 @@ Widget DataColumnWidget(BuildContext context) {
         textTitle: context.whatAreTheSizesOfTheItems,
         TextSubTitle: 'متوسطة',
       ),
-      DetInfoWidget(
+     isShow? DetInfoWidget(
         context,
         textTitle: context.receiptPoint,
         TextSubTitle: 'بيت الأهل',
-      ),
+      ): Container(),
       DetInfoWidget(
         context,
         textTitle: context.howMuchWouldYouLikeToPay,

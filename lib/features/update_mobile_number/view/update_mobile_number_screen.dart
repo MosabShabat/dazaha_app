@@ -12,7 +12,7 @@ class UpdateMobileNumberScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      appBar: UserInfoAppBarWidget(
+      appBar: UserInfoAppBarWidget(Height:  Width * 0.25,
         context,
         widget: Text(
           context.updateMobileNumber,
@@ -31,12 +31,13 @@ class UpdateMobileNumberScreen extends StatelessWidget {
               color: context.colorsCustom.TextSecondary,
             ),
           ),
-          verticalSpace(10.h),
+          verticalSpace(20.h),
           LoginTextFieldWidget(context),
           verticalSpace(40.h),
           BottomNavigationBarWidget(
             text: context.next,
             context,
+            horizontalPadding: 0.0,
             GetScreen: () {
               Get.toNamed(Routes.verCodeMobileScreen);
             },

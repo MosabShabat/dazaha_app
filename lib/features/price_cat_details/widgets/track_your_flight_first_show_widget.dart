@@ -2,7 +2,12 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:lottie/lottie.dart';
 
-Widget TrackYourFlightFirstShowWidget(BuildContext context) {
+Widget TrackYourFlightFirstShowWidget(
+  BuildContext context, {
+  required BottomText,
+  required isShow,
+  required page,
+}) {
   return Container(
     width: Width.w,
     height: 130.h,
@@ -27,7 +32,11 @@ Widget TrackYourFlightFirstShowWidget(BuildContext context) {
             ),
             GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.directSupportMapScreen);
+                print('!!!!!!!!!!!!!! $page !!!!!!!!!!!!!!');
+                Get.toNamed(
+                  Routes.directSupportMapScreen,
+                  arguments: {'page': page, 'isShow': isShow},
+                );
               },
               child: Container(
                 width: 110.w,
@@ -38,7 +47,7 @@ Widget TrackYourFlightFirstShowWidget(BuildContext context) {
                 ),
                 child: Center(
                   child: Text(
-                    context.tracking,
+                    BottomText,
                     style: context.textStyles.bodySmall.bold.copyWith(
                       color: context.colorsCustom.ButtonLabelPrimary,
                     ),

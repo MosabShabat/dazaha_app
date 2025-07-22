@@ -25,7 +25,7 @@ class AddADeliveryAddressScreen extends StatelessWidget {
       body: GeneralScreenWidget(
         context,
         wid: [
-          TopTextWidget(context, Title: context.addAddress, SubTitle: ''),
+          TopTextWidget(context, Title: context.addAddress, SubTitle: '',isShow: true),
           AddressInfoWidget(context),
         ],
       ),

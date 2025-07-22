@@ -1,7 +1,11 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 
-Widget AddAddressesWidget(BuildContext context, {required bool isBlack,required onTap}) {
+Widget AddAddressesWidget(
+  BuildContext context, {
+  required bool isBlack,
+  required onTap,
+}) {
   return GestureDetector(
     onTap: onTap,
     child: Row(
@@ -19,7 +23,7 @@ Widget AddAddressesWidget(BuildContext context, {required bool isBlack,required 
             Icons.add,
             size: 16.w,
             color: isBlack
-                ? Colors.transparent
+                ? context.colorsCustom.TealGreenSecondary.withOpacity(0.9)
                 : context.colorsCustom.surfacePrimaryWhite,
           ),
         ),

@@ -8,6 +8,9 @@ class DirectSupportMapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isShow = (Get.arguments as Map?)?['isShow'] ?? false;
+    final VoidCallback  page = (Get.arguments as Map?)?['page'];
+    print('++++++++++ $page ++++++++++++');
     return Scaffold(
       body: Stack(
         children: [
@@ -27,7 +30,9 @@ class DirectSupportMapScreen extends StatelessWidget {
                 ),
                 verticalSpace(10.h),
                 Spacer(),
-                DownContWidget(context),
+                DownContWidget(context, isShow: isShow, page:  page),
+
+                // verticalSpace(20.h),
               ],
             ),
           ),

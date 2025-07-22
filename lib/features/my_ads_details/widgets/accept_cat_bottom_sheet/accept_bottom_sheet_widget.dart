@@ -1,6 +1,7 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/core/widgets/latest_announcements_widget.dart';
+import 'package:dazaha_app/core/widgets/top_con_bot_sh_widget.dart';
 import 'package:dazaha_app/features/my_ads_details/widgets/accept_cat_bottom_sheet/custom_price_box_widget.dart';
 import 'package:dazaha_app/features/my_ads_details/widgets/accept_cat_bottom_sheet/mid_info_col_widget.dart';
 
@@ -18,6 +19,8 @@ Future<dynamic> AcceptBottomSheetWidget(BuildContext context) {
             Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    TopConBotShWidget(context).box.alignCenter.make(),
+                    verticalSpace(10.h),
                     LatestAnnouncementsRowWidget(
                       context,
                       text: context.acceptTheOffer,

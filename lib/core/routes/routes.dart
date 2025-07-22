@@ -42,7 +42,20 @@ class Routes {
   static const String addADeliveryAddressScreen = '/addADeliveryAddressScreen';
   static const String addCusLoacScreen = '/addCusLoacScreen';
   static const String aboutTheApplicationScreen = '/aboutTheApplicationScreen';
+  static const String savedDeliveryAddressesScreen = '/savedDeliveryAddressesScreen';
+  static const String weAreHereToHelpScreen = '/weAreHereToHelpScreen';
+  static const String reportAProblemScreen = '/reportAProblemScreen';
+  static const String reportReviewDetailsScreen = '/reportReviewDetailsScreen';
+  static const String reportAProblemChatSupportScreen = '/reportAProblemChatSupportScreen';
+  static const String notificationsScreen = '/notificationsScreen';
+  static const String walletScreen = '/walletScreen';
+  static const String balanceWithdrawalRequestScreen = '/balanceWithdrawalRequestScreen';
+  static const String captainJoinsScreen = '/captainJoinsScreen';
+  static const String personalDataScreen = '/personalDataScreen';
+  static const String allAdsScreen = '/allAdsScreen';
+  static const String captainMembershipRequestScreen = '/captainMembershipRequestScreen';
+  static const String myOfferAdDetailsScreen = '/myOfferAdDetailsScreen';
 
 
-  //AboutTheApplicationScreen
+  //CaptainMembershipRequestScreen
 }

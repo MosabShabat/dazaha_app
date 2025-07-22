@@ -3,7 +3,14 @@ import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/core/widgets/list_tale_circle_avatar_widget.dart';
 import 'package:dazaha_app/features/select_store_name/widgets/count_down_circle_widget.dart';
 
-Widget deleteConfirmationBottomSheet(BuildContext context) {
+Widget deleteConfirmationBottomSheet(
+  BuildContext context, {
+  required title,
+  required isShow,
+  required buttonText,
+  required onTap,
+  required isShowRow,
+}) {
   return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -16,34 +23,39 @@ Widget deleteConfirmationBottomSheet(BuildContext context) {
                 sizIcon: 15.w,
                 colorIcon: context.colorsCustom.surfacePrimaryWhite,
               ),
-              horizontalSpace(5.w),
+              horizontalSpace(10.w),
               Text(
-                context.deletedSuccessfully,
+                title,
                 style: context.textStyles.labelSmall.medium.copyWith(
                   color: context.colorsCustom.TextPrimary,
                 ),
               ),
             ],
           ),
-          Row(
-            children: [
-              CountdownCircleWidget(context, seconds: 3),
-              horizontalSpace(5.w),
-              Text(
-                    context.toRetreat,
-                    // textAlign: TextAlign.center,
-                    style: context.textStyles.labelSmall.medium.copyWith(
-                      color: context.colorsCustom.ButtonLabelPrimary,
-                    ),
-                  ).box
-                  .width(70.w)
-                  .height(30.h)
-                  .alignCenter
-                  .color(context.colorsCustom.surfacePrimaryBlack)
-                  .customRounded(BorderRadiusGeometry.circular(8.r))
-                  .make(),
-            ],
-          ),
+          isShowRow
+              ? Row(
+                  children: [
+                    isShow
+                        ? CountdownCircleWidget(context, seconds: 3)
+                        : Container(),
+                    horizontalSpace(5.w),
+                    Text(
+                          buttonText,
+                          // textAlign: TextAlign.center,
+                          style: context.textStyles.labelSmall.medium.copyWith(
+                            color: context.colorsCustom.ButtonLabelPrimary,
+                          ),
+                        ).box
+                        .width(70.w)
+                        .height(30.h)
+                        .alignCenter
+                        .color(context.colorsCustom.surfacePrimaryBlack)
+                        .customRounded(BorderRadiusGeometry.circular(8.r))
+                        .make()
+                        .onTap(onTap),
+                  ],
+                )
+              : Container(),
         ],
       ).box
       .width(Width)

@@ -19,11 +19,12 @@ class HomePageScreen extends StatelessWidget {
           context,
           wid: [
             personalInfoRow(context),
-            SizeBox20H,
+            verticalSpace(10.h),
             stackAdsText(context),
-            verticalSpace(20.h),
+            verticalSpace(10.h),
             mainBottomWidget(
               context,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               CircleAvatarRadius: 35.0.w,
               backGroundColor: context.colorsCustom.BlueBlue,
               fontFamily: context.textStyles.bodySmall.medium.fontFamily,
@@ -37,10 +38,17 @@ class HomePageScreen extends StatelessWidget {
                 context.dedication,
               ],
               fontWeight: FontWeight.w500,
+              onTapList: [
+                () => Get.toNamed(Routes.allAdsScreen, arguments: {'index': 1}),
+                () => Get.toNamed(Routes.allAdsScreen, arguments: {'index': 2}),
+                () => Get.toNamed(Routes.allAdsScreen, arguments: {'index': 3}),
+                () => Get.toNamed(Routes.allAdsScreen, arguments: {'index': 4}),
+              ],
             ),
+
             verticalSpace(10.h),
             CustomHomePageWidget(context),
-            verticalSpace(20.h),
+            // verticalSpace(10.h),
             BottomCustomWidget(context),
           ],
         ),

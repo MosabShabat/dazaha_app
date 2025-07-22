@@ -37,7 +37,7 @@ Widget ChooseServiceListViewWidget(BuildContext context) {
                 subTitle1: ' اختار المتجر وگول شتريد',
                 subTitle2: ' نشتري ونوصّل الكي بفس اليوم',
                 subTitle3: ' الدفع يصير عن طريق',
-                onTap: () {
+                onTap: () {  Get.back();
                   Get.toNamed(Routes.buyMeScreen);
                 },
               );
@@ -48,7 +48,7 @@ Widget ChooseServiceListViewWidget(BuildContext context) {
                 subTitle1: 'حد أقصى ٣ متر مكعب لكل إعلان',
                 subTitle2: 'حدد السعر المناسب وادفع بأمان داخل التطبيق',
                 subTitle3: 'نقوم بالتحقق من عملية التدوير بالكامل',
-                onTap: () {
+                onTap: () {  Get.back();
                   Get.toNamed(Routes.removeAndRecycleServiceFeaturesScreen);
                   //removeAndRecycleServiceFeaturesScreen
                   // Add navigation or action

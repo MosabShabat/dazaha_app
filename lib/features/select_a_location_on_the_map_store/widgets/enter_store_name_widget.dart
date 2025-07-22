@@ -13,7 +13,7 @@ Widget EnterStoreNameWidget(BuildContext context) {
     keyboardType: TextInputType.name,
     hintText: context.enterStoreName,
     hintStyleColor: context.colorsCustom.TextSecondary,
-    HintTextFontFamily: context.textStyles.bodySmall.regular,
+    HintTextFontFamily: context.textStyles.bodySmall.regular.fontFamily,
     textAlign: TextAlign.start,
     HintTextFontSize: 12.sp,
     onTap: () {

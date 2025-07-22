@@ -1,7 +1,10 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 
-AppBar DirectSupportAppBarWidget(BuildContext context) {
+AppBar DirectSupportAppBarWidget(
+  BuildContext context, {
+  required isPersonChat,
+}) {
   return AppBar(
     surfaceTintColor: context.colorsCustom.surfacePrimaryWhite,
     backgroundColor: context.colorsCustom.surfacePrimaryWhite,
@@ -20,23 +23,38 @@ AppBar DirectSupportAppBarWidget(BuildContext context) {
           }),
     ),
     centerTitle: true,
-    title: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 20.w,
-          backgroundImage: AssetImage(AppAssets.images.goku),
-        ),
-        horizontalSpace(5.w),
-        Text(
-          'عباس الجبوري',
-          style: context.textStyles.labelMedium.medium.copyWith(
-            color: context.colorsCustom.TextPrimary,
+    title: isPersonChat
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 20.w,
+                backgroundImage: AssetImage(AppAssets.images.goku),
+              ),
+              horizontalSpace(5.w),
+              Text(
+                'عباس الجبوري',
+                style: context.textStyles.labelMedium.medium.copyWith(
+                  color: context.colorsCustom.TextPrimary,
+                ),
+              ),
+              horizontalSpace(70.w),
+            ],
+          )
+        : Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              Text(
+                'الدعم المباشر',
+                style: context.textStyles.labelMedium.medium.copyWith(
+                  color: context.colorsCustom.TextPrimary,
+                ),
+              ).box.alignCenter.make(),
+              horizontalSpace(50.w),
+            ],
           ),
-        ),
-        horizontalSpace(70.w),
-      ],
-    ),
   );
 }

@@ -1,7 +1,7 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 
-Widget CaptainInfoWidget(BuildContext context) {
+Widget CaptainInfoWidget(BuildContext context,) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [

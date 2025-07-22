@@ -1,5 +1,6 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/helpers/theme_exports.dart';
+import 'package:dazaha_app/core/routes/routes.dart';
 import 'package:dazaha_app/features/home_page/widgets/ads_details_widget.dart';
 import 'package:dazaha_app/core/widgets/latest_announcements_widget.dart';
 
@@ -9,7 +10,9 @@ Widget CustomHomePageWidget(BuildContext context) {
       LatestAnnouncementsRowWidget(
         context,
         text: context.latestAnnouncements,
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(Routes.allAdsScreen);
+        },
         Widget: Text(
           context.viewAll,
           textAlign: TextAlign.end,

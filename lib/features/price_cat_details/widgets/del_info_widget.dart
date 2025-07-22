@@ -13,6 +13,7 @@ Widget DelInfoWidget(
       Text(
         title,
         textAlign: TextAlign.start,
+        maxLines: 5,
         style: context.textStyles.labelMedium.regular.copyWith(
           color: context.colorsCustom.TextSecondary,
           fontSize: 12.sp,
@@ -22,7 +23,7 @@ Widget DelInfoWidget(
       Text(
         DelText,
         textAlign: TextAlign.start,
-        maxLines: 3,
+        maxLines: 5,
         style: context.textStyles.labelMedium.medium.copyWith(
           color: context.colorsCustom.TextPrimary,
         ),
@@ -31,11 +32,12 @@ Widget DelInfoWidget(
       Text(
         DetText,
         textAlign: TextAlign.start,
-        maxLines: 3,
+        maxLines: 5,
         style: context.textStyles.labelMedium.regular.copyWith(
           color: context.colorsCustom.TextPrimary,
         ),
-      ).box.width(280.w).make(),
+      ),
+      //.box.width(280.w).make(),
     ],
   );
 }

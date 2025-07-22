@@ -13,7 +13,7 @@ class VerCodeMobileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      appBar: UserInfoAppBarWidget(
+      appBar: UserInfoAppBarWidget(Height:  Width * 0.25,
         context,
         widget: Text(
           context.verificationCode,
@@ -38,7 +38,7 @@ class VerCodeMobileScreen extends StatelessWidget {
             context,
             text: context.verification,
             onTap: () {
-              Get.toNamed(Routes.registerScreen);
+              Get.offNamed(Routes.userInfoScreen);
             },
           ),
           verticalSpace(10.h),

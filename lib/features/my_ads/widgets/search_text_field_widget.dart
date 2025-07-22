@@ -13,7 +13,7 @@ Widget SearchTextFieldWidget(BuildContext context) {
     keyboardType: TextInputType.name,
     hintText: context.search,
     hintStyleColor: context.colorsCustom.TextSecondary,
-    HintTextFontFamily: context.textStyles.bodySmall.regular,
+    HintTextFontFamily: context.textStyles.bodySmall.regular.fontFamily,
     HintTextFontSize: 12.0.sp,
     fillColor: context.colorsCustom.surfacePrimaryWhite,
     prefixIcon: Icon(

@@ -10,6 +10,7 @@ Widget CusRegisterInfoWidget(
   HintTextFontFamily,
   required maxLines,
   required maxLength,
+  fontWeight,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +21,7 @@ Widget CusRegisterInfoWidget(
           color: titleTextColor,
         ),
       ),
-      verticalSpace(8.h),
+      verticalSpace(15.h),
       MyTextField(
         Radius: 10.0,
         textAlign: TextAlign.start,
@@ -38,6 +39,7 @@ Widget CusRegisterInfoWidget(
             context.textStyles.bodySmall.regular.fontFamily,
         HintTextFontSize: 12.0.sp,
         fillColor: context.colorsCustom.surfacePrimaryWhite,
+        fontWeight: fontWeight,
       ),
       verticalSpace(20.h),
     ],

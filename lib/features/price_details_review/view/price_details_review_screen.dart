@@ -13,6 +13,8 @@ class PriceDetailsReviewScreen extends StatelessWidget {
     //     final PickUpMethodUponDeliveryController controller = Get.put(
     //   PickUpMethodUponDeliveryController(),
     // );
+    final VoidCallback page = (Get.arguments as Map?)?['page'];
+    print('11111111111 ==========   $page 11111111111111111========');
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       body: Stack(
@@ -48,13 +50,7 @@ class PriceDetailsReviewScreen extends StatelessWidget {
                 GeneralBottomAppWidget(
                   context,
                   text: context.submitEvaluation,
-                  onTap: () {
-                    // Get.toNamed(Routes.priceCatDetailsScreen);
-                    // Get.offAll(
-                    //   () => HomeScreen(initialTabIndex: 1),
-                    //   transition: Transition.downToUp,
-                    // );
-                  },
+                  onTap: page,
                 ),
                 verticalSpace(40.h),
                 Text(

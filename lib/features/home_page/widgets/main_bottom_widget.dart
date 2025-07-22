@@ -1,6 +1,6 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
-import 'package:dazaha_app/features/home_page/controller/home_page_controller.dart';
+// import 'package:dazaha_app/features/home_page/controller/home_page_controller.dart';
 
 Widget mainBottomWidget(
   BuildContext context, {
@@ -12,47 +12,39 @@ Widget mainBottomWidget(
   required fontSize,
   required CircleAvatarRadius,
   required fontWeight,
+  required mainAxisAlignment,
+  List<VoidCallback>? onTapList, // ✅ make it nullable & optional
 }) {
-  final HomePageController controller = Get.put(HomePageController());
-
   return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    mainAxisAlignment: mainAxisAlignment,
     children: List.generate(ListImagesHome.length, (index) {
       return GestureDetector(
-        onTap: () {
-          controller.selectedTab.value = index;
-          // controller.changeTab(index);
-          print(index);
-        },
+        onTap: onTapList != null && index < onTapList.length
+            ? onTapList[index]
+            : null, // ✅ handle null gracefully
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundColor: backGroundColor, // Unselected color
+              backgroundColor: backGroundColor,
               radius: CircleAvatarRadius,
               child: SvgPicture.asset(img[index], width: 40.w, height: 40.w),
             ),
             verticalSpace(10.h),
-            Container(
-              width: 60.w,
-              child: Column(
-                children: [
-                  Text(
-                    Localizations.localeOf(context).languageCode == "ar"
-                        ? text[index] // Arabic: full text
-                        : "${text[index].split(' ').first}...", // English: first word + dots
-                    maxLines: 5,
-                    textAlign: TextAlign.center,
-                    style: context.textStyles.bodySmall.copyWith(
-                      color: textColor,
-                      fontFamily: fontFamily,
-                      fontSize: fontSize,
-                      fontWeight: fontWeight,
-                    ),
-                  ),
-                ],
+            Text(
+              // Localizations.localeOf(context).languageCode == "ar"
+              //     ? text[index]
+              //     :
+              "${text[index]}",
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: context.textStyles.bodySmall.copyWith(
+                color: textColor,
+                fontFamily: fontFamily,
+                fontSize: fontSize,
+                fontWeight: fontWeight,
               ),
-            ),
+            ).box.width(77.w).make(),
           ],
         ),
       );

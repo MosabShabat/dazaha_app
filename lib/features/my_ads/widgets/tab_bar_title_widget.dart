@@ -1,7 +1,7 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 
-Widget TabBarTitleWidget(BuildContext context) {
+Widget TabBarTitleWidget(BuildContext context,{required secTap}) {
   return Container(
     height: Width * 0.12,
     width: Width,
@@ -23,12 +23,19 @@ Widget TabBarTitleWidget(BuildContext context) {
         horizontal: 5.w,
         vertical: 4.h,
       ),
-      labelStyle: context.textStyles.labelSmall.medium.copyWith(
+      labelStyle: TextStyle(
         color: context.colorsCustom.TextPrimary,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'sans',
+        fontSize: 12.sp,
       ),
+      // context.textStyles.labelSmall.medium.copyWith(
+      //   color: context.colorsCustom.TextPrimary,
+      //   fontWeight: FontWeight.w500,
+      // ),
       tabs: [
         Tab(text: context.all),
-        Tab(text: context.receiveOffers),
+        Tab(text: secTap),
         Tab(text: context.underDelivery),
         Tab(text: context.complete),
       ],

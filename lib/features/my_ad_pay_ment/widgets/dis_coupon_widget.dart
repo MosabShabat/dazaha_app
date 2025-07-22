@@ -28,7 +28,8 @@ Widget DisCouponWidget(BuildContext context) {
               keyboardType: TextInputType.name,
               hintText: context.enterTheCoupon,
               hintStyleColor: context.colorsCustom.TextSecondary,
-              HintTextFontFamily: context.textStyles.bodySmall.regular,
+              HintTextFontFamily:
+                  context.textStyles.bodySmall.regular.fontFamily,
               HintTextFontSize: 12.0.sp,
               prefixIcon: Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),

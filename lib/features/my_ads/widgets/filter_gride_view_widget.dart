@@ -2,19 +2,19 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/features/my_ads/controller/transportation_and_delivery_controller.dart';
 
-Widget FilterGrideViewWidget(BuildContext context) {
+Widget FilterGrideViewWidget(BuildContext context,{required ListText}) {
   final TransportationAndDeliveryController controller = Get.put(
     TransportationAndDeliveryController(),
   );
-  var ListChooseServiceTitleText = [
-    context.transportationAndDelivery,
-    context.buyForMe,
-    context.removeAndRecycle,
-    context.dedication,
-  ];
+  // var ListChooseServiceTitleText = [
+  //   context.transportationAndDelivery,
+  //   context.buyForMe,
+  //   context.removeAndRecycle,
+  //   context.dedication,
+  // ];
   return GridView.builder(
     shrinkWrap: true,
-    itemCount: ListChooseServiceTitleText.length,
+    itemCount: ListText.length,
     physics: NeverScrollableScrollPhysics(),
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
@@ -35,7 +35,7 @@ Widget FilterGrideViewWidget(BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '${ListChooseServiceTitleText[index]}',
+                        '${ListText[index]}',
                         textAlign: TextAlign.center,
                         maxLines: 3,
                         style: context.textStyles.bodySmall.medium.copyWith(

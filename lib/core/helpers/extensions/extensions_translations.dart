@@ -210,10 +210,94 @@ extension TranslationsExtension on BuildContext {
   String get update => tr('update');
   String get saveChanges => tr('save_changes');
   String get updateMobileNumber => tr('update_mobile_number');
-  String get enterTheNewMobileNumberToUpdate => tr('enter_the_new_mobile_number_to_update');
+  String get enterTheNewMobileNumberToUpdate =>
+      tr('enter_the_new_mobile_number_to_update');
   String get next => tr('next');
   String get edit => tr('edit');
   String get delete => tr('delete');
+  String get weAreHereToHelp => tr('we_are_here_to_help');
+  String get liveSupport => tr('live_support');
+  String get frequentlyAskedQuestions => tr('frequently_asked_questions');
+  String get problemName => tr('problem_name');
+  String get exampleIHaveADeliveryProblem =>
+      tr('example_i_have_a_delivery_problem');
+  String get descriptionOfTheProblem => tr('description_of_the_problem');
+  String get exampleThereIsAProblem => tr('example_there_is_a_problem');
+  String get thePictures => tr('the_pictures');
+  String get optional => tr('optional');
+  String get yourReportSuccessfully =>
+      tr('your_report_has_been_sent_successfully');
+  String get weWillContactYou => tr('we_will_contact_you');
+  String get ok => tr('ok');
+  String get notifications => tr('notifications');
+  String get yourAvailableBalance => tr('your_available_balance');
+  String get withdrawABalance => tr('withdraw_a_balance');
+  String get rechargeBalance => tr('recharge_balance');
+  String get recordMovements => tr('record_movements');
+  String get howMuchDoYouWantToWithdraw =>
+      tr('how_much_do_you_want_to_withdraw');
+  String get weWillPrepareTheAmount => tr('we_will_prepare_the_amount');
+  String get withdrawalRequest => tr('withdrawal_request');
+  String get balanceWithdrawalRequest => tr('balance_withdrawal_request');
+  String get youWillReceiveANotificationAsSoon =>
+      tr('you_will_receive_a_notification_as_soon');
+  String get doneText => tr('done');
+  String get selectTheTransactionTypeAndStatus =>
+      tr('select_the_transaction_type_and_status');
+  String get income => tr('income');
+  String get successful => tr('successful');
+  String get failed => tr('failed');
+  String get startYourJourneyAsACaptain =>
+      tr('start_your_journey_as_a_captain');
+  String get offerDeliveryServicesAndEarn =>
+      tr('offer_delivery_services_and_earn');
+  String get whyJoinAsACaptain => tr('why_join_as_a_captain');
+  String get guaranteedAdditionalIncome => tr('guaranteed_additional_income');
+  String get flexibilityInTime => tr('flexibility_in_time');
+  String get easeOfHandling => tr('ease_of_handling');
+  String get simpleAndFastApplicationNoRExperienceRequired =>
+      tr('simple_and_fast_application_no_experience_required');
+  String get readyOrders => tr('ready_orders');
+  String get everyDayYouHaveTheOpportunity =>
+      tr('every_day_you_have_the_opportunity');
+  String get liveTechnicalSupport => tr('live_technical_support');
+  String get ourTeamIs => tr('our_team_is_here_to_help_you_anytime');
+  String get startNow => tr('start_now');
+  String get plateNumber => tr('plate_number');
+  String get enterTheCarPlateNumber => tr('enter_the_car_plate_number');
+  String get exampleZ33245 => tr('exampleZ33245');
+  String get iDOrResidencyPhoto => tr('iD_or_residency_photo');
+  String get addAPhoto => tr('add_a_photo');
+  String get APictureOfTheVehicle => tr('a_picture_of_the_vehicle');
+  String get youHaveSuccessfullyApplied => tr('you_have_successfully_applied');
+  String get yourInformationWillBeReviewed =>
+      tr('your_information_will_be_reviewed');
+  String get advertiser => tr('advertiser');
+  String get addAnOffer => tr('add_an_offer');
+  String get setYourPriceAndBe => tr('set_your_price_and_be');
+  String get askingPrice => tr('asking_price');
+  String get yourPriceForDisplay => tr('your_price_for_display');
+  String get yourPriceHere => tr('your_price_here');
+  String get yourOfferHasReachedTheCustomer =>
+      tr('your_offer_has_reached_the_customer');
+  String get myOffers => tr('my_offers');
+  String get displayManagement => tr('display_management');
+  String get offerDetails => tr('offer_details');
+  String get viewPrice => tr('view_price');
+  String get presentedOffer => tr('presented_offer');
+  String get startTheJourney => tr('start_the_journey');
+  String get iArrivedHome => tr('i_arrived_home');
+  String get endTheTrip => tr('end_the_trip');
+  String get doYouWantToEndTheTrip => tr('do_you_want_to_end_the_trip');
+  String get makeSureYouHave => tr('make_sure_you_have');
+  String get quoteOptions => tr('quote_options');
+  String get deleteQuote => tr('delete_quote');
+  String get doYouWantToDeleteTheQuote => tr('do_you_want_to_delete_the_quote');
+  String get ifYouLikeYou=> tr('if_you_like_you_can_send_a_new_offer_after_deletion');
+  String get yesDeleteTheOffer => tr('yes_delete_the_offer');
+  String get theQuoteHasBeenSuccessfullyDeleted => tr('the_quote_has_been_successfully_deleted');
+  String get amount => tr('amount');
 
-  //size_of_items
+
+  //amount
 }

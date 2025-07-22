@@ -12,35 +12,24 @@ Widget PayMthWidget(BuildContext context) {
           color: context.colorsCustom.TextSecondary,
         ),
       ),
-      verticalSpace(10.h),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-
-            children: [
-              SvgPicture.asset(AppAssets.svgs.cre_card_icon),
-              horizontalSpace(5.w),
-              Text(
-                context.cardPayment,
-                textAlign: TextAlign.start,
-                style: context.textStyles.bodyMedium.medium.copyWith(
-                  color: context.colorsCustom.TextSecondary,
-                  fontSize: 12.sp,
-                ),
-              ),
-            ],
+      ListTile(
+        contentPadding: EdgeInsets.all(0),
+        leading: SvgPicture.asset(AppAssets.svgs.cre_card_icon),
+        title: Text(
+          context.cardPayment,
+          textAlign: TextAlign.start,
+          style: context.textStyles.bodyMedium.medium.copyWith(
+            color: context.colorsCustom.TextPrimary,
+            fontSize: 12.sp,
           ),
-          Text(
-            'XXXX XXXX XXX 3321',
-            textAlign: TextAlign.start,
-            style: context.textStyles.bodySmall.regular.copyWith(
-              color: context.colorsCustom.TextPrimary,
-            ),
+        ),
+        trailing: Text(
+          'XXXX XXXX XXX 3321',
+          textAlign: TextAlign.start,
+          style: context.textStyles.bodySmall.regular.copyWith(
+            color: context.colorsCustom.TextPrimary,
           ),
-        ],
+        ),
       ),
     ],
   );

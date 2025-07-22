@@ -2,15 +2,16 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/features/price_cat_details/widgets/date_time_del_widget.dart';
 
-Widget TDDelWidget(BuildContext context) {
+Widget TDDelWidget(BuildContext context,{required title,Fz}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        context.transferDate,
+      title,
         textAlign: TextAlign.start,
         style: context.textStyles.bodyMedium.medium.copyWith(
-          color: context.colorsCustom.TextSecondary,
+          color: context.colorsCustom.TextPrimary,
+          fontSize: Fz
         ),
       ),
       verticalSpace(10.h),

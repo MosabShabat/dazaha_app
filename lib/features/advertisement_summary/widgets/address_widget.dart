@@ -2,7 +2,11 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/features/advertisement_summary/widgets/list_tile_advertisement_summary_widget.dart';
 
-Widget AddressWidget(BuildContext context, {required isShow}) {
+Widget AddressWidget(
+  BuildContext context, {
+  required isShow,
+  required isShowMet,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -50,23 +54,32 @@ Widget AddressWidget(BuildContext context, {required isShow}) {
         subTitle: 'حي الجزائر، شارع الكويت، البصرة، العراق',
         isShow: true,
       ),
-      verticalSpace(10.h),
-      Text(
-        context.receiptMethod,
-        textAlign: TextAlign.start,
-        maxLines: 1,
-        style: context.textStyles.bodySmall.medium.copyWith(
-          color: context.colorsCustom.TextSecondary,
-        ),
-      ),
-      verticalSpace(10.h),
-      ListTileAdvertisementSummaryWidget(
-        context,
-        img: AppAssets.svgs.dar_icon,
-        title: context.stairs,
-        subTitle: context.movingItemsRequiresClimbingStairs,
-        isShow: true,
-      ),
+
+      isShowMet
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                verticalSpace(10.h),
+                Text(
+                  context.receiptMethod,
+                  textAlign: TextAlign.start,
+                  maxLines: 1,
+                  style: context.textStyles.bodySmall.medium.copyWith(
+                    color: context.colorsCustom.TextSecondary,
+                  ),
+                ),
+                verticalSpace(10.h),
+                ListTileAdvertisementSummaryWidget(
+                  context,
+                  img: AppAssets.svgs.dar_icon,
+                  title: context.stairs,
+                  subTitle: context.movingItemsRequiresClimbingStairs,
+                  isShow: true,
+                ),
+              ],
+            )
+          : Container(),
+
       isShow
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -50,6 +50,7 @@ class pickUpPointScreen extends StatelessWidget {
             context,
             Title: context.receiptPoint,
             SubTitle: context.myCurrentLocation,
+            isShow: true,
           ),
           verticalSpace(10.h),
           LocationTextFieldWidget(
@@ -57,9 +58,9 @@ class pickUpPointScreen extends StatelessWidget {
             text: 'شارع 10، بغداد',
             textColor: context.colorsCustom.TextPrimary,
             textSize: 12.0.sp,
-            textFontFamily: context.textStyles.bodySmall.medium,
+            textFontFamily: context.textStyles.bodySmall.medium.fontFamily,
           ),
-          SizeBox20H,
+          verticalSpace(10.h),
           BottomSavedAddressesWidget(
             context,
             GetScreen: () {

@@ -2,7 +2,7 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/features/auth/register/widgets/cus_register_info_widget.dart';
 
-Widget ProfileInfoEditWidget(BuildContext context) {
+Widget ProfileInfoEditWidget(BuildContext context, {required isShow}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -14,7 +14,8 @@ Widget ProfileInfoEditWidget(BuildContext context) {
         maxLength: null,
         maxLines: null,
         HintTextColor: context.colorsCustom.TextPrimary,
-        HintTextFontFamily: context.textStyles.bodySmall.medium,
+        HintTextFontFamily: context.textStyles.bodySmall.medium.fontFamily,
+        fontWeight: FontWeight.w500,
       ),
       CusRegisterInfoWidget(
         context,
@@ -23,8 +24,9 @@ Widget ProfileInfoEditWidget(BuildContext context) {
         HintText: 'Issa',
         maxLength: null,
         HintTextColor: context.colorsCustom.TextPrimary,
-        HintTextFontFamily: context.textStyles.bodySmall.medium,
+        HintTextFontFamily: context.textStyles.bodySmall.medium.fontFamily,
         maxLines: null,
+        fontWeight: FontWeight.w500,
       ),
       Container(
         height: 90.h,
@@ -52,7 +54,7 @@ Widget ProfileInfoEditWidget(BuildContext context) {
                   ),
                 ],
               ),
-              verticalSpace(10.h),
+              verticalSpace(15.h),
               MyTextField(
                 Radius: 8.0,
                 textAlign: TextAlign.start,
@@ -67,23 +69,35 @@ Widget ProfileInfoEditWidget(BuildContext context) {
                 HintTextFontFamily:
                     context.textStyles.bodySmall.medium.fontFamily,
                 HintTextFontSize: 12.0.sp,
-                suffixIcon: SvgPicture.asset(AppAssets.svgs.mask_group_icon),
+                fontWeight: FontWeight.w500,
+                suffixIcon: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 10.h,
+                  ),
+                  child: SvgPicture.asset(AppAssets.svgs.mask_group_icon),
+                ),
                 fillColor: context.colorsCustom.surfacePrimaryWhite,
               ),
             ],
           ),
         ),
       ),
-      CusRegisterInfoWidget(
-        context,
-        titleText: context.email,
-        titleTextColor: context.colorsCustom.TextPrimary,
-        HintText: 'Emil29apr@gmail.com',
-        maxLength: null,
-        HintTextColor: context.colorsCustom.TextPrimary,
-        HintTextFontFamily: context.textStyles.bodySmall.medium,
-        maxLines: null,
-      ),
+      verticalSpace(20.h),
+      isShow
+          ? CusRegisterInfoWidget(
+              context,
+              titleText: context.email,
+              titleTextColor: context.colorsCustom.TextPrimary,
+              HintText: 'Emil29apr@gmail.com',
+              maxLength: null,
+              HintTextColor: context.colorsCustom.TextPrimary,
+              HintTextFontFamily:
+                  context.textStyles.bodySmall.medium.fontFamily,
+              maxLines: null,
+              fontWeight: FontWeight.w500,
+            )
+          : Container(),
     ],
   );
 }

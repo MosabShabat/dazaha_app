@@ -11,10 +11,13 @@ Widget ProfileImageWidget(BuildContext context) {
             radius: 42.5.w,
             backgroundImage: AssetImage(AppAssets.images.goku),
           ),
-          CircleAvatar(
-            radius: 8.r,
-            backgroundColor: context.colorsCustom.TealGreenSecondary,
-            child: SvgPicture.asset(AppAssets.svgs.gallery_edit_icon),
+          Positioned(
+            bottom: -0.0.h,
+            child: CircleAvatar(
+              radius: 13.5.r,
+              backgroundColor: context.colorsCustom.TealGreenSecondary,
+              child: SvgPicture.asset(AppAssets.svgs.gallery_edit_icon),
+            ),
           ),
         ],
       ),

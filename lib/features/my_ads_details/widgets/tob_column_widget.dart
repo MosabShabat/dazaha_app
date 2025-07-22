@@ -12,9 +12,14 @@ Widget TobColumnWidget(
     padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
     child: Column(
       children: [
-        TopDetRowWidget(context),
+        TopDetRowWidget(
+          context,
+          title: '${context.orderDetails}',
+          subTitle: '#159654',
+          isShow: true,
+        ),
         verticalSpace(10.h),
-        ItemDetWidget(context,caseItem: caseItem),
+        ItemDetWidget(context, caseItem: caseItem),
         verticalSpace(20.h),
       ],
     ),

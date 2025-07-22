@@ -46,6 +46,7 @@ dependencies:
   flutter_phoenix: ^1.1.1
   flutter_native_splash: ^2.4.6
   lottie: ^3.3.1
+  dotted_decoration: ^2.0.0
   
   
   
@@ -54,23 +55,25 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  
   flutter_launcher_icons: ^0.14.4
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo_png_cor_icon.png"
+  image_path: "assets/images/png_images/final_logo.png"
+
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/images/logo_png_cor_icon.png
+  image: assets/images/png_images/final_logo.png
   android: true
   ios: true
   web: false
 
   # Optionally, customize Android 12
   android_12:
-    image: assets/images/logo_png_cor_icon.png
+    image: assets/images/png_images/final_logo.png  
+
 
 flutter_app_name:
   name: "Dazaha"

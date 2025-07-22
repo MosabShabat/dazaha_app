@@ -1,10 +1,11 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
-import 'package:dazaha_app/core/helpers/theme_exports.dart';
 
 Widget stackAdsText(BuildContext context) {
   return Container(
-    width: Width,
+    width: Width.w,
+    // height: Width * 0.35,
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
     child: Stack(
       children: [
         Positioned.fill(
@@ -15,12 +16,12 @@ Widget stackAdsText(BuildContext context) {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.w),
+          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              verticalSpace(Width * 0.12),
+              verticalSpace(20.h),
               Text(
                 context.startYourJourneyNow,
                 textAlign: TextAlign.start,
@@ -40,7 +41,7 @@ Widget stackAdsText(BuildContext context) {
                   fontSize: 14.0.sp,
                 ),
               ),
-              verticalSpace(Width * 0.16),
+              verticalSpace(20.h),
             ],
           ),
         ),

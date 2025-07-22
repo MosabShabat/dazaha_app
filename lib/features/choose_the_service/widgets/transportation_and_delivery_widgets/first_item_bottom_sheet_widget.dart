@@ -1,5 +1,6 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
+import 'package:dazaha_app/core/widgets/top_con_bot_sh_widget.dart';
 import 'package:dazaha_app/features/choose_the_service/controller/choose_the_service_controller.dart';
 import 'package:dazaha_app/features/choose_the_service/widgets/transportation_and_delivery_widgets/info_column_widget.dart';
 import 'package:dazaha_app/features/home_page/widgets/main_bottom_widget.dart';
@@ -16,12 +17,14 @@ Future<dynamic> FirstItemBottomSheetWidget(BuildContext context) {
     builder: (context) {
       return SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width,
+          width: Width,
           color: context.colorsCustom.surfacePrimaryWhite,
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              TopConBotShWidget(context),
+              verticalSpace(10.h),
               Text(
                 context.transportationAndDelivery,
                 maxLines: 1,
@@ -34,6 +37,7 @@ Future<dynamic> FirstItemBottomSheetWidget(BuildContext context) {
               SizedBox(height: 20.h),
               mainBottomWidget(
                 context,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 fontWeight: FontWeight.w400,
                 CircleAvatarRadius: 20.0.w,
                 backGroundColor: context.colorsCustom.surfacePrimaryWhite,
@@ -47,6 +51,12 @@ Future<dynamic> FirstItemBottomSheetWidget(BuildContext context) {
                   context.deliverPurchases,
                   context.transportOfSmallItems,
                 ],
+                onTapList: [
+                  () => print('Tapped 1'),
+                  () => print('Tapped 2'),
+                  () => print('Tapped 3'),
+                  () => print('Tapped 4'),
+                ],
               ),
               FirstInfoColumnWidget(context),
               verticalSpace(50.h),
@@ -58,7 +68,8 @@ Future<dynamic> FirstItemBottomSheetWidget(BuildContext context) {
                   page: Get.toNamed(
                     Routes.bookingDateScreen,
                     arguments: {'page': Routes.pickUpMethodUpOnDeliveryScreen},
-                  ), arguments: {},
+                  ),
+                  arguments: {},
                 ),
               ),
             ],

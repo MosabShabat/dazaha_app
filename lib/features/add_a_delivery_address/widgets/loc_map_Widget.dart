@@ -2,7 +2,6 @@ import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/features/pick_up_point/widgets/location_text_feld_widget.dart';
 
-
 Widget LocMapWidget(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,7 +20,7 @@ Widget LocMapWidget(BuildContext context) {
         text: context.locationOnMap,
         textColor: context.colorsCustom.TextSecondary,
         textSize: 10.0.sp,
-        textFontFamily: context.textStyles.labelSmall.regular,
+        textFontFamily: context.textStyles.labelSmall.regular.fontFamily,
       ),
     ],
   );

@@ -1,7 +1,7 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/core/widgets/list_tale_circle_avatar_widget.dart';
-import 'package:dazaha_app/features/buy_me/select_store_name/widgets/snack_bar_widget.dart';
+import 'package:dazaha_app/features/select_store_name/widgets/snack_bar_widget.dart';
 
 Widget DeleteWidget(BuildContext context) {
   return Positioned(
@@ -20,7 +20,14 @@ Widget DeleteWidget(BuildContext context) {
                 Navigator.of(context).pop();
               }
             });
-            return deleteConfirmationBottomSheet(context);
+            return deleteConfirmationBottomSheet(
+              context,
+              buttonText: context.toRetreat,
+              isShow: true,
+              onTap: () {},
+              title: context.deletedSuccessfully,
+              isShowRow: true
+            );
           },
         );
       },

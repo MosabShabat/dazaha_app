@@ -14,6 +14,8 @@ class PriceCatDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isShow = (Get.arguments as Map?)?['isShow'] ?? false;
+
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: DefAppBarWidget(context),
@@ -31,13 +33,24 @@ class PriceCatDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TrackYourFlightWidget(context, isShow: true),
+                  TrackYourFlightWidget(
+                    context,
+                    isShow: isShow,
+                    BottomText: context.tracking,
+                    isShowBo: false,
+                    page: () {
+                      Get.toNamed(
+                        Routes.priceCatDetailsScreen,
+                        arguments: {'isShow': false},
+                      );
+                    },
+                  ),
                   verticalSpace(20.h),
                   PlaceColWidget(context),
                   verticalSpace(20.h),
                   CaptainInfoWidget(context),
                   verticalSpace(20.h),
-                  TDDelWidget(context),
+                  TDDelWidget(context, title: context.transferDate),
                   verticalSpace(20.h),
                   PayMthWidget(context),
                   verticalSpace(20.h),
@@ -51,7 +64,9 @@ class PriceCatDetailsScreen extends StatelessWidget {
                     backgroundColorB: context.colorsCustom.LightGrey
                         .withOpacity(0.2),
                     textColorB: context.colorsCustom.TextPrimary,
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(Routes.reportAProblemScreen);
+                    },
                   ),
                   verticalSpace(20.h),
                 ],

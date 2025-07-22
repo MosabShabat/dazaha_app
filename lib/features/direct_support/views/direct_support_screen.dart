@@ -10,14 +10,11 @@ class DirectSupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      appBar: DirectSupportAppBarWidget(context),
-      resizeToAvoidBottomInset: true, // ✅ Ensures body resizes with keyboard
+      appBar: DirectSupportAppBarWidget(context, isPersonChat: true),
+      resizeToAvoidBottomInset: true,
       body: Column(
         children: [
-          // ✅ Chat body or placeholder
           Expanded(child: GeneralScreenWidget(context, wid: [])),
-
-          // ✅ Input field aligned to bottom
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),

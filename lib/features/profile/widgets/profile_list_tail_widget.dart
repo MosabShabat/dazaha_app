@@ -7,32 +7,48 @@ Widget ProfileListTailWidget(
   BuildContext context,
   List<String> titleText,
 ) {
-  return ListTile(
-    leading: CircleAvatar(
-      radius: 20.w,
-      backgroundColor: index == ListProfileIcons.lastIndex
-          ? context.colorsCustom.surfacePrimaryWhite
-          : context.colorsCustom.CardBackgroundLightGray,
-      child: SvgPicture.asset(
-        ListProfileIcons[index],
-        color: index == ListProfileIcons.lastIndex
-            ? context.colorsCustom.redColor
-            : context.colorsCustom.surfacePrimaryBlack,
+  //wallet
+  return SizedBox(
+    height: 40.h,
+    child: ListTile(
+      contentPadding: EdgeInsets.all(0),
+      leading: CircleAvatar(
+        radius: 20.w,
+        backgroundColor: index == ListProfileIcons.lastIndex
+            ? context.colorsCustom.surfacePrimaryWhite
+            : context.colorsCustom.CardBackgroundLightGray,
+        child: SvgPicture.asset(
+          ListProfileIcons[index],
+          color: index == ListProfileIcons.lastIndex
+              ? context.colorsCustom.redColor
+              : context.colorsCustom.surfacePrimaryBlack,
+        ),
       ),
-    ),
-    title: Text(
-      titleText[index],
-      style: context.textStyles.bodySmall.medium.copyWith(
-        color: index == ListProfileIcons.lastIndex
-            ? context.colorsCustom.redColor
-            : context.colorsCustom.TextPrimary,
+      title: Text(
+        titleText[index],
+        style: context.textStyles.bodySmall.medium.copyWith(
+          color: index == ListProfileIcons.lastIndex
+              ? context.colorsCustom.redColor
+              : context.colorsCustom.TextPrimary,
+        ),
       ),
-    ),
-    trailing: Row(
-      children: [
-        index == 2 ? CurLangConWidget(context) : Container(),
-        Icon(Icons.arrow_forward_ios),
-      ],
+      trailing: SizedBox(
+        width: 190.w,
+        child: index == ListProfileIcons.lastIndex
+            ? Container()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (index == 2) CurLangConWidget(context),
+                  horizontalSpace(10.w),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16.w,
+                    color: context.colorsCustom.SecondaryElement,
+                  ),
+                ],
+              ),
+      ),
     ),
   );
 }

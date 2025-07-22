@@ -1,4 +1,3 @@
-export 'styles.dart';
 export 'lists.dart';
 export 'package:dazaha_app/core/widgets/my_custom_button.dart';
 export 'package:dazaha_app/core/widgets/my_custom_text_field.dart';

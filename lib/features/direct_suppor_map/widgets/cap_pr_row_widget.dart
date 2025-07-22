@@ -1,7 +1,7 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 
-Widget CapPrRowWidget(BuildContext context) {
+Widget CapPrRowWidget(BuildContext context, {required VoidCallback page}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,7 +63,11 @@ Widget CapPrRowWidget(BuildContext context) {
               color: context.colorsCustom.surfacePrimaryWhite,
             ),
           ).onTap(() {
-            Get.toNamed(Routes.priceDetailsReviewScreen);
+            // page;
+            Get.toNamed(
+              Routes.priceDetailsReviewScreen,
+              arguments: {'page': page},
+            );
           }),
         ],
       ),

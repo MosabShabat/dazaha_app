@@ -1,9 +1,10 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/core/widgets/latest_announcements_widget.dart';
+import 'package:dazaha_app/core/widgets/top_con_bot_sh_widget.dart';
 import 'package:dazaha_app/features/my_ads/widgets/filter_gride_view_widget.dart';
 
-Future<dynamic> FilteringBottomSheetWidget(BuildContext context) {
+Future<dynamic> FilteringBottomSheetWidget(BuildContext context,{required subTitle,required GridList}) {
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -17,6 +18,8 @@ Future<dynamic> FilteringBottomSheetWidget(BuildContext context) {
             Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    TopConBotShWidget(context).box.alignCenter.make(),
+                    verticalSpace(10.h),
                     LatestAnnouncementsRowWidget(
                       context,
                       text: context.filter,
@@ -36,14 +39,14 @@ Future<dynamic> FilteringBottomSheetWidget(BuildContext context) {
                       ),
                     ),
                     Text(
-                      '${context.ViewYourRequestsByServiceType}',
+                      subTitle,
                       style: context.textStyles.headlineSmall.regular.copyWith(
                         color: context.colorsCustom.TextSecondary,
                         fontSize: 14.sp,
                       ),
                     ),
                     verticalSpace(35.h),
-                    FilterGrideViewWidget(context),
+                    FilterGrideViewWidget(context,ListText: GridList),
                     verticalSpace(Width * 0.15),
                     GeneralBottomAppWidget(
                       context,

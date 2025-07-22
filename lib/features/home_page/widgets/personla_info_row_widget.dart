@@ -10,7 +10,10 @@ Widget personalInfoRow(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(backgroundImage: AssetImage(AppAssets.images.goku), maxRadius: 30.w),
+          CircleAvatar(
+            backgroundImage: AssetImage(AppAssets.images.goku),
+            maxRadius: 30.w,
+          ),
           horizontalSpace(5.w),
           SingleChildScrollView(
             child: Column(
@@ -37,7 +40,7 @@ Widget personalInfoRow(BuildContext context) {
             ),
           ),
         ],
-      ),
+      ).onTap(() => Get.toNamed(Routes.userInfoScreen)),
       Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -70,7 +73,9 @@ Widget personalInfoRow(BuildContext context) {
             ],
           ),
         ),
-      ),
+      ).onTap(() {
+        Get.toNamed(Routes.notificationsScreen);
+      }),
     ],
   );
 }

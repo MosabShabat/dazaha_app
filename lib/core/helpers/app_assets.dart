@@ -3,7 +3,6 @@ class AppAssets {
   static const images = _ImageAssets();
   static const json = _JsonAssets();
   static const gif = _GifAssets();
-
 }
 
 class _SvgAssets {
@@ -78,7 +77,8 @@ class _SvgAssets {
   final group_tow_icon = 'assets/images/svg_images/group_tow_icon.svg';
   final group_120858_icon = 'assets/images/svg_images/group_120858_icon.svg';
   final group_for_icon = 'assets/images/svg_images/group_for_icon.svg';
-  final envato_labs_image_edit_icon = 'assets/images/svg_images/envato_labs_image_edit_icon.svg';
+  final envato_labs_image_edit_icon =
+      'assets/images/svg_images/envato_labs_image_edit_icon.svg';
   final wallet_2_icon = 'assets/images/svg_images/wallet_2_icon.svg';
   final global_icon = 'assets/images/svg_images/global_icon.svg';
   final lifebuoy_icon = 'assets/images/svg_images/lifebuoy_icon.svg';
@@ -88,9 +88,21 @@ class _SvgAssets {
   final gallery_edit_icon = 'assets/images/svg_images/gallery_edit_icon.svg';
   final edit_icon = 'assets/images/svg_images/edit_icon.svg';
   final trash_icon = 'assets/images/svg_images/trash_icon.svg';
+  final music_play_icon = 'assets/images/svg_images/music_play_icon.svg';
+  final gallery_add_icon = 'assets/images/svg_images/gallery_add_icon.svg';
+  final mask_group_sh_icon = 'assets/images/svg_images/mask_group_sh_icon.svg';
+  final import_arrow_up_icon =
+      'assets/images/svg_images/import_arrow_up_icon.svg';
+  final import_arrow_down_icon =
+      'assets/images/svg_images/import_arrow_down_icon.svg';
+  final receipt_icon = 'assets/images/svg_images/receipt_icon.svg';
+  final group_120857_icon = 'assets/images/svg_images/group_120857_icon.svg';
+  final setting_4_icon = 'assets/images/svg_images/setting_4_icon.svg';
+  final more_circle_icon = 'assets/images/svg_images/more_circle_icon.svg';
+  final edit_2_icon = 'assets/images/svg_images/edit_2_icon.svg';
 
-  //trash_icon
-  //SvgPicture.asset(AppAssets.svgs.trash_icon),
+  //edit_2_icon
+  //SvgPicture.asset(AppAssets.svgs.more_circle_icon),
 }
 
 class _ImageAssets {
@@ -99,9 +111,15 @@ class _ImageAssets {
   final logo_png_app_icon = 'assets/images/png_images/logo_png_app_icon.png';
   final goku = 'assets/images/png_images/goku.jpg';
   final images_bet = 'assets/images/png_images/images.jpg';
-  //png_images/
-  //dazaha_logo_png
-  //SvgPicture.asset(AppAssets.images.goku),
+  final final_logo = 'assets/images/png_images/final_logo.jpg';
+  final group_120857_png = 'assets/images/png_images/group_120857_png.png';
+  final envato_img = 'assets/images/png_images/envato_img.png';
+  final rectangle_12375_img =
+      'assets/images/png_images/rectangle_12375_img.png';
+  final rectangle_12382_png = 'assets/images/png_images/rectangle_12382_png.png';
+
+  //rectangle_12382_png
+  //SvgPicture.asset(AppAssets.images.rectangle_12375_img),
 }
 
 class _JsonAssets {

@@ -3,10 +3,8 @@ import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/core/widgets/bottom_navigation_bar_widget.dart';
 import 'package:dazaha_app/core/widgets/custom_app_bar_widget.dart';
 import 'package:dazaha_app/core/widgets/general_screen_widget.dart';
-import 'package:dazaha_app/features/buy_me/select_store_name/widgets/list_det_cat_widget.dart';
-// import 'package:dazaha_app/features/ad_details/view/ad_details_screen.dart';
-// import 'package:dazaha_app/features/pick_up_point/view/pick_up_point_screen.dart';
 import 'package:dazaha_app/features/select_store_name/widgets/add_new_cat_widget.dart';
+import 'package:dazaha_app/features/select_store_name/widgets/list_det_cat_widget.dart';
 import 'package:dazaha_app/features/store_name/widgets/store_name_row_widget.dart';
 
 class SelectStoreNameScreen extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
+import 'package:dazaha_app/core/widgets/custom_divider_widget.dart';
 import 'package:dazaha_app/features/profile/widgets/lang_bottom_sheet_widget.dart';
 import 'package:dazaha_app/features/profile/widgets/profile_list_tail_widget.dart';
 
@@ -15,7 +16,7 @@ Widget ProfileListViewItemsWidget(BuildContext context) {
     context.logOut,
   ];
   return SizedBox(
-    height: 650.h,
+    height: 420.h,
     child: ListView.builder(
       shrinkWrap: true,
       itemCount: ListProfileIcons.length,
@@ -24,18 +25,24 @@ Widget ProfileListViewItemsWidget(BuildContext context) {
         return Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
               child: GestureDetector(
                 onTap: () {
                   if (index == 0) {
                     Get.toNamed(Routes.userInfoScreen);
                   }
-                  if (index == 1) {}
+                  if (index == 1) {
+                    Get.toNamed(Routes.walletScreen);
+                  }
                   if (index == 2) {
                     LangBottomSheetWidget(context);
                   }
-                  if (index == 3) {}
-                  if (index == 4) {}
+                  if (index == 3) {
+                    Get.toNamed(Routes.savedDeliveryAddressesScreen);
+                  }
+                  if (index == 4) {
+                    Get.toNamed(Routes.weAreHereToHelpScreen);
+                  }
                   if (index == 5) {
                     Get.toNamed(Routes.aboutTheApplicationScreen);
                   }
@@ -46,8 +53,8 @@ Widget ProfileListViewItemsWidget(BuildContext context) {
               ),
             ),
             index == ListProfileIcons.lastIndex
-                ? Divider(thickness: 1, color: context.colorsCustom.CardBorder)
-                : Container(),
+                ? Container()
+                : CustomDividerWidget(context),
           ],
         );
       },

@@ -1,6 +1,8 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
+import 'package:dazaha_app/core/widgets/top_con_bot_sh_widget.dart';
 import 'package:dazaha_app/features/profile/controller/profile_controller.dart';
+import 'package:dazaha_app/features/profile/widgets/lan_list_tail_widget.dart';
 
 Future<dynamic> LangBottomSheetWidget(BuildContext context) {
   final ProfileController controller = Get.put(ProfileController());
@@ -17,49 +19,37 @@ Future<dynamic> LangBottomSheetWidget(BuildContext context) {
         final isArabic = controller.radioValue.value;
         return Container(
           width: Width.w,
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          height: 270.h,
           color: context.colorsCustom.surfacePrimaryWhite,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Divider(
-                height: 4.h,
-                color: context.colorsCustom.CardBorder,
-                radius: BorderRadius.circular(3.r),
-                endIndent: 60.w,
-                indent: 60.w,
-              ),
+              TopConBotShWidget(context),
               Text(
                 context.chooseLanguage,
                 style: context.textStyles.titleMedium.medium.copyWith(
                   color: context.colorsCustom.TextPrimary,
-                  fontSize: 18.sp,
                 ),
               ),
-              ListTile(
-                leading: SvgPicture.asset(AppAssets.svgs.mask_group_icon),
-                title: Text(
-                  context.arabic,
-                  style: context.textStyles.bodySmall.medium.copyWith(
-                    color: context.colorsCustom.TextPrimary,
-                  ),
-                ),
-                trailing: Radio<bool>(
-                  value: true,
-                  groupValue: isArabic,
-                  onChanged: (value) {
-                    controller.setLanguage(true);
-                  },
-                ),
+              LanListTailWidget(
+                context,
+                img: SvgPicture.asset(AppAssets.svgs.mask_group_icon),
+                value: true,
+                isArabic: isArabic,
+                text: context.arabic,
+                changeLang: (value) {
+                  controller.setLanguage(true);
+                },
               ),
               Divider(
                 color: context.colorsCustom.CardBorder,
                 thickness: 1,
                 height: 1,
               ),
-              ListTile(
-                leading: CircleAvatar(
+              LanListTailWidget(
+                context,
+                img: CircleAvatar(
                   radius: 20.w,
                   backgroundColor: context.colorsCustom.CardBackgroundLightGray,
                   child: SvgPicture.asset(
@@ -67,20 +57,14 @@ Future<dynamic> LangBottomSheetWidget(BuildContext context) {
                     color: context.colorsCustom.surfacePrimaryBlack,
                   ),
                 ),
-                title: Text(
-                  context.english,
-                  style: context.textStyles.bodySmall.medium.copyWith(
-                    color: context.colorsCustom.TextPrimary,
-                  ),
-                ),
-                trailing: Radio<bool>(
-                  value: false,
-                  groupValue: isArabic,
-                  onChanged: (value) {
-                    controller.setLanguage(false);
-                  },
-                ),
+                isArabic: isArabic,
+                text: context.english,
+                value: false,
+                changeLang: (value) {
+                  controller.setLanguage(false);
+                },
               ),
+              verticalSpace(20.h),
             ],
           ),
         );
@@ -88,3 +72,5 @@ Future<dynamic> LangBottomSheetWidget(BuildContext context) {
     },
   );
 }
+
+

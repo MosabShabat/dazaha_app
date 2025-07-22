@@ -41,7 +41,7 @@ class AdvertisementSummaryScreen extends StatelessWidget {
           verticalSpace(10.h),
           TimeDateWidget(context),
           verticalSpace(10.h),
-          AddressWidget(context, isShow: false),
+          AddressWidget(context, isShow: false, isShowMet: true),
           verticalSpace(10.h),
           MapWidget(context),
           verticalSpace(10.h),

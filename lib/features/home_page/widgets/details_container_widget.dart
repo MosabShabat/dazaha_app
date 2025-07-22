@@ -1,13 +1,14 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/helpers/spacing.dart';
 import 'package:dazaha_app/core/helpers/theme_exports.dart';
+import 'package:dazaha_app/core/routes/routes.dart';
 import 'package:dazaha_app/features/home_page/widgets/case_req_widget.dart';
 import 'package:dazaha_app/features/home_page/widgets/req_info_widget.dart';
 import 'package:dazaha_app/features/price_cat_details/widgets/from_to_cou_widget.dart';
 
 Widget DetailsContainerWidget(BuildContext context) {
   return Container(
-    padding: EdgeInsets.all(16.w),
+    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
     decoration: BoxDecoration(
       border: Border.all(color: context.colorsCustom.LightGrey, width: 1),
       borderRadius: BorderRadius.circular(12.r),
@@ -18,11 +19,11 @@ Widget DetailsContainerWidget(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CaseReqWidget(context),
-          verticalSpace(15.h),
+          // verticalSpace(10.h),
           ReqInfoWidget(context),
-          verticalSpace(15.h),
+          verticalSpace(10.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: FromToCouWidget(
               context,
               CircleSize: 8.w,
@@ -38,5 +39,5 @@ Widget DetailsContainerWidget(BuildContext context) {
         ],
       ),
     ),
-  );
+  ).onTap(() => Get.toNamed(Routes.myOfferAdDetailsScreen));
 }

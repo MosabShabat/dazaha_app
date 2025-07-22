@@ -3,10 +3,11 @@ import 'package:dazaha_app/core/constant/exports_widgets.dart';
 
 Widget AdsDetailsWidget(BuildContext context) {
   return SizedBox(
-    height: Width * 0.46,
+    height: Width * 0.43,
     child: ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
+      physics: BouncingScrollPhysics(),
       itemCount: 10,
       itemBuilder: (context, index) {
         return Padding(
@@ -20,8 +21,8 @@ Widget AdsDetailsWidget(BuildContext context) {
                 child: Image.asset(
                   AppAssets.images.goku,
                   fit: BoxFit.cover,
-                  height: Width * 0.33,
-                  width: Width * 0.33,
+                  height: Width * 0.3,
+                  width: Width * 0.3,
                 ),
               ),
               // verticalSpace(5.h),
@@ -43,7 +44,7 @@ Widget AdsDetailsWidget(BuildContext context) {
               ),
             ],
           ),
-        );
+        ).onTap(() => Get.toNamed(Routes.itemAdDetailsScreen));
       },
     ),
   );

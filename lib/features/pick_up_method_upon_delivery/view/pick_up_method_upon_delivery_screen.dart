@@ -68,6 +68,7 @@ class PickUpMethodUpOnDeliveryScreen extends StatelessWidget {
             context,
             Title: context.receiptMethod,
             SubTitle: context.location,
+            isShow: true,
           ),
           verticalSpace(10.h),
           ListViewPickUpMethodUpOnDeliveryWidget(context: context),

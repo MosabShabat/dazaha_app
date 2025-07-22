@@ -57,7 +57,12 @@ class AdDetailsScreen extends StatelessWidget {
       body: GeneralScreenWidget(
         context,
         wid: [
-          TopTextWidget(context, Title: context.adDetails, SubTitle: ''),
+          TopTextWidget(
+            context,
+            Title: context.adDetails,
+            SubTitle: '',
+            isShow: true,
+          ),
           TopTextFelidsWidget(context),
           MiddleCustomWidget(context),
           SwitchDetWidget(context, isShow: isSwitchShow),

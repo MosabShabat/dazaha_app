@@ -27,14 +27,14 @@ Widget CurLangConWidget(BuildContext context) {
         context,
         H: 30.0.h,
         W: 70.0.w,
-        backGroundColor: Localizations.localeOf(context).languageCode == "ar"
+        backGroundColor: Localizations.localeOf(context).languageCode == "en"
             ? context.colorsCustom.TealGreenSecondary
             : context.colorsCustom.CardBackgroundLightGray,
         radius: 20.0.r,
         widget: Text(
           context.english,
           style: context.textStyles.bodyMedium.regular.copyWith(
-            color: Localizations.localeOf(context).languageCode == "ar"
+            color: Localizations.localeOf(context).languageCode == "en"
                 ? context.colorsCustom.ButtonLabelPrimary
                 : context.colorsCustom.TextPrimary,
           ),

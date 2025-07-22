@@ -4,7 +4,7 @@ import 'package:dazaha_app/core/constant/exports_widgets.dart';
 AppBar CustomScrollAppBarWidget(BuildContext context, {required text}) {
   return AppBar(
     toolbarHeight: 80.h,
-    leadingWidth: 95.w,
+    leadingWidth: Width.w,
     surfaceTintColor: context.colorsCustom.surfacePrimaryWhite,
     backgroundColor: context.colorsCustom.surfacePrimaryWhite,
     leading: Column(

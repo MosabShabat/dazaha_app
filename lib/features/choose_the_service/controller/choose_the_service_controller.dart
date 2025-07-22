@@ -24,6 +24,7 @@ class ChooseTheServiceController extends GetxController {
           bgColor: context.colorsCustom.TealGreenSecondary,
           textColor: context.colorsCustom.surfacePrimaryWhite,
         );
+        Get.back();
         Get.toNamed(page, arguments: arguments);
 
         // Get.toNamed(Routes.bookingDateScreen);

@@ -6,7 +6,7 @@ Widget TopTextWidget(
   BuildContext context, {
   required Title,
   required SubTitle,
-  isShow,
+  required isShow,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,

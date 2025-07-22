@@ -12,7 +12,7 @@ Widget TopContainerWidget(BuildContext context) {
         color: context.colorsCustom.LightOrange,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -48,13 +48,14 @@ Widget TopContainerWidget(BuildContext context) {
                       ),
                     ),
                   ),
-                  SvgPicture.asset(AppAssets.svgs.envato_labs_image_edit_icon),
+                  Image.asset(AppAssets.images.envato_img),
+                  // SvgPicture.asset(AppAssets.images.envato_img),
                 ],
               ),
             ),
           ],
         ),
       ),
-    ),
+    ).onTap(() => Get.toNamed(Routes.captainJoinsScreen)),
   );
 }

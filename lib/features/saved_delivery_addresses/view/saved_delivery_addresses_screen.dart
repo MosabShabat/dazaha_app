@@ -13,6 +13,7 @@ class SavedDeliveryAddressesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: UserInfoAppBarWidget(
+        Height: Width * 0.25,
         context,
         widget: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

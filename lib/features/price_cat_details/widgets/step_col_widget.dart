@@ -27,7 +27,7 @@ Widget StepColWidget(
               context.colorsCustom.surfacePrimaryWhite,
             ],
             stops: [
-              0.5, // Top 2/3 solid color
+              0.1, // Top 2/3 solid color
               0.5, // Start blending
               2.0, // Fully white at the bottom
             ],

@@ -1,7 +1,7 @@
 import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/features/auth/register/controller/register_controller.dart';
-import 'package:flutter/gestures.dart';
+// import 'package:flutter/gestures.dart';
 
 Widget CheckBoxListTailWidget(BuildContext context) {
   final RegisterController controller = Get.put(RegisterController());
@@ -20,31 +20,54 @@ Widget CheckBoxListTailWidget(BuildContext context) {
             controller.toggleSwitch();
           },
         ),
-        RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                text: context.iAgreeTo,
-                style: context.textStyles.bodySmall.medium.copyWith(
-                  color: context.colorsCustom.TextSecondary,
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              context.iAgreeTo,
+              style: context.textStyles.bodySmall.medium.copyWith(
+                color: context.colorsCustom.TextSecondary,
               ),
-              TextSpan(
-                text: ' ${context.termsAndConditions}',
-
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Get.toNamed(Routes.termsAndConditionsScreen);
-                  },
-                style: context.textStyles.bodySmall.medium.copyWith(
-                  color: context.colorsCustom.BluePrimary,
-                  decoration: TextDecoration.underline,
-                  decorationThickness: 2.0,
-                ),
+            ),
+            horizontalSpace(5.w),
+            Text(
+              ' ${context.termsAndConditions}',
+              style: context.textStyles.bodySmall.medium.copyWith(
+                color: context.colorsCustom.BluePrimary,
+                decoration: TextDecoration.underline,
+                decorationThickness: 1.0,
+                decorationColor: context.colorsCustom.BluePrimary,
               ),
-            ],
-          ),
+            ).onTap(() {
+              Get.toNamed(Routes.termsAndConditionsScreen);
+            }),
+          ],
         ),
+        // RichText(
+        //   text: TextSpan(
+        //     children: <TextSpan>[
+        //       TextSpan(
+        //         text: context.iAgreeTo,
+        //         style: context.textStyles.bodySmall.medium.copyWith(
+        //           color: context.colorsCustom.TextSecondary,
+        //         ),
+        //       ),
+        //       TextSpan(
+        //         text: ' ${context.termsAndConditions}',
+
+        //         recognizer: TapGestureRecognizer()
+        //           ..onTap = () {
+        //             Get.toNamed(Routes.termsAndConditionsScreen);
+        //           },
+        //         style: context.textStyles.bodySmall.medium.copyWith(
+        //           color: context.colorsCustom.BluePrimary,
+        //           decoration: TextDecoration.underline,
+        //           decorationThickness: 2.0,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   });

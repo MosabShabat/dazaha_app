@@ -17,9 +17,21 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
           child:
               Column(
                     children: [
-                      TopRowWidget(context),
+                      TopRowWidget(
+                        context,
+                        title: context.myAds,
+                        size: 20.sp,
+                        style: context.textStyles.titleLarge.bold.fontFamily,
+                        GridList: [
+                          context.transportationAndDelivery,
+                          context.buyForMe,
+                          context.removeAndRecycle,
+                          context.dedication,
+                        ],
+                        subTitle: '${context.ViewYourRequestsByServiceType}',
+                      ),
                       verticalSpace(10.h),
-                      TabBarTitleWidget(context),
+                      TabBarTitleWidget(context,secTap: context.receiveOffers),
                       Flexible(
                         child: TabBarView(
                           children: [

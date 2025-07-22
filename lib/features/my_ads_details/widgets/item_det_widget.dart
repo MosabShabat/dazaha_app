@@ -11,7 +11,7 @@ Widget ItemDetWidget(BuildContext context, {required caseItem}) {
       if (caseItem == 1) {
         Get.toNamed(Routes.summaryMyAdDetScreen);
       }
-      if (caseItem == 1) {
+      if (caseItem == 2) {
         Get.toNamed(Routes.itemAdDetailsScreen);
       }
     },
@@ -73,7 +73,15 @@ Widget ItemDetWidget(BuildContext context, {required caseItem}) {
                     borderRadius: 8.0.r,
                     colorBorder: context.colorsCustom.SecondaryElement,
                     onTap: () {
-                      Get.toNamed(Routes.itemAdDetailsScreen);
+                      if (caseItem == 0) {
+                        Get.toNamed(Routes.itemAdDetailsScreen);
+                      }
+                      if (caseItem == 1) {
+                        Get.toNamed(Routes.summaryMyAdDetScreen);
+                      }
+                      if (caseItem == 2) {
+                        Get.toNamed(Routes.itemAdDetailsScreen);
+                      }
                     },
                   ),
                 ],

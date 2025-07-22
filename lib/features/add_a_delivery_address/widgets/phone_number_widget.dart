@@ -3,7 +3,6 @@ import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:dazaha_app/core/helpers/extensions/extensions_text_style_variants.dart';
 import 'package:dazaha_app/core/helpers/extensions/extensions_text_styles.dart';
 
-
 Widget PhoneNumberWidget(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +26,7 @@ Widget PhoneNumberWidget(BuildContext context) {
         keyboardType: TextInputType.number,
         hintText: context.mobileNumber,
         hintStyleColor: context.colorsCustom.TextSecondary,
-        HintTextFontFamily: context.textStyles.titleSmall.regular,
+        HintTextFontFamily: context.textStyles.titleSmall.regular.fontFamily,
         HintTextFontSize: 14.0.sp,
         fillColor: context.colorsCustom.surfacePrimaryWhite,
         suffixIcon:

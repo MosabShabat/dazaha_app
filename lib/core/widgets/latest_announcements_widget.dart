@@ -7,7 +7,7 @@ Widget LatestAnnouncementsRowWidget(
   required onPressed,
   required Widget,
   size,
-  fontFamily,
+  fontFamily,fontWeight
 }) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -21,6 +21,7 @@ Widget LatestAnnouncementsRowWidget(
           fontFamily: fontFamily == null
               ? context.textStyles.bodyLarge.medium.fontFamily
               : fontFamily,
+              fontWeight: fontWeight,
         ),
       ),
       TextButton(onPressed: onPressed, child: Widget),

@@ -21,13 +21,13 @@ Future<void> main() async {
 
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: Colors.white, // or any Color
-      statusBarIconBrightness: Brightness.light, // light = white icons
-      statusBarBrightness: Brightness.dark, // For iOS: dark background
-    ),
-  );
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   SystemUiOverlayStyle(
+  //     statusBarColor: Colors.white, // or any Color
+  //     statusBarIconBrightness: Brightness.light, // light = white icons
+  //     statusBarBrightness: Brightness.dark, // For iOS: dark background
+  //   ),
+  // );
 
   // await Future.wait([checkUserLogin(), checkOpenBefore()]);
 

@@ -7,4 +7,3 @@ SizedBox horizontalSpace(double width) => SizedBox(width: width.w);
 
 var Width = ScreenUtil().screenWidth;
 var Height = ScreenUtil().screenHeight;
-var SizeBox20H = SizedBox(height: 20.h);

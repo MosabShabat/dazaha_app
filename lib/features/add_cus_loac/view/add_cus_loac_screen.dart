@@ -13,6 +13,7 @@ class AddCusLoacScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: UserInfoAppBarWidget(
+        Height:  Width * 0.25,
         context,
         widget: Text(
           context.addAddress,

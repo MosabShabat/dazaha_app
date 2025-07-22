@@ -17,7 +17,7 @@ Widget LoginTextFieldWidget(BuildContext context) {
       hintText: context.mobileNumber,
       hintStyleColor: context.colorsCustom.TextSecondary,
       // hintTextDirection: TextDecoration.,
-      HintTextFontFamily: context.textStyles.titleSmall.regular,
+      HintTextFontFamily: context.textStyles.titleSmall.regular.fontFamily,
       HintTextFontSize: 15.0.sp,
       fillColor: context.colorsCustom.surfacePrimaryWhite,
       prefixIcon: Container(

@@ -10,9 +10,10 @@ Widget CusButtonWidget(
   // required textStyle,
   // required isText,
   required widget,
+  onTap,
 }) {
   return GestureDetector(
-    onTap: () {},
+    onTap: onTap,
     child: Container(
       width: W,
       height: H,
