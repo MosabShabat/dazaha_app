@@ -35,7 +35,27 @@ Widget SliverAppBarWidget(BuildContext context, {required sliController}) {
               fit: StackFit.expand,
               children: [
                 Image.asset(AppAssets.images.images_bet, fit: BoxFit.cover),
-                InfoCatRowWidget(context),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 120.h,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          context.colorsCustom.surfacePrimaryBlack.withOpacity(
+                            0.85,
+                          ), // Bottom: semi-black
+                          context.colorsCustom.surfacePrimaryBlack.withOpacity(
+                            0.0,
+                          ), // Top: fully transparent
+                        ],
+                      ),
+                    ),
+                    child: InfoCatRowWidget(context),
+                  ),
+                ),
               ],
             );
           },

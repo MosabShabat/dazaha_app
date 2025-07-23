@@ -63,7 +63,7 @@ class PriceDetailsReviewScreen extends StatelessWidget {
                 ).onTap(() {
                   Get.offAll(
                     () => HomeScreen(initialTabIndex: 0),
-                    transition: Transition.fadeIn,
+                    transition: Transition.noTransition,
                   );
                 }),
               ],

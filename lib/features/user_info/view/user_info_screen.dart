@@ -30,7 +30,7 @@ class UserInfoScreen extends StatelessWidget {
         GetScreen: () {
           Get.offAll(
             HomeScreen(initialTabIndex: 4),
-            transition: Transition.upToDown,
+            transition: Transition.noTransition,
           );
         },
       ),

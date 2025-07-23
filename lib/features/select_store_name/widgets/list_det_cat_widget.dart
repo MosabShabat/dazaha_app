@@ -19,6 +19,7 @@ Widget ListDetCatWidget() {
         children: [
           Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TitleTextWidget(index, context),
                   Row(

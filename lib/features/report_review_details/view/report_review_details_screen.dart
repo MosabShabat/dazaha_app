@@ -32,6 +32,8 @@ class ReportReviewDetailsScreen extends StatelessWidget {
                       context,
                       text: context.ok,
                       onTap: () {
+                        Get.back();
+                        Get.back();
                         Get.offNamed(Routes.weAreHereToHelpScreen);
                       },
                     ),

@@ -34,7 +34,7 @@ class CaptainMembershipRequestScreen extends StatelessWidget {
                       onTap: () {
                         Get.to(
                           HomeScreen(initialTabIndex: 0),
-                          transition: Transition.fadeIn,
+                          transition: Transition.noTransition,
                         ); //
                       },
                     ),

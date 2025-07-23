@@ -48,7 +48,7 @@ class ReviewPayMentScreen extends StatelessWidget {
                 ).onTap(() {
                   Get.offAll(
                     () => HomeScreen(initialTabIndex: 0),
-                    transition: Transition.fadeIn,
+                    transition: Transition.noTransition,
                   );
                 }),
                 verticalSpace(Height / 12),

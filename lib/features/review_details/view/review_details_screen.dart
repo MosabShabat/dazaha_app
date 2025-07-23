@@ -43,7 +43,7 @@ class _ReviewDetailsScreenState extends State<ReviewDetailsScreen> {
                   onTap: () {
                     Get.offAll(
                       () => HomeScreen(initialTabIndex: 1),
-                      transition: Transition.downToUp,
+                      transition: Transition.noTransition,
                     );
                   },
                 ),
@@ -58,7 +58,7 @@ class _ReviewDetailsScreenState extends State<ReviewDetailsScreen> {
                 ).onTap(() {
                   Get.offAll(
                     () => HomeScreen(initialTabIndex: 0),
-                    transition: Transition.downToUp,
+                    transition: Transition.noTransition,
                   );
                 }),
                 verticalSpace(Height / 12),

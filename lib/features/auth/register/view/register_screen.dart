@@ -22,7 +22,7 @@ class RegisterScreen extends StatelessWidget {
                 onTap: () {
                   Get.off(
                     () => HomeScreen(initialTabIndex: 0),
-                    transition: Transition.downToUp,
+                    transition: Transition.noTransition,
                   );
                 },
               ).box

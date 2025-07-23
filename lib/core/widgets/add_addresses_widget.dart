@@ -23,7 +23,7 @@ Widget AddAddressesWidget(
             Icons.add,
             size: 16.w,
             color: isBlack
-                ? context.colorsCustom.TealGreenSecondary.withOpacity(0.9)
+                ? context.colorsCustom.surfacePrimaryWhite
                 : context.colorsCustom.surfacePrimaryWhite,
           ),
         ),
