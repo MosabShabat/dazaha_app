@@ -1,0 +1,228 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../core/helpers/constants.dart';
+import '../../../../features/my_offer_ad_details/controller/my_offer_ad_details_controller.dart';
+import '../../../../core/constant/exports_libraries.dart';
+import '../../../../core/constant/exports_widgets.dart';
+import '../../../../core/widgets/general_screen_widget.dart';
+import '../../../../core/widgets/image_list_view_builder_widget.dart';
+import '../../../../features/advertisement_summary/widgets/address_widget.dart';
+import '../../../../features/advertisement_summary/widgets/map_widget.dart';
+import '../../../../features/item_ad_details/widgets/advertiser_row_widget.dart';
+import '../../../../features/item_ad_details/widgets/transport_info_widget.dart';
+import '../../../../features/my_ads_details/widgets/top_det_row_widget.dart';
+import '../../../../features/my_offer_ad_details/widgets/my_offer_app_bar_widget.dart';
+import '../../../../features/my_offer_ad_details/widgets/presented_offer_box_widget.dart';
+import '../../my_ads_details/widgets/invoice_box_widget.dart';
+import '../../my_ads_details/widgets/pay_mth_widget.dart';
+import '../../my_ads_details/widgets/t_d_del_widget.dart';
+import '../../my_ads_details/widgets/track_your_flight_widget.dart';
+import '../../choose_the_service/controller/order_data_controller.dart';
+import '../../summary/widgets/summary_list_widget.dart';
+import '../widgets/offer_details_shimmer_widget.dart';
+
+class MyOfferAdDetailsScreen extends StatelessWidget {
+  MyOfferAdDetailsScreen({super.key});
+
+  final MyOfferAdDetailsController controller = Get.find();
+  final OrderDataController orderDataController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.isLoading.isTrue) {
+        return OfferDetailsShimmerWidget();
+      }
+
+      final offerDetails = controller.offerDetailsItem!.value;
+
+      // تحديد نوع الخدمة حسب UUID
+      switch (offerDetails.order!.serviceUuid) {
+        case '69fb5c27-11ef-4637-986f-ed484b388c7f':
+          orderDataController.setServiceNumber('0');
+          break;
+        case '9cc543c0-793c-43d9-88a6-6e3db6082ef5':
+          orderDataController.setServiceNumber('1');
+          break;
+        case '7f625412-ca00-431d-a7fd-12863fc851ef':
+          orderDataController.setServiceNumber('2');
+          break;
+        default:
+          orderDataController.setServiceNumber('3');
+      }
+      orderDataController.setFrom(offerDetails.order!.from ?? '');
+      orderDataController.setFromAddress(offerDetails.order!.fromAddress ?? '');
+      orderDataController.setFromLat(offerDetails.order!.fromLat ?? '');
+      orderDataController.setFromLng(offerDetails.order!.fromLng ?? '');
+      orderDataController.setTo(offerDetails.order!.to ?? '');
+      orderDataController.setToAddress(offerDetails.order!.toAddress ?? '');
+      orderDataController.setToLat(offerDetails.order!.toLat ?? '');
+      orderDataController.setToLng(offerDetails.order!.toLng ?? '');
+      orderDataController.setUserImage(offerDetails.order!.user!.image ?? '');
+      orderDataController.setUserName(offerDetails.order!.user!.fullName ?? '');
+      orderDataController.setUserRate(
+        '${offerDetails.order!.user!.ratingPercentage ?? ''}',
+      );
+      orderDataController.setUserUuid(
+        '${offerDetails.order!.user!.uuid ?? ''}',
+      );
+      AppConstants.userName = '${offerDetails.order!.user!.fullName ?? ''}';
+      AppConstants.orderId = '${offerDetails.order!.orderId ?? ''}';
+      AppConstants.orderTitle = '${offerDetails.order!.title ?? ''}';
+      AppConstants.userImage = '${offerDetails.order!.user!.image ?? ''}';
+
+      return Scaffold(
+        backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+        appBar: MyOfferAppBarWidget(
+          context,
+          status: offerDetails.status ?? '',
+          price: offerDetails.price,
+          curr: offerDetails.currency,
+          timeLen: offerDetails.order!.times!.length,
+          timeItem: offerDetails.order!.times!,
+        ),
+        body: GeneralScreenWidget(
+          context,
+          verH: 0.0,
+          wid: [
+            TopDetRowWidget(
+              context,
+              isShow: false,
+              title: context.offerDetails,
+              status: offerDetails.status,
+              statusText: offerDetails.statusText,
+              subTitle:
+                  '${offerDetails.order!.orderId} , ${context.published} ${offerDetails.addedAt}',
+            ),
+            verticalSpace(10.h),
+
+            // الصور
+            orderDataController.isItemsService
+                ? CachedNetworkImage(
+                    imageUrl: offerDetails.order!.image!,
+                    width: 360.w,
+                    height: 175.h,
+                    fit: BoxFit.fill,
+                  )
+                : ImageListViewBuilderWidget(
+                    context,
+                    imagesLen: offerDetails.order!.images!.length,
+                    imagesItem: offerDetails.order!.images!,
+                  ),
+            verticalSpace(15.h),
+
+            // حالة العرض
+            offerDetails.status == 'pending'
+                ? PresentedOfferBoxWidget(
+                    context,
+                    price:
+                        '${offerDetails.price} ${offerDetails.order!.currency}',
+                  )
+                : TrackYourFlightWidget(
+                    context,
+                    isShow: offerDetails.status,
+                    BottomText: context.startTheJourney,
+                    isShowBo: true,
+                    rating: offerDetails.rating,
+                    page: () => Get.toNamed(
+                      Routes.myOfferAdDetailsScreen,
+                      arguments: {'isShow': false},
+                    ),
+                  ),
+            verticalSpace(20.h),
+
+            // معلومات النقل
+            TransportInfoWidget(
+              context,
+              title: offerDetails.order!.title ?? '',
+              serviceName: offerDetails.order!.serviceTitle ?? '',
+              description: offerDetails.order!.description ?? '',
+            ),
+            verticalSpace(20.h),
+
+            // وقت التسليم
+            TDDelWidget(
+              context,
+              title: orderDataController.getTimeTitle(context),
+              Fz: 16.sp,
+              date: '${offerDetails.order!.date ?? ''}',
+              time: '${offerDetails.time ?? ''}',
+            ),
+            verticalSpace(15.h),
+
+            // قائمة العناصر
+            if (orderDataController.isItemsService)
+              SummaryListWidget(
+                context,
+                itemsLen: offerDetails.order!.items!.length,
+                itemsDet: offerDetails.order!.items!,
+              ),
+            verticalSpace(10.h),
+
+            // العنوان
+            AddressWidget(
+              isShow: false,
+              isShowMet: offerDetails.order!.receiptMethod != null,
+              from: offerDetails.order!.from ?? '',
+              fromAddress: offerDetails.order!.fromAddress ?? '',
+              helpers: '${offerDetails.order!.helpers ?? ''}',
+              receiptMethodDec: offerDetails.order!.receiptMethod?.description,
+              receiptMethodImage: offerDetails.order!.receiptMethod?.image,
+              receiptMethodTitle: offerDetails.order!.receiptMethod?.title,
+              sizeTitle: offerDetails.order!.size!.title ?? '',
+              sizeImg: offerDetails.order!.size!.image ?? '',
+              to: offerDetails.order!.to ?? '',
+              toAddress: offerDetails.order!.toAddress ?? '',
+              orderDataController: orderDataController,
+            ),
+            verticalSpace(10.h),
+
+            // الخريطة
+            MapWidget(
+              fromAddress: offerDetails.order!.fromAddress ?? '',
+              fromLat: offerDetails.order!.fromLat ?? '',
+              fromLng: offerDetails.order!.fromLng ?? '',
+              toAddress: offerDetails.order!.toAddress ?? '',
+              toLat: offerDetails.order!.toLat ?? '',
+              toLng: offerDetails.order!.toLng ?? '',
+            ),
+            verticalSpace(10.h),
+
+            // معلن الإعلان
+            AdvertiserRowWidget(
+              context,
+              image: offerDetails.order!.user!.image ?? '',
+              name: offerDetails.order!.user!.fullName ?? '',
+              orderCount: offerDetails.order!.user!.ordersCount ?? '',
+              rating: offerDetails.order!.user!.ratingPercentage ?? '',
+            ),
+            verticalSpace(20.h),
+
+            // الدفع والفواتير
+            if (offerDetails.status != 'pending') ...[
+              PayMthWidget(
+                context,
+                cardNumber:
+                    offerDetails.order!.payment!.paymentCardNumber ?? '',
+                cardType: offerDetails.order!.payment!.paymentWayText ?? '',
+              ),
+              verticalSpace(20.h),
+              InvoiceBoxWidget(context, offerDetails.order!.payment!),
+              verticalSpace(30.h),
+            ],
+
+            // تقرير مشكلة
+            GeneralBottomAppWidget(
+              context,
+              text: context.reportAProblem,
+              onTap: () => Get.toNamed(Routes.reportAProblemScreen),
+              backgroundColorB: context.colorsCustom.CardBackgroundLightGray,
+              fontWeight: FontWeight.w500,
+              textColorB: context.colorsCustom.TextPrimary,
+            ),
+            verticalSpace(20.h),
+          ],
+        ),
+      );
+    });
+  }
+}

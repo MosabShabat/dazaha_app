@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "249932861987",
+    "project_id": "dezha-2d128",
+    "storage_bucket": "dezha-2d128.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249932861987:android:51c88ccd7d995f2e9a5796",
+        "android_client_info": {
+          "package_name": "com.avocode.dezha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpGO8PYXUHsGCPp6_Vo7XsJROQFqTnv2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

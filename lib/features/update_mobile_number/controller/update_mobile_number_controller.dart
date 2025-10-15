@@ -1,0 +1,76 @@
+import '../../../../core/constant/exports_libraries.dart';
+import '../../../../core/constant/exports_widgets.dart';
+import '../../../../core/helpers/constants.dart';
+import '../../../../core/network/utils/api_result.dart';
+import '../../../../features/update_mobile_number/controller/update_mobile_repo.dart';
+import '../../../core/helpers/app_shared_methods.dart';
+import '../../../core/widgets/app_snackbar.dart';
+
+class UpdateMobileNumberController extends GetxController {
+  final UpdateMobileRepo _loginRepo = Get.find<UpdateMobileRepo>();
+
+  final TextEditingController phoneController = TextEditingController();
+  final String countryCode = "964";
+
+  RxBool isButtonPressed = false.obs;
+  var isProcessing = false.obs;
+
+  void validateInput(BuildContext context, bool? resetAll) {
+    if (_isPhoneNumberEmpty()) {
+      showErrorSnackbar(context, context.error);
+      return;
+    }
+    if (!_isValidPhoneNumber()) {
+      showErrorSnackbar(context, 'Enter Phone number');
+      return;
+    }
+    String phoneNumber = '$countryCode-${phoneController.text}';
+
+    _sendCodeRequest(context, phoneNumber, resetAll!);
+  }
+
+  bool _isPhoneNumberEmpty() {
+    return AppSharedMethods.isTextFieldEmpty(phoneController);
+  }
+
+  bool _isValidPhoneNumber() {
+    return GetUtils.isPhoneNumber(phoneController.text);
+  }
+
+  void _sendCodeRequest(
+    BuildContext context,
+    String phoneNumber,
+    bool resetAll,
+  ) async {
+    isButtonPressed.value = true;
+    isProcessing.value = true;
+
+    final result = await _loginRepo.senCode(phoneNumber);
+    result.when(
+      success: (response) async {
+        if (response.status == true) {
+          isButtonPressed.value = false;
+          // navigateToVerificationScreen(phoneNumber, resetAll);
+          Get.toNamed(
+            Routes.verCodeMobileScreen,
+            arguments: {
+              AppConstants.phoneNumber: phoneNumber,
+              AppConstants.resatAll: resetAll,
+            },
+          );
+        } else {
+          isButtonPressed.value = false;
+          isProcessing.value = false;
+
+          showErrorSnackbar(context, response.message ?? '');
+        }
+      },
+      failure: (error) {
+        isButtonPressed.value = false;
+        isProcessing.value = false;
+
+        showSnackbarErrorApi(context, [error], null);
+      },
+    );
+  }
+}
