@@ -73,6 +73,10 @@ class SummaryScreen extends StatelessWidget {
                 isShow: false,
                 isShowMet: false,
                 from: data.from ?? '',
+                fromLat: data.fromLat ?? '',
+                fromLng: data.fromLng ?? '',
+                toLat: data.toLat ?? '',
+                toLng: data.toLng ?? '',
                 fromAddress: data.fromAddress ?? '',
                 helpers: orderController.isItemsService
                     ? '0'

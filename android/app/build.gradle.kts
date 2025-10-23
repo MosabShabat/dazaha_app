@@ -13,8 +13,8 @@ val localProperties = Properties().apply {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) load(FileInputStream(localPropertiesFile))
 }
-val flutterVersionCode = localProperties.getProperty("flutter.versionCode")?.toInt() ?: 2
-val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.1"
+val flutterVersionCode = localProperties.getProperty("flutter.versionCode")?.toInt() ?: 6
+val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.6"
 
 // قراءة keystore
 val keystoreProperties = Properties()
@@ -23,13 +23,16 @@ if (keystorePropertiesFile.exists()) keystoreProperties.load(FileInputStream(key
 
 android {
     namespace = "com.avocode.dezha"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
 
-    ndkVersion = "29.0.14033849"
+    ndkVersion = "29.0.14206865"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
+
+
     }
 
     kotlinOptions {
@@ -39,7 +42,7 @@ android {
     defaultConfig {
         applicationId = "com.avocode.dezha"
         minSdk = 24
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 36
         versionCode = flutterVersionCode
         versionName = flutterVersionName
     }
@@ -74,6 +77,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-messaging")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
 }
 
 flutter {

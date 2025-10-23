@@ -1,9 +1,11 @@
 import '../../../../core/constant/exports_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/helpers/spacing.dart';
 import '../../../../../core/network/models/notifications/notification_item.dart';
 import '../../../../../core/theming/app_text_styles.dart';
+import '../../../core/constant/exports_libraries.dart';
+import '../../../core/helpers/app_shared_data.dart';
+import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/custom_cached_image.dart';
 
 Widget buildNotificationItem(
@@ -43,19 +45,16 @@ Widget buildNotificationItem(
       // } else if (notification.type == NotificationTypes.joinJhefAccepted ||
       //     notification.type == NotificationTypes.joinJhefRejected) {
       //   Get.offAllNamed(Routes.navigationBarScreen);
-      // } else if (notification.type == NotificationTypes.withdrawAccepted ||
-      //     notification.type == NotificationTypes.withdrawRejected ||
-      //     notification.type == NotificationTypes.walletWithdrawal ||
-      //     notification.type == NotificationTypes.walletDeposit) {
-      //   AppSharedData.getUserInfo().then((userData) {
-      //     final userType =
-      //         userData!.isChef == 1 ? AppConstants.chef : AppConstants.user;
-      //     Get.toNamed(
-      //       Routes.walletScreen,
-      //       arguments: {AppConstants.type: userType},
-      //     );
-      //   });
-      // } else if (notification.type ==
+      // } else
+      if (notification.type == NotificationTypes.withdrawAccepted ||
+          notification.type == NotificationTypes.withdrawRejected ||
+          notification.type == NotificationTypes.walletWithdrawal ||
+          notification.type == NotificationTypes.walletDeposit) {
+        AppSharedData.getUserInfo().then((userData) {
+          Get.toNamed(Routes.walletScreen);
+        });
+      }
+      //else if (notification.type ==
       //         NotificationTypes.accountVerificationAccepte ||
       //     notification.type == NotificationTypes.accountVerificationRejecte) {
       //   Get.toNamed(Routes.navigationBarScreen);
@@ -63,17 +62,12 @@ Widget buildNotificationItem(
       //     HomeController controller = Get.find();
       //     controller.getLocation();
       //   }
-      // } else if (notification.type == NotificationTypes.depositOrder ||
-      //     notification.type == NotificationTypes.depositPurchase) {
-      //   AppSharedData.getUserInfo().then((userData) {
-      //     final userType =
-      //         userData!.isChef == 1 ? AppConstants.chef : AppConstants.user;
-      //     Get.toNamed(
-      //       Routes.walletScreen,
-      //       arguments: {AppConstants.type: userType},
-      //     );
-      //   });
       // }
+      else if (notification.type == NotificationTypes.depositOrder) {
+        AppSharedData.getUserInfo().then((userData) {
+          Get.toNamed(Routes.walletScreen);
+        });
+      }
     },
     //OrdersSerModel
     child: Container(

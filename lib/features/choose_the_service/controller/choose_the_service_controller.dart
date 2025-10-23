@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../core/network/utils/api_result.dart';
 // import 'package:image_picker/image_picker.dart';
-import 'package:multiple_image_camera/camera_file.dart';
 // import 'package:multiple_image_camera/multiple_image_camera.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import '../../../core/constant/exports_libraries.dart';
@@ -13,7 +12,6 @@ import 'order_data_controller.dart';
 class ChooseTheServiceController extends GetxController {
   final OrderDataController orderDataController = Get.find();
   var isOffline = false.obs;
-  List<MediaModel> images = [];
   final ChooseTheServiceRepo _chooseTheServiceRepo =
       Get.find<ChooseTheServiceRepo>();
 

@@ -71,7 +71,7 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
                               context,
                               title: context.myAds,
                               size: 20.sp,
-                              gridController: transportController,
+                              typeFilter: 0,
                               orderDataController: orderDataController,
                               style:
                                   context.textStyles.titleLarge.bold.fontFamily,

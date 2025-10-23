@@ -18,6 +18,7 @@ import '../../../firebase_options.dart';
 import 'core/controllers/theme_controller.dart';
 import 'core/helpers/app_observer.dart';
 import 'core/routes/app_routes.dart';
+import 'core/services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +43,9 @@ Future<void> main() async {
   // GetX setup
   await setupGetX();
   await AppSharedData.setOpenBefore(true);
+  await NotificationService().init();
+
+
 
   // Lock orientation
   await SystemChrome.setPreferredOrientations([

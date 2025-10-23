@@ -1,4 +1,5 @@
 import 'dart:developer';
+import '../../../../core/helpers/constants.dart';
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/helpers/app_shared_methods.dart';
@@ -12,11 +13,18 @@ class LoginScreen extends StatelessWidget {
   final bool? resatAll;
 
   LoginScreen({this.resatAll = true});
-  final LoginController _loginController = Get.put(LoginController());
+  final LoginController _loginController = Get.put(
+    LoginController(),
+    tag: 'login',
+  );
 
   @override
   Widget build(BuildContext context) {
+    _loginController.isButtonPressed.value = false;
+    _loginController.isProcessing.value = false;
+
     log('language is Arabic ${AppSharedMethods.isAppLanguageArabic()}');
+    AppConstants.statusBar();
 
     return Scaffold(
       body: SafeArea(
@@ -41,6 +49,7 @@ class LoginScreen extends StatelessWidget {
                     return AppLoadingButton(
                       text: context.continuation,
                       onPressed: () async {
+                        log('object: Login button pressed');
                         _loginController.validateInput(context, resatAll);
                       },
                       isLoading: _loginController.isButtonPressed.value,

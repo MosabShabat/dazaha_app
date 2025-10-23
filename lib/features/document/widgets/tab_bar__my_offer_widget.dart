@@ -17,17 +17,15 @@ Widget TabBarMyOfferWidget(
       SearchTextFieldWidget(
         context,
         controller: controller.searchController,
-        onSubmitted: (value) {
-          controller.refreshOrders();
-        },
+        onSubmitted: (_) => controller.refreshOrders(),
       ),
       verticalSpace(20.h),
       Expanded(
         child: Obx(() {
-          if (controller.isLoading.isTrue) {
-            return listShimmerWidget();
-          }
-          if (controller.offer!.value.items!.isEmpty) {
+          if (controller.isLoading.value) return listShimmerWidget();
+          final items = controller.offer?.value.items ?? [];
+
+          if (items.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -51,15 +49,15 @@ Widget TabBarMyOfferWidget(
           }
 
           return ListView.builder(
-            itemCount: controller.offer!.value.items!.length,
+            itemCount: items.length,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              final item = controller.offer!.value.items![index];
+              final item = items[index];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${item.date}',
+                    item.date ?? '',
                     style: context.textStyles.headlineSmall.medium.copyWith(
                       color: context.colorsCustom.TextPrimary,
                       fontSize: 16.sp,

@@ -1,21 +1,24 @@
+import '../../../features/home/controller/home_controller.dart';
+
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/widgets/latest_announcements_widget.dart';
 import 'details_container_widget.dart';
 
 Widget BottomCustomWidget(BuildContext context, {controller, isOrder}) {
+  HomeController homeController = Get.find();
+  print('isOrder BottomCustomWidget: $isOrder');
   return Column(
     children: [
       LatestAnnouncementsRowWidget(
         context,
         text: context.trackingLog,
         onPressed: () {
-          isOrder
-              ? Get.toNamed(Routes.homeScreen, arguments: {'selectedIndex': 1})
-              : Get.offAllNamed(
-                  Routes.homeScreen,
-                  arguments: {'selectedIndex': 3},
-                );
+          if (isOrder) {
+            homeController.selectedIndex.value = 1;
+          } else {
+            homeController.selectedIndex.value = 3; // انتقل للتاب 3
+          }
         },
         Widget: Text(
           context.viewAll,

@@ -36,9 +36,17 @@ class PickUpPointScreen extends StatelessWidget {
     final _addAddressCtrl = Get.find<AddADeliveryAddressController>();
     final _savedAddressesCtrl = Get.find<SavedDeliveryAddressesController>();
     final _orderCtrl = Get.find<OrderDataController>();
+    print('!!!!!!!!!!!!!!!!!! Saved addresses: ');
+    for (var i = 0; i < _savedAddressesCtrl.addresses.length; i++) {
+      print(_savedAddressesCtrl.addresses.length);
+      print(_savedAddressesCtrl.addresses[i]);
+    }
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
     // تحميل العناوين المحفوظة عند وجود AppBar
-    if (isAppBar) _savedAddressesCtrl.fetchAddresses();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isAppBar) _savedAddressesCtrl.fetchAddresses();
+    });
 
     // الاستماع لتغير موقع المستخدم
     _addAddressCtrl.locationName.listen((location) async {

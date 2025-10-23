@@ -18,11 +18,13 @@ Widget ProfileInfoEditWidget(
     required String hint,
     required TextEditingController controller,
     bool readOnly = false,
+    initialValue,
   }) {
     return CusRegisterInfoWidget(
       context,
       maxLines: null,
       maxLength: null,
+      initialValue: initialValue,
       titleText: title,
       titleTextColor: context.colorsCustom.TextPrimary,
       HintText: hint,
@@ -92,11 +94,13 @@ Widget ProfileInfoEditWidget(
       buildTextField(
         title: context.firstName,
         hint: firstName,
+        initialValue: firstName,
         controller: firstNameController,
       ),
       buildTextField(
         title: context.lastName,
         hint: lastName,
+        initialValue: lastName,
         controller: lastNameController,
       ),
       verticalSpace(10.h),

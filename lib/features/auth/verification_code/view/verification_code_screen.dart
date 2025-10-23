@@ -1,5 +1,6 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
+import '../../../../core/helpers/constants.dart';
 import '../../../../core/widgets/app_loading_button.dart';
 import '../../../../core/widgets/def_app_bar_widget.dart';
 import '../../../../core/widgets/general_screen_widget.dart';
@@ -17,6 +18,8 @@ class verificationCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _verificationCodeController.phoneNumber.value = phoneNumber;
+    AppConstants.statusBar();
+
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: DefAppBarWidget(context),

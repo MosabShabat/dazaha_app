@@ -8,6 +8,8 @@ import '../../../../core/network/utils/api_result.dart';
 import '../../../../core/network/utils/app_response.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../core/helpers/app_shared_data.dart';
+import '../../../core/helpers/constants.dart';
+import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../auth/register/controller/register_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 import '../controller/user_info_repo.dart';
@@ -49,12 +51,20 @@ class UserInfoController extends GetxController {
   }
 
   Future<bool> validateAndUpdate(BuildContext context) async {
+    if (selectedUserImage.value == null) {
+      showErrorSnackbar(
+        context,
+        context.enterYourProfilePicture,
+        FirstColor: Colors.amber,
+      );
+      return false;
+    }
     if (firstNameController.text.isEmpty) {
-      showErrorSnackbar(context, context.firstName);
+      showErrorSnackbar(context, context.firstName, FirstColor: Colors.amber);
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      showErrorSnackbar(context, context.lastName);
+      showErrorSnackbar(context, context.lastName, FirstColor: Colors.amber);
       return false;
     }
     await _updateProfile();
@@ -98,6 +108,12 @@ class UserInfoController extends GetxController {
           await AppSharedData.setUserInfo(userData);
           await saveUserToken(userData.token ?? '');
           _profileController.fetchUserData();
+          showSnackbarWithButton(
+            Get.context!,
+            Get.context!.theDataHasBeenUpdatedSuccessfully,
+            AppConstants.success,
+            showButton: false,
+          );
 
           Get.toNamed(Routes.homeScreen);
         } else {

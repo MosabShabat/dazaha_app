@@ -2,7 +2,7 @@ import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../features/price_details/widgets/in_put_price_widget.dart';
 
-Widget MyPriceWidget(BuildContext context,controller) {
+Widget MyPriceWidget(BuildContext context, controller, {initialValue}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -17,6 +17,7 @@ Widget MyPriceWidget(BuildContext context,controller) {
         context,
         controller: controller,
         isShow: false,
+        initialValue: initialValue,
         FW: FontWeight.w400,
         hintText: context.yourPriceHere,
         textColor: context.colorsCustom.TextSecondary,

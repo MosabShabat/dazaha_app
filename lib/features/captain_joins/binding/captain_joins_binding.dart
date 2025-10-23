@@ -2,6 +2,7 @@ import '../../../features/captain_joins/controller/captain_joins_controller.dart
 import 'package:get/get.dart';
 
 import '../../../core/network/utils/api_service.dart';
+import '../../home/controller/home_controller.dart';
 import '../controller/captain_joins_repo.dart';
 
 class CaptainJoinsBinding extends Bindings {
@@ -11,5 +12,8 @@ class CaptainJoinsBinding extends Bindings {
       () => CaptainJoinsRepo(Get.find<ApiService>()),
     );
     Get.lazyPut(() => CaptainJoinsController());
+    Get.lazyPut(() => HomeController(initialTabIndex: 0));
+
+    //HomeController
   }
 }

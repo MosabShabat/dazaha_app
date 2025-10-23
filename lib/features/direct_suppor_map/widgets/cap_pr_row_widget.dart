@@ -2,10 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/constants.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 
 Widget CapPrRowWidget(BuildContext context, {required VoidCallback page}) {
-final  OrderDataController orderDataController = Get.find();
+  final OrderDataController orderDataController = Get.find();
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +52,17 @@ final  OrderDataController orderDataController = Get.find();
               color: context.colorsCustom.surfacePrimaryBlack,
             ),
           ).onTap(() {
-            Get.toNamed(Routes.reportAProblemChatSupportScreen);
+            Get.toNamed(
+              Routes.reportAProblemChatSupportScreen,
+              arguments: {
+                AppConstants.liveSupport: false,
+                AppConstants.uuid: orderDataController.userUuid,
+                AppConstants.receiverImage: orderDataController.userImage,
+                AppConstants.receiverName: orderDataController.userName,
+                AppConstants.receiverVerify: true,
+              },
+            );
+            // Get.toNamed(Routes.reportAProblemChatSupportScreen);
           }),
           horizontalSpace(10.w),
           CircleAvatar(

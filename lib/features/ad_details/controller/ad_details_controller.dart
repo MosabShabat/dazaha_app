@@ -44,11 +44,15 @@ class AdDetailsController extends GetxController {
 
   void validateInput(BuildContext context, String orderType, page) {
     if (titleController.text.trim().isEmpty) {
-      showErrorSnackbar(context, 'Enter Title');
+      showErrorSnackbar(context, context.enterTitle, FirstColor: Colors.amber);
       return;
     }
     if (decController.text.trim().isEmpty) {
-      showErrorSnackbar(context, 'Enter Description');
+      showErrorSnackbar(
+        context,
+        context.enterDescription,
+        FirstColor: Colors.amber,
+      );
       return;
     }
 
@@ -84,7 +88,35 @@ class AdDetailsController extends GetxController {
           'type': _orderDataController.itemTypes[i],
         };
       });
+      print('Date items:');
+      print('Date orderType:$orderType');
+      print('Date serviceUuid:${_orderDataController.serviceUuid.value}');
+      print('Date date:${_orderDataController.data.value}');
+      print('Date timeUuids:${_orderDataController.timeUuids}');
+      print('Date fromLat:${_orderDataController.fromLat.value}');
+      print('Date fromLng:${_orderDataController.fromLng.value}');
+      print('Date fromAddress:${_orderDataController.fromAddress.value}');
+      print('Date toLat:${_orderDataController.toLat.value}');
+      print('Date toLng:${_orderDataController.toLng.value}');
+      print('Date toAddress:${_orderDataController.toAddress.value}');
+      print('Date title:${titleController.text}');
+      print('Date description:${decController.text}');
+      print('Date sizeUuid:${_orderDataController.sizeUuid.value}');
+      print(
+        'Date fromDeliveryAddressUuid:${_orderDataController.fromDeliveryAddressUuid.value}',
+      );
+      print(
+        'Date toDeliveryAddressUuid:${_orderDataController.toDeliveryAddressUuid.value}',
+      );
+      print(
+        'Date receiptMethodUuid:${_orderDataController.receiptMethodUuid.value}',
+      );
+      print('Date canHelp:${_orderDataController.canHelp.value}');
+      print('Date helpers:${_orderDataController}');
+      print('Date images:$imageFiles');
+      print('Date items:$itemsData');
 
+      print('==========================');
       final result = await _ordersRepo.createOrder(
         orderType: orderType,
         serviceUuid: _orderDataController.serviceUuid.value,
@@ -93,9 +125,15 @@ class AdDetailsController extends GetxController {
         fromLat: _orderDataController.fromLat.value,
         fromLng: _orderDataController.fromLng.value,
         fromAddress: _orderDataController.fromAddress.value,
-        toLat: _orderDataController.toLat.value,
-        toLng: _orderDataController.toLng.value,
-        toAddress: _orderDataController.toAddress.value,
+        toLat: orderType == "type2"
+            ? _orderDataController.fromLat.value
+            : _orderDataController.toLat.value,
+        toLng: orderType == "type2"
+            ? _orderDataController.fromLng.value
+            : _orderDataController.toLng.value,
+        toAddress: orderType == "type2"
+            ? _orderDataController.fromAddress.value
+            : _orderDataController.toAddress.value,
         title: titleController.text,
         description: decController.text,
         sizeUuid: _orderDataController.sizeUuid.value,
@@ -112,7 +150,11 @@ class AdDetailsController extends GetxController {
       _handleResponse(result, page);
     } catch (e) {
       _setButtonPressed(false);
-      showErrorSnackbar(Get.context!, 'حدث خطأ أثناء معالجة البيانات: $e');
+      showErrorSnackbar(
+        Get.context!,
+        'حدث خطأ أثناء معالجة البيانات: $e',
+        FirstColor: Colors.red,
+      );
     }
   }
 
@@ -140,7 +182,11 @@ class AdDetailsController extends GetxController {
             Get.toNamed(Routes.priceDetailsScreen, arguments: {'page': page});
           }
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -162,7 +208,11 @@ class AdDetailsController extends GetxController {
               (response.data as Map<String, dynamic>)['sizes'] as List<dynamic>;
           sizeMod.assignAll(sizesRow.map((e) => Sizes.fromJson(e)).toList());
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
         isDataLoading.value = false;
       },

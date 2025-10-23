@@ -12,9 +12,15 @@ extension TranslationsExtension on BuildContext {
   String get continuation => tr('continuation');
   String get registerNewUser => tr('register_new_user');
   String get firstName => tr('first_name');
+  String get enterYourProfilePicture => tr('enter_your_profile_picture');
   String get enterAmount => tr('enter_amount');
+  String get enterIdOr => tr('enter_id_or');
+  String get enterVanOr => tr('enter_van_or');
   String get withdrawalSuccessfully => tr('withdrawal_successfully');
   String get enterFirstName => tr('enter_first_name');
+  String get enterTheFullCode => tr('enter_the_full_code');
+
+  //'Enter The Full Code'
   String get lastName => tr('last_name');
   String get enterLastName => tr('enter_last_name');
   String get email => tr('email');
@@ -91,6 +97,10 @@ extension TranslationsExtension on BuildContext {
       tr('for_example_a_cook_a_stove_a_broken_pot_a_bag_of_flour');
   String get aSimpleExplanationOfTheItems =>
       tr('a_simple_explanation_of_the_items');
+  String get joinAsCap => tr('join_as_cap');
+  String get offerDevSer => tr('offer_dev_ser');
+
+  //offer_dev_ser
   String get forExampleSize => tr('example_size_weight');
   String get whatAreTheSizesOfTheItems => tr('what_are_the_sizes_of_the_items');
   String get small => tr('small');
@@ -329,6 +339,8 @@ extension TranslationsExtension on BuildContext {
 
   String get pleaseEnterYourPhoneNumber => tr('please_enter_your_phone_number');
   String get error => tr('error');
+  String get enterPhoneNumber => tr('enter_phone_number');
+
   String get enterPhoneForLoginOrSignup =>
       tr('enter_phone_for_login_or_signup');
   String get countryCode => tr('country_code');
@@ -353,6 +365,10 @@ extension TranslationsExtension on BuildContext {
   String get enterDescriptionProblem => tr('enter_description_problem');
   String get successProblem => tr('success_problem');
   String get successOrder => tr('success_order');
+  String get theDataHasBeenUpdatedSuccessfully =>
+      tr('the_data_has_been_updated_successfully');
+  String get enterDescription => tr('enter_description');
+  //enter_description
   String get notificationEmptyTitle => tr('notification_empty_title');
   String get notificationEmptyDescription =>
       tr('notification_empty_description');

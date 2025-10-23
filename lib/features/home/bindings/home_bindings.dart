@@ -1,3 +1,5 @@
+import 'package:dazaha_app/features/choose_the_service/controller/choose_the_service_controller.dart';
+
 import '../../../features/home/controller/home_controller.dart';
 import 'package:get/get.dart';
 import '../../../core/network/utils/api_service.dart';
@@ -9,6 +11,7 @@ class HomeBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(() => HomeController(initialTabIndex: 0));
     Get.lazyPut(() => ProfileController());
+    Get.lazyPut(() => ChooseTheServiceController());
     Get.lazyPut<ProfileRepo>(() => ProfileRepo(Get.find<ApiService>()));
   }
 }

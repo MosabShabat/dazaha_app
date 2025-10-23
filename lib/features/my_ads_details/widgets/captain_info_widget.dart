@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/constants.dart';
 import '../../../core/network/models/orders/my_order_details.dart';
 
 Widget CaptainInfoWidget(BuildContext context, Driver driverData) {
@@ -70,9 +71,11 @@ Widget CaptainInfoWidget(BuildContext context, Driver driverData) {
             Get.toNamed(
               Routes.reportAProblemChatSupportScreen,
               arguments: {
-                'receiverUuid': driverData.uuid,
-                'receiverImage': driverData.image,
-                'receiverName': driverData.name,
+                AppConstants.liveSupport: false,
+                AppConstants.uuid: driverData.uuid ?? '',
+                AppConstants.receiverImage: driverData.image ?? '',
+                AppConstants.receiverName: driverData.name ?? '',
+                AppConstants.receiverVerify: true,
               },
             );
           }),

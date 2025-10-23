@@ -7,6 +7,8 @@ class OrderDataController extends GetxController {
   RxString timeUuid = ''.obs;
   RxString data = ''.obs;
   RxString OrderUuid = ''.obs;
+  RxString filterType = ''.obs;
+  RxString filterNum = ''.obs;
   RxString exceptPrice = ''.obs;
   RxString currencyVar = ''.obs;
   RxString orderIdVar = ''.obs;
@@ -19,6 +21,7 @@ class OrderDataController extends GetxController {
   RxString orderTitle = ''.obs;
   RxString reviewType = ''.obs;
   RxString itemStatus = ''.obs;
+  RxString placeName = ''.obs;
 
   RxList<String> itemNames = <String>[].obs;
   RxList<int> itemQuantities = <int>[].obs;
@@ -57,8 +60,11 @@ class OrderDataController extends GetxController {
   void setUserRate(String value) => userRate.value = value;
   void setUserUuid(String value) => userUuid.value = value;
   void setItemStatus(String value) => itemStatus.value = value;
+  void setPlaceName(String value) => placeName.value = value;
+  void setFilterType(String value) => filterType.value = value;
+  void setFilterNum(String value) => filterNum.value = value;
 
-  //userUuid
+  //placeName
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -149,11 +155,14 @@ class OrderDataController extends GetxController {
     data.value = '';
     userUuid.value = '';
     from.value = '';
+    filterType.value = '';
+    filterNum.value = '';
     itemStatus.value = '';
     userName.value = '';
     userImage.value = '';
     userRate.value = '';
     orderId.value = '';
+    placeName.value = '';
     orderTitle.value = '';
     to.value = '';
     OrderUuid.value = '';

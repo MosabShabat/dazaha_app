@@ -7,16 +7,25 @@ class WalletRepo {
   final ApiService _apiService;
   WalletRepo(this._apiService);
 
-  Future<ApiResult<AppResponse>> getWallet(int page) async {
+  Future<ApiResult<AppResponse>> getWallet({
+    int page = 1,
+    String? type,
+    String? status,
+  }) async {
     try {
-      final response = await _apiService.getWallet(page);
+      final response = await _apiService.getWallet(
+        page: page,
+        status: status,
+        type: type,
+      );
+      print('getOrdersAll response: $response');
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
 
-    Future<ApiResult<AppResponse>> depositPay({required String amount}) async {
+  Future<ApiResult<AppResponse>> depositPay({required String amount}) async {
     try {
       final response = await _apiService.depositPay(amount: amount);
       return ApiResult.success(response);

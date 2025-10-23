@@ -1,9 +1,6 @@
 import 'dart:developer';
-import '../../../../core/helpers/theme_exports.dart';
-import 'package:get/get.dart';
-import '../../../core/helpers/constants.dart';
+import '../../../core/constant/exports_libraries.dart';
 import '../../../core/widgets/app_snackbar.dart';
-import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/network/models/addresses/addresses_model.dart';
@@ -13,16 +10,28 @@ import 'saved_delivery_addresses_repo.dart';
 class SavedDeliveryAddressesController extends GetxController {
   final SavedDeliveryAddressesRepo _repo =
       Get.find<SavedDeliveryAddressesRepo>();
+  TextEditingController searchController = TextEditingController();
 
   var isLoading = true.obs;
   var addresses = <AddressItemModel>[].obs;
   var isLoadingDelete = false.obs;
   var deletingAddressUuid = ''.obs;
-
   // جلب العناوين
-  Future<void> fetchAddresses() async {
+
+  @override
+  void onInit() {
+    super.onInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchAddresses();
+    });
+  }
+
+  Future<void> fetchAddresses({isStore}) async {
     isLoading.value = true;
-    final ApiResult<AppResponse> result = await _repo.deliveryAddresses();
+    final ApiResult<AppResponse> result = await _repo.deliveryAddresses(
+      isStore: isStore,
+      search: searchController.text.isNotEmpty ? searchController.text : null,
+    );
 
     result.when(
       success: (response) {
@@ -39,13 +48,19 @@ class SavedDeliveryAddressesController extends GetxController {
       },
       failure: (errorMessage) {
         isLoading.value = false;
-        showErrorSnackbar(Get.context!, '${errorMessage}');
+        log('${errorMessage}');
+        //  showErrorSnackbar(Get.context!, '${errorMessage}');
       },
     );
   }
 
+  Future<void> rerefreshData() async {
+    addresses.clear();
+    await fetchAddresses();
+  }
+
   // حذف عنوان
-  Future<void> deleteAddress(String addressUuid) async {
+  Future<void> deleteAddress(String addressUuid, {isStore}) async {
     deletingAddressUuid.value = addressUuid;
     isLoadingDelete.value = true;
 
@@ -57,13 +72,13 @@ class SavedDeliveryAddressesController extends GetxController {
       success: (response) {
         isLoadingDelete.value = false;
         if (response.status == true) {
-          showSnackbarWithButton(
-            Get.context!,
-            Get.context!.addressDeletedSuccessfully,
-            AppConstants.success,
-            showButton: false,
-          );
-          fetchAddresses();
+          // showSnackbarWithButton(
+          //   Get.context!,
+          //   Get.context!.addressDeletedSuccessfully,
+          //   AppConstants.success,
+          //   showButton: false,
+          // );
+          fetchAddresses(isStore: isStore);
         } else {
           showErrorSnackbar(Get.context!, response.message ?? '');
         }

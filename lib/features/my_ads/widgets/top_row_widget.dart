@@ -11,9 +11,8 @@ Widget TopRowWidget(
   fontWeight,
   required GridList,
   required subTitle,
-  required gridController,
+  required typeFilter,
   required orderDataController,
-  s,
 }) {
   return LatestAnnouncementsRowWidget(
     context,
@@ -26,7 +25,7 @@ Widget TopRowWidget(
         context,
         gridList: GridList,
         subTitle: subTitle,
-        gridController: gridController,
+        typeFilter: typeFilter,
         orderDataController: orderDataController,
       );
     },

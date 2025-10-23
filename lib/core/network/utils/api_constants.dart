@@ -3,8 +3,7 @@ import '../../helpers/constants.dart';
 class ApiConstants {
   AppConstants type = AppConstants();
 
-  static final String apiBaseUrl =
-      'https://antiquewhite-baboon-214659.hostingersite.com/api/';
+  static final String apiBaseUrl = 'https://panel.dizzha.com/api/';
   static const String login = 'auth/send_code';
   static const String verifyCode = 'auth/verify_code';
   static const String register = 'auth/register';
@@ -24,7 +23,6 @@ class ApiConstants {
   static const String myOrder = 'user/my_orders';
   static const String payMentUrl = 'user/my_orders/payment/ready';
   static const String payUrl = 'user/my_orders/payment/pay';
-  
 
   //user/orders/times?date=
   static const String chats = 'chats';

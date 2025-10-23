@@ -1,5 +1,4 @@
-import 'package:dazaha_app/core/helpers/constants.dart';
-
+import '../../../core/helpers/constants.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/widgets/bottom_navigation_bar_widget.dart';
@@ -20,10 +19,14 @@ import '../widgets/transport_info_widget.dart';
 class ItemAdDetailsScreen extends StatelessWidget {
   ItemAdDetailsScreen({super.key});
   final controller = Get.find<ItemAdDetailsController>();
-  final orderDataController = Get.find<OrderDataController>()..clearAll();
+  final orderDataController = Get.find<OrderDataController>();
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      orderDataController.clearAll();
+    });
+
     final bool isShow = (Get.arguments as Map?)?['isShow'] ?? false;
 
     return Scaffold(
@@ -199,6 +202,10 @@ class ItemAdDetailsScreen extends StatelessWidget {
     return AddressWidget(
       isShow: true,
       isShowMet: isShowMet,
+      fromLat: item.fromLat ?? '',
+      fromLng: item.fromLng ?? '',
+      toLat: item.toLat ?? '',
+      toLng: item.toLng ?? '',
       from: item.from ?? '',
       fromAddress: item.fromAddress ?? '',
       toAddress: item.toAddress ?? '',

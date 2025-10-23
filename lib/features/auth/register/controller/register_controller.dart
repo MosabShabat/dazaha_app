@@ -22,6 +22,19 @@ class RegisterController extends GetxController {
     isChecked.value = value;
   }
 
+  Future<bool> toggleChecked(BuildContext context) async {
+    if (isChecked.value == false) {
+      showErrorSnackbar(
+        context,
+        context.termsAndConditions,
+        FirstColor: Colors.amber,
+      );
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   void validationInputData(
     BuildContext context,
     String phoneNumber,
@@ -36,7 +49,11 @@ class RegisterController extends GetxController {
     if (_isFieldEmpty(emailController, context.enterYourEmail, context)) return;
 
     if (isChecked.value == false) {
-      showErrorSnackbar(context, context.termsAndConditions);
+      showErrorSnackbar(
+        context,
+        context.termsAndConditions,
+        FirstColor: Colors.amber,
+      );
       return;
     }
 
@@ -58,7 +75,7 @@ class RegisterController extends GetxController {
     BuildContext context,
   ) {
     if (AppSharedMethods.isTextFieldEmpty(controller)) {
-      showErrorSnackbar(context, errorMessage);
+      showErrorSnackbar(context, errorMessage, FirstColor: Colors.amber);
       return true;
     }
     return false;

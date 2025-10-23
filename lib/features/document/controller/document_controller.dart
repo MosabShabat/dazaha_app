@@ -11,12 +11,9 @@ class DocumentController extends GetxController {
   var selectedIndex = 0.obs;
 
   final DocumentRepo _documentRepo = Get.find<DocumentRepo>();
-  TextEditingController searchController = TextEditingController();
+   TextEditingController searchController = TextEditingController();
   final OrderDataController orderDataController = Get.find();
 
-  void changeSelect(int index) {
-    selectedIndex.value = index;
-  }
   //Offers
 
   RxBool isLoading = false.obs;
@@ -27,11 +24,11 @@ class DocumentController extends GetxController {
   Rx<Offers>? offer;
   RxList<Item> offersList = <Item>[].obs;
   final ScrollController scrollController = ScrollController();
-  var initialized = false;
 
   @override
   void onInit() {
     super.onInit();
+    orderDataController.clearAll();
     resetControllerState();
     getOffers();
   }
@@ -133,6 +130,10 @@ class DocumentController extends GetxController {
 
   void _setLoading(bool value) {
     isLoading.value = value;
+  }
+
+  void changeSelect(int index) {
+    selectedIndex.value = index;
   }
 
   @override

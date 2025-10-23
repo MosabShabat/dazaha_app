@@ -1,10 +1,7 @@
-import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
-import '../../../core/helpers/constants.dart';
 import '../../../core/network/models/orders/order_details.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/widgets/app_snackbar.dart';
-import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../../features/choose_the_service/controller/order_data_controller.dart';
 import 'price_details_repo.dart';
 
@@ -40,13 +37,6 @@ class PriceDetailsController extends GetxController {
             summaryData.value = response.data is Map<String, dynamic>
                 ? OrderDetails.fromJson(response.data)
                 : null;
-
-            showSnackbarWithButton(
-              Get.context!,
-              Get.context!.successOrder,
-              AppConstants.success,
-              showButton: false,
-            );
 
             Get.toNamed(page);
           } else {

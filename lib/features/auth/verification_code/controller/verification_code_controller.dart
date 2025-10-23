@@ -81,12 +81,10 @@ class VerificationCodeController extends GetxController {
     if (validateOtp(otpCode.value)) {
       _verificationCodeRequest(context, otpCode.value, resetAll);
     } else {
-      showCustomSnackbar(
-        context: context,
-        svgIconPath: "assets/svgs/ic_error.svg",
-        textTitle: context.error,
-        text: 'Enter The Full Code',
-        snackPosition: SnackPosition.TOP,
+      showErrorSnackbar(
+        context,
+        context.enterTheFullCode,
+        FirstColor: Colors.amber,
       );
     }
   }

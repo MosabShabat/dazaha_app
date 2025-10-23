@@ -11,16 +11,25 @@ Widget StoreNameRowWidget(
   required AddADeliveryAddressController controller,
   required OrderDataController orderDataController,
 }) {
+  String _truncateWords(String text, int maxWords) {
+    final words = text.trim().split(RegExp(r'\s+'));
+    if (words.length <= maxWords) return text;
+    return '${words.take(maxWords).join(' ')}...';
+  }
+
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
-        text,
+        _truncateWords(text, 3),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: context.textStyles.titleLarge.bold.copyWith(
           color: context.colorsCustom.TextPrimary,
-          fontSize: 20.sp,
+          fontSize: 16.sp,
         ),
       ),
+
       if (widget != null)
         TextButton(
           onPressed: () async {

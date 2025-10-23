@@ -8,6 +8,7 @@ Widget InPutPriceWidget(
   textColor,
   hintText,
   FZ,
+  initialValue,
   controller,
   currency,
 }) {
@@ -30,6 +31,7 @@ Widget InPutPriceWidget(
         textAlign: TextAlign.center,
         readOnly: false,
         maxLines: 1,
+        initialValue: initialValue,
         obscureText: false,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: controller,

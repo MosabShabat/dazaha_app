@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../features/item_ad_details/widgets/sliver_app_bar_widgets/full_screen_image_viewer.dart';
 import '../constant/exports_libraries.dart';
 import '../constant/exports_widgets.dart';
 
@@ -19,6 +20,7 @@ Widget ImageListViewBuilderWidget(
           : BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         final imgFile = imagesItem[index];
+
         return CachedNetworkImage(
               imageUrl: (imgFile.image ?? ''),
               height: 150.w,
@@ -30,7 +32,16 @@ Widget ImageListViewBuilderWidget(
             .margin(EdgeInsets.symmetric(horizontal: 8.w))
             .width(imagesLen == 1 ? 345.w : 150.w)
             .height(imagesLen == 1 ? 175.h : 150.w)
-            .make();
+            .make()
+            .onTap(() {
+              List<String> images = [imagesItem[index].image ?? ''];
+              for (var i = 0; i < images.length; i++) {
+                print(images[i]);
+              }
+              Get.to(
+                () => FullScreenImageViewer(images: images, initialIndex: 0),
+              );
+            });
       },
     ),
   );

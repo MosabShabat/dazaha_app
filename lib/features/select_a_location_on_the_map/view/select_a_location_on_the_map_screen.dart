@@ -5,10 +5,14 @@ import '../../../core/helpers/app_assets.dart';
 import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/app_text_button.dart';
+import '../../choose_the_service/controller/order_data_controller.dart';
 import '../controller/select_a_location_on_the_map_controller.dart';
 
 class SelectALocationOnTheMapScreen extends StatelessWidget {
   final SelectALocationOnTheMapController mapController = Get.find();
+  final OrderDataController orderController = Get.find();
+
+  //OrderDataController
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,13 +133,23 @@ class SelectALocationOnTheMapScreen extends StatelessWidget {
       child: AppTextButton(
         context,
         buttonText: context.choice,
-        onPressed: () => Get.back(
-          result: {
-            AppConstants.lat: mapController.currentLocation!.latitude,
-            AppConstants.lng: mapController.currentLocation!.longitude,
-            AppConstants.placeName: mapController.placeName.value,
-          },
-        ),
+        onPressed: () {
+          orderController.placeName.value = mapController.placeName.value;
+          Get.back(
+            result: {
+              AppConstants.lat: mapController.currentLocation!.latitude,
+              AppConstants.lng: mapController.currentLocation!.longitude,
+              AppConstants.placeName: mapController.placeName.value,
+            },
+          );
+        },
+        // () => Get.back(
+        //   result: {
+        //     AppConstants.lat: mapController.currentLocation!.latitude,
+        //     AppConstants.lng: mapController.currentLocation!.longitude,
+        //     AppConstants.placeName: mapController.placeName.value,
+        //   },
+        // ),
       ),
     );
   }

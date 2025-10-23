@@ -34,10 +34,17 @@ Future<dynamic> AddOfferBottomSheetWidget(
           : Get.find<ItemAdDetailsController>();
 
       return SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+          top: 10,
+          bottom:
+              MediaQuery.of(context).viewInsets.bottom + 10, // <-- هذا هو الحل
+        ),
         child: Container(
           width: Width,
           color: context.colorsCustom.surfacePrimaryWhite,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
+          // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -66,6 +73,7 @@ Future<dynamic> AddOfferBottomSheetWidget(
               // حقل السعر الخاص بالمستخدم
               MyPriceWidget(
                 context,
+                initialValue: "${price}",
                 isUpdate
                     ? (controller as MyOfferAdDetailsController).priceController
                     : (controller as ItemAdDetailsController).priceController,

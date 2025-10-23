@@ -19,10 +19,17 @@ Future<dynamic> WithdrawalReqSheetWidget(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     builder: (context) {
       return SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+          top: 10,
+          bottom:
+              MediaQuery.of(context).viewInsets.bottom + 10, // <-- هذا هو الحل
+        ),
         child: Container(
           width: Width,
           color: context.colorsCustom.surfacePrimaryWhite,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
+          // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

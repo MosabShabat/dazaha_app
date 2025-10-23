@@ -50,7 +50,11 @@ class SelectStoreNameController extends GetxController {
     _setButtonPressed(true);
     for (int i = 0; i < textControllers.length; i++) {
       if (textControllers[i].text.isEmpty) {
-        showErrorSnackbar(context, context.enterTitle);
+        showErrorSnackbar(
+          context,
+          context.enterTitle,
+          FirstColor: Colors.amber,
+        );
         _setButtonPressed(false);
         return;
       }
@@ -63,20 +67,13 @@ class SelectStoreNameController extends GetxController {
       );
     }
     _setButtonPressed(false);
-    print('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
-    for (int i = 0; i < textControllers.length; i++) {
-      print(orderController.itemNames[i]);
-      print(orderController.itemQuantities[i]);
-      print(orderController.itemTypes[i]);
-    }
-    print('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
 
     Get.toNamed(
       Routes.pickUpPointScreen,
       arguments: {
         'page': Routes.adDetailsScreen,
         'pageArgs': {'page': Routes.summaryScreen, 'isSwitchShow': false},
-        'isAppBar': false,
+        'isAppBar': true,
       },
     );
   }

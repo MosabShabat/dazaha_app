@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/services.dart';
+
 import '../../../features/home_page/controller/home_repo.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constant/exports_libraries.dart';
 import 'app_shared_data.dart';
 
 bool isUserLogin = false;
@@ -107,6 +109,16 @@ class AppConstants {
   static int timerLastRequest = 0;
   static Timer? _timer;
 
+  static void statusBar() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.white, // لون خلفية شريط الحالة (غامق)
+        statusBarIconBrightness: Brightness.dark, // أيقونات بيضاء في أندرويد
+        statusBarBrightness: Brightness.dark, // أيقونات بيضاء في iOS
+      ),
+    );
+  }
+
   static void startTimer() {
     _timer?.cancel();
     log('statrt timer after 60 seconds');
@@ -143,6 +155,11 @@ class NotificationTypes {
   static const String type = 'type';
   static const String referenceUuid = 'reference_uuid';
   static const String general = 'general';
+  static const String withdrawAccepted = 'wallet_withdrawal_accepted';
+  static const String withdrawRejected = 'wallet_withdrawal_rejected';
+  static const String walletWithdrawal = 'wallet_withdrawal';
+  static const String walletDeposit = 'wallet_deposit';
+  static const String depositOrder = 'deposit_order';
 }
 
 class MessageTypes {

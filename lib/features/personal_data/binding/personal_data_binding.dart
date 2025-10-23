@@ -19,7 +19,6 @@ class PersonalDataBinding extends Bindings {
     Get.lazyPut<PersonalDataRepo>(
       () => PersonalDataRepo(Get.find<ApiService>()),
     );
-
     Get.lazyPut(() => RegisterController());
     Get.lazyPut(() => ProfileController());
     Get.lazyPut(() => PersonalDataController());

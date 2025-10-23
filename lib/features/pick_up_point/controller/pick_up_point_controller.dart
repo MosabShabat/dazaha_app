@@ -8,6 +8,5 @@ class PickUpPointController extends GetxController {
   onInit() {
     super.onInit();
     _savedDeliveryAddressesController.fetchAddresses();
-
   }
 }

@@ -54,6 +54,7 @@ class SavedDeliveryAddressesScreen extends StatelessWidget {
               return addressListShimmer(
                 context,
                 false,
+                isShow: true,
               ); // عرض shimmer أثناء التحميل
             } else if (controller.addresses.isEmpty) {
               return EmptyAddresses(context); // عرض رسالة عدم وجود بيانات

@@ -2,6 +2,8 @@ import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../core/helpers/constants.dart';
+import '../../profile/controller/profile_controller.dart';
 import '../../review_details/widgets/info_column_widget.dart';
 
 class ReportReviewDetailsScreen extends StatelessWidget {
@@ -9,6 +11,7 @@ class ReportReviewDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProfileController profileController = Get.find<ProfileController>();
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       body: SafeArea(
@@ -35,7 +38,13 @@ class ReportReviewDetailsScreen extends StatelessWidget {
                       onTap: () {
                         Get.back();
                         Get.back();
-                        Get.offNamed(Routes.weAreHereToHelpScreen);
+                        Get.offNamed(
+                          Routes.weAreHereToHelpScreen,
+                          arguments: {
+                            AppConstants.userName:
+                                profileController.userData.value?.name ?? '',
+                          },
+                        );
                       },
                     ),
                     verticalSpace(Height / 3.5),

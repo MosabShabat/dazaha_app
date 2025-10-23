@@ -75,6 +75,7 @@ class VerCodeMobileController extends GetxController {
         svgIconPath: "assets/svgs/ic_error.svg",
         textTitle: context.error,
         text: 'Enter The Full Code',
+        initColor: Colors.red,
         snackPosition: SnackPosition.TOP,
       );
     }

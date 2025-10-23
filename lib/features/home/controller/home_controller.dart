@@ -4,7 +4,6 @@ import '../../../../core/constant/exports_libraries.dart';
 
 import '../../../../core/widgets/set_status_bar.dart';
 
-
 class HomeController extends GetxController {
   RxInt selectedIndex;
   int lastIndexBeforeChooseService =
@@ -23,9 +22,7 @@ class HomeController extends GetxController {
   }
 
   void onTabChanged(int index) {
-    // إذا المستخدم راح لشاشة chooseTheServiceScreen خزن الصفحة الحالية
     if (index != 2) {
-      // 2 هو الفهرس الخاص بـ chooseTheServiceScreen حسب ترتيبك
       lastIndexBeforeChooseService = index;
     }
 
@@ -33,6 +30,12 @@ class HomeController extends GetxController {
     updateStatusBar(index);
   }
 
+  // showSnackbarWithButton(
+  //   Get.context!,
+  //   Get.context!.successOrder,
+  //   AppConstants.success,
+  //   showButton: false,
+  // );
   void updateStatusBar(int index) {
     switch (index) {
       case 0:

@@ -97,7 +97,15 @@ Widget StatusTypeWidget(
                         .withOpacity(0.2),
                     textColorB: context.colorsCustom.TextPrimary,
                     onTap: () {
-                      Get.toNamed(Routes.reportAProblemScreen);
+                      Get.toNamed(
+                        Routes.reportAProblemScreen,
+                        arguments: {
+                          // AppConstants.referenceType: AppConstants.purchase,
+                          // AppConstants.referenceUuid: orderUuid
+                          'referenceType': '',
+                          'referenceUuid': '',
+                        },
+                      );
                     },
                   ),
                   verticalSpace(20.h),

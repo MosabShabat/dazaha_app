@@ -41,6 +41,7 @@ class AddADeliveryAddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    locationName.value = '';
     getAddressDetails().then((_) {
       final isEdit =
           Get.arguments != null && Get.arguments[AppConstants.isEdit] == true;
@@ -69,17 +70,29 @@ class AddADeliveryAddressController extends GetxController {
     if (_isFieldEmpty(StreetController, context.address, context)) return;
 
     if (_isPhoneNumberEmpty()) {
-      showErrorSnackbar(context, context.mobileNumber, );
+      showErrorSnackbar(
+        context,
+        context.mobileNumber,
+        FirstColor: Colors.amber,
+      );
       return;
     }
 
     if (!_isValidPhoneNumber()) {
-      showErrorSnackbar(context, context.enterValidPhoneNumber, );
+      showErrorSnackbar(
+        context,
+        context.enterValidPhoneNumber,
+        FirstColor: Colors.amber,
+      );
       return;
     }
 
     if (latitude.value == 0.0 && longitude.value == 0.0) {
-      showErrorSnackbar(context, context.selectLocation, );
+      showErrorSnackbar(
+        context,
+        context.selectLocation,
+        FirstColor: Colors.amber,
+      );
       return;
     }
 
@@ -120,7 +133,7 @@ class AddADeliveryAddressController extends GetxController {
     BuildContext context,
   ) {
     if (AppSharedMethods.isTextFieldEmpty(controller)) {
-      showErrorSnackbar(context, errorMessage, );
+      showErrorSnackbar(context, errorMessage, FirstColor: Colors.amber);
       return true;
     }
     return false;
@@ -166,7 +179,7 @@ class AddADeliveryAddressController extends GetxController {
           _savedDeliveryAddressesController.fetchAddresses();
           Get.back(result: true);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '', );
+          showErrorSnackbar(Get.context!, response.message ?? '');
         }
       },
       failure: (error) {
@@ -274,7 +287,7 @@ class AddADeliveryAddressController extends GetxController {
           _savedDeliveryAddressesController.fetchAddresses();
           Get.back(result: true);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '', );
+          showErrorSnackbar(Get.context!, response.message ?? '');
         }
       },
       failure: (error) {
@@ -299,7 +312,7 @@ class AddADeliveryAddressController extends GetxController {
             rawCountries.map((e) => CountryModel.fromJson(e)).toList(),
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '', );
+          showErrorSnackbar(Get.context!, response.message ?? '');
         }
       },
       failure: (error) {
@@ -321,5 +334,10 @@ class AddADeliveryAddressController extends GetxController {
     selectedCityModel.value = city;
     selectedArea.assignAll(city.areas ?? []);
     selectedAreaModel.value = null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

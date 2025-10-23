@@ -12,9 +12,11 @@ void showSnackbarErrorApi(
   final errorMessage = errors.map((e) => e.getAllErrors()).join('\n');
   showCustomSnackbar(
     context: context,
+    initColor: Colors.red,
+    svgColor: Colors.red,
     svgIconPath: AppAssets.svgs.info_circle_icon,
-    textTitle: context.error,
-    text: errorMessage,
+    textTitle: errorMessage,
+    text: '',
     snackPosition: snackPosition ?? SnackPosition.TOP,
   );
 }
@@ -24,10 +26,12 @@ void showCustomSnackbar({
   required String svgIconPath,
   required String textTitle,
   required String text,
+  required initColor,
   SnackPosition snackPosition = SnackPosition.BOTTOM,
   TextStyle? titleStyle,
   TextStyle? messageStyle,
   Color? backgroundColor,
+  svgColor,
 }) {
   Get.snackbar(
     '',
@@ -36,29 +40,25 @@ void showCustomSnackbar({
       children: [
         Container(
           height: 50.h,
-          margin: const EdgeInsets.only(right: 6, left: 6),
+          margin: EdgeInsets.only(right: 6, left: 6, bottom: 6.h, top: 6.h),
           child: VerticalDivider(
-            color: Colors.red,
+            color: initColor,
             radius: BorderRadius.circular(4.r),
             width: 5.w,
             thickness: 5.w,
           ),
         ),
+        SvgPicture.asset(
+          svgIconPath,
+          width: 22.w,
+          height: 22.w,
+          fit: BoxFit.fill,
+          color: svgColor == null ? Colors.white : svgColor,
+        ),
       ],
     ),
     titleText: Row(
       children: [
-        Column(
-          children: [
-            verticalSpace(20.h),
-            SvgPicture.asset(
-              svgIconPath,
-              width: 30.w,
-              height: 30.w,
-              fit: BoxFit.fill,
-            ),
-          ],
-        ),
         Text(
           textTitle,
           style: titleStyle ?? AppTextStyles.font16Black700Bold(context),
@@ -67,11 +67,13 @@ void showCustomSnackbar({
     ),
     messageText: Row(
       children: [
-        horizontalSpace(30.w),
-        Text(
-          text,
-          style: messageStyle ?? AppTextStyles.font14Black500Medium(context),
-        ),
+        text == ''
+            ? SizedBox.shrink()
+            : Text(
+                text,
+                style:
+                    messageStyle ?? AppTextStyles.font14Black500Medium(context),
+              ),
       ],
     ),
     snackPosition: snackPosition,
@@ -154,94 +156,34 @@ void showStyleCustomSnackbar({
     ..showSnackBar(snackBar);
 }
 
-void showSuccessSnackbar(BuildContext context, String message) {
-  Get.snackbar(
-    '',
-    '',
-    snackPosition: SnackPosition.TOP,
-    backgroundColor: Colors.white,
-    borderRadius: 12.r,
-    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-    duration: Duration(seconds: 3),
-    titleText: Row(
-      children: [
-        SvgPicture.asset(AppAssets.svgs.ic_success, width: 24.w, height: 24.w),
-        SizedBox(width: 8.w),
-        Expanded(
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    ),
-    messageText: SizedBox.shrink(),
-    icon: Container(
-      height: 40.h,
-      child: VerticalDivider(color: Colors.green, thickness: 3.w),
-    ),
+void showErrorSnackbar(
+  BuildContext context,
+  String message, {
+  SnackPosition? snackPosition,
+  FirstColor,
+}) {
+  showCustomSnackbar(
+    context: context,
+    initColor: FirstColor == null ? Colors.red : FirstColor,
+    svgIconPath: AppAssets.svgs.ic_error,
+    textTitle: message,
+    text: '',
+    svgColor: FirstColor,
+    snackPosition: snackPosition ?? SnackPosition.TOP,
   );
 }
 
-void showErrorSnackbar(BuildContext context, String message) {
-  Get.snackbar(
-    '',
-    '',
+void showSuccessSnackbar(
+  BuildContext context,
+  String message, {
+  SnackPosition? snackPosition,
+}) {
+  showCustomSnackbar(
+    context: context,
+    initColor: Colors.green,
+    svgIconPath: AppAssets.svgs.ic_success,
+    textTitle: context.error,
+    text: '',
     snackPosition: SnackPosition.TOP,
-    backgroundColor: Colors.white,
-    borderRadius: 12.r,
-    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-    duration: Duration(seconds: 3),
-    titleText: Row(
-      children: [
-        SvgPicture.asset(AppAssets.svgs.ic_error, width: 24.w, height: 24.w),
-        SizedBox(width: 8.w),
-        Expanded(
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    ),
-    messageText: SizedBox.shrink(),
-    icon: Container(
-      height: 40.h,
-      child: VerticalDivider(color: Colors.amber, thickness: 3.w),
-    ),
   );
 }
-// void showErrorSnackbar(
-//   BuildContext context,
-//   String message,
-//   SnackPosition? snackPosition,
-// ) {
-//   showCustomSnackbar(
-//     context: context,
-//     svgIconPath: AppAssets.svgs.ic_error,
-//     textTitle: context.error,
-//     text: message,
-//     snackPosition: snackPosition ?? SnackPosition.TOP,
-//   );
-// }
-
-// void showSuccessSnackbar(BuildContext context, String message) {
-//   showCustomSnackbar(
-//     context: context,
-//     svgIconPath: AppAssets.svgs.ic_success,
-//     textTitle: context.error,
-//     text: message,
-//     snackPosition: SnackPosition.TOP,
-//   );

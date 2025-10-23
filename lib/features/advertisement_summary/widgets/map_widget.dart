@@ -9,6 +9,7 @@ class MapWidget extends StatefulWidget {
   final toLng;
   final fromAddress;
   final toAddress;
+  final Height;
   MapWidget({
     Key? key,
     this.fromLat,
@@ -17,6 +18,7 @@ class MapWidget extends StatefulWidget {
     this.toAddress,
     this.toLat,
     this.toLng,
+    this.Height,
   }) : super(key: key);
 
   @override
@@ -119,7 +121,7 @@ class _MapWidgetState extends State<MapWidget> {
     }
 
     return SizedBox(
-      height: 200.h,
+      height: widget.Height ?? 200.h,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12.r),
         child: GoogleMap(

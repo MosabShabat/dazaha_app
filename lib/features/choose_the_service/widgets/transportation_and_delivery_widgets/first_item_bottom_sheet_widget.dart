@@ -79,19 +79,6 @@ Future<dynamic> FirstItemBottomSheetWidget(
                               },
                             ),
                           );
-                          // CustomCameraScreen(
-                          //   page: Routes.bookingDateScreen,
-                          //   arguments: {
-                          //     'page': Routes.pickUpMethodUpOnDeliveryScreen,
-                          //   },
-                          // );
-                          // controller.openCameraWithPermission(
-                          //   context,
-                          //   page: Routes.bookingDateScreen,
-                          //   arguments: {
-                          //     'page': Routes.pickUpMethodUpOnDeliveryScreen,
-                          //   },
-                          // );
                         } else if (controller
                             .serviceModel!
                             .value

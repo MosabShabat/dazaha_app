@@ -37,8 +37,10 @@ class WeAreHereToHelpScreen extends StatelessWidget {
           Get.toNamed(
             Routes.reportAProblemScreen,
             arguments: {
-              'referenceType': 'order',
-              'referenceUuid': '6aa847ce-56e1-45b1-b1fb-f2740d983e0f',
+              // AppConstants.referenceType: AppConstants.purchase,
+              // AppConstants.referenceUuid: orderUuid
+              'referenceType': '',
+              'referenceUuid': '',
             },
           );
         },
@@ -60,8 +62,9 @@ class WeAreHereToHelpScreen extends StatelessWidget {
           children: [
             Text(
               username,
-              style: context.textStyles.bodySmall.regular
-                  .copyWith(color: context.colorsCustom.TextPrimary),
+              style: context.textStyles.bodySmall.regular.copyWith(
+                color: context.colorsCustom.TextPrimary,
+              ),
             ),
             verticalSpace(10.h),
             Text(

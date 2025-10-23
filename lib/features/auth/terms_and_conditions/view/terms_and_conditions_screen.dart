@@ -22,6 +22,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
     } else if (infoType == AppConstants.termsConditions) {
       _controller.termsConditions();
     }
+    AppConstants.statusBar();
 
     return Scaffold(
       appBar: DefAppBarWidget(context),

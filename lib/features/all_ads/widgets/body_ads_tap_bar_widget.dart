@@ -17,7 +17,7 @@ Widget BodyAdsTapBarWidget(
     padding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 0),
     child: Column(
       children: [
-        SerRowWidget(context,controller: controller),
+        SerRowWidget(context, controller: controller),
         verticalSpace(20.h),
         Obx(() {
           final items = controller.ordersModel?.value.items ?? [];
@@ -57,7 +57,7 @@ Widget BodyAdsTapBarWidget(
                     context,
                     title: item.title ?? '',
                     price: '${item.likedPrice ?? ''} ${item.currency ?? ''}',
-                    imageUrl: item.image ?? '',
+                    imageUrl: item.serviceImage ?? '',
                   ),
                 ),
               );

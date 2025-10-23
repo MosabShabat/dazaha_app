@@ -10,20 +10,32 @@ Widget TapRowDetWidget(
   required List<Offer> controller,
 }) {
   final orderDataController = Get.find<OrderDataController>();
+  List<Color> _statusColors(String? status) {
+    switch (status) {
+      case 'pending':
+        return [
+          context.colorsCustom.LightBlue,
+          context.colorsCustom.BluePrimary,
+        ];
+      case 'in_progress':
+        return [context.colorsCustom.LightOrange, Colors.orange];
+      default:
+        return [Colors.green.withOpacity(0.2), Colors.green];
+    }
+  }
+  // Color getStatusBgColor(String? status) =>
+  //     {
+  //       'pending': context.colorsCustom.LightBlue,
+  //       'in_progress': context.colorsCustom.LightOrange,
+  //     }[status] ??
+  //     Colors.green.withOpacity(0.2);
 
-  Color getStatusBgColor(String? status) =>
-      {
-        'pending': context.colorsCustom.LightBlue,
-        'in_progress': context.colorsCustom.LightOrange,
-      }[status] ??
-      Colors.green.withOpacity(0.2);
-
-  Color getStatusTextColor(String? status) =>
-      {
-        'pending': context.colorsCustom.BluePrimary,
-        'in_progress': Colors.orange,
-      }[status] ??
-      Colors.green;
+  // Color getStatusTextColor(String? status) =>
+  //     {
+  //       'pending': context.colorsCustom.BluePrimary,
+  //       'in_progress': Colors.orange,
+  //     }[status] ??
+  //     Colors.green;
 
   return ListView.separated(
     shrinkWrap: true,
@@ -32,8 +44,8 @@ Widget TapRowDetWidget(
     separatorBuilder: (_, __) => verticalSpace(10.h),
     itemBuilder: (context, index) {
       final offer = controller[index];
-      final bgColor = getStatusBgColor(offer.status);
-      final textColor = getStatusTextColor(offer.status);
+      final colors = _statusColors(offer.status);
+      // final textColor = getStatusTextColor(offer.status);
 
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,8 +108,9 @@ Widget TapRowDetWidget(
             children: [
               CaseContainerWidget(
                 context,
-                BackGroundColor: bgColor,
-                textColor: textColor,
+                BackGroundColor: colors[0],
+                colorBorder: colors[0],
+                textColor: colors[1],
                 text: offer.statusText ?? '',
                 textSize: 12.sp,
                 height: 30.h,
@@ -117,6 +130,7 @@ Widget TapRowDetWidget(
       ).paddingOnly(bottom: index == controller.lastIndex ? 15.h : 0.h).onTap(
         () {
           orderDataController.setItemUuid(offer.uuid ?? '');
+          orderDataController.setItemStatus(offer.status!);
           Get.toNamed(Routes.myOfferAdDetailsScreen);
         },
       );

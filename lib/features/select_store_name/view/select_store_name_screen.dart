@@ -43,12 +43,11 @@ class SelectStoreNameScreen extends StatelessWidget {
         wid: [
           StoreNameRowWidget(
             context,
-            text: 'مول المنصور',
+            text: '${orderDataController.placeName.value}',
             controller: aDeliveryAddressController,
             orderDataController: orderDataController,
           ),
           verticalSpace(20.h),
-
           ListDetCatWidget(context),
           verticalSpace(20.h),
           AddNewCatWidget(context),

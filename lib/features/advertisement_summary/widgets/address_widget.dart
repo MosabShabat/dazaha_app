@@ -10,6 +10,10 @@ class AddressWidget extends StatelessWidget {
   final String from;
   final String toAddress;
   final String to;
+  final String fromLat;
+  final String fromLng;
+  final String toLat;
+  final String toLng;
   final String? receiptMethodImage;
   final String? receiptMethodTitle;
   final String? receiptMethodDec;
@@ -25,6 +29,10 @@ class AddressWidget extends StatelessWidget {
     required this.fromAddress,
     required this.from,
     required this.toAddress,
+    required this.toLat,
+    required this.fromLat,
+    required this.fromLng,
+    required this.toLng,
     required this.to,
     this.receiptMethodImage,
     this.receiptMethodTitle,
@@ -37,8 +45,7 @@ class AddressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDeliveryService =
-        orderDataController.isDeliveryService; 
+    final isDeliveryService = orderDataController.isDeliveryService;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,6 +73,9 @@ class AddressWidget extends StatelessWidget {
           title: fromAddress,
           subTitle: from,
           isShow: true,
+          isMap: true,
+          lng: fromLng,
+          lat: fromLat,
         ),
         verticalSpace(10.h),
 
@@ -84,7 +94,10 @@ class AddressWidget extends StatelessWidget {
             img: AppAssets.svgs.marker_b_icon,
             title: toAddress,
             subTitle: to,
+            lng: toLng,
+            lat: toLat,
             isShow: true,
+            isMap: true,
           ),
         ],
 
@@ -105,6 +118,7 @@ class AddressWidget extends StatelessWidget {
             title: receiptMethodTitle ?? '',
             subTitle: receiptMethodDec ?? '',
             isShow: true,
+            isMap: false,
           ),
         ],
 
@@ -124,6 +138,7 @@ class AddressWidget extends StatelessWidget {
             subTitle: '',
             isShow: false,
             isSvgImage: false,
+            isMap: false,
           ),
           if (!orderDataController.serviceNumber.value.contains('1')) ...[
             Text(
@@ -136,10 +151,11 @@ class AddressWidget extends StatelessWidget {
             ListTileAdvertisementSummaryWidget(
               context,
               img: AppAssets.svgs.people_icon,
-              title: '$helpers ${context.helpersText}',
+              title: '$helpers ${context.assistants}',
               subTitle: '',
               isShow: false,
               isSvgImage: true,
+              isMap: false,
             ),
           ],
         ],

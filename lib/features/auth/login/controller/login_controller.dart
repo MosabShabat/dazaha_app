@@ -22,11 +22,19 @@ class LoginController extends GetxController {
 
   void validateInput(BuildContext context, bool? resetAll) {
     if (_isPhoneNumberEmpty()) {
-      showErrorSnackbar(context, context.error);
+      showErrorSnackbar(
+        context,
+        context.enterPhoneNumber,
+        FirstColor: Colors.amber,
+      );
       return;
     }
     if (!_isValidPhoneNumber()) {
-      showErrorSnackbar(context, 'Enter Phone number');
+      showErrorSnackbar(
+        context,
+        'Enter Phone number',
+        FirstColor: Colors.amber,
+      );
       return;
     }
     String phoneNumber = '$countryCode-${phoneController.text}';
@@ -55,6 +63,8 @@ class LoginController extends GetxController {
       success: (response) async {
         if (response.status == true) {
           isButtonPressed.value = false;
+          isProcessing.value = false; // ← مهم جداً
+
           isOpenBefore = true;
           Get.toNamed(
             Routes.verificationCodeScreen,
@@ -63,6 +73,8 @@ class LoginController extends GetxController {
               AppConstants.resatAll: resetAll,
             },
           );
+          isButtonPressed.value = false;
+          isProcessing.value = false;
         } else {
           isButtonPressed.value = false;
           isProcessing.value = false;
@@ -77,5 +89,13 @@ class LoginController extends GetxController {
         showSnackbarErrorApi(context, [error], null);
       },
     );
+  }
+
+  @override
+  void onClose() {
+    isButtonPressed.value = false;
+    isProcessing.value = false;
+    phoneController.clear();
+    super.onClose();
   }
 }

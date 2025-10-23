@@ -36,7 +36,7 @@ Widget BottomSavedAddressesWidget(
       ),
       Obx(() {
         return savedDeliveryAddressesController.isLoading.value
-            ? addressListShimmer(context, false)
+            ? addressListShimmer(context, false, isShow: true)
             : savedDeliveryAddressesController.addresses.isEmpty
             ? EmptyAddresses(context)
             : PickUpPointListViewWidget(

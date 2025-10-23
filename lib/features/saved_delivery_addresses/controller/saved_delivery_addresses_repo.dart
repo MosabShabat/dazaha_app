@@ -8,9 +8,15 @@ class SavedDeliveryAddressesRepo {
 
   SavedDeliveryAddressesRepo(this._apiService);
 
-  Future<ApiResult<AppResponse>> deliveryAddresses() async {
+  Future<ApiResult<AppResponse>> deliveryAddresses({
+    isStore,
+    String? search,
+  }) async {
     try {
-      final response = await _apiService.deliveryAddresses();
+      final response = await _apiService.deliveryAddresses(
+        isStore: isStore,
+        search: search,
+      );
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));

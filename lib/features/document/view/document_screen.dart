@@ -9,31 +9,36 @@ import '../../choose_the_service/controller/order_data_controller.dart';
 import '../controller/document_controller.dart';
 
 class DocumentScreen extends StatelessWidget {
-  const DocumentScreen({super.key});
-
+  DocumentScreen({super.key});
+  final DocumentController documentController = Get.find();
+  final OrderDataController orderDataController = Get.find();
+  final RefreshController refreshController = RefreshController();
   static const _statuses = ['', 'pending', 'in_progress', 'completed'];
 
   @override
   Widget build(BuildContext context) {
-    final DocumentController documentController = Get.find();
-    final OrderDataController orderDataController = Get.find();
-    final RefreshController refreshController = RefreshController();
-
-    // ✅ استدعاء مرة واحدة بعد أول رسم للشاشة
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!documentController.initialized) {
-        documentController.resetControllerState();
-        documentController.getOffers();
-
-        documentController.scrollController.addListener(() {
-          if (documentController.scrollController.position.extentAfter < 200) {
-            documentController.loadMoreOrdersModel();
-          }
-        });
-
-        documentController.initialized = true; // flag داخل الكنترولر
+    documentController.resetControllerState();
+    documentController.getOffers();
+    documentController.scrollController.addListener(() {
+      if (documentController.scrollController.position.extentAfter < 200) {
+        documentController.loadMoreOrdersModel();
       }
     });
+    // // ✅ استدعاء مرة واحدة بعد أول رسم للشاشة
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (!documentController.initialized) {
+    //     documentController.resetControllerState();
+    //     documentController.getOffers();
+
+    //     documentController.scrollController.addListener(() {
+    //       if (documentController.scrollController.position.extentAfter < 200) {
+    //         documentController.loadMoreOrdersModel();
+    //       }
+    //     });
+
+    //     documentController.initialized = true; // flag داخل الكنترولر
+    //   }
+    // });
 
     return DefaultTabController(
       length: _statuses.length,
@@ -47,6 +52,7 @@ class DocumentScreen extends StatelessWidget {
                 orderDataController.setOfferStatus(
                   _statuses[tabController.index],
                 );
+                documentController.resetControllerState();
                 documentController.refreshOrders();
               }
             });
@@ -58,6 +64,7 @@ class DocumentScreen extends StatelessWidget {
               child: SmartRefresher(
                 controller: refreshController,
                 onRefresh: () async {
+                  documentController.resetControllerState();
                   await documentController.refreshOrders();
                   refreshController.refreshCompleted();
                 },
@@ -70,47 +77,52 @@ class DocumentScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    TopRowWidget(
-                      context,
-                      title: context.myOffers,
-                      size: 20.sp,
-                      gridController: documentController,
-                      orderDataController: orderDataController,
-                      style: context.textStyles.titleLarge.bold.fontFamily,
-                      GridList: [
-                        context.transportationAndDelivery,
-                        context.buyForMe,
-                        context.removeAndRecycle,
-                        context.dedication,
-                      ],
-                      subTitle: context.ViewYourRequestsByServiceType,
-                    ),
-                    verticalSpace(10.h),
-                    TabBarTitleWidget(
-                      context,
-                      secTap: context.myOffers,
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        children: List.generate(
-                          _statuses.length,
-                          (_) => TabBarMyOfferWidget(
-                            context,
-                            controller: documentController,
+                child:
+                    Column(
+                          children: [
+                            TopRowWidget(
+                              context,
+                              title: context.myOffers,
+                              size: 20.sp,
+                              typeFilter: 1,
+                              orderDataController: orderDataController,
+                              style:
+                                  context.textStyles.titleLarge.bold.fontFamily,
+                              GridList: [
+                                context.transportationAndDelivery,
+                                context.buyForMe,
+                                context.removeAndRecycle,
+                                context.dedication,
+                              ],
+                              subTitle: context.ViewYourRequestsByServiceType,
+                            ),
+                            verticalSpace(10.h),
+                            TabBarTitleWidget(
+                              context,
+                              secTap: context.myOffers,
+                            ),
+                            Expanded(
+                              child: TabBarView(
+                                children: List.generate(
+                                  _statuses.length,
+                                  (_) => TabBarMyOfferWidget(
+                                    context,
+                                    controller: documentController,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ).box
+                        .width(Width)
+                        .padding(
+                          EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 16.h,
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ).box
-                    .width(Width)
-                    .padding(
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                    )
-                    .color(context.colorsCustom.surfacePrimaryWhite)
-                    .make(),
+                        )
+                        .color(context.colorsCustom.surfacePrimaryWhite)
+                        .make(),
               ),
             ),
           );

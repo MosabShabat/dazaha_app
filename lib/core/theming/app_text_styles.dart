@@ -118,8 +118,8 @@ class AppTextStyles {
       _style(16, fontWeight: FontWeight.w500, color: Colors.white);
 
   static TextStyle font16Black700Bold(BuildContext context) => _style(
-    16,
-    fontWeight: FontWeight.w700,
+    14,
+    fontWeight: FontWeight.w500,
     color: Theme.of(context).colorScheme.onSurface,
   );
 

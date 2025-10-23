@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../helpers/spacing.dart';
 import 'custom_shimmer.dart';
 
-Widget shimmerAddressList() {
+Widget shimmerAddressList({required isShow}) {
   return Container(
     color: Colors.transparent,
     width: double.infinity,
@@ -13,7 +13,9 @@ Widget shimmerAddressList() {
         verticalSpace(14),
         Row(
           children: [
-            CustomShimmer(width: 50, height: 50, borderRadius: 50),
+            isShow
+                ? CustomShimmer(width: 50, height: 50, borderRadius: 50)
+                : SizedBox.shrink(),
             horizontalSpace(8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +34,11 @@ Widget shimmerAddressList() {
   );
 }
 
-Widget addressListShimmer(BuildContext context, bool? isPadding) {
+Widget addressListShimmer(
+  BuildContext context,
+  bool? isPadding, {
+  required isShow,
+}) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: isPadding == true ? 16 : 0),
     child: ListView.builder(
@@ -45,7 +51,7 @@ Widget addressListShimmer(BuildContext context, bool? isPadding) {
             top: index == 0 ? 0 : 16.w,
             bottom: index == 4 ? 0 : 0,
           ),
-          child: shimmerAddressList(),
+          child: shimmerAddressList(isShow: isShow),
         );
       },
     ),

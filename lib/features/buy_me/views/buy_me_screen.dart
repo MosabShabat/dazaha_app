@@ -1,13 +1,16 @@
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/helpers/constants.dart';
+import '../../../core/widgets/app_shimmers/addresses_shimmer_list.dart';
 import '../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../core/widgets/general_screen_widget.dart';
 import '../../../core/widgets/latest_announcements_widget.dart';
 import '../../add_a_delivery_address/controller/add_a_delivery_address_controller.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
+import '../../saved_delivery_addresses/controller/saved_delivery_addresses_controller.dart';
 import '../../select_a_location_on_the_map_store/widgets/enter_store_name_widget.dart';
 import '../controller/buy_me_controller.dart';
+import '../widgets/addresses_using_widget.dart';
 import '../widgets/empty_tag_widget.dart';
 import '../widgets/note_widget.dart';
 import '../widgets/store_name_row_widget.dart';
@@ -17,9 +20,12 @@ class buyMeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buyController = Get.find<BuyMeController>();
-    final addressController = Get.find<AddADeliveryAddressController>();
-    final orderController = Get.find<OrderDataController>();
+    final BuyMeController buyController = Get.find<BuyMeController>();
+    final AddADeliveryAddressController addressController =
+        Get.find<AddADeliveryAddressController>();
+    final OrderDataController orderController = Get.find<OrderDataController>();
+    final SavedDeliveryAddressesController savedAddressesController =
+        Get.find<SavedDeliveryAddressesController>();
 
     // Listener محسن لتجنب الاستدعاءات المتكررة
     addressController.locationName.listen((location) async {
@@ -69,23 +75,55 @@ class buyMeScreen extends StatelessWidget {
               widget: const SizedBox.shrink(),
             ),
             verticalSpace(10.h),
-            EnterStoreNameWidget(context),
+            EnterStoreNameWidget(
+              context,
+              controller: savedAddressesController.searchController,
+              onSubmitted: (_) => savedAddressesController.rerefreshData(),
+            ),
             verticalSpace(15.h),
             if (!isNoteClosed)
-              NoteWidget(
-                context,
-                onTap: buyController.toggleIsColes,
-              ),
+              NoteWidget(context, onTap: buyController.toggleIsColes),
             verticalSpace(10.h),
-            LatestAnnouncementsRowWidget(
-              size: 14.sp,
-              context,
-              text: context.recentAddresses,
-              onPressed: () {},
-              Widget: const SizedBox.shrink(),
+            Obx(
+              () => savedAddressesController.isLoading.value
+                  ? addressListShimmer(context, false, isShow: false)
+                  : savedAddressesController.addresses.isEmpty
+                  ? EmptyTagWidget(context)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LatestAnnouncementsRowWidget(
+                          size: 14.sp,
+                          context,
+                          text: context.recentAddresses,
+                          onPressed: () {
+                            for (
+                              var i = 0;
+                              i < savedAddressesController.addresses.length;
+                              i++
+                            ) {
+                              savedAddressesController.deleteAddress(
+                                savedAddressesController.addresses[i].uuid!,
+                                isStore: 1,
+                              );
+                            }
+                          },
+                          Widget: savedAddressesController.addresses.isEmpty
+                              ? const SizedBox.shrink()
+                              : "${context.deleteAddress}".text
+                                    .size(12.sp)
+                                    .fontWeight(FontWeight.w400)
+                                    .color(context.colorsCustom.TextSecondary)
+                                    .make(),
+                        ),
+                        verticalSpace(20.h),
+                        AddressesUsingWidget(
+                          savedAddressesController,
+                          orderController,
+                        ),
+                      ],
+                    ),
             ),
-            verticalSpace(80.h),
-            EmptyTagWidget(context),
           ],
         );
       }),

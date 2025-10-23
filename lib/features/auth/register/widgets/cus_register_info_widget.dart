@@ -14,6 +14,7 @@ Widget CusRegisterInfoWidget(
   controller,
   readOnly,
   keyboardType,
+  initialValue,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,10 +29,12 @@ Widget CusRegisterInfoWidget(
       MyTextField(
         Radius: 10.0,
         textAlign: TextAlign.start,
+        
         readOnly: readOnly ?? false,
         maxLines: maxLines == null ? 1 : maxLines,
         maxLength: maxLength,
         obscureText: false,
+        initialValue:initialValue ,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: controller,
         keyboardType:keyboardType ?? TextInputType.name,

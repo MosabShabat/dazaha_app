@@ -161,6 +161,10 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
             // العنوان
             AddressWidget(
               isShow: false,
+              fromLat: offerDetails.order!.fromLat ?? '',
+              fromLng: offerDetails.order!.fromLng ?? '',
+              toLat: offerDetails.order!.toLat ?? '',
+              toLng: offerDetails.order!.toLng ?? '',
               isShowMet: offerDetails.order!.receiptMethod != null,
               from: offerDetails.order!.from ?? '',
               fromAddress: offerDetails.order!.fromAddress ?? '',
@@ -214,7 +218,15 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
             GeneralBottomAppWidget(
               context,
               text: context.reportAProblem,
-              onTap: () => Get.toNamed(Routes.reportAProblemScreen),
+              onTap: () => Get.toNamed(
+                Routes.reportAProblemScreen,
+                arguments: {
+                  // AppConstants.referenceType: AppConstants.purchase,
+                  // AppConstants.referenceUuid: orderUuid
+                  'referenceType': '',
+                  'referenceUuid': '',
+                },
+              ),
               backgroundColorB: context.colorsCustom.CardBackgroundLightGray,
               fontWeight: FontWeight.w500,
               textColorB: context.colorsCustom.TextPrimary,

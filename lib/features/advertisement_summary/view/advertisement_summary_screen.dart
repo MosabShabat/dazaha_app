@@ -92,6 +92,10 @@ class AdvertisementSummaryScreen extends StatelessWidget {
   Widget _buildAddress(BuildContext context, dynamic data) {
     return AddressWidget(
       isShow: false,
+      fromLng: data.fromLng ?? '',
+      fromLat: data.fromLat ?? '',
+      toLat: data.toLat ?? '',
+      toLng: data.toLng ?? '',
       isShowMet: data.receiptMethod != null,
       from: data.from ?? '',
       fromAddress: data.fromAddress ?? '',

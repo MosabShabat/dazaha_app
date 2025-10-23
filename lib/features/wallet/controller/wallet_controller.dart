@@ -12,10 +12,12 @@ import '../../../core/network/models/wallet/record_transactions_model.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar_with_button.dart';
+import '../../choose_the_service/controller/order_data_controller.dart';
 import 'wallet_repo.dart';
 
 class WalletController extends GetxController {
   final WalletRepo _walletRepo = Get.find<WalletRepo>();
+  var selectedIndex = 0.obs;
 
   RxBool isLoading = false.obs;
   var isLoadingMore = false.obs;
@@ -28,15 +30,24 @@ class WalletController extends GetxController {
   final RefreshController refreshController = RefreshController();
 
   final ScrollController scrollController = ScrollController();
+  final OrderDataController orderDataController = Get.find();
 
   final amountController = TextEditingController();
   RxBool isButtonPressed = false.obs;
+
+  void changeSelect(int index) {
+    selectedIndex.value = index;
+  }
 
   ExecuteOrderModel? executeOrderModel;
 
   void validateInput(String transactionType) {
     if (amountController.text.isEmpty) {
-      showErrorSnackbar(Get.context!, Get.context!.enterAmount);
+      showErrorSnackbar(
+        Get.context!,
+        Get.context!.enterAmount,
+        FirstColor: Colors.amber,
+      );
       return;
     }
     if (transactionType == AppConstants.deposit) {
@@ -77,7 +88,11 @@ class WalletController extends GetxController {
           }
         } else {
           isButtonPressed.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
         isButtonPressed.value = false;
       },
@@ -86,6 +101,13 @@ class WalletController extends GetxController {
         showSnackbarErrorApi(Get.context!, [error], null);
       },
     );
+  }
+
+  Future<void> refreshOrders() async {
+    walletModel!.value.recordTransactionsModel!.clear();
+    currentPage.value = 1;
+    hasMorePages.value = true;
+    await getWallet();
   }
 
   void withdrawRequest(String amount) async {
@@ -107,7 +129,11 @@ class WalletController extends GetxController {
           Get.toNamed(Routes.balanceWithdrawalRequestScreen);
         } else {
           isButtonPressed.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
         isButtonPressed.value = false;
       },
@@ -119,11 +145,27 @@ class WalletController extends GetxController {
   }
 
   Future<void> getWallet() async {
-    log("wallet request 1");
     if (isLoading.value || !hasMorePages.value) return;
     _setLoading(true);
-    log("wallet request 2");
-    final result = await _walletRepo.getWallet(currentPage.value);
+    var result;
+    if (orderDataController.filterNum.isNotEmpty &&
+        orderDataController.filterType.isNotEmpty) {
+      if (orderDataController.filterNum.value == 2 ||
+          orderDataController.filterNum.value == 3) {
+        result = await _walletRepo.getWallet(
+          page: currentPage.value,
+          status: '${orderDataController.filterType}',
+        );
+      } else if (orderDataController.filterNum.value == 0 ||
+          orderDataController.filterNum.value == 1) {
+        result = await _walletRepo.getWallet(
+          page: currentPage.value,
+          type: '${orderDataController.filterType}',
+        );
+      }
+    } else {
+      result = await _walletRepo.getWallet(page: currentPage.value);
+    }
 
     if (result is Success<AppResponse>) {
       final response = result.data;
@@ -141,7 +183,25 @@ class WalletController extends GetxController {
   Future<void> loadMoRerecordTransactionsModel() async {
     if (isLoadingMore.value || !hasMorePages.value) return;
     _setLoadingMore(true);
-    final result = await _walletRepo.getWallet(currentPage.value);
+    var result;
+    if (orderDataController.filterNum.isNotEmpty &&
+        orderDataController.filterType.isNotEmpty) {
+      if (orderDataController.filterNum.value == 2 ||
+          orderDataController.filterNum.value == 3) {
+        result = await _walletRepo.getWallet(
+          page: currentPage.value,
+          status: '${orderDataController.filterType}',
+        );
+      } else if (orderDataController.filterNum.value == 0 ||
+          orderDataController.filterNum.value == 1) {
+        result = await _walletRepo.getWallet(
+          page: currentPage.value,
+          type: '${orderDataController.filterType}',
+        );
+      }
+    } else {
+      result = await _walletRepo.getWallet(page: currentPage.value);
+    }
     if (result is Success<AppResponse>) {
       final response = result.data;
       if (response.data != null) {

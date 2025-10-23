@@ -8,13 +8,14 @@ import '../../../core/network/utils/api_error_model.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar.dart';
+import '../../auth/register/controller/register_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 import 'personal_data_repo.dart';
 
 class PersonalDataController extends GetxController {
   final PersonalDataRepo _personalDataRepo = Get.find<PersonalDataRepo>();
   final ProfileController _profileController = Get.find<ProfileController>();
-
+  final RegisterController _registerController = Get.find<RegisterController>();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final plateController = TextEditingController();
@@ -28,19 +29,35 @@ class PersonalDataController extends GetxController {
 
   /// Validate inputs and post data
   Future<bool> validateAndSubmit(BuildContext context) async {
+    if (selectedUserImage.value == null) {
+      showErrorSnackbar(
+        context,
+        context.enterYourProfilePicture,
+        FirstColor: Colors.amber,
+      );
+      return false;
+    }
     if (firstNameController.text.isEmpty) {
-      showErrorSnackbar(context, context.firstName);
+      showErrorSnackbar(context, context.firstName, FirstColor: Colors.amber);
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      showErrorSnackbar(context, context.lastName);
+      showErrorSnackbar(context, context.lastName, FirstColor: Colors.amber);
       return false;
     }
     if (plateController.text.isEmpty) {
-      showErrorSnackbar(context, context.plateNumber);
+      showErrorSnackbar(context, context.plateNumber, FirstColor: Colors.amber);
       return false;
     }
-
+    if (selectedIdImage.value == null) {
+      showErrorSnackbar(context, context.enterIdOr, FirstColor: Colors.amber);
+      return false;
+    }
+    if (selectedVehicleImage.value == null) {
+      showErrorSnackbar(context, context.enterVanOr, FirstColor: Colors.amber);
+      return false;
+    }
+    _registerController.toggleChecked(context);
     await _postData();
     return true;
   }

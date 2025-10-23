@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 
@@ -9,6 +12,9 @@ Widget ListTileAdvertisementSummaryWidget(
   required String subTitle,
   required bool isShow,
   required bool isSvgImage,
+  required bool isMap,
+  lat,
+  lng,
 }) {
   final textStyleTitle = context.textStyles.bodyMedium.medium.copyWith(
     color: context.colorsCustom.TextPrimary,
@@ -43,6 +49,42 @@ Widget ListTileAdvertisementSummaryWidget(
           ],
         ),
       ),
+      Spacer(),
+      isMap
+          ? Icon(
+              Icons.arrow_forward_ios,
+              color: context.colorsCustom.surfacePrimaryBlack,
+              size: 20.sp,
+            ).onTap(() async {
+              log('${lat} ');
+              log('${lng} ');
+
+              final double destinationLat =
+                  double.tryParse(lat.toString()) ?? 0.0;
+              final double destinationLng =
+                  double.tryParse(lng.toString()) ?? 0.0;
+
+              final Uri googleMapsUri = Uri.parse(
+                'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLng&travelmode=driving',
+              );
+
+              if (await canLaunchUrl(googleMapsUri)) {
+                await launchUrl(
+                  googleMapsUri,
+                  mode: LaunchMode.externalApplication,
+                );
+              } else {
+                Get.snackbar('خطأ', 'تعذّر فتح Google Maps');
+              }
+              //${lng}
+              // Get.to(
+              //   () => MapScreen(
+              //     lat: double.tryParse(lat.toString()) ?? 0.0,
+              //     lng: double.tryParse(lng.toString()) ?? 0.0,
+              //   ),
+              // );
+            })
+          : SizedBox.shrink(),
     ],
   ).box.width(Width).make().paddingOnly(bottom: 10.h);
 }

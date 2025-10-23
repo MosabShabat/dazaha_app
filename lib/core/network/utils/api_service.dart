@@ -78,8 +78,11 @@ abstract class ApiService {
   @POST(ApiConstants.updateMobile)
   Future<AppResponse> sendCodeUpdateMobile(@Field('mobile') String phoneNumber);
 
-  @GET(ApiConstants.deliveryAddresses)
-  Future<AppResponse> deliveryAddresses();
+  @GET('${ApiConstants.deliveryAddresses}')
+  Future<AppResponse> deliveryAddresses({
+    @Query('is_store') String? isStore,
+    @Query('search') String? search,
+  });
 
   @DELETE('${ApiConstants.deleteAddress}/{uuid}')
   Future<AppResponse> deleteAddress(@Path('uuid') String addressUuid);
@@ -261,8 +264,12 @@ abstract class ApiService {
   @GET('${ApiConstants.introUrl}')
   Future<AppResponse> getIntro({@Query('service_uuid') String? serviceUuid});
 
-  @GET(ApiConstants.wallet)
-  Future<AppResponse> getWallet(@Query('page') int page);
+  @GET('${ApiConstants.wallet}')
+  Future<AppResponse> getWallet({
+    @Query('page') int page = 1,
+    @Query('type') String? type,
+    @Query('status') String? status,
+  });
 
   //introUrl
 

@@ -1,9 +1,14 @@
 // import 'dart:convert';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // import 'package:get/get.dart';
+import '../../features/wallet/controller/wallet_controller.dart';
+import '../constant/exports_libraries.dart';
 import '../helpers/app_shared_data.dart';
 import '../helpers/constants.dart';
+import '../routes/routes.dart';
 
 class NotificationService {
   //new changes
@@ -16,56 +21,29 @@ class NotificationService {
   NotificationService._internal();
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  // final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
-  //     FlutterLocalNotificationsPlugin();
-
-  static const int _maxRetries = 3;
+  final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
     await _requestPermission();
+    await _initializeLocalNotifications();
     await fetchAndStoreFCMToken();
-    
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       log('Foreground Notification: ${message.notification?.title}');
       unreadNotificationLocal.value = 1;
       log('Foreground Data: ${message.data}');
-     // _handleForegroundNotification(message.data);
-      // showNotification(
-      //   message.notification?.title ?? 'No Title',
-      //   message.notification?.body ?? 'No Body',
-      //   message.data,
-      // );
+      _handleForegroundNotification(message.data);
+      showNotification(
+        message.notification?.title ?? 'No Title',
+        message.notification?.body ?? 'No Body',
+        message.data,
+      );
     });
 
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   log('Foreground Notification: ${message.notification?.title}');
-    //   log('Foreground Data: ${message.data}');
-    // });
-
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await _checkInitialMessage();
   }
-
-  // Future<void> init() async {
-  //   await _requestPermission();
-  //   // await _initializeLocalNotifications();
-  //   await fetchAndStoreFCMToken();
-
-  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //     log('Foreground Notification: ${message.notification?.title}');
-  //     // unreadNotificationLocal.value = 1;
-  //     log('Foreground Data: ${message.data}');
-  //     // _handleForegroundNotification(message.data);
-  //     // showNotification(
-  //     //   message.notification?.title ?? 'No Title',
-  //     //   message.notification?.body ?? 'No Body',
-  //     //   message.data,
-  //     // );
-  //   });
-
-  //   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  //   _checkInitialMessage();
-  // }
 
   Future<void> _requestPermission() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -80,143 +58,143 @@ class NotificationService {
     }
   }
 
-  // Future<void> _initializeLocalNotifications() async {
-  //   const AndroidInitializationSettings androidInitializationSettings =
-  //       AndroidInitializationSettings('@mipmap/ic_launcher');
-  //   final DarwinInitializationSettings iosInitializationSettings =
-  //       DarwinInitializationSettings(
-  //         requestAlertPermission: true,
-  //         requestSoundPermission: true,
-  //         requestBadgePermission: true,
-  //         notificationCategories: [],
-  //       );
+  Future<void> _initializeLocalNotifications() async {
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final DarwinInitializationSettings iosInitializationSettings =
+        DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestSoundPermission: true,
+          requestBadgePermission: true,
+          notificationCategories: [],
+        );
 
-  //   final InitializationSettings initializationSettings =
-  //       InitializationSettings(
-  //         android: androidInitializationSettings,
-  //         iOS: iosInitializationSettings,
-  //       );
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+          android: androidInitializationSettings,
+          iOS: iosInitializationSettings,
+        );
 
-  //   await _localNotificationsPlugin.initialize(
-  //     initializationSettings,
-  //     onDidReceiveNotificationResponse: (NotificationResponse response) async {
-  //       if (response.payload != null) {
-  //         print('Notification payload: ${response.payload}');
-  //       }
-  //     },
-  //   );
-  // }
+    await _localNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        if (response.payload != null) {
+          print('Notification payload: ${response.payload}');
+        }
+      },
+    );
+  }
 
-  // Future<void> showNotification(
-  //   String title,
-  //   String body,
-  //   Map<String, dynamic> data,
-  // ) async {
-  //   const AndroidNotificationDetails androidDetails =
-  //       AndroidNotificationDetails(
-  //         'channel_id',
-  //         'channel_name',
-  //         importance: Importance.high,
-  //         priority: Priority.high,
-  //         sound: RawResourceAndroidNotificationSound('notification_sound'),
-  //       );
+  Future<void> showNotification(
+    String title,
+    String body,
+    Map<String, dynamic> data,
+  ) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'channel_id',
+          'channel_name',
+          importance: Importance.high,
+          priority: Priority.high,
+          sound: RawResourceAndroidNotificationSound('notification_sound'),
+        );
 
-  //   const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
-  //     presentAlert: true,
-  //     presentBadge: true,
-  //     presentSound: true,
-  //     sound: 'notification_sound.mp3',
-  //   );
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+      sound: 'notification_sound.mp3',
+    );
 
-  //   const NotificationDetails notificationDetails = NotificationDetails(
-  //     android: androidDetails,
-  //     iOS: iosDetails,
-  //   );
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
 
-  //   await _localNotificationsPlugin.show(
-  //     0,
-  //     title,
-  //     body,
-  //     notificationDetails,
-  //     payload: jsonEncode(data),
-  //   );
-  // }
+    await _localNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      notificationDetails,
+      payload: jsonEncode(data),
+    );
+  }
 
-  // void _handleForegroundNotification(Map<String, dynamic> data) {
-  //   String? type = data[NotificationTypes.type];
-  //   String referenceUuid = data[NotificationTypes.referenceUuid];
+  void _handleForegroundNotification(Map<String, dynamic> data) {
+    String? type = data[NotificationTypes.type];
+    // String referenceUuid = data[NotificationTypes.referenceUuid];
 
-  //   if (type == NotificationTypes.newPurchase &&
-  //       Get.isRegistered<ChefPurchaseOrdersController>()) {
-  //     ChefPurchaseOrdersController controller = Get.find();
-  //     controller.resetControllerState();
-  //     controller.getPurchasesOrders();
-  //   }
-  // if (type == NotificationTypes.purchaseCaptainWay &&
-  //     Get.isRegistered<PurchasesOrderDetailsController>()) {
-  //   PurchasesOrderDetailsController controller = Get.find();
-  //   controller.getPurchasesOrderDetails(referenceUuid);
-  // }
-  // if (type == NotificationTypes.purchaseCompleted &&
-  //     Get.isRegistered<ChefPurchasesOrderDetailsController>()) {
-  //   ChefPurchasesOrderDetailsController controller = Get.find();
-  //   controller.getChefPurchasesDetails(referenceUuid);
-  // }
-  // if ((type == NotificationTypes.newOrder ||
-  //         type == NotificationTypes.orderCanceled) &&
-  //     Get.isRegistered<CookOtherOrdersController>()) {
-  //   CookOtherOrdersController controller = Get.find();
-  //   controller.getAddressData(false);
-  // }
-  // if (type == NotificationTypes.newOffer &&
-  //     Get.isRegistered<CookMeOrderDetailsController>()) {
-  //   CookMeOrderDetailsController controller = Get.find();
-  //   controller.sortOffers(referenceUuid, AppConstants.distance);
-  // }
-  // if (type == NotificationTypes.orderProgress &&
-  //     Get.isRegistered<ChefMyOffersController>()) {
-  //   ChefMyOffersController controller = Get.find();
-  //   controller.getAddressData();
-  // }
-  // if ((type == NotificationTypes.orderProgress ||
-  //         type == NotificationTypes.orderCompleted) &&
-  //     Get.isRegistered<ChefOfferAndPrivateDetailsController>()) {
-  //   ChefOfferAndPrivateDetailsController controller = Get.find();
-  //   controller.chefOfferDetials(referenceUuid);
-  // }
-  // if (type == NotificationTypes.orderCaptainWay &&
-  //     Get.isRegistered<CookMeOrderDetailsController>()) {
-  //   CookMeOrderDetailsController controller = Get.find();
-  //   controller.userCookMeDetails(referenceUuid, AppConstants.distance);
-  // }
+    //   if (type == NotificationTypes.newPurchase &&
+    //       Get.isRegistered<ChefPurchaseOrdersController>()) {
+    //     ChefPurchaseOrdersController controller = Get.find();P
+    //     controller.resetControllerState();
+    //     controller.getPurchasesOrders();
+    //   }
+    // if (type == NotificationTypes.purchaseCaptainWay &&
+    //     Get.isRegistered<PurchasesOrderDetailsController>()) {
+    //   PurchasesOrderDetailsController controller = Get.find();
+    //   controller.getPurchasesOrderDetails(referenceUuid);
+    // }
+    // if (type == NotificationTypes.purchaseCompleted &&
+    //     Get.isRegistered<ChefPurchasesOrderDetailsController>()) {
+    //   ChefPurchasesOrderDetailsController controller = Get.find();
+    //   controller.getChefPurchasesDetails(referenceUuid);
+    // }
+    // if ((type == NotificationTypes.newOrder ||
+    //         type == NotificationTypes.orderCanceled) &&
+    //     Get.isRegistered<CookOtherOrdersController>()) {
+    //   CookOtherOrdersController controller = Get.find();
+    //   controller.getAddressData(false);
+    // }
+    // if (type == NotificationTypes.newOffer &&
+    //     Get.isRegistered<CookMeOrderDetailsController>()) {
+    //   CookMeOrderDetailsController controller = Get.find();
+    //   controller.sortOffers(referenceUuid, AppConstants.distance);
+    // }
+    // if (type == NotificationTypes.orderProgress &&
+    //     Get.isRegistered<ChefMyOffersController>()) {
+    //   ChefMyOffersController controller = Get.find();
+    //   controller.getAddressData();
+    // }
+    // if ((type == NotificationTypes.orderProgress ||
+    //         type == NotificationTypes.orderCompleted) &&
+    //     Get.isRegistered<ChefOfferAndPrivateDetailsController>()) {
+    //   ChefOfferAndPrivateDetailsController controller = Get.find();
+    //   controller.chefOfferDetials(referenceUuid);
+    // }
+    // if (type == NotificationTypes.orderCaptainWay &&
+    //     Get.isRegistered<CookMeOrderDetailsController>()) {
+    //   CookMeOrderDetailsController controller = Get.find();
+    //   controller.userCookMeDetails(referenceUuid, AppConstants.distance);
+    // }
 
-  // if ((type == NotificationTypes.joinJhefAccepted ||
-  //         type == NotificationTypes.joinJhefRejected) &&
-  //     Get.isRegistered<UserAccountController>()) {
-  //   Get.offAllNamed(Routes.navigationBarScreen);
-  //   if (Get.isRegistered<HomeController>()) {
-  //     HomeController controller = Get.find();
-  //     controller.getLocation();
-  //   }
-  // }
+    // if ((type == NotificationTypes.joinJhefAccepted ||
+    //         type == NotificationTypes.joinJhefRejected) &&
+    //     Get.isRegistered<UserAccountController>()) {
+    //   Get.offAllNamed(Routes.navigationBarScreen);
+    //   if (Get.isRegistered<HomeController>()) {
+    //     HomeController controller = Get.find();
+    //     controller.getLocation();
+    //   }
+    // }
 
-  //   if ((type == NotificationTypes.withdrawAccepted ||
-  //           type == NotificationTypes.withdrawRejected ||
-  //           type == NotificationTypes.walletWithdrawal ||
-  //           type == NotificationTypes.walletDeposit) &&
-  //       Get.isRegistered<WalletController>()) {
-  //     WalletController controller = Get.find();
-  //     controller.resetControllerState();
-  //     controller.getWallet();
-  //   }
+    if ((type == NotificationTypes.withdrawAccepted ||
+            type == NotificationTypes.withdrawRejected ||
+            type == NotificationTypes.walletWithdrawal ||
+            type == NotificationTypes.walletDeposit) &&
+        Get.isRegistered<WalletController>()) {
+      WalletController controller = Get.find();
+      controller.resetControllerState();
+      controller.getWallet();
+    }
 
-  //   if ((type == NotificationTypes.accountVerificationAccepte ||
-  //           type == NotificationTypes.accountVerificationRejecte) &&
-  //       Get.isRegistered<ChefAccountController>()) {
-  //     ChefAccountController controller = Get.find();
-  //     controller.profile();
-  //   }
-  // }
+    //   if ((type == NotificationTypes.accountVerificationAccepte ||
+    //           type == NotificationTypes.accountVerificationRejecte) &&
+    //       Get.isRegistered<ChefAccountController>()) {
+    //     ChefAccountController controller = Get.find();
+    //     controller.profile();
+    //   }
+  }
 
   void _onNotificationClicked(String type, String referenceUuid) {
     log('Notification clicked: $type');
@@ -263,17 +241,10 @@ class NotificationService {
       // case NotificationTypes.joinJhefRejected:
       //   Get.offAllNamed(Routes.navigationBarScreen);
       //   break;
-      // case NotificationTypes.withdrawAccepted:
-      // case NotificationTypes.withdrawRejected:
-      //   Get.toNamed(
-      //     Routes.walletScreen,
-      //     arguments: {
-      //       AppConstants.type: AppSharedData.currentUserInfo!.isChef == 1
-      //           ? AppConstants.chef
-      //           : AppConstants.user,
-      //     },
-      //   );
-      //   break;
+      case NotificationTypes.withdrawAccepted:
+      case NotificationTypes.withdrawRejected:
+        Get.toNamed(Routes.walletScreen);
+        break;
       // case NotificationTypes.accountVerificationAccepte:
       // case NotificationTypes.accountVerificationRejecte:
       //   Get.toNamed(Routes.navigationBarScreen);
@@ -282,52 +253,20 @@ class NotificationService {
       //     controller.getLocation();
       //   }
       //   break;
-      // default:
-      //   log('Unknown notification payload: $type');
+      default:
+        log('Unknown notification payload: $type');
     }
   }
-  //flutter.targetSdkVersion
 
   Future<void> fetchAndStoreFCMToken() async {
-    int attempt = 0;
-    while (attempt < _maxRetries) {
-      try {
-        final token = await _firebaseMessaging.getToken();
-        if (token != null && token.isNotEmpty) {
-          await AppSharedData.setSecuredString(
-            AppSharedKeys.fcmTokenKey,
-            token,
-          );
-          log("🔑 FCM Token: $token");
-          return;
-        } else {
-          throw Exception("FCM Token is null or empty");
-        }
-      } catch (e) {
-        attempt++;
-        log("❌ FCM Token attempt $attempt failed: $e");
-        if (attempt >= _maxRetries) {
-          log("❌ Unable to fetch FCM Token after $_maxRetries attempts");
-        } else {
-          await Future.delayed(Duration(seconds: 2));
-        }
-      }
+    try {
+      String? token = await _firebaseMessaging.getToken();
+      await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token!);
+      log('FCM Token: $token');
+    } catch (e) {
+      log('Error fetching FCM Token: $e');
     }
   }
-
-  // Future<void> fetchAndStoreFCMToken() async {
-  //   try {
-  //     log("🔑 FCM Token is");
-
-  //     String? token = await _firebaseMessaging.getToken();
-  //     log("🔑 FCM Token: $token");
-
-  //     await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token!);
-  //     log("🔑 FCM Token: $token");
-  //   } catch (e) {
-  //     log("❌ Error fetching FCM Token: $e");
-  //   }
-  // }
 
   Future<void> _checkInitialMessage() async {
     RemoteMessage? initialMessage = await _firebaseMessaging
@@ -341,10 +280,9 @@ class NotificationService {
       _onNotificationClicked(type!, referenceUuid ?? '');
     }
   }
+}
 
-  Future<void> _firebaseMessagingBackgroundHandler(
-    RemoteMessage message,
-  ) async {
-    print('Background Message: ${message.data}');
-  }
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  log('Background Message: ${message.data}');
 }

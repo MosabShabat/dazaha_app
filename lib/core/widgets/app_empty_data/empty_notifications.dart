@@ -24,11 +24,7 @@ Widget EmptyNotifications(BuildContext context) {
             context.notificationEmptyTitle,
             style: AppTextStyles.font22Black700Bold(context),
           ),
-          verticalSpace(8),
-          Text(
-            context.notificationEmptyDescription,
-            style: AppTextStyles.font14Grey500Medium(context),
-          ),
+       
         ],
       ),
     ),

@@ -19,6 +19,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppConstants.statusBar();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,

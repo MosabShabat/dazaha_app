@@ -1,4 +1,3 @@
-import 'package:dazaha_app/core/helpers/constants.dart';
 
 import '../../../core/constant/exports_widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -58,7 +57,6 @@ class HomePageScreen extends StatelessWidget {
     if (_homePageController.isOffline.isTrue) {
       return NoConnectionTextWidget(context);
     }
-    AppConstants.isDriver = _homePageController.userData.value!.isDriver;
 
     final currentOrder = _homePageController.homeModel.value?.currentOrder;
     final currentOffer = _homePageController.homeModel.value?.currentOffer;

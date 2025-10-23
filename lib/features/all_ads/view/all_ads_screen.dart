@@ -17,10 +17,10 @@ class AllAdsScreen extends StatelessWidget {
 
   final Map<int, String> _serviceUuidMap = {
     0: '',
-    1: '?service_uuid=69fb5c27-11ef-4637-986f-ed484b388c7f',
-    2: '?service_uuid=9cc543c0-793c-43d9-88a6-6e3db6082ef5',
-    3: '?service_uuid=7f625412-ca00-431d-a7fd-12863fc851ef',
-    4: '?service_uuid=153a7042-eb9e-42b8-9d5c-498623adb5da',
+    1: '69fb5c27-11ef-4637-986f-ed484b388c7f',
+    2: '9cc543c0-793c-43d9-88a6-6e3db6082ef5',
+    3: '7f625412-ca00-431d-a7fd-12863fc851ef',
+    4: '153a7042-eb9e-42b8-9d5c-498623adb5da',
   };
 
   void _setupScrollListener() {
@@ -34,7 +34,8 @@ class AllAdsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int initialTabIndex = (Get.arguments?['index'] ?? 0).clamp(0, 4);
-    _orderDataController.setOfferStatus(_serviceUuidMap[initialTabIndex] ?? '');
+    _orderDataController.setServiceUuid(_serviceUuidMap[initialTabIndex] ?? '');
+    // _orderDataController.setOfferStatus('receiving_offers');
     _allAdsController.resetControllerState();
     _allAdsController.getOrdersAll();
     _setupScrollListener();
@@ -49,8 +50,13 @@ class AllAdsScreen extends StatelessWidget {
             tabController.addListener(() {
               if (!tabController.indexIsChanging) {
                 final selectedUuid = _serviceUuidMap[tabController.index] ?? '';
-                _orderDataController.setOfferStatus(selectedUuid);
+                _orderDataController.setServiceUuid(selectedUuid);
+                // _orderDataController.setOfferStatus('receiving_offers');
                 _allAdsController.refreshOrders();
+
+                // final selectedUuid = _serviceUuidMap[tabController.index] ?? '';
+                // _orderDataController.setOfferStatus(selectedUuid);
+                // _allAdsController.refreshOrders();
               }
             });
           });
