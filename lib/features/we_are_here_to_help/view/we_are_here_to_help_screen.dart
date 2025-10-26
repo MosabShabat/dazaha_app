@@ -5,6 +5,7 @@ import '../../../../features/user_info/widgets/user_info_app_bar_widget.dart';
 import '../../../../features/we_are_here_to_help/widgets/cus_list_tail_widget.dart';
 import '../../../../features/we_are_here_to_help/widgets/thr_bottom_sheet_widget.dart';
 import '../../../core/helpers/constants.dart';
+import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 
 class WeAreHereToHelpScreen extends StatelessWidget {
   final String username;
@@ -18,31 +19,40 @@ class WeAreHereToHelpScreen extends StatelessWidget {
         'title': context.liveSupport,
         'icon': AppAssets.svgs.music_play_icon,
         'onTap': () {
-          Get.toNamed(
-            Routes.reportAProblemChatSupportScreen,
-            arguments: {
-              AppConstants.liveSupport: true,
-              AppConstants.uuid: 'technical_support',
-              AppConstants.receiverImage: 'image_url',
-              AppConstants.receiverName: 'Support Bot',
-              AppConstants.receiverVerify: true,
-            },
-          );
+          if (AppConstants.userToken.isNotEmpty &&
+              AppConstants.userToken != '' &&
+              AppConstants.userUUid.isNotEmpty &&
+              AppConstants.userUUid != '') {
+            Get.toNamed(
+              Routes.reportAProblemChatSupportScreen,
+              arguments: {
+                AppConstants.liveSupport: true,
+                AppConstants.uuid: 'technical_support',
+                AppConstants.receiverImage: 'image_url',
+                AppConstants.receiverName: 'Support Bot',
+                AppConstants.receiverVerify: true,
+              },
+            );
+          } else {
+            showLoginRequiredBottomSheet(Get.context!);
+          }
         },
       },
       {
         'title': context.reportAProblem,
         'icon': AppAssets.svgs.lifebuoy_icon,
         'onTap': () {
-          Get.toNamed(
-            Routes.reportAProblemScreen,
-            arguments: {
-              // AppConstants.referenceType: AppConstants.purchase,
-              // AppConstants.referenceUuid: orderUuid
-              'referenceType': '',
-              'referenceUuid': '',
-            },
-          );
+          if (AppConstants.userToken.isNotEmpty &&
+              AppConstants.userToken != '' &&
+              AppConstants.userUUid.isNotEmpty &&
+              AppConstants.userUUid != '') {
+            Get.toNamed(
+              Routes.reportAProblemScreen,
+              arguments: {'referenceType': '', 'referenceUuid': ''},
+            );
+          } else {
+            showLoginRequiredBottomSheet(Get.context!);
+          }
         },
       },
       {

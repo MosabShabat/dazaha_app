@@ -52,6 +52,22 @@ class OrderDataController extends GetxController {
 
   RxList<XFile> images = <XFile>[].obs; // صور باستخدام ImagePicker
 
+  RxString pointALat = ''.obs;
+  RxString pointALng = ''.obs;
+
+  RxString pointBLat = ''.obs;
+  RxString pointBLng = ''.obs;
+
+  void setPointA({required String lat, required String lng}) {
+    pointALat.value = lat;
+    pointALng.value = lng;
+  }
+
+  void setPointB({required String lat, required String lng}) {
+    pointBLat.value = lat;
+    pointBLng.value = lng;
+  }
+
   void setServiceUuid(String value) => serviceUuid.value = value;
   void setItemUuid(String value) => itemUuid.value = value;
   void setTimeUuid(String value) => timeUuid.value = value;

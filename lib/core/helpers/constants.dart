@@ -48,6 +48,8 @@ class AppNavigationType {
 
 class AppConstants {
   static const String id = 'id';
+  static String userToken = '';
+  static String userUUid = '';
   static const String image = 'image';
   static const String lat = 'lat';
   static const String lng = 'lng';

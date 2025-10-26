@@ -11,7 +11,7 @@ import 'core/routes/app_routes.dart';
 class DazahaApp extends StatelessWidget {
   final AppRouter appRouter;
   final List<NavigatorObserver> navigatorObservers;
-  final String initialRoute; // ✅ تم إضافة هذا
+  final String initialRoute;
 
   final ThemeController themeController = Get.find();
 
@@ -19,7 +19,7 @@ class DazahaApp extends StatelessWidget {
     super.key,
     required this.appRouter,
     required this.navigatorObservers,
-    required this.initialRoute, // ✅ نمرره هنا
+    required this.initialRoute,
   });
 
   @override
@@ -42,10 +42,7 @@ class DazahaApp extends StatelessWidget {
                   ? ThemeMode.dark
                   : ThemeMode.light,
               initialBinding: AppBindings(),
-
-              // ✅ استخدم القيمة الممررة من main()
               initialRoute: initialRoute,
-
               getPages: appRouter.routes,
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,

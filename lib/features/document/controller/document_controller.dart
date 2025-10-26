@@ -8,7 +8,7 @@ import '../../choose_the_service/controller/order_data_controller.dart';
 import 'document_repo.dart';
 
 class DocumentController extends GetxController {
-  var selectedIndex = 0.obs;
+RxInt selectedIndex = 0.obs; // بدل int
 
   final DocumentRepo _documentRepo = Get.find<DocumentRepo>();
    TextEditingController searchController = TextEditingController();

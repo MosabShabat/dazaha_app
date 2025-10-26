@@ -6,6 +6,8 @@ import 'package:easy_localization/easy_localization.dart';
 extension TranslationsExtension on BuildContext {
   String get appName => tr('app_name');
   String get login => tr('login');
+  String get welcome => tr('welcome');
+  String get mustLogin => tr('you_must_have_login');
   String get enterMobileNumberToRegisterOrLogin =>
       tr('enter_mobile_number_to_register_or_login');
   String get mobileNumber => tr('mobile_number');
@@ -250,6 +252,10 @@ extension TranslationsExtension on BuildContext {
       tr('enter_the_new_mobile_number_to_update');
   String get next => tr('next');
   String get edit => tr('edit');
+  String get operationFailedTryAgain => tr('operation_failed_try_again');
+  String get operationSuccessful => tr('operation_successful');
+
+  //operation_failed_try_again
   String get delete => tr('delete');
   String get weAreHereToHelp => tr('we_are_here_to_help');
   String get liveSupport => tr('live_support');

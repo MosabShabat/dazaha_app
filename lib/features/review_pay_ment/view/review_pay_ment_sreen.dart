@@ -26,16 +26,16 @@ class ReviewPayMentScreen extends StatelessWidget {
                   title: context.paymentCompletedSuccessfully,
                   subTitle: context.trackYourOrderStatusAndSee,
                 ),
-                GeneralBottomAppWidget(
-                  context,
-                  text: context.orderTracking,
-                  onTap: () {
-                    Get.toNamed(
-                      Routes.myAdsDetailsScreen,
-                      arguments: {'isShow': true},
-                    );
-                  },
-                ),
+                // GeneralBottomAppWidget(
+                //   context,
+                //   text: context.orderTracking,
+                //   onTap: () {
+                //     Get.toNamed(
+                //       Routes.myAdsDetailsScreen,
+                //       arguments: {'isShow': true},
+                //     );
+                //   },
+                // ),
                 verticalSpace(40.h),
                 Text(
                   context.home,

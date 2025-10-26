@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dazaha_app/core/constant/exports_libraries.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:get/get.dart';
 import '../../../core/helpers/app_shared_data.dart';
@@ -41,9 +42,18 @@ class ProfileController extends GetxController {
         if (response.status == true && response.data != null) {
           userData.value = UserData.fromJson(response.data);
         } else if (response.errors != null) {
-          showSnackbarErrorApi(Get.context!, response.errors!, null);
+          print("response.errors:  ${response.errors}");
+          response.errors!.isEmpty
+              ? SizedBox.shrink()
+              : showSnackbarErrorApi(Get.context!, response.errors!, null);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '', );
+          print("response.message:  ${response.message}");
+
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -81,7 +91,11 @@ class ProfileController extends GetxController {
             arguments: {AppConstants.resatAll: true},
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '', );
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

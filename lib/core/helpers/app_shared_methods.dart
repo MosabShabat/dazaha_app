@@ -25,16 +25,17 @@ class AppSharedMethods extends GetxService {
   }
 
   static String getInitialRoute(bool isOpenBefore, bool isUserLogin) {
-    if (!isOpenBefore) {
-      // أول مرة يفتح التطبيق
-      return Routes.loginScreen;
-    } else if (!isUserLogin) {
-      // فتح التطبيق قبل كذا، لكن ما سجل دخول
-      return Routes.loginScreen;
-    } else {
-      // مستخدم قديم ومسجل دخول
-      return Routes.homeScreen;
-    }
+    return Routes.homeScreen;
+    // if (!isOpenBefore) {
+    //   // أول مرة يفتح التطبيق
+    //   return Routes.loginScreen;
+    // } else if (!isUserLogin) {
+    //   // فتح التطبيق قبل كذا، لكن ما سجل دخول
+    //   return Routes.loginScreen;
+    // } else {
+    //   // مستخدم قديم ومسجل دخول
+    //   return Routes.homeScreen;
+    // }
   }
 
   // فحص إذا الـ TextField فاضي

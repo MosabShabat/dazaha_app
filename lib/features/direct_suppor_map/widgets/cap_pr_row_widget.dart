@@ -56,9 +56,9 @@ Widget CapPrRowWidget(BuildContext context, {required VoidCallback page}) {
               Routes.reportAProblemChatSupportScreen,
               arguments: {
                 AppConstants.liveSupport: false,
-                AppConstants.uuid: orderDataController.userUuid,
-                AppConstants.receiverImage: orderDataController.userImage,
-                AppConstants.receiverName: orderDataController.userName,
+                AppConstants.uuid: '${orderDataController.userUuid}',
+                AppConstants.receiverImage: '${orderDataController.userImage}',
+                AppConstants.receiverName: '${orderDataController.userName}',
                 AppConstants.receiverVerify: true,
               },
             );
@@ -74,10 +74,10 @@ Widget CapPrRowWidget(BuildContext context, {required VoidCallback page}) {
             ),
           ).onTap(() {
             // page;
-            Get.toNamed(
-              Routes.priceDetailsReviewScreen,
-              arguments: {'page': page},
-            );
+            // Get.toNamed(
+            //   Routes.priceDetailsReviewScreen,
+            //   arguments: {'page': page},
+            // );
           }),
         ],
       ),

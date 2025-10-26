@@ -258,19 +258,6 @@ class AppRouter {
       binding: VerificationCodeBinding(),
       transition: Transition.noTransition,
     ),
-    // GetPage(
-    //   name: Routes.priceCatDetailsScreen,
-    //   page: () => PriceCatDetailsScreen(),
-    //   binding: PriceCatDetailsBinding(),
-    //   transition: Transition.noTransition,
-    // ),
-
-    // GetPage(
-    //   name: Routes.directSupportScreen,
-    //   page: () => DirectSupportScreen(),
-    //   binding: DirectSupportBinding(),
-    //   transition: Transition.noTransition,
-    // ),
 
     GetPage(
       name: Routes.directSupportMapScreen,

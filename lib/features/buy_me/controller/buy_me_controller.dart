@@ -7,7 +7,8 @@ class BuyMeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    savedDeliveryAddressesController.fetchAddresses(isStore: 1);
+    savedDeliveryAddressesController.index!.value = '1';
+    savedDeliveryAddressesController.fetchAddresses(isStore: '1');
   }
 
   var isCloseNote = false.obs;
@@ -15,3 +16,4 @@ class BuyMeController extends GetxController {
     isCloseNote.value = !isCloseNote.value;
   }
 }
+//0595142044

@@ -37,8 +37,6 @@ Widget DelInfoWidget(
           color: context.colorsCustom.TextPrimary,
         ),
       ),
-      //.box.width(120.w).height(val).make(),
-      //.box.width(280.w).make(),
     ],
   );
 }

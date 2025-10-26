@@ -229,9 +229,8 @@ class ItemAdDetailsScreen extends StatelessWidget {
     final item = controller.orderDetailsItem!.value;
     final orderDataController = Get.find<OrderDataController>();
 
-    return AppConstants.isDriver == '0' || AppConstants.isDriver == '2'
-        ? SizedBox.shrink()
-        : BottomNavigationBarWidget(
+    return AppConstants.isDriver == '1'
+        ? BottomNavigationBarWidget(
             text: context.addAnOffer,
             context,
             GetScreen: () {
@@ -250,6 +249,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
                 },
               );
             },
-          );
+          )
+        : SizedBox.shrink();
   }
 }

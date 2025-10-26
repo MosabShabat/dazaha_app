@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
+import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/app_shimmers/custom_shimmer.dart';
+import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 import '../../home_page/controller/home_page_controller.dart';
 import '../controller/choose_the_service_controller.dart';
 import '../controller/order_data_controller.dart';
@@ -35,161 +37,132 @@ Widget ChooseServiceListViewWidget(
           }
 
           void openServiceSheet() {
-            orderController.serviceUuid.value = '';
-            orderController
-              ..setServiceUuid(service.uuid ?? '')
-              ..setServiceName(service.title ?? '')
-              ..serviceNumber('$index');
-            chooseTheServiceController.getIntro(
-              "${orderController.serviceUuid}",
-            );
+            if (AppConstants.userToken.isNotEmpty &&
+                AppConstants.userToken != '' &&
+                AppConstants.userUUid.isNotEmpty &&
+                AppConstants.userUUid != '') {
+              orderController.serviceUuid.value = '';
+              orderController
+                ..setServiceUuid(service.uuid ?? '')
+                ..setServiceName(service.title ?? '')
+                ..serviceNumber('$index');
+              chooseTheServiceController.getIntro(
+                "${orderController.serviceUuid}",
+              );
 
-            switch (index) {
-              case 0:
-                FirstItemBottomSheetWidget(
-                  context,
-                  controller: chooseTheServiceController,
-                );
-                break;
-              case 1:
-                SecondItemBottomSheetWidget(
-                  context,
-                  topTitle: context.buyForMe,
-                  controller: chooseTheServiceController,
-                  onTap: () {
-                    Get.back();
-                    if (chooseTheServiceController
-                        .serviceModel!
-                        .value
-                        .intros!
-                        .isEmpty) {
-                      Get.toNamed(
-                        Routes.bookingDateScreen,
-                        arguments: {
-                          'page': Routes.buyMeScreen,
-                          'pageArgs': null,
-                        },
-                      );
-                    } else if (chooseTheServiceController
-                        .serviceModel!
-                        .value
-                        .intros!
-                        .isNotEmpty) {
-                      Get.toNamed(Routes.removeAndRecycleServiceFeaturesScreen);
-                    }
-                  },
-                );
-                break;
-              case 2:
-                SecondItemBottomSheetWidget(
-                  context,
-                  topTitle: context.removeAndRecycle,
-                  controller: chooseTheServiceController,
-                  onTap: () {
-                    Get.back();
-                    if (chooseTheServiceController
-                        .serviceModel!
-                        .value
-                        .intros!
-                        .isEmpty) {
-                      Get.to(
-                        () => CustomCameraScreen(
-                          page: Routes.bookingDateScreen,
+              switch (index) {
+                case 0:
+                  FirstItemBottomSheetWidget(
+                    context,
+                    controller: chooseTheServiceController,
+                  );
+                  break;
+                case 1:
+                  SecondItemBottomSheetWidget(
+                    context,
+                    topTitle: context.buyForMe,
+                    controller: chooseTheServiceController,
+                    onTap: () {
+                      Get.back();
+                      if (chooseTheServiceController
+                          .serviceModel!
+                          .value
+                          .intros!
+                          .isEmpty) {
+                        Get.toNamed(
+                          Routes.bookingDateScreen,
                           arguments: {
-                            'page': Routes.adDetailsScreen,
-                            'pageArgs': {
-                              'page': Routes.advertisementSummaryScreen,
-                              'isSwitchShow': true,
-                            },
+                            'page': Routes.buyMeScreen,
+                            'pageArgs': null,
                           },
-                        ),
-                      );
-                      // CustomCameraScreen(
-                      //   page: Routes.bookingDateScreen,
-                      //   arguments: {
-                      //     'page': Routes.adDetailsScreen,
-                      //     'pageArgs': {
-                      //       'page': Routes.advertisementSummaryScreen,
-                      //       'isSwitchShow': true,
-                      //     },
-                      //   },
-                      // );
-                      // chooseTheServiceController.openCameraWithPermission(
-                      //   context,
-                      //   page: Routes.bookingDateScreen,
-                      //   arguments: {
-                      //     'page': Routes.adDetailsScreen,
-                      //     'pageArgs': {
-                      //       'page': Routes.advertisementSummaryScreen,
-                      //       'isSwitchShow': true,
-                      //     },
-                      //   },
-                      // );
-                    } else if (chooseTheServiceController
-                        .serviceModel!
-                        .value
-                        .intros!
-                        .isNotEmpty) {
-                      Get.toNamed(Routes.removeAndRecycleServiceFeaturesScreen);
-                    }
-                  },
-                );
-                break;
-              case 3:
-                SecondItemBottomSheetWidget(
-                  context,
-                  topTitle: context.dedication,
-                  controller: chooseTheServiceController,
-                  onTap: () {
-                    Get.back();
-                    if (chooseTheServiceController
-                        .serviceModel!
-                        .value
-                        .intros!
-                        .isEmpty) {
-                      Get.to(
-                        () => CustomCameraScreen(
-                          page: Routes.bookingDateScreen,
-                          arguments: {
-                            'page': Routes.adDetailsScreen,
-                            'pageArgs': {
-                              'page': Routes.advertisementSummaryScreen,
-                              'isSwitchShow': true,
+                        );
+                      } else if (chooseTheServiceController
+                          .serviceModel!
+                          .value
+                          .intros!
+                          .isNotEmpty) {
+                        Get.toNamed(
+                          Routes.removeAndRecycleServiceFeaturesScreen,
+                        );
+                      }
+                    },
+                  );
+                  break;
+                case 2:
+                  SecondItemBottomSheetWidget(
+                    context,
+                    topTitle: context.removeAndRecycle,
+                    controller: chooseTheServiceController,
+                    onTap: () {
+                      Get.back();
+                      if (chooseTheServiceController
+                          .serviceModel!
+                          .value
+                          .intros!
+                          .isEmpty) {
+                        Get.to(
+                          () => CustomCameraScreen(
+                            page: Routes.bookingDateScreen,
+                            arguments: {
+                              'page': Routes.adDetailsScreen,
+                              'pageArgs': {
+                                'page': Routes.advertisementSummaryScreen,
+                                'isSwitchShow': true,
+                              },
                             },
-                          },
-                        ),
-                      );
-                      // CustomCameraScreen(
-                      //   page: Routes.bookingDateScreen,
-                      //   arguments: {
-                      //     'page': Routes.adDetailsScreen,
-                      //     'pageArgs': {
-                      //       'page': Routes.advertisementSummaryScreen,
-                      //       'isSwitchShow': true,
-                      //     },
-                      //   },
-                      // );
-                      // chooseTheServiceController.openCameraWithPermission(
-                      //   context,
-                      //   page: Routes.bookingDateScreen,
-                      //   arguments: {
-                      //     'page': Routes.adDetailsScreen,
-                      //     'pageArgs': {
-                      //       'page': Routes.advertisementSummaryScreen,
-                      //       'isSwitchShow': true,
-                      //     },
-                      //   },
-                      // );
-                    } else if (chooseTheServiceController
-                        .serviceModel!
-                        .value
-                        .intros!
-                        .isNotEmpty) {
-                      Get.toNamed(Routes.removeAndRecycleServiceFeaturesScreen);
-                    }
-                  },
-                );
-                break;
+                          ),
+                        );
+                      } else if (chooseTheServiceController
+                          .serviceModel!
+                          .value
+                          .intros!
+                          .isNotEmpty) {
+                        Get.toNamed(
+                          Routes.removeAndRecycleServiceFeaturesScreen,
+                        );
+                      }
+                    },
+                  );
+                  break;
+                case 3:
+                  SecondItemBottomSheetWidget(
+                    context,
+                    topTitle: context.dedication,
+                    controller: chooseTheServiceController,
+                    onTap: () {
+                      Get.back();
+                      if (chooseTheServiceController
+                          .serviceModel!
+                          .value
+                          .intros!
+                          .isEmpty) {
+                        Get.to(
+                          () => CustomCameraScreen(
+                            page: Routes.bookingDateScreen,
+                            arguments: {
+                              'page': Routes.adDetailsScreen,
+                              'pageArgs': {
+                                'page': Routes.advertisementSummaryScreen,
+                                'isSwitchShow': true,
+                              },
+                            },
+                          ),
+                        );
+                      } else if (chooseTheServiceController
+                          .serviceModel!
+                          .value
+                          .intros!
+                          .isNotEmpty) {
+                        Get.toNamed(
+                          Routes.removeAndRecycleServiceFeaturesScreen,
+                        );
+                      }
+                    },
+                  );
+                  break;
+              }
+            } else {
+              showLoginRequiredBottomSheet(Get.context!);
             }
           }
 

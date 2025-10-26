@@ -6,6 +6,8 @@ part 'execute_order_model.g.dart';
 class ExecuteOrderModel {
   @JsonKey(name: 'payment_uuid')
   final String? paymentUuid;
+  @JsonKey(name: 'payment_url')
+  final String? paymentUrl;
   final String? status;
 
   @JsonKey(name: 'payment_way_uuid')
@@ -24,6 +26,7 @@ class ExecuteOrderModel {
 
   ExecuteOrderModel({
     this.paymentUuid,
+    this.paymentUrl,
     this.status,
     this.paymentWayUuid,
     this.amount,

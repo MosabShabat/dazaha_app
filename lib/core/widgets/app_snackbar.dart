@@ -181,8 +181,9 @@ void showSuccessSnackbar(
   showCustomSnackbar(
     context: context,
     initColor: Colors.green,
+    svgColor: Colors.green,
     svgIconPath: AppAssets.svgs.ic_success,
-    textTitle: context.error,
+    textTitle: message,
     text: '',
     snackPosition: SnackPosition.TOP,
   );

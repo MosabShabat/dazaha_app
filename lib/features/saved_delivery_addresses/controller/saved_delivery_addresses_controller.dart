@@ -10,29 +10,31 @@ import 'saved_delivery_addresses_repo.dart';
 class SavedDeliveryAddressesController extends GetxController {
   final SavedDeliveryAddressesRepo _repo =
       Get.find<SavedDeliveryAddressesRepo>();
+  final RxString? index = '0'.obs;
   TextEditingController searchController = TextEditingController();
 
   var isLoading = true.obs;
   var addresses = <AddressItemModel>[].obs;
   var isLoadingDelete = false.obs;
   var deletingAddressUuid = ''.obs;
-  // جلب العناوين
 
   @override
   void onInit() {
     super.onInit();
+    addresses.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      fetchAddresses();
+      fetchAddresses(isStore: index!.value);
     });
   }
 
   Future<void> fetchAddresses({isStore}) async {
     isLoading.value = true;
     final ApiResult<AppResponse> result = await _repo.deliveryAddresses(
-      isStore: isStore,
+      isStore: isStore ?? '0',
+
       search: searchController.text.isNotEmpty ? searchController.text : null,
     );
-
+    //0697331269
     result.when(
       success: (response) {
         isLoading.value = false;

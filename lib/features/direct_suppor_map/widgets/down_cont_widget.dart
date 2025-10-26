@@ -1,5 +1,3 @@
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../features/direct_suppor_map/controller/direct_support_map_controller.dart';
@@ -48,49 +46,8 @@ Widget DownContWidget(
                     context,
                     text: context.startTheJourney,
                     onTap: () async {
-                      // احصل على الإحداثيات من الكنترولر
-                      final double fromLat =
-                          double.tryParse(
-                            orderDataController.fromLat.value.toString(),
-                          ) ??
-                          0.0;
-                      final double fromLng =
-                          double.tryParse(
-                            orderDataController.fromLng.value.toString(),
-                          ) ??
-                          0.0;
-                      final double toLat =
-                          double.tryParse(
-                            orderDataController.toLat.value.toString(),
-                          ) ??
-                          0.0;
-                      final double toLng =
-                          double.tryParse(
-                            orderDataController.toLng.value.toString(),
-                          ) ??
-                          0.0;
-
-                      // رابط Google Maps Directions
-                      final Uri googleMapsUri = Uri.parse(
-                        'https://www.google.com/maps/dir/?api=1'
-                        '&origin=$fromLat,$fromLng'
-                        '&destination=$toLat,$toLng'
-                        '&travelmode=driving',
-                      );
-
-                      // فتح تطبيق Google Maps
-                      if (await canLaunchUrl(googleMapsUri)) {
-                        await launchUrl(
-                          googleMapsUri,
-                          mode: LaunchMode.externalApplication,
-                        );
-
-                        // بعد فتح الخريطة، غيّر الحالة إلى "delivered"
-                        controller.putState('delivered');
-                      } else {
-                        Get.snackbar('خطأ', 'تعذّر فتح Google Maps');
-                      }
-                    },
+                      await controller.openGoogleMaps();
+                    },//0598699787
                   );
 
                 case 1: // delivered

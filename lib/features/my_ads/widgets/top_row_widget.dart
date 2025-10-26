@@ -9,10 +9,12 @@ Widget TopRowWidget(
   required size,
   required style,
   fontWeight,
-  required GridList,
+  required List<String> GridList,
   required subTitle,
-  required typeFilter,
-  required orderDataController,
+  required RxInt selectedIndex,
+  required Function(int) onTapSel,
+  required VoidCallback onPress,
+  required VoidCallback onTep,
 }) {
   return LatestAnnouncementsRowWidget(
     context,
@@ -25,8 +27,10 @@ Widget TopRowWidget(
         context,
         gridList: GridList,
         subTitle: subTitle,
-        typeFilter: typeFilter,
-        orderDataController: orderDataController,
+        selectedIndex: selectedIndex,
+        onTapSel: onTapSel,
+        onPress: onPress,
+        onTep: onTep,
       );
     },
     Widget: SvgPicture.asset(AppAssets.svgs.filter_icon),

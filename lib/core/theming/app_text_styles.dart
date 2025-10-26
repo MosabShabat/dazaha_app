@@ -108,6 +108,11 @@ class AppTextStyles {
         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
       );
 
+  static TextStyle font14Black700Bold(BuildContext context) => _style(
+    16,
+    fontWeight: FontWeight.w700,
+    color: Theme.of(context).colorScheme.onSurface,
+  );
   static TextStyle font16Black500Medium(BuildContext context) => _style(
     16,
     fontWeight: FontWeight.w500,

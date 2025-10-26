@@ -1,10 +1,12 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/constants.dart';
 import '../../../features/home_page/widgets/cus_button_widget.dart';
 import '../../../features/wallet/widgets/withdrawal_req_sheet_widget.dart';
 import '../controller/wallet_controller.dart';
 
-Widget WithRecRowBottomWidget(BuildContext context, {
+Widget WithRecRowBottomWidget(
+  BuildContext context, {
   required WalletController walletController,
 }) {
   return Row(
@@ -32,7 +34,7 @@ Widget WithRecRowBottomWidget(BuildContext context, {
           ],
         ),
         onTap: () {
-          WithdrawalReqSheetWidget(context,walletController:walletController );
+          WithdrawalReqSheetWidget(context, walletController: walletController);
         },
       ),
       CusButtonWidget(
@@ -41,6 +43,11 @@ Widget WithRecRowBottomWidget(BuildContext context, {
         W: 148.0.w,
         backGroundColor: context.colorsCustom.BluePrimary,
         radius: 19.5.r,
+        onTap: () {
+          walletController.amountController.text = '100';
+          walletController.validateInput(AppConstants.deposit);
+        },
+
         widget: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -60,4 +67,3 @@ Widget WithRecRowBottomWidget(BuildContext context, {
     ],
   );
 }
-

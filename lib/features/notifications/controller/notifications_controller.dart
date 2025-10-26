@@ -16,7 +16,6 @@ class NotificationsController extends GetxController {
   RxInt currentPage = 1.obs;
   RxBool hasMorePages = true.obs;
 
-  Rx<Notifications>? notificationsModel;
   RxList<NotificationItem> notificationsList = <NotificationItem>[].obs;
 
   final ScrollController scrollController = ScrollController();
@@ -30,30 +29,27 @@ class NotificationsController extends GetxController {
 
   Future<void> getNotifications() async {
     if (isLoading.value || !hasMorePages.value) return;
-    _setLoading(true);
 
+    _setLoading(true);
     final result = await _notificationsRepo.getNotifications(currentPage.value);
 
-    if (result is Success<AppResponse>) {
-      final response = result.data;
-      if (response.data != null) {
-        _processResponse(response);
-      } else {
-        showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
-      }
-    } else if (result is Failure) {
-      showSnackbarErrorApi(Get.context!, [], null);
-    }
-
+    _handleApiResult(result);
     _setLoading(false);
   }
 
   Future<void> loadMoreNotificationsModel() async {
     if (isLoadingMore.value || !hasMorePages.value) return;
+
+    currentPage.value += 1; // ✅ نزيد رقم الصفحة قبل الطلب
     _setLoadingMore(true);
 
     final result = await _notificationsRepo.getNotifications(currentPage.value);
 
+    _handleApiResult(result);
+    _setLoadingMore(false);
+  }
+
+  void _handleApiResult(ApiResult<AppResponse> result) {
     if (result is Success<AppResponse>) {
       final response = result.data;
       if (response.data != null) {
@@ -63,34 +59,28 @@ class NotificationsController extends GetxController {
       }
     } else if (result is Failure) {
       showSnackbarErrorApi(Get.context!, [], null);
-    }
 
-    _setLoadingMore(false);
+      // ✅ في حال فشل API للصفحات القادمة نرجع الصفحة مثل قبل
+      if (currentPage.value > 1) currentPage.value -= 1;
+    }
   }
 
   void _processResponse(AppResponse response) {
-    log("response1");
     if (response.status == true) {
-      notificationsModel = Notifications.fromJson(
+      final model = Notifications.fromJson(
         response.data as Map<String, dynamic>,
-      ).obs;
+      );
 
-      final List<NotificationItem> newItems =
-          notificationsModel!.value.notification ?? [];
+      final newItems = model.notification ?? [];
+
+      log("✅ Loaded page: ${currentPage.value}, items: ${newItems.length}");
 
       if (newItems.isNotEmpty) {
-        log("Loaded notifications: ${newItems.length}");
         notificationsList.addAll(newItems);
-        currentPage.value += 1;
-
-        if (newItems.length < 15) {
-          hasMorePages.value = false;
-        }
+        if (newItems.length < 15) hasMorePages.value = false;
       } else {
         hasMorePages.value = false;
       }
-    } else {
-      isLoading.value = false;
     }
   }
 
@@ -111,18 +101,5 @@ class NotificationsController extends GetxController {
 
   void _setLoadingMore(bool value) {
     isLoadingMore.value = value;
-  }
-
-  @override
-  void dispose() {
-    Get.delete<NotificationsController>();
-    super.dispose();
-    log('NotificationsController disposed: dispose');
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-    log('NotificationsController disposed: onClose');
   }
 }

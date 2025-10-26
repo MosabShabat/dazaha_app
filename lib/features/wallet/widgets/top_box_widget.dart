@@ -10,7 +10,7 @@ Widget TopBoxWidget(
   required WalletController controller,
 }) {
   return Container(
-    width: Width.w,
+    width: 700.w,
     height: 343.h,
     decoration: BoxDecoration(
       color: context.colorsCustom.BluePrimary.withOpacity(0.15),

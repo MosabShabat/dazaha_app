@@ -18,9 +18,11 @@
     <uses-feature android:name="android.hardware.camera" android:required="true"/>
 
     <application
-        android:label="Dazaha"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+    android:label="Dazaha"
+    android:name="${applicationName}"
+    android:icon="@mipmap/ic_launcher"
+    android:usesCleartextTraffic="true">
+
 
         <!-- Google Maps API Key -->
         <meta-data

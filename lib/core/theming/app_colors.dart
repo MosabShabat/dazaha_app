@@ -22,6 +22,7 @@ class AppColors {
     LightOrange: Color(0xFFFFF6E9),
     LightRed: Color(0xFFFFF0F0),
     LightGreen: Color(0xFF388E3C),
+    moreLightGray: Color(0xFFF4F4F5),
 
     //LightGreen
   );
@@ -47,6 +48,7 @@ class AppColors {
     LightOrange: Color(0xFFFFF6E9),
     LightRed: Color(0xFFFFF0F0),
     LightGreen: Color.fromRGBO(232, 245, 233, 1),
+    moreLightGray: Color(0xFFF4F4F5),
   );
 }
 
@@ -71,6 +73,7 @@ class TokenPalette {
   final Color LightOrange;
   final Color LightRed;
   final Color LightGreen;
+  final Color moreLightGray;
 
   //LightYellow
 
@@ -95,6 +98,7 @@ class TokenPalette {
     required this.LightOrange,
     required this.LightRed,
     required this.LightGreen,
+    required this.moreLightGray,
 
     //LightGreen
   });

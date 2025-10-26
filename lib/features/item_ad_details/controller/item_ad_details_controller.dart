@@ -1,3 +1,5 @@
+import 'package:dazaha_app/core/constant/exports_widgets.dart';
+
 import '../../../../core/helpers/constants.dart';
 
 import '../../../core/network/utils/api_error_model.dart';
@@ -6,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/network/models/orders/order_details_item.dart';
 import '../../../core/network/utils/app_response.dart';
-import '../../../core/routes/routes.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../widgets/my_offer_to_customer_widget.dart';
@@ -76,7 +77,7 @@ class ItemAdDetailsController extends GetxController {
 
   void validationInputData(BuildContext context) {
     if (priceController.text.isEmpty) {
-      showErrorSnackbar(context, 'Enter Price', );
+      showErrorSnackbar(context, 'Enter Price');
       return;
     }
     _orderDataController.setLikedPrice(priceController.text);
@@ -92,7 +93,7 @@ class ItemAdDetailsController extends GetxController {
       _handleOrderResponse(result);
     } catch (e) {
       _setButtonPressed(false);
-      showErrorSnackbar(context, 'An error occurred', );
+      showErrorSnackbar(context, context.error, FirstColor: Colors.red);
     }
   }
 
@@ -115,7 +116,11 @@ class ItemAdDetailsController extends GetxController {
             },
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '', );
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

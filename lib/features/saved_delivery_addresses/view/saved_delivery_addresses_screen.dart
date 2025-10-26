@@ -15,7 +15,8 @@ class SavedDeliveryAddressesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.fetchAddresses(); // جلب البيانات عند فتح الشاشة
+    controller.index!.value = '0';
+    controller.fetchAddresses(isStore: '0'); // جلب البيانات عند فتح الشاشة
 
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,

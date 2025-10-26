@@ -21,6 +21,7 @@ class MyAdsDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    offersList.clear();
     AppConstants.orderUuid = _orderDataController.itemUuid.value;
     getMyOrderDetails();
     getMyOrderOffers("created_at");
@@ -84,5 +85,12 @@ class MyAdsDetailsController extends GetxController {
         getMyOrderOffers("rate");
         break;
     }
+  }
+
+  @override
+  void onClose() {
+    offersList.clear();
+    offersList.close();
+    super.onClose();
   }
 }

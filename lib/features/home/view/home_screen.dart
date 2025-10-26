@@ -1,5 +1,3 @@
-import '../../../core/helpers/constants.dart';
-
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/routes/routes.dart';
@@ -15,11 +13,7 @@ class HomeScreen extends StatelessWidget {
     Routes.homePageScreen,
     Routes.transportationAndDeliveryScreen,
     Routes.chooseTheServiceScreen,
-    AppConstants.isDriver == 1
-        ? Routes.documentScreen
-        : AppConstants.isDriver == 2
-        ? Routes.captainMembershipRequestScreen
-        : Routes.captainJoinsScreen,
+    Routes.documentScreen,
     Routes.profileScreen,
   ];
 
@@ -80,9 +74,7 @@ class HomeScreen extends StatelessWidget {
         }),
         bottomNavigationBar: Obx(() {
           // إذا كنا في صفحة chooseTheServiceScreen نخفي البار
-          if (navigationController.selectedIndex.value == 2 ||
-              (AppConstants.isDriver != 1 &&
-                  navigationController.selectedIndex.value == 3)) {
+          if (navigationController.selectedIndex.value == 2) {
             return SizedBox.shrink();
           }
           return Theme(

@@ -1,6 +1,8 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/constants.dart';
 import '../../../core/network/models/orders/my_order_details.dart';
+import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import 'captain_info_widget.dart';
 import 'invoice_box_widget.dart';
@@ -18,6 +20,27 @@ Widget StatusTypeWidget(
   OrderDataController orderDataController,
   MyAdsDetailsController myAdsDetailsController,
 ) {
+  if (myAdsDetailsController.myOrderDetails!.value.status !=
+      'receiving_offers') {
+    final orderData = myAdsDetailsController.myOrderDetails!.value;
+    orderDataController.setFrom(orderData.from ?? '');
+    orderDataController.setFromAddress(orderData.fromAddress ?? '');
+    orderDataController.setFromLat(orderData.fromLat ?? '');
+    orderDataController.setFromLng(orderData.fromLng ?? '');
+    orderDataController.setTo(orderData.to ?? '');
+    orderDataController.setToAddress(orderData.toAddress ?? '');
+    orderDataController.setToLat(orderData.toLat ?? '');
+    orderDataController.setToLng(orderData.toLng ?? '');
+    orderDataController.setUserImage(orderData.driver!.image ?? '');
+    orderDataController.setUserName(orderData.driver!.name ?? '');
+    orderDataController.setUserRate('${orderData.driver!.rate ?? ''}');
+    orderDataController.setUserUuid('${orderData.driver!.uuid ?? ''}');
+    AppConstants.userName = '${orderData.driver!.name ?? ''}';
+    AppConstants.orderId = '${orderData.orderId ?? ''}';
+    AppConstants.orderTitle = '${orderData.title ?? ''}';
+    AppConstants.userImage = '${orderData.driver!.image ?? ''}';
+    AppConstants.uuid = '${orderData.driver!.uuid ?? ''}';
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -97,15 +120,22 @@ Widget StatusTypeWidget(
                         .withOpacity(0.2),
                     textColorB: context.colorsCustom.TextPrimary,
                     onTap: () {
-                      Get.toNamed(
-                        Routes.reportAProblemScreen,
-                        arguments: {
-                          // AppConstants.referenceType: AppConstants.purchase,
-                          // AppConstants.referenceUuid: orderUuid
-                          'referenceType': '',
-                          'referenceUuid': '',
-                        },
-                      );
+                      if (AppConstants.userToken.isNotEmpty &&
+                          AppConstants.userToken != '' &&
+                          AppConstants.userUUid.isNotEmpty &&
+                          AppConstants.userUUid != '') {
+                        Get.toNamed(
+                          Routes.reportAProblemScreen,
+                          arguments: {
+                            // AppConstants.referenceType: AppConstants.purchase,
+                            // AppConstants.referenceUuid: orderUuid
+                            'referenceType': '',
+                            'referenceUuid': '',
+                          },
+                        );
+                      } else {
+                        showLoginRequiredBottomSheet(Get.context!);
+                      }
                     },
                   ),
                   verticalSpace(20.h),

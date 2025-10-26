@@ -16,6 +16,18 @@ Widget DetailsContainerWidget(
       ? controller.homeModel.value?.currentOrder
       : controller.homeModel.value?.currentOffer;
 
+  print("currentReq uuid: ${currentReq?.uuid}");
+  print("currentReq title: ${currentReq?.title}");
+  print("currentReq serviceUuid: ${currentReq?.serviceUuid}");
+  print("currentReq image: ${currentReq?.image}");
+  print("currentReq orderId: ${currentReq?.orderId}");
+  print("currentReq date: ${currentReq?.date}");
+  print("currentReq time: ${currentReq?.time}");
+  print("currentReq from: ${currentReq?.from}");
+  print("currentReq to: ${currentReq?.to}");
+  print("currentReq status: ${currentReq?.status}");
+  print("currentReq statusText: ${currentReq?.statusText}");
+
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
     decoration: BoxDecoration(
@@ -26,8 +38,8 @@ Widget DetailsContainerWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CaseReqWidget(context, controller: controller),
-          ReqInfoWidget(context, controller: controller),
+          CaseReqWidget(context, controller: controller,isOrder: isOrder),
+          ReqInfoWidget(context, controller: controller,isOrder: isOrder),
           verticalSpace(10.h),
           if (currentReq?.to == null || currentReq!.to!.isEmpty)
             _listFromWidget(context, currentReq)

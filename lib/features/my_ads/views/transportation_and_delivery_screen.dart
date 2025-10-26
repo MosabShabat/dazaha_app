@@ -71,8 +71,6 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
                               context,
                               title: context.myAds,
                               size: 20.sp,
-                              typeFilter: 0,
-                              orderDataController: orderDataController,
                               style:
                                   context.textStyles.titleLarge.bold.fontFamily,
                               GridList: [
@@ -82,7 +80,26 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
                                 context.dedication,
                               ],
                               subTitle: context.ViewYourRequestsByServiceType,
+                              selectedIndex: transportController.selectedIndex,
+                              onTapSel: (index) =>
+                                  transportController.changeSelect(index),
+                              onPress: () =>
+                                  transportController.selectedIndex.value = 0,
+                              onTep: () {
+                                final uuid = switch (transportController
+                                    .selectedIndex
+                                    .value) {
+                                  0 => '69fb5c27-11ef-4637-986f-ed484b388c7f',
+                                  1 => '9cc543c0-793c-43d9-88a6-6e3db6082ef5',
+                                  2 => '7f625412-ca00-431d-a7fd-12863fc851ef',
+                                  _ => '153a7042-eb9e-42b8-9d5c-498623adb5da',
+                                };
+                                orderDataController.setServiceUuid(uuid);
+                                transportController.refreshOrders();
+                                Navigator.pop(context);
+                              },
                             ),
+
                             verticalSpace(10.h),
                             TabBarTitleWidget(
                               context,

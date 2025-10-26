@@ -1,5 +1,4 @@
-import 'package:dazaha_app/features/choose_the_service/controller/choose_the_service_controller.dart';
-
+import '../../../../features/choose_the_service/controller/choose_the_service_controller.dart';
 import '../../../features/home/controller/home_controller.dart';
 import 'package:get/get.dart';
 import '../../../core/network/utils/api_service.dart';

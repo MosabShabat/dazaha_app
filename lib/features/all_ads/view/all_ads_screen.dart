@@ -35,7 +35,6 @@ class AllAdsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final int initialTabIndex = (Get.arguments?['index'] ?? 0).clamp(0, 4);
     _orderDataController.setServiceUuid(_serviceUuidMap[initialTabIndex] ?? '');
-    // _orderDataController.setOfferStatus('receiving_offers');
     _allAdsController.resetControllerState();
     _allAdsController.getOrdersAll();
     _setupScrollListener();
@@ -51,12 +50,7 @@ class AllAdsScreen extends StatelessWidget {
               if (!tabController.indexIsChanging) {
                 final selectedUuid = _serviceUuidMap[tabController.index] ?? '';
                 _orderDataController.setServiceUuid(selectedUuid);
-                // _orderDataController.setOfferStatus('receiving_offers');
                 _allAdsController.refreshOrders();
-
-                // final selectedUuid = _serviceUuidMap[tabController.index] ?? '';
-                // _orderDataController.setOfferStatus(selectedUuid);
-                // _allAdsController.refreshOrders();
               }
             });
           });

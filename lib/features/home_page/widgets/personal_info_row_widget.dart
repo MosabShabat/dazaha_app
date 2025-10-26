@@ -1,14 +1,21 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/widgets/app_shimmers/custom_shimmer.dart';
 import '../../../core/helpers/constants.dart';
+import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 import '../controller/home_page_controller.dart';
 
 Widget personalInfoRow(BuildContext context, HomePageController controller) {
   AppConstants.isDriver = '${controller.homeModel.value?.user?.isDriver ?? ''}';
+  AppConstants.userToken = '${controller.homeModel.value?.user?.token ?? ''}';
+  AppConstants.userUUid = '${controller.homeModel.value?.user?.uuid ?? ''}';
+
   print('isDriver: ${AppConstants.isDriver}');
+  log('isDriver : ${AppConstants.isDriver}');
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -20,7 +27,16 @@ Widget personalInfoRow(BuildContext context, HomePageController controller) {
           horizontalSpace(5.w),
           _nameLocationWidget(controller, context),
         ],
-      ).onTap(() => Get.toNamed(Routes.userInfoScreen)),
+      ).onTap(() {
+        if (AppConstants.userToken.isNotEmpty &&
+            AppConstants.userToken != '' &&
+            AppConstants.userUUid.isNotEmpty &&
+            AppConstants.userUUid != '') {
+          Get.toNamed(Routes.userInfoScreen);
+        } else {
+          showLoginRequiredBottomSheet(Get.context!);
+        }
+      }),
       _notificationsWidget(
         context,
       ).onTap(() => Get.toNamed(Routes.notificationsScreen)),
@@ -71,7 +87,9 @@ Widget _nameLocationWidget(
     final user = controller.homeModel.value?.user;
 
     // اسم المستخدم
-    final userName = user?.name ?? '';
+    final userName = user?.name == null || user?.name == " "
+        ? '${context.welcome}'
+        : user?.name;
 
     // موقع المستخدم: يظهر فورًا الإحداثيات أو آخر اسم محفوظ
     final location = controller.currentLocation.value.isNotEmpty
@@ -86,7 +104,7 @@ Widget _nameLocationWidget(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            userName,
+            userName!,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: context.textStyles.bodyMedium.medium.copyWith(

@@ -12,6 +12,7 @@ class AllAdsController extends GetxController {
   final AllAdsRepo _repo = Get.find<AllAdsRepo>();
   TextEditingController searchController = TextEditingController();
   final OrderDataController orderDataController = Get.find();
+  RxInt selectedIndex = 0.obs; // بدل int
 
   RxBool isLoading = false.obs;
   RxBool isLoadingMore = false.obs;
@@ -64,6 +65,10 @@ class AllAdsController extends GetxController {
     }
 
     isLoadMore ? _setLoadingMore(false) : _setLoading(false);
+  }
+
+  void changeSelect(int index) {
+    selectedIndex.value = index;
   }
 
   void _processResponse(AppResponse response) {

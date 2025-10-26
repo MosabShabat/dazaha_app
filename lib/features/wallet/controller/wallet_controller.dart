@@ -13,11 +13,12 @@ import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
+import '../widgets/payment_web_view_screen.dart';
 import 'wallet_repo.dart';
 
 class WalletController extends GetxController {
   final WalletRepo _walletRepo = Get.find<WalletRepo>();
-  var selectedIndex = 0.obs;
+  RxInt selectedIndex = 0.obs; // بدل int
 
   RxBool isLoading = false.obs;
   var isLoadingMore = false.obs;
@@ -71,7 +72,13 @@ class WalletController extends GetxController {
             );
             if (executeOrderModel!.status == "initiated") {
               Get.back();
-              Get.toNamed(Routes.balanceWithdrawalRequestScreen);
+              if (executeOrderModel!.paymentUrl != null) {
+                Get.to(
+                  () => PaymentWebViewScreen(
+                    paymentUrl: executeOrderModel!.paymentUrl!,
+                  ),
+                );
+              }
 
               // Get.toNamed(
               //   Routes.moyasarPaymentMethodScreen,
@@ -103,8 +110,8 @@ class WalletController extends GetxController {
     );
   }
 
-  Future<void> refreshOrders() async {
-    walletModel!.value.recordTransactionsModel!.clear();
+  Future<void> refreshWallet() async {
+    recordTransactionsModel.clear();
     currentPage.value = 1;
     hasMorePages.value = true;
     await getWallet();
@@ -147,26 +154,36 @@ class WalletController extends GetxController {
   Future<void> getWallet() async {
     if (isLoading.value || !hasMorePages.value) return;
     _setLoading(true);
-    var result;
+
+    ApiResult<AppResponse> result;
+
+    // تحقق إذا كان هناك فلتر
     if (orderDataController.filterNum.isNotEmpty &&
-        orderDataController.filterType.isNotEmpty) {
-      if (orderDataController.filterNum.value == 2 ||
-          orderDataController.filterNum.value == 3) {
+        orderDataController.filterNum.value != '') {
+      if (orderDataController.filterNum.value == '2' ||
+          orderDataController.filterNum.value == '3') {
+        // فلترة حسب status
         result = await _walletRepo.getWallet(
           page: currentPage.value,
-          status: '${orderDataController.filterType}',
+          status: '${orderDataController.filterType.value}',
         );
-      } else if (orderDataController.filterNum.value == 0 ||
-          orderDataController.filterNum.value == 1) {
+      } else if (orderDataController.filterNum.value == '0' ||
+          orderDataController.filterNum.value == '1') {
+        // فلترة حسب type
         result = await _walletRepo.getWallet(
           page: currentPage.value,
-          type: '${orderDataController.filterType}',
+          type: '${orderDataController.filterType.value}',
         );
+      } else {
+        // لو فلتر غير معروف، نجيب كل البيانات
+        result = await _walletRepo.getWallet(page: currentPage.value);
       }
     } else {
+      // إذا ما في أي فلتر، نجيب كل البيانات
       result = await _walletRepo.getWallet(page: currentPage.value);
     }
 
+    // معالجة النتائج كما هي
     if (result is Success<AppResponse>) {
       final response = result.data;
       if (response.data != null) {
@@ -177,31 +194,43 @@ class WalletController extends GetxController {
     } else if (result is Failure) {
       showSnackbarErrorApi(Get.context!, [], null);
     }
+
     _setLoading(false);
   }
 
   Future<void> loadMoRerecordTransactionsModel() async {
     if (isLoadingMore.value || !hasMorePages.value) return;
     _setLoadingMore(true);
-    var result;
+
+    ApiResult<AppResponse> result;
+
+    // تحقق من الفلترة
     if (orderDataController.filterNum.isNotEmpty &&
-        orderDataController.filterType.isNotEmpty) {
-      if (orderDataController.filterNum.value == 2 ||
-          orderDataController.filterNum.value == 3) {
+        orderDataController.filterNum.value != '') {
+      if (orderDataController.filterNum.value == '2' ||
+          orderDataController.filterNum.value == '3') {
+        // فلترة حسب status
         result = await _walletRepo.getWallet(
           page: currentPage.value,
-          status: '${orderDataController.filterType}',
+          status: '${orderDataController.filterType.value}',
         );
-      } else if (orderDataController.filterNum.value == 0 ||
-          orderDataController.filterNum.value == 1) {
+      } else if (orderDataController.filterNum.value == '0' ||
+          orderDataController.filterNum.value == '1') {
+        // فلترة حسب type
         result = await _walletRepo.getWallet(
           page: currentPage.value,
-          type: '${orderDataController.filterType}',
+          type: '${orderDataController.filterType.value}',
         );
+      } else {
+        // إذا فلتر غير معروف، نرجع البيانات بدون فلترة
+        result = await _walletRepo.getWallet(page: currentPage.value);
       }
     } else {
+      // لا فلتر، نحمل البيانات كما هي
       result = await _walletRepo.getWallet(page: currentPage.value);
     }
+
+    // معالجة النتائج
     if (result is Success<AppResponse>) {
       final response = result.data;
       if (response.data != null) {
@@ -212,6 +241,7 @@ class WalletController extends GetxController {
     } else if (result is Failure) {
       showSnackbarErrorApi(Get.context!, [], null);
     }
+
     _setLoadingMore(false);
   }
 

@@ -6,12 +6,16 @@ import '../controller/home_page_controller.dart';
 Widget CaseReqWidget(
   BuildContext context, {
   required HomePageController controller,
+  required bool isOrder,
 }) {
+  final currentReq = isOrder
+      ? controller.homeModel.value?.currentOrder
+      : controller.homeModel.value?.currentOffer;
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
-        '${controller.homeModel.value?.currentOrder?.date ?? ''} ${controller.homeModel.value?.currentOrder?.time ?? ''}',
+        '${currentReq!.date ?? ''} ${currentReq.time ?? ''}',
         textAlign: TextAlign.start,
         style: context.textStyles.bodySmall.regular.copyWith(
           color: context.colorsCustom.TextSecondary,
@@ -26,15 +30,24 @@ Widget CaseReqWidget(
             height: 0.04.sh,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
-              color: context.colorsCustom.LightBlue,
+              color: currentReq.status == 'pending'
+                  ? context.colorsCustom.LightBlue
+                  : currentReq.status == 'in_progress'
+                  ? context.colorsCustom.LightOrange
+                  : context.colorsCustom.LightGrey,
               borderRadius: BorderRadius.all(Radius.circular(20.r)),
             ),
             child: Center(
               child: Text(
-                '${controller.homeModel.value?.currentOrder?.statusText ?? ''}',
+                '${currentReq.statusText ?? ''}',
                 textAlign: TextAlign.center,
                 style: context.textStyles.bodySmall.medium.copyWith(
-                  color: context.colorsCustom.BluePrimary,
+                  color: currentReq.status == 'pending'
+                      ? context.colorsCustom.BluePrimary
+                      : currentReq.status == 'in_progress'
+                      ? Colors.orange
+                      : Colors.green,
+                  // context.colorsCustom.BluePrimary,
                   fontSize: 12.sp,
                 ),
               ),

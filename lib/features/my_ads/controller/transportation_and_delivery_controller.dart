@@ -9,7 +9,7 @@ import '../../choose_the_service/controller/order_data_controller.dart';
 import 'my_ads_repo.dart';
 
 class TransportationAndDeliveryController extends GetxController {
-  var selectedIndex = 0.obs;
+  RxInt selectedIndex = 0.obs; // بدل int
 
   final OrderDataController orderDataController = Get.find();
   TextEditingController searchController = TextEditingController();

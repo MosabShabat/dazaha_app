@@ -105,7 +105,7 @@ class MyAdPayMentController extends GetxController {
       success: (response) {
         isButtonPressed.value = false;
         if (response.status == true) {
-          showErrorSnackbar(context, context.successful);
+          showSuccessSnackbar(context, context.successful);
           AppConstants.typeReq == 'order';
           Get.toNamed(Routes.reviewPayMentScreen);
         } else {

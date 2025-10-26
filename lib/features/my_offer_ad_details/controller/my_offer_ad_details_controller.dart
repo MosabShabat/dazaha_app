@@ -46,7 +46,11 @@ class MyOfferAdDetailsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -58,7 +62,7 @@ class MyOfferAdDetailsController extends GetxController {
 
   void validationInputData(BuildContext context) {
     if (priceController.text.isEmpty) {
-      showErrorSnackbar(context, 'Enter Price');
+      showErrorSnackbar(context, context.enterAmount, FirstColor: Colors.amber);
       return;
     }
     _orderDataController.setLikedPrice(priceController.text);
@@ -78,7 +82,7 @@ class MyOfferAdDetailsController extends GetxController {
       _handleOfferResponse(result);
     } catch (e) {
       _setButtonPressed(false);
-      showErrorSnackbar(context, 'An error occurred');
+      showErrorSnackbar(context, context.error, FirstColor: Colors.red);
     }
   }
 
@@ -94,14 +98,18 @@ class MyOfferAdDetailsController extends GetxController {
             title: '1',
             onTap: () {
               // orderDataController.clearAll();
-              Get.offAllNamed(
-                Routes.homeScreen,
-                arguments: {'selectedIndex': 3},
-              );
+              // Get.offAllNamed(
+              //   Routes.homeScreen,
+              //   arguments: {'selectedIndex': 3},
+              // );
             },
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -126,7 +134,11 @@ class MyOfferAdDetailsController extends GetxController {
             showButton: false,
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
     );

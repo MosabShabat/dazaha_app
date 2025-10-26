@@ -12,6 +12,7 @@ import '../../../../features/item_ad_details/widgets/transport_info_widget.dart'
 import '../../../../features/my_ads_details/widgets/top_det_row_widget.dart';
 import '../../../../features/my_offer_ad_details/widgets/my_offer_app_bar_widget.dart';
 import '../../../../features/my_offer_ad_details/widgets/presented_offer_box_widget.dart';
+import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 import '../../my_ads_details/widgets/invoice_box_widget.dart';
 import '../../my_ads_details/widgets/pay_mth_widget.dart';
 import '../../my_ads_details/widgets/t_d_del_widget.dart';
@@ -69,6 +70,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
       AppConstants.orderId = '${offerDetails.order!.orderId ?? ''}';
       AppConstants.orderTitle = '${offerDetails.order!.title ?? ''}';
       AppConstants.userImage = '${offerDetails.order!.user!.image ?? ''}';
+      AppConstants.uuid = '${offerDetails.order!.user!.uuid ?? ''}';
 
       return Scaffold(
         backgroundColor: context.colorsCustom.surfacePrimaryWhite,
@@ -218,15 +220,19 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
             GeneralBottomAppWidget(
               context,
               text: context.reportAProblem,
-              onTap: () => Get.toNamed(
-                Routes.reportAProblemScreen,
-                arguments: {
-                  // AppConstants.referenceType: AppConstants.purchase,
-                  // AppConstants.referenceUuid: orderUuid
-                  'referenceType': '',
-                  'referenceUuid': '',
-                },
-              ),
+              onTap: () {
+                if (AppConstants.userToken.isNotEmpty &&
+                    AppConstants.userToken != '' &&
+                    AppConstants.userUUid.isNotEmpty &&
+                    AppConstants.userUUid != '') {
+                  Get.toNamed(
+                    Routes.reportAProblemScreen,
+                    arguments: {'referenceType': '', 'referenceUuid': ''},
+                  );
+                } else {
+                  showLoginRequiredBottomSheet(Get.context!);
+                }
+              },
               backgroundColorB: context.colorsCustom.CardBackgroundLightGray,
               fontWeight: FontWeight.w500,
               textColorB: context.colorsCustom.TextPrimary,

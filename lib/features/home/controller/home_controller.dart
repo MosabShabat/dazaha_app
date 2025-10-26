@@ -8,6 +8,10 @@ class HomeController extends GetxController {
   RxInt selectedIndex;
   int lastIndexBeforeChooseService =
       0; // لتخزين آخر صفحة قبل دخول chooseTheServiceScreen
+  @override
+  void onInit() {
+    super.onInit();
+  }
 
   HomeController({required int initialTabIndex})
     : selectedIndex = initialTabIndex.obs {

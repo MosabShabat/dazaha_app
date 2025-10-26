@@ -6,8 +6,12 @@ import '../controller/home_page_controller.dart';
 Widget ReqInfoWidget(
   BuildContext context, {
   required HomePageController controller,
+  required bool isOrder,
 }) {
-  final currentOrder = controller.homeModel.value?.currentOrder;
+  final currentOrder = isOrder
+      ? controller.homeModel.value?.currentOrder
+      : controller.homeModel.value?.currentOffer;
+  // final currentOrder = controller.homeModel.value?.currentOrder;
 
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,

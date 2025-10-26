@@ -18,7 +18,6 @@ class _SvgAssets {
   final Frame20 = 'assets/images/svg_images/Frame 20.svg';
   final Group120788 = 'assets/images/svg_images/Group 120788.svg';
   final notification_bing = 'assets/images/svg_images/notification-bing.svg';
-  final cover = 'assets/images/svg_images/Cover.svg';
   final contactlessDelivery1 =
       'assets/images/svg_images/contactless-delivery 1.svg';
   final manualHandling1 = 'assets/images/svg_images/manual-handling 1.svg';
@@ -103,6 +102,7 @@ class _JsonAssets {
   final withdraw_money = 'assets/json/Withdraw money.json';
   final jsonLocation = 'assets/json/location.json';
   final JsonNotification = 'assets/json/notification.json';
+  final jsonLoginRequired = 'assets/json/login.json';
 }
 
 class _GifAssets {

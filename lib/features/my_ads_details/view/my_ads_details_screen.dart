@@ -20,6 +20,7 @@ class MyAdsDetailsScreen extends StatelessWidget {
         return MyOrderDetailsShimmerWidget();
       }
       final order = myAdsDetailsController.myOrderDetails!.value;
+
       return Scaffold(
         backgroundColor: context.colorsCustom.surfacePrimaryWhite,
         appBar: DefAppBarWidget(context),
@@ -57,7 +58,7 @@ class MyAdsDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),//"You can follow the details from the My Ads interface"
+        ),
       );
     });
   }

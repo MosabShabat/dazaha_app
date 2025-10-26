@@ -75,8 +75,8 @@ class WalletScreen extends StatelessWidget {
                               children: [
                                 Lottie.asset(
                                   AppAssets.json.the_financial_empty_json,
-                                  width: 101.w,
-                                  height: 101.w,
+                                  width: 300.w,
+                                  height: 300.w,
                                 ),
                                 verticalSpace(20.h),
                                 Text(
@@ -97,14 +97,11 @@ class WalletScreen extends StatelessWidget {
                               verticalSpace(10.h),
                               TopRowWidget(
                                 context,
-                                orderDataController: orderDataController,
-                                typeFilter: 2,
                                 title: context.recordMovements,
-                                size: 14.sp,
-                                fontWeight: FontWeight.w700,
+                                size: 20.sp,
                                 style: context
                                     .textStyles
-                                    .titleSmall
+                                    .titleLarge
                                     .bold
                                     .fontFamily,
                                 GridList: [
@@ -113,8 +110,30 @@ class WalletScreen extends StatelessWidget {
                                   context.successful,
                                   context.failed,
                                 ],
-                                subTitle:
-                                    '${context.selectTheTransactionTypeAndStatus}',
+                                subTitle: context.ViewYourRequestsByServiceType,
+                                selectedIndex: _walletController.selectedIndex,
+                                onTapSel: (index) =>
+                                    _walletController.changeSelect(index),
+                                onPress: () =>
+                                    _walletController.selectedIndex.value = 0,
+                                onTep: () {
+                                  final status = switch (_walletController
+                                      .selectedIndex
+                                      .value) {
+                                    0 => 'wallet_deposit',
+                                    1 => 'wallet_withdrawal',
+                                    2 => 'paid',
+                                    _ => 'failed',
+                                  };
+                                  orderDataController.setFilterType(
+                                    '${status}',
+                                  );
+                                  orderDataController.setFilterNum(
+                                    '${_walletController.selectedIndex.value}',
+                                  );
+                                  _walletController.refreshWallet();
+                                  Navigator.pop(context);
+                                },
                               ),
                               WalletMoveMentListWidget(
                                 context,

@@ -50,6 +50,7 @@ class buyMeScreen extends StatelessWidget {
         '${orderController.fromLng.value}, ${orderController.fromAddress.value}',
       );
     });
+    savedAddressesController.fetchAddresses(isStore: '1');
 
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,

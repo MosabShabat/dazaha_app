@@ -15,8 +15,6 @@ class Routes {
   static const String pickUpMethodUpOnDeliveryScreen =
       '/pickUpMethodUpOnDeliveryScreen';
   static const String imagePreviewScreen = '/ImagePreview';
-
-  // static const String dropOffPointScreen = '/dropOffPointScreen';
   static const String adDetailsScreen = '/adDetailsScreen';
   static const String priceDetailsScreen = '/priceDetailsScreen';
   static const String advertisementSummaryScreen =
@@ -34,8 +32,6 @@ class Routes {
   static const String myAdPayMentScreen = '/myAdPayMentScreen';
   static const String reviewPayMentScreen = '/reviewPayMentScreen';
   static const String verificationCodeScreen = '/verificationCodeScreen';
-  // static const String priceCatDetailsScreen = '/priceCatDetailsScreen';
-  // static const String directSupportScreen = '/directSupportScreen';
   static const String directSupportMapScreen = '/directSupportMapScreen';
   static const String priceDetailsReviewScreen = '/priceDetailsReviewScreen';
   static const String removeAndRecycleServiceFeaturesScreen =
@@ -65,6 +61,4 @@ class Routes {
   static const String myOfferAdDetailsScreen = '/myOfferAdDetailsScreen';
   static const String settingsScreen = '/settingsScreen';
   static const String deleteMyAccountScreen = '/deleteMyAccountScreen';
-
-  //SettingsScreen
 }
