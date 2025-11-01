@@ -82,6 +82,8 @@ class PersonalDataScreen extends StatelessWidget {
                 onPressed: () async =>
                     await _personalDataController.validateAndSubmit(context),
                 isLoading: _personalDataController.isButtonPressed.value,
+                isEnabled: !_personalDataController.isButtonPressed.value,
+
                 isWhiteProgress: true,
               ),
             ),
@@ -104,7 +106,7 @@ class PersonalDataScreen extends StatelessWidget {
   }
 
   Widget _buildTitle(BuildContext context) => Text(
-    context.personalInformation,
+    context.joinAsCap,
     style: context.textStyles.bodyLarge.bold.copyWith(
       color: context.colorsCustom.TextPrimary,
       fontSize: 20.sp,

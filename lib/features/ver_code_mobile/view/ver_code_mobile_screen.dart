@@ -63,6 +63,8 @@ class VerCodeMobileScreen extends StatelessWidget {
             _verCodeController.validateAndProceed(context, resatAll);
           },
           isLoading: _verCodeController.isButtonPressed.value,
+          isEnabled: !_verCodeController.isButtonPressed.value,
+
           isWhiteProgress: true,
         ),
       );

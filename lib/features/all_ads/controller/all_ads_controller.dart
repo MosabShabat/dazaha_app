@@ -13,6 +13,7 @@ class AllAdsController extends GetxController {
   TextEditingController searchController = TextEditingController();
   final OrderDataController orderDataController = Get.find();
   RxInt selectedIndex = 0.obs; // بدل int
+  RxBool isOffline = false.obs; // <-- اتصال الإنترنت
 
   RxBool isLoading = false.obs;
   RxBool isLoadingMore = false.obs;
@@ -23,6 +24,7 @@ class AllAdsController extends GetxController {
   RxList<LatestOrderItemModel> ordersList = <LatestOrderItemModel>[].obs;
 
   final ScrollController scrollController = ScrollController();
+  RxString searchText = ''.obs;
 
   RxInt selectedTabIndex = 0.obs;
   RxString offerStatus = ''.obs;
@@ -33,6 +35,14 @@ class AllAdsController extends GetxController {
   void onInit() {
     super.onInit();
     resetControllerState();
+    scrollController.addListener(() {
+      if (scrollController.position.extentAfter < 200) {
+        getOrdersAll(isLoadMore: true);
+      }
+    });
+    debounce(searchText, (_) {
+      refreshOrders();
+    }, time: Duration(milliseconds: 500));
   }
 
   Future<void> getOrdersAll({bool isLoadMore = false}) async {
@@ -49,7 +59,8 @@ class AllAdsController extends GetxController {
       status: orderDataController.offerStatus.isNotEmpty
           ? '${orderDataController.offerStatus}'
           : '',
-      search: searchController.text.isNotEmpty ? searchController.text : null,
+      search: searchText.value.isNotEmpty ? searchText.value : null,
+
       page: currentPage.value,
     );
 
@@ -72,21 +83,64 @@ class AllAdsController extends GetxController {
   }
 
   void _processResponse(AppResponse response) {
-    log("Processing response");
-    if (response.status != true) return;
+    if (response.status == true) {
+      final model = OrdersSerModel.fromJson(
+        response.data as Map<String, dynamic>,
+      );
 
-    ordersModel = OrdersSerModel.fromJson(
-      response.data as Map<String, dynamic>,
-    ).obs;
-    final newItems = ordersModel!.value.items ?? [];
+      final newItems = model.items ?? [];
 
-    if (newItems.isNotEmpty) {
-      ordersList.addAll(newItems);
-      currentPage.value += 1;
-      if (newItems.length < 15) hasMorePages.value = false;
-      log("Loaded orders: ${newItems.length}");
-    } else {
-      hasMorePages.value = false;
+      log("✅ Loaded page: ${currentPage.value}, items: ${newItems.length}");
+
+      if (newItems.isNotEmpty) {
+        ordersList.addAll(newItems);
+
+        /// ✅ زيادة الصفحة بعد نجاح جلب البيانات
+        currentPage.value++;
+
+        /// ✅ توقف إذا أقل من عدد عناصر الصفحة
+        if (newItems.length < 15) hasMorePages.value = false;
+      } else {
+        hasMorePages.value = false;
+      }
+    }
+  }
+
+  Future<void> loadMoreOrders() async {
+    if (isLoadingMore.value || !hasMorePages.value) return;
+    if (isOffline.value) return;
+
+    _setLoadingMore(true);
+    currentPage.value += 1;
+
+    final result = await _repo.getOrdersAll(
+      serviceUuid: orderDataController.serviceUuid.isNotEmpty
+          ? '${orderDataController.serviceUuid}'
+          : '',
+      status: orderDataController.offerStatus.isNotEmpty
+          ? '${orderDataController.offerStatus}'
+          : '',
+      search: searchText.value.isNotEmpty ? searchText.value : null,
+
+      page: currentPage.value,
+    );
+
+    if (result is Failure && currentPage.value > 1) currentPage.value -= 1;
+
+    _handleApiResult(result);
+    _setLoadingMore(false);
+  }
+
+  void _handleApiResult(ApiResult<AppResponse> result) {
+    if (result is Success<AppResponse>) {
+      final response = result.data;
+      if (response.data != null) {
+        _processResponse(response);
+      } else if (!isOffline.value) {
+        showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
+      }
+    } else if (result is Failure && !isOffline.value) {
+      showSnackbarErrorApi(Get.context!, [], null);
     }
   }
 

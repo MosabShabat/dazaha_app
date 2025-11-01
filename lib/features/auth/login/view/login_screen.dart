@@ -48,6 +48,7 @@ class LoginScreen extends StatelessWidget {
                   Obx(() {
                     return AppLoadingButton(
                       text: context.continuation,
+                      isEnabled: !_loginController.isButtonPressed.value,
                       onPressed: () async {
                         log('object: Login button pressed');
                         _loginController.validateInput(context, resatAll);
@@ -56,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                       isWhiteProgress: true,
                     );
                   }),
-                ],
+                ], //how_much_do_you_want_to_dis
               ),
             ),
           ),

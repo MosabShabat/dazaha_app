@@ -1,6 +1,7 @@
+import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
-import '../../../core/routes/app_routes.dart';
-import '../../../core/routes/routes.dart';
+import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
+import '../../home_page/controller/home_page_controller.dart';
 import '../controller/home_controller.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 
@@ -8,6 +9,7 @@ import '../widgets/custom_bottom_navigation_bar.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final HomeController navigationController = Get.find();
+  final HomePageController homeController = Get.find();
 
   final List<String> pagesRoutes = [
     Routes.homePageScreen,
@@ -21,73 +23,71 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // إذا وصلنا arguments فيها selectedIndex نحدثه
     final args = Get.arguments;
     if (args != null && args['selectedIndex'] != null) {
-      navigationController.selectedIndex.value = args['selectedIndex'];
+      navigationController.selectedIndex.value =
+          int.tryParse(args['selectedIndex'].toString()) ?? 0;
     }
-
     return WillPopScope(
       onWillPop: () async {
-        // إذا المستخدم ليس في الصفحة الرئيسية (index 0)، نرجعه للصفحة الرئيسية
         if (navigationController.selectedIndex.value != 0) {
           navigationController.selectedIndex.value = 0;
           return false;
         }
 
-        // التحقق من الضغط المزدوج للخروج
         final now = DateTime.now();
         if (_lastBackPressed == null ||
             now.difference(_lastBackPressed!) > const Duration(seconds: 2)) {
           _lastBackPressed = now;
-
-          // عرض Toast باستخدام showToast من Controller
           navigationController.showToast(
             context,
-            "اضغط مرة أخرى للخروج من التطبيق",
+            context.tapAgainToExitTheApp,
             Colors.black87,
           );
-
-          return false; // لا تخرج بعد الضغط الأول
+          return false;
+        }
+        return true;
+      },
+      child: Obx(() {
+        // إذا لا يوجد إنترنت → يظهر فقط NoConnectionTextWidget
+        if (navigationController.isOffline.value) {
+          return Scaffold(body: NoConnectionTextWidget(context));
         }
 
-        return true; // خروج بعد الضغط الثاني
-      },
-      child: Scaffold(
-        body: Obx(() {
-          final currentPage =
-              pagesRoutes[navigationController.selectedIndex.value];
-          return Navigator(
-            key: GlobalKey<NavigatorState>(), // يحافظ على حالة Navigator
+        // الإنترنت موجود → صفحة التطبيق مع BottomNavigationBar
+        final currentPage =
+            pagesRoutes[navigationController.selectedIndex.value];
+
+        return Scaffold(
+          body: Navigator(
+            key: GlobalKey<NavigatorState>(),
             onGenerateRoute: (settings) {
               final pageConfig = AppRouter().routes.firstWhere(
                 (route) => route.name == currentPage,
               );
-
               return GetPageRoute(
                 routeName: currentPage,
                 page: pageConfig.page,
                 binding: pageConfig.binding,
               );
             },
-          );
-        }),
-        bottomNavigationBar: Obx(() {
-          // إذا كنا في صفحة chooseTheServiceScreen نخفي البار
-          if (navigationController.selectedIndex.value == 2) {
-            return SizedBox.shrink();
-          }
-          return Theme(
-            data: Theme.of(context).copyWith(
-              splashFactory: NoSplash.splashFactory,
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-            ),
-            child: CustomBottomNavigationBar(),
-          );
-        }),
-      ),
+          ),
+          bottomNavigationBar: Obx(() {
+            if (navigationController.selectedIndex.value == 2) {
+              return const SizedBox.shrink();
+            }
+            return Theme(
+              data: Theme.of(context).copyWith(
+                splashFactory: NoSplash.splashFactory,
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+              ),
+              child: CustomBottomNavigationBar(),
+            );
+          }),
+        );
+      }),
     );
   }
 }

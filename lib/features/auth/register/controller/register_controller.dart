@@ -110,7 +110,7 @@ class RegisterController extends GetxController {
             response.data as Map<String, dynamic>,
           );
           userName = userData.firstName ?? '';
-          isUserLogin = true;
+          isUserLogin.value = true;
           await AppSharedData.setUserLogin(true);
           await AppSharedData.setUserInfo(userData);
           await saveUserToken(userData.token ?? '');
@@ -118,7 +118,7 @@ class RegisterController extends GetxController {
 
           // Get.offAllNamed(Routes.navigationBarScreen);
         } else {
-          showErrorSnackbar(context, response.message ?? '');
+          showErrorSnackbar(context, response.message ?? '',FirstColor: Colors.red);
         }
       },
       failure: (error) {

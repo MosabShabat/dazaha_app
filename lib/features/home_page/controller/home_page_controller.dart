@@ -51,6 +51,24 @@ class HomePageController extends GetxController {
     getLocation();
   }
 
+   /// تحميل بيانات المستخدم من AppSharedData عند بدء التطبيق
+  void loadCurrentUser() {
+    final currentUser = AppSharedData.currentUserInfo;
+    if (currentUser != null) {
+      userData.value = currentUser;
+    }
+  }
+
+  /// تحديث البيانات بعد تسجيل الدخول
+  Future<void> refreshAfterLogin() async {
+    final currentUser = AppSharedData.currentUserInfo;
+    if (currentUser != null) {
+      userData.value = currentUser;
+      await refreshData(latitude.value.toString(), longitude.value.toString());
+      log('Home data refreshed after login');
+    }
+  }
+
   Future<void> getLocation() async {
     try {
       bool serviceEnabled = await _checkLocationService();
@@ -171,19 +189,30 @@ class HomePageController extends GetxController {
               response.data as Map<String, dynamic>,
             );
           } else {
-            if (Get.context != null) {
-              showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
-            }
+            // إذا أردت، فقط log ولا تعرض SnackBar
+            log('No data received from API');
           }
         } else {
           if (Get.context != null) {
-            showErrorSnackbar(Get.context!, response.message ?? '');
+            if (isOffline.value) {
+              // إذا الجهاز offline لا تعرض SnackBar
+              log('Offline, skipping snackbar for API error');
+            } else {
+              showErrorSnackbar(
+                Get.context!,
+                response.message ?? '',
+                FirstColor: Colors.red,
+              );
+            }
           }
         }
       },
       failure: (error) {
         isLoading.value = false;
-        // يمكن إضافة عرض رسالة خطأ هنا لو تحب
+        // إذا الجهاز offline، لا تعرض SnackBar
+        if (!isOffline.value && Get.context != null) {
+          showSnackbarErrorApi(Get.context!, [error], null);
+        }
       },
     );
   }
@@ -236,14 +265,16 @@ class HomePageController extends GetxController {
     super.onClose();
   }
 
-  void refreshAfterLogin() {
-    if (userData.value!.uuid == null &&
-        AppSharedData.currentUserInfo?.uuid != null) {
-      refreshData('${latitude.value}', '${longitude.value}');
-    } else {
-      log('failed function');
-    }
-  }
+  // void refreshAfterLogin() async {
+  //   final currentUser = AppSharedData.currentUserInfo;
+  //   if (currentUser != null) {
+  //     userData.value = currentUser; // تحديث observable
+  //     await refreshData(latitude.value.toString(), longitude.value.toString());
+  //     log('Home data refreshed after login');
+  //   } else {
+  //     log('No user data found for refresh');
+  //   }
+  // }
 
   void listenConnection() {
     Connectivity().onConnectivityChanged.listen((

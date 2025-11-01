@@ -12,12 +12,10 @@ import '../../saved_delivery_addresses/controller/saved_delivery_addresses_contr
 import '../controller/add_a_delivery_address_controller.dart';
 
 class AddressInfoWidget extends StatelessWidget {
-  final AddADeliveryAddressController controller = Get.put(
-    AddADeliveryAddressController(),
-  );
+  final AddADeliveryAddressController controller = Get.find();
 
   final SavedDeliveryAddressesController _savedDeliveryAddressesController =
-      Get.put(SavedDeliveryAddressesController());
+      Get.find();
   final bool isEdit;
   final String? addressUuid;
   AddressInfoWidget({super.key})
@@ -60,7 +58,7 @@ class AddressInfoWidget extends StatelessWidget {
           context,
           titleText: context.placeName,
           titleTextColor: context.colorsCustom.TextPrimary,
-          HintText: context.exampleWorkHome,
+          HintText: context.placeName,
           maxLength: null,
           maxLines: null,
           controller: controller.placeNameController,
@@ -110,6 +108,8 @@ class AddressInfoWidget extends StatelessWidget {
               // Get.back(result: true);
             },
             isLoading: controller.isButtonPressed.value,
+            isEnabled: !controller.isButtonPressed.value,
+
             isWhiteProgress: true,
           );
         }),
@@ -147,50 +147,74 @@ Widget buildLocationButton(
 
           // حدّث قيمة الزر
           controller.updateLocation(lat, lng, placeName);
+          print('==========BBB===========');
+          print(
+            'orderDataController.SrvType.value : ${orderDataController.SrvType.value}',
+          );
+          if (orderDataController.SrvType.value == '1') {
+            orderDataController.setToLat('$lat');
+            orderDataController.setToLng('$lng');
+            orderDataController.setToAddress('$placeName');
+            orderDataController.setServiceUuid(
+              orderDataController.serviceUuid.value,
+            );
+            orderDataController.setData(orderDataController.data.value);
+            orderDataController.setToDeliveryAddressUuid(
+              orderDataController.toDeliveryAddressUuid.value,
+            );
 
-          // حدّث بيانات الـ OrderDataController مباشرة
-          if (isAppBar != null) {
-            if (isAppBar == true) {
-              orderDataController.setFromLat('$lat');
-              orderDataController.setFromLng('$lng');
-              orderDataController.setFromAddress('$placeName');
-              orderDataController.setServiceUuid(
-                orderDataController.serviceUuid.value,
-              );
-              orderDataController.setData(orderDataController.data.value);
-              orderDataController.setFromDeliveryAddressUuid(
-                orderDataController.fromDeliveryAddressUuid.value,
-              );
+            print('UUUUUUUUUUUUUUUUUUUTo Here :UUUUUUUUUUUUUUUUUUUU');
+            print(orderDataController.toLat.value);
+            print(orderDataController.toLng.value);
+            print(orderDataController.toAddress.value);
+            print(orderDataController.serviceUuid.value);
+            print(orderDataController.data.value);
+            print(orderDataController.toDeliveryAddressUuid.value);
+            print('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU');
+          } else {
+            if (isAppBar != null) {
+              if (isAppBar == true) {
+                orderDataController.setFromLat('$lat');
+                orderDataController.setFromLng('$lng');
+                orderDataController.setFromAddress('$placeName');
+                orderDataController.setServiceUuid(
+                  orderDataController.serviceUuid.value,
+                );
+                orderDataController.setData(orderDataController.data.value);
+                orderDataController.setFromDeliveryAddressUuid(
+                  orderDataController.fromDeliveryAddressUuid.value,
+                );
 
-              print('UUUUUUUUUUUUUUUUUUFromUUUUUUUUUUUUUUUUUUUUU');
-              print(orderDataController.fromLat.value);
-              print(orderDataController.fromLng.value);
-              print(orderDataController.fromAddress.value);
-              print(orderDataController.serviceUuid.value);
-              print(orderDataController.data.value);
-              print(orderDataController.fromDeliveryAddressUuid.value);
+                print('UUUUUUUUUUUUUUUUUUFromUUUUUUUUUUUUUUUUUUUUU');
+                print(orderDataController.fromLat.value);
+                print(orderDataController.fromLng.value);
+                print(orderDataController.fromAddress.value);
+                print(orderDataController.serviceUuid.value);
+                print(orderDataController.data.value);
+                print(orderDataController.fromDeliveryAddressUuid.value);
 
-              print('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU');
-            } else {
-              orderDataController.setToLat('$lat');
-              orderDataController.setToLng('$lng');
-              orderDataController.setToAddress('$placeName');
-              orderDataController.setServiceUuid(
-                orderDataController.serviceUuid.value,
-              );
-              orderDataController.setData(orderDataController.data.value);
-              orderDataController.setToDeliveryAddressUuid(
-                orderDataController.toDeliveryAddressUuid.value,
-              );
+                print('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU');
+              } else {
+                orderDataController.setToLat('$lat');
+                orderDataController.setToLng('$lng');
+                orderDataController.setToAddress('$placeName');
+                orderDataController.setServiceUuid(
+                  orderDataController.serviceUuid.value,
+                );
+                orderDataController.setData(orderDataController.data.value);
+                orderDataController.setToDeliveryAddressUuid(
+                  orderDataController.toDeliveryAddressUuid.value,
+                );
 
-              print('UUUUUUUUUUUUUUUUUUUToooooooooooooUUUUUUUUUUUUUUUUUUUU');
-              print(orderDataController.toLat.value);
-              print(orderDataController.toLng.value);
-              print(orderDataController.toAddress.value);
-              print(orderDataController.serviceUuid.value);
-              print(orderDataController.data.value);
-              print(orderDataController.toDeliveryAddressUuid.value);
-              print('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU');
+                print('UUUUUUUUUUUUUUUUUUUToooooooooooooUUUUUUUUUUUUUUUUUUUU');
+                print(orderDataController.toLat.value);
+                print(orderDataController.toLng.value);
+                print(orderDataController.toAddress.value);
+                print(orderDataController.serviceUuid.value);
+                print(orderDataController.data.value);
+                print(orderDataController.toDeliveryAddressUuid.value);
+                print('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU');
+              }
             }
           }
         }

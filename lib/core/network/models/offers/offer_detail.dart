@@ -197,6 +197,7 @@ class User {
     required this.image,
     required this.ordersCount,
     required this.ratingPercentage,
+    required this.mobile,
   });
 
   final String? uuid;
@@ -204,6 +205,8 @@ class User {
   @JsonKey(name: 'full_name')
   final String? fullName;
   final String? image;
+  @JsonKey(name: 'mobile')
+  final String? mobile;
 
   @JsonKey(name: 'orders_count')
   final int? ordersCount;

@@ -32,6 +32,12 @@ Widget AddressesUsingWidget(
               ..setFromLat(address.lat!)
               ..setFromLng(address.lng!);
             orderDataController.setPlaceName(address.name!);
+            print('+++++++++++++++++++++++++++++++');
+            print("setFromLat : ${orderDataController.fromLat}");
+            print("setFromLng: ${orderDataController.fromLng}");
+            print("setFromAddress: ${orderDataController.fromAddress}");
+            print('+++++++++++++++++++++++++++++++');
+
             Get.toNamed(Routes.selectStoreNameScreen);
           }),
           IconButton(

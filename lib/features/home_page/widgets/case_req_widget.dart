@@ -15,7 +15,7 @@ Widget CaseReqWidget(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
-        '${currentReq!.date ?? ''} ${currentReq.time ?? ''}',
+        '${currentReq!.timeAgo ?? ''} ',
         textAlign: TextAlign.start,
         style: context.textStyles.bodySmall.regular.copyWith(
           color: context.colorsCustom.TextSecondary,
@@ -30,7 +30,7 @@ Widget CaseReqWidget(
             height: 0.04.sh,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
-              color: currentReq.status == 'pending'
+              color: currentReq.status == 'receiving_offers'
                   ? context.colorsCustom.LightBlue
                   : currentReq.status == 'in_progress'
                   ? context.colorsCustom.LightOrange
@@ -42,7 +42,7 @@ Widget CaseReqWidget(
                 '${currentReq.statusText ?? ''}',
                 textAlign: TextAlign.center,
                 style: context.textStyles.bodySmall.medium.copyWith(
-                  color: currentReq.status == 'pending'
+                  color: currentReq.status == 'receiving_offers'
                       ? context.colorsCustom.BluePrimary
                       : currentReq.status == 'in_progress'
                       ? Colors.orange

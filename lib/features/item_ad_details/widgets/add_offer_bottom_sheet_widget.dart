@@ -141,6 +141,7 @@ Widget _buildSaveButton(
         }
       },
       isLoading: controller.isButtonPressed.value,
+      isEnabled: !controller.isButtonPressed.value,
       isWhiteProgress: true,
       buttonColor: context.colorsCustom.surfacePrimaryBlack,
     );

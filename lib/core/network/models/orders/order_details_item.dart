@@ -45,7 +45,7 @@ class OrdersDetailsItem {
   @JsonKey(name: 'service_title')
   final String? serviceTitle;
   final String? description;
-  final DateTime? date;
+  final String? date;
   final List<TimesOrder>? times;
   final String? from;
 

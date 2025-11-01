@@ -92,10 +92,11 @@ class MyOfferAdDetailsController extends GetxController {
         _setButtonPressed(false);
         if (response.status == true) {
           Get.back();
+          Get.back();
           MyOfferToCustomerWidget(
             Get.context!,
-            IsShowRow: true,
-            title: '1',
+            IsShowRow: false,
+            title: '${Get.context!.displaySuccessfullyUpdated}',
             onTap: () {
               // orderDataController.clearAll();
               // Get.offAllNamed(

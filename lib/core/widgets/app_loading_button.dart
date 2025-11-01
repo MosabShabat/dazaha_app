@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import '../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/app_shared_methods.dart';
 import 'package:flutter/material.dart';
 import '../theming/app_text_styles.dart';
@@ -9,19 +10,19 @@ class AppLoadingButton extends StatelessWidget {
   final Future<void> Function() onPressed;
   bool isLoading;
   final bool isWhiteProgress;
-  final Color buttonColor;
   final double width;
   final double height;
   final TextStyle? textStyle;
   final bool isEnabled;
+  final buttonColor;
 
   AppLoadingButton({
     Key? key,
     required this.text,
     required this.onPressed,
     required this.isLoading,
+    this.buttonColor,
     this.isWhiteProgress = false,
-    this.buttonColor = const Color(0xFF119892),
     this.width = double.infinity,
     this.height = 52,
     this.textStyle,
@@ -40,10 +41,10 @@ class AppLoadingButton extends StatelessWidget {
           : null,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        backgroundColor: isEnabled
-            ? buttonColor
-            : Color(0xFF119892).withOpacity(0.2),
-        disabledBackgroundColor: Color(0xFFFFFFFFF),
+        backgroundColor: buttonColor ?? context.colorsCustom.TealGreenSecondary,
+        disabledBackgroundColor: isEnabled
+            ? context.colorsCustom.surfacePrimaryWhite
+            : buttonColor ?? context.colorsCustom.TealGreenSecondary,
         elevation: 0,
       ),
       child: Container(

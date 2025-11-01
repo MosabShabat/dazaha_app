@@ -1,3 +1,4 @@
+import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/models/receipt_methods.dart';
 import '../../../core/network/utils/api_result.dart';
 import 'package:get/get.dart';
@@ -49,7 +50,11 @@ class PickUpMethodUponDeliveryController extends GetxController {
             receiptMethodsRow.map((e) => ReceiptMethods.fromJson(e)).toList(),
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
         isDataLoading.value = false;
       },

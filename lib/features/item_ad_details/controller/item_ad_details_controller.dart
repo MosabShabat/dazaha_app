@@ -22,7 +22,7 @@ class ItemAdDetailsController extends GetxController {
 
   final TextEditingController priceController = TextEditingController();
   RxBool isButtonPressed = false.obs;
-
+//0598280909
   var selectedIndex = 0.obs;
 
   @override
@@ -59,7 +59,7 @@ class ItemAdDetailsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(Get.context!, response.message ?? '',FirstColor: Colors.red);
         }
       },
       failure: (error) {
@@ -77,7 +77,7 @@ class ItemAdDetailsController extends GetxController {
 
   void validationInputData(BuildContext context) {
     if (priceController.text.isEmpty) {
-      showErrorSnackbar(context, 'Enter Price');
+      showErrorSnackbar(context, context.enterAmount,FirstColor: Colors.amber);
       return;
     }
     _orderDataController.setLikedPrice(priceController.text);

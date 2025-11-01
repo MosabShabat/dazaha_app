@@ -1,8 +1,8 @@
+import '../../../core/constant/exports_libraries.dart';
 import '../../../core/helpers/theme_exports.dart';
 import '../../../core/network/models/orders/order_uuid.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/widgets/app_snackbar.dart';
-import 'package:get/get.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/network/utils/api_error_model.dart';
 import '../../../core/network/utils/app_response.dart';
@@ -61,7 +61,11 @@ class AdvertisementSummaryController extends GetxController {
   }
 
   void _showError(String? message) {
-    showErrorSnackbar(Get.context!, message ?? 'An error occurred');
+    showErrorSnackbar(
+      Get.context!,
+      message ?? '${Get.context!.error}',
+      FirstColor: Colors.red,
+    );
   }
 
   void _showApiErrors(List<ApiErrorModel> errors) {

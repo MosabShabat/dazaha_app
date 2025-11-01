@@ -83,6 +83,9 @@ class _SvgAssets {
   final hashtagIcon = 'assets/images/svg_images/hashtag_icon.svg';
   final ic_error = 'assets/images/svg_images/ic_error.svg';
   final ic_success = 'assets/images/svg_images/ic_success.svg';
+  final dizzha_logo = 'assets/images/svg_images/dizzha_logo.svg';
+
+  //dizzha_logo
 }
 
 class _ImageAssets {
@@ -103,6 +106,7 @@ class _JsonAssets {
   final jsonLocation = 'assets/json/location.json';
   final JsonNotification = 'assets/json/notification.json';
   final jsonLoginRequired = 'assets/json/login.json';
+  final wifiConnect = 'assets/json/Wifi connect.json';
 }
 
 class _GifAssets {

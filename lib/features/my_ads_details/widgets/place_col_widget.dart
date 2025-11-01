@@ -9,6 +9,10 @@ Widget PlaceColWidget(
   required fromDet,
   required toDet,
   required toTitle,
+  required fromLat,
+  required fromLng,
+  required toLat,
+  required toLng,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,23 +25,34 @@ Widget PlaceColWidget(
       ),
       verticalSpace(20.h),
       toDet == null || toTitle == null || toDet == '' || toTitle == ''
-          ? _listFromWidget(context, fromTitle, fromDet)
+          ? _listFromWidget(context, fromTitle, fromDet, fromLat, fromLng)
           : FromToCouWidget(
               context,
               CircleSize: 10.w,
-              LineHight: 80.h,
+              LineHight: 90.h,
               horSpa: 10.w,
               DelText1: fromTitle,
               DetText1: fromDet,
               DelText2: toTitle,
               DetText2: toDet,
               verticalSpaceItems: 28.h,
+              fromLat: fromLat,
+              fromLng: fromLng,
+              toLat: toLat,
+              toLng: toLng,
+              conWidth: 332.w,
             ),
     ],
   );
 }
 
-Widget _listFromWidget(BuildContext context, fromTitle, fromSubTitle) {
+Widget _listFromWidget(
+  BuildContext context,
+  fromTitle,
+  fromSubTitle,
+  fromLat,
+  fromLng,
+) {
   return ListTile(
     contentPadding: EdgeInsets.zero,
     leading: CircleAvatar(
@@ -49,6 +64,9 @@ Widget _listFromWidget(BuildContext context, fromTitle, fromSubTitle) {
       title: context.deliveryFrom,
       DelText: fromTitle,
       DetText: fromSubTitle,
+      lat: fromLat,
+      conWidth: 338.w,
+      lng: fromLng,
     ),
     //  Text(
     //   currentOrder,

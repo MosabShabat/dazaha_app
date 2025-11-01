@@ -113,7 +113,7 @@ class BookingDateScreen extends StatelessWidget {
     if (_bookingDateController.selectedSlots.isEmpty) {
       showErrorSnackbar(
         Get.context!,
-        "Please select a time slot.",
+        Get.context!.pleaseSelectATimeSlot,
         FirstColor: Colors.amber,
       );
 

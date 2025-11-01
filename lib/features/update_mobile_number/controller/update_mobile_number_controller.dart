@@ -17,11 +17,15 @@ class UpdateMobileNumberController extends GetxController {
 
   void validateInput(BuildContext context, bool? resetAll) {
     if (_isPhoneNumberEmpty()) {
-      showErrorSnackbar(context, context.error);
+      showErrorSnackbar(context, context.error, FirstColor: Colors.amber);
       return;
     }
     if (!_isValidPhoneNumber()) {
-      showErrorSnackbar(context, 'Enter Phone number');
+      showErrorSnackbar(
+        context,
+        context.enterPhoneNumber,
+        FirstColor: Colors.amber,
+      );
       return;
     }
     String phoneNumber = '$countryCode-${phoneController.text}';
@@ -62,7 +66,7 @@ class UpdateMobileNumberController extends GetxController {
           isButtonPressed.value = false;
           isProcessing.value = false;
 
-          showErrorSnackbar(context, response.message ?? '');
+          showErrorSnackbar(context, response.message ?? '',FirstColor: Colors.red);
         }
       },
       failure: (error) {

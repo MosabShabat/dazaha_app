@@ -32,7 +32,7 @@ class LoginController extends GetxController {
     if (!_isValidPhoneNumber()) {
       showErrorSnackbar(
         context,
-        'Enter Phone number',
+        context.enterPhoneNumber,
         FirstColor: Colors.amber,
       );
       return;
@@ -79,7 +79,7 @@ class LoginController extends GetxController {
           isButtonPressed.value = false;
           isProcessing.value = false;
 
-          showErrorSnackbar(context, response.message ?? '');
+          showErrorSnackbar(context, response.message ?? '', FirstColor: Colors.red,);
         }
       },
       failure: (error) {

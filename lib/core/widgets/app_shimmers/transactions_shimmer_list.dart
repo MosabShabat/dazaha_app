@@ -25,7 +25,7 @@ Widget shimmerTransactionsList() {
                   children: [
                     CustomShimmer(width: 60, height: 6),
                     verticalSpace(16),
-                    CustomShimmer(width: 90, height: 6)
+                    CustomShimmer(width: 90, height: 6),
                   ],
                 ),
               ),

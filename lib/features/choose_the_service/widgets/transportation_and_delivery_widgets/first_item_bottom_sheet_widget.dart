@@ -1,3 +1,4 @@
+import '../../../../features/choose_the_service/controller/order_data_controller.dart';
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/widgets/progress_view_white.dart';
@@ -11,6 +12,7 @@ Future<dynamic> FirstItemBottomSheetWidget(
   BuildContext context, {
   required ChooseTheServiceController controller,
 }) {
+  OrderDataController orderController = Get.find();
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -70,6 +72,8 @@ Future<dynamic> FirstItemBottomSheetWidget(
                       context,
                       text: context.continuation,
                       onTap: () {
+                        orderController.setSrvType('2');
+
                         if (controller.serviceModel!.value.intros!.isEmpty) {
                           Get.to(
                             () => CustomCameraScreen(

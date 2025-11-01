@@ -76,10 +76,13 @@ class PriceDetailsScreen extends StatelessWidget {
     return Obx(
       () => AppLoadingButton(
         text: context.continuation,
+
         onPressed: () async {
           controller.submitPrice(context, page);
         },
         isLoading: controller.isButtonPressed.value,
+        isEnabled: !controller.isButtonPressed.value,
+
         isWhiteProgress: true,
       ),
     );

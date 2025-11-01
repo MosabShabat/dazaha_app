@@ -10,6 +10,7 @@ import '../widgets/messages_list_view.dart';
 class ReportAProblemChatSupportScreen extends StatelessWidget {
   final ChatTechnicalSupportController controller = Get.put(
     ChatTechnicalSupportController(),
+    tag: 'chatSupport',
   );
 
   final String? receiverUuid, receiverImage, receiverName;
@@ -26,8 +27,8 @@ class ReportAProblemChatSupportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.initPusher();
-    controller.getMessages(receiverUuid ?? 'technical_support');
+    // controller.initReverb(receiverUuid ?? 'technical_support');
+    // controller.getMessages(receiverUuid ?? 'technical_support');
 
     return Scaffold(
       body: SafeArea(
@@ -53,7 +54,9 @@ class ReportAProblemChatSupportScreen extends StatelessWidget {
                             children: [
                               Text(
                                 receiverName ?? context.liveSupport,
-                                style: AppTextStyles.font14Black400Regular(context),
+                                style: AppTextStyles.font14Black400Regular(
+                                  context,
+                                ),
                               ),
                             ],
                           ),

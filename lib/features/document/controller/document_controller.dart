@@ -1,25 +1,27 @@
 import 'dart:developer';
-import '../../../../core/network/models/offers/offers.dart';
-import '../../../../core/network/utils/api_result.dart';
-import '../../../core/constant/exports_libraries.dart';
-import '../../../core/network/utils/app_response.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import 'document_repo.dart';
+import '../../../core/network/utils/api_result.dart';
+import '../../../core/network/utils/app_response.dart';
+import '../../../../core/network/models/offers/offers.dart';
 
 class DocumentController extends GetxController {
-RxInt selectedIndex = 0.obs; // بدل int
+  RxInt selectedIndex = 0.obs;
 
   final DocumentRepo _documentRepo = Get.find<DocumentRepo>();
-   TextEditingController searchController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   final OrderDataController orderDataController = Get.find();
-
-  //Offers
 
   RxBool isLoading = false.obs;
   RxBool isLoadingMore = false.obs;
   RxInt currentPage = 1.obs;
   RxBool hasMorePages = true.obs;
+  RxBool isOffline = false.obs; // <-- اتصال الإنترنت
+  RxString searchText = ''.obs;
 
   Rx<Offers>? offer;
   RxList<Item> offersList = <Item>[].obs;
@@ -28,14 +30,30 @@ RxInt selectedIndex = 0.obs; // بدل int
   @override
   void onInit() {
     super.onInit();
-    orderDataController.clearAll();
+    listenConnection();
     resetControllerState();
     getOffers();
+
+    scrollController.addListener(() {
+      if (scrollController.position.extentAfter < 200) {
+        loadMoreOrdersModel();
+      }
+    });
+    debounce(searchText, (_) {
+      refreshOrders();
+    }, time: Duration(milliseconds: 500));
+  }
+
+  void listenConnection() {
+    Connectivity().onConnectivityChanged.listen((result) {
+      isOffline.value = result == ConnectivityResult.none;
+    });
   }
 
   Future<void> getOffers() async {
-    if (isLoading.value || !hasMorePages.value) return;
+    if (isLoading.value || !hasMorePages.value || isOffline.value) return;
     _setLoading(true);
+
     final result = await _documentRepo.getOffers(
       serviceUuid: orderDataController.serviceUuid.isNotEmpty
           ? '${orderDataController.serviceUuid}'
@@ -43,25 +61,16 @@ RxInt selectedIndex = 0.obs; // بدل int
       status: orderDataController.offerStatus.isNotEmpty
           ? '${orderDataController.offerStatus}'
           : '',
-      search: searchController.text.isNotEmpty ? searchController.text : null,
+      search: searchText.value.isNotEmpty ? searchText.value : null,
       page: currentPage.value,
     );
-    if (result is Success<AppResponse>) {
-      final response = result.data;
-      if (response.data != null) {
-        _processResponse(response);
-      } else {
-        showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
-      }
-    } else if (result is Failure) {
-      showSnackbarErrorApi(Get.context!, [], null);
-    }
 
+    _handleApiResult(result);
     _setLoading(false);
   }
 
   Future<void> loadMoreOrdersModel() async {
-    if (isLoadingMore.value || !hasMorePages.value) return;
+    if (isLoadingMore.value || !hasMorePages.value || isOffline.value) return;
     _setLoadingMore(true);
 
     final result = await _documentRepo.getOffers(
@@ -72,47 +81,66 @@ RxInt selectedIndex = 0.obs; // بدل int
       status: orderDataController.offerStatus.isNotEmpty
           ? '${orderDataController.offerStatus}'
           : '',
-      search: searchController.text.isNotEmpty ? searchController.text : null,
+      search: searchText.value.isNotEmpty ? searchText.value : null,
     );
 
+    _handleApiResult(result);
+    _setLoadingMore(false);
+  }
+
+  void _handleApiResult(ApiResult<AppResponse> result) {
     if (result is Success<AppResponse>) {
       final response = result.data;
       if (response.data != null) {
         _processResponse(response);
-      } else {
+      } else if (!isOffline.value) {
         showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
       }
-    } else if (result is Failure) {
+    } else if (result is Failure && !isOffline.value) {
       showSnackbarErrorApi(Get.context!, [], null);
     }
-
-    _setLoadingMore(false);
   }
 
   void _processResponse(AppResponse response) {
-    log("response1");
     if (response.status == true) {
-      offer = Offers.fromJson(response.data as Map<String, dynamic>).obs;
-
-      final List<Item> newItems = offer!.value.items ?? [];
-
+      final data = Offers.fromJson(response.data as Map<String, dynamic>);
+      final List<Item> newItems = data.items ?? [];
       if (newItems.isNotEmpty) {
-        log("Loaded orders: ${newItems.length}");
         offersList.addAll(newItems);
-        currentPage.value += 1;
-
-        if (newItems.length < 15) {
-          hasMorePages.value = false;
-        }
+        currentPage.value++;
+        if (newItems.length < 15) hasMorePages.value = false;
       } else {
         hasMorePages.value = false;
       }
-    } else {
-      isLoading.value = false;
     }
   }
 
+  Future<void> loadMoreOrders() async {
+    if (isLoadingMore.value || !hasMorePages.value) return;
+    if (isOffline.value) return;
+
+    _setLoadingMore(true);
+    currentPage.value += 1;
+
+    final result = await _documentRepo.getOffers(
+      serviceUuid: orderDataController.serviceUuid.isNotEmpty
+          ? '${orderDataController.serviceUuid}'
+          : '',
+      status: orderDataController.offerStatus.isNotEmpty
+          ? '${orderDataController.offerStatus}'
+          : '',
+      search: searchController.text.isNotEmpty ? searchController.text : null,
+      page: currentPage.value,
+    );
+
+    if (result is Failure && currentPage.value > 1) currentPage.value -= 1;
+
+    _handleApiResult(result);
+    _setLoadingMore(false);
+  }
+
   Future<void> refreshOrders() async {
+    if (isOffline.value) return;
     offersList.clear();
     currentPage.value = 1;
     hasMorePages.value = true;
@@ -124,17 +152,9 @@ RxInt selectedIndex = 0.obs; // بدل int
     hasMorePages.value = true;
   }
 
-  void _setLoadingMore(bool value) {
-    isLoadingMore.value = value;
-  }
-
-  void _setLoading(bool value) {
-    isLoading.value = value;
-  }
-
-  void changeSelect(int index) {
-    selectedIndex.value = index;
-  }
+  void _setLoadingMore(bool value) => isLoadingMore.value = value;
+  void _setLoading(bool value) => isLoading.value = value;
+  void changeSelect(int index) => selectedIndex.value = index;
 
   @override
   void dispose() {
@@ -142,14 +162,6 @@ RxInt selectedIndex = 0.obs; // بدل int
     orderDataController.setOfferStatus('');
     Get.delete<DocumentController>();
     super.dispose();
-    log('AllAdsController disposed: dispose');
-  }
-
-  @override
-  void onClose() {
-    orderDataController.clearAll();
-    orderDataController.setOfferStatus('');
-    super.onClose();
-    log('AllAdsController disposed: onClose');
+    log('DocumentController disposed');
   }
 }

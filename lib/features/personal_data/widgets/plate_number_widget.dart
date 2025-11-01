@@ -1,7 +1,7 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
-Widget PlateNumberWidget(BuildContext context,{required plateController}) {
+Widget PlateNumberWidget(BuildContext context, {required plateController}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -24,6 +24,7 @@ Widget PlateNumberWidget(BuildContext context,{required plateController}) {
         textAlign: TextAlign.center,
         readOnly: false,
         maxLines: 1,
+        maxLength: 8,
         obscureText: false,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: plateController,
@@ -33,6 +34,7 @@ Widget PlateNumberWidget(BuildContext context,{required plateController}) {
         HintTextFontFamily: context.textStyles.bodyLarge.regular.fontFamily,
         HintTextFontSize: 16.0.sp,
         fontWeight: FontWeight.w400,
+        counterText: '',
         fillColor: context.colorsCustom.surfacePrimaryWhite,
       ),
       verticalSpace(20.sp),

@@ -38,7 +38,7 @@ Widget TopDetRowWidget(
                   children: [
                     verticalSpace(20.h),
                     Text(
-                      'الخميس 08/05/2025 01:03 م',
+                      '',
                       style: context.textStyles.headlineSmall.regular.copyWith(
                         color: context.colorsCustom.TextPrimary,
                         fontSize: 12.sp,

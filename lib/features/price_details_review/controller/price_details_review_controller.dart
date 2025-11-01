@@ -35,7 +35,7 @@ class PriceDetailsReviewController extends GetxController {
               Get.toNamed(Routes.myOfferAdDetailsScreen);
             }
           } else {
-            showErrorSnackbar(Get.context!, response.message ?? '');
+            showErrorSnackbar(Get.context!, response.message ?? '',FirstColor: Colors.red);
           }
         },
         failure: (error) {
@@ -45,7 +45,7 @@ class PriceDetailsReviewController extends GetxController {
       );
     } catch (_) {
       _setButtonPressed(false);
-      showErrorSnackbar(context, 'An error occurred');
+      showErrorSnackbar(context, context.error, FirstColor: Colors.red);
     }
   }
 

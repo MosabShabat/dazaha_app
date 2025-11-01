@@ -12,6 +12,7 @@ extension TranslationsExtension on BuildContext {
       tr('enter_mobile_number_to_register_or_login');
   String get mobileNumber => tr('mobile_number');
   String get continuation => tr('continuation');
+  String get pleaseSelectATimeSlot => tr('please_select_a_time_slot');
   String get registerNewUser => tr('register_new_user');
   String get firstName => tr('first_name');
   String get enterYourProfilePicture => tr('enter_your_profile_picture');
@@ -30,6 +31,7 @@ extension TranslationsExtension on BuildContext {
   String get iAgreeTo => tr('i_agree_to');
   String get termsAndConditions => tr('terms_and_conditions');
   String get verification => tr('verification');
+  String get registerAnAccount => tr('register_an_account');
   String get confirm => tr('confirm');
   String get yes => tr('yes');
   String get no => tr('no');
@@ -167,6 +169,8 @@ extension TranslationsExtension on BuildContext {
   String get summary => tr('summary');
   String get shoppingList => tr('shopping_list');
   String get send => tr('send');
+  String get displaySuccessfullyUpdated => tr('display_successfully_updated');
+  //display_successfully_updated
   String get all => tr('all');
   String get receiveOffers => tr('receive_offers');
   String get underDelivery => tr('under_delivery');
@@ -234,6 +238,9 @@ extension TranslationsExtension on BuildContext {
   String get placeOrdersAnd => tr('place_orders_and_start_earning_easily');
   String get joinNow => tr('join_now');
   String get wallet => tr('wallet');
+  String get dividendPortfolio => tr('dividend_portfolio');
+
+  //dividend_portfolio
   String get theLanguage => tr('the_language');
   String get arabic => tr('arabic');
   String get english => tr('english');
@@ -271,6 +278,7 @@ extension TranslationsExtension on BuildContext {
       tr('your_report_has_been_sent_successfully');
   String get weWillContactYou => tr('we_will_contact_you');
   String get ok => tr('ok');
+  String get tapAgainToExitTheApp => tr('tap_again_to_exit_the_app');
   String get notifications => tr('notifications');
   String get yourAvailableBalance => tr('your_available_balance');
   String get withdrawABalance => tr('withdraw_a_balance');
@@ -278,6 +286,9 @@ extension TranslationsExtension on BuildContext {
   String get recordMovements => tr('record_movements');
   String get howMuchDoYouWantToWithdraw =>
       tr('how_much_do_you_want_to_withdraw');
+String get howMuchDoYouWantToDis =>
+      tr('how_much_do_you_want_to_dis');
+      //how_much_do_you_want_to_dis
   String get weWillPrepareTheAmount => tr('we_will_prepare_the_amount');
   String get withdrawalRequest => tr('withdrawal_request');
   String get balanceWithdrawalRequest => tr('balance_withdrawal_request');

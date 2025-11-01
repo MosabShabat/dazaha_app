@@ -53,6 +53,8 @@ class ReportAProblemScreen extends StatelessWidget {
           controller.validateAndSubmit(referenceType, referenceUuid);
         },
         isLoading: controller.isButtonPressed.value,
+        isEnabled: !controller.isButtonPressed.value,
+
         isWhiteProgress: true,
       );
     });

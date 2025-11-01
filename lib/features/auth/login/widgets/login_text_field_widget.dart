@@ -2,7 +2,12 @@ import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 
-Widget LoginTextFieldWidget(BuildContext context, {required controller}) {
+Widget LoginTextFieldWidget(
+  BuildContext context, {
+  controller,
+  hintText,
+  readOnly,
+}) {
   return Container(
     height: 52.h,
     decoration: BoxDecoration(
@@ -41,9 +46,10 @@ Widget LoginTextFieldWidget(BuildContext context, {required controller}) {
             controller: controller,
             textDirection: TextDirection.ltr,
             maxLength: 9,
+            readOnly: readOnly ?? false,
             hasBorder: false,
             keyboardType: TextInputType.phone,
-            hintText: context.mobileNumber,
+            hintText: hintText ?? context.mobileNumber,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return context.enterPhoneForLoginOrSignup;

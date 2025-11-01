@@ -64,6 +64,7 @@ Widget ChooseServiceListViewWidget(
                     controller: chooseTheServiceController,
                     onTap: () {
                       Get.back();
+                      orderController.setSrvType('1');
                       if (chooseTheServiceController
                           .serviceModel!
                           .value
@@ -94,6 +95,7 @@ Widget ChooseServiceListViewWidget(
                     topTitle: context.removeAndRecycle,
                     controller: chooseTheServiceController,
                     onTap: () {
+                      orderController.setSrvType('2');
                       Get.back();
                       if (chooseTheServiceController
                           .serviceModel!
@@ -130,6 +132,7 @@ Widget ChooseServiceListViewWidget(
                     topTitle: context.dedication,
                     controller: chooseTheServiceController,
                     onTap: () {
+                      orderController.setSrvType('2');
                       Get.back();
                       if (chooseTheServiceController
                           .serviceModel!

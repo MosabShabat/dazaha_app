@@ -50,6 +50,7 @@ class AllAdsScreen extends StatelessWidget {
               if (!tabController.indexIsChanging) {
                 final selectedUuid = _serviceUuidMap[tabController.index] ?? '';
                 _orderDataController.setServiceUuid(selectedUuid);
+                _allAdsController.resetControllerState();
                 _allAdsController.refreshOrders();
               }
             });
@@ -62,6 +63,7 @@ class AllAdsScreen extends StatelessWidget {
               child: SmartRefresher(
                 controller: _refreshController,
                 onRefresh: () async {
+                  _allAdsController.resetControllerState();
                   await _allAdsController.refreshOrders();
                   _refreshController.refreshCompleted();
                 },

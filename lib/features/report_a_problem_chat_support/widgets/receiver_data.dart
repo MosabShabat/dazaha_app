@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
-
 Widget ReceiverData(
   BuildContext context, {
   required String receiverImage,
@@ -36,13 +35,13 @@ Widget ReceiverData(
               ),
             ),
             horizontalSpace(2),
-            receiverVerify
-                ? SvgPicture.asset(
-                    AppAssets.svgs.icAccountVerification,
-                    width: 16,
-                    height: 16,
-                  )
-                : Container(),
+            // receiverVerify
+            //     ? SvgPicture.asset(
+            //         AppAssets.svgs.icAccountVerification,
+            //         width: 16,
+            //         height: 16,
+            //       )
+            //     : Container(),
           ],
         ),
         verticalSpace(8),

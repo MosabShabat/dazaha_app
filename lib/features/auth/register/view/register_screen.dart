@@ -55,7 +55,7 @@ class RegisterScreen extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 24),
         child: AppLoadingButton(
-          text: context.verification,
+          text: context.registerAnAccount,
           onPressed: () async {
             _registerController.validationInputData(
               context,
@@ -66,6 +66,7 @@ class RegisterScreen extends StatelessWidget {
             );
           },
           isLoading: _registerController.isButtonPressed.value,
+          isEnabled: !_registerController.isButtonPressed.value,
           isWhiteProgress: true,
         ),
       );

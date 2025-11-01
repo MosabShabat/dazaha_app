@@ -36,11 +36,19 @@ class ReportAProblemController extends GetxController {
   /// التحقق من صحة البيانات وإرسال التقرير
   void validateAndSubmit(String referenceType, String referenceUuid) {
     if (titleController.text.isEmpty) {
-      showErrorSnackbar(Get.context!, Get.context!.enterTitle);
+      showErrorSnackbar(
+        Get.context!,
+        Get.context!.enterTitle,
+        FirstColor: Colors.amber,
+      );
       return;
     }
     if (descriptionController.text.isEmpty) {
-      showErrorSnackbar(Get.context!, Get.context!.enterDescriptionProblem);
+      showErrorSnackbar(
+        Get.context!,
+        Get.context!.enterDescriptionProblem,
+        FirstColor: Colors.amber,
+      );
       return;
     }
     _submitReport(referenceType, referenceUuid);
@@ -65,7 +73,11 @@ class ReportAProblemController extends GetxController {
       _handleResponse(result);
     } catch (e) {
       _setButtonPressed(false);
-      showErrorSnackbar(Get.context!, 'حدث خطأ أثناء معالجة الصورة: $e');
+      showErrorSnackbar(
+        Get.context!,
+        'حدث خطأ أثناء معالجة الصورة: $e',
+        FirstColor: Colors.red,
+      );
     }
   }
 
@@ -82,7 +94,11 @@ class ReportAProblemController extends GetxController {
           );
           Get.toNamed(Routes.reportReviewDetailsScreen);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

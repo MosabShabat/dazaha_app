@@ -1,12 +1,10 @@
 import '../../../../core/constant/exports_widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/network/models/notifications/notification_item.dart';
 import '../../../../../core/theming/app_text_styles.dart';
 import '../../../core/constant/exports_libraries.dart';
-import '../../../core/helpers/app_shared_data.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/custom_cached_image.dart';
+import '../../choose_the_service/controller/order_data_controller.dart';
 
 Widget buildNotificationItem(
   BuildContext context, {
@@ -14,67 +12,82 @@ Widget buildNotificationItem(
   required int index,
   required int totalItems,
 }) {
+  OrderDataController _orderDataController = Get.find();
   return GestureDetector(
     behavior: HitTestBehavior.opaque,
-    onTap: () {
-      // if (notification!.type == NotificationTypes.newPurchase) {
-      //   Get.toNamed(Routes.chefPurchasesOrderDetailsScreen, arguments: {
-      //     AppConstants.uuid: notification.referenceUuid,
-      //   });
-      // } else if (notification.type == NotificationTypes.purchaseCaptainWay) {
-      //   Get.toNamed(Routes.purchasesOrderDetailsScreen, arguments: {
-      //     AppConstants.uuid: notification.referenceUuid,
-      //   });
-      // } else if (notification.type == NotificationTypes.purchaseCompleted) {
-      //   Get.toNamed(Routes.chefPurchasesOrderDetailsScreen, arguments: {
-      //     AppConstants.uuid: notification.referenceUuid,
-      //   });
-      // } else if (notification.type == NotificationTypes.newOrder ||
-      //     notification.type == NotificationTypes.orderCanceled) {
-      //   Get.toNamed(Routes.cookOtherOrdersScreen);
-      // } else if (notification.type == NotificationTypes.newOffer ||
-      //     notification.type == NotificationTypes.orderCaptainWay) {
-      //   Get.toNamed(Routes.cookMeOrderDetailsScreen, arguments: {
-      //     AppConstants.uuid: notification.referenceUuid,
-      //   });
-      // } else if (notification.type == NotificationTypes.orderProgress ||
-      //     notification.type == NotificationTypes.orderCompleted) {
-      //   Get.toNamed(Routes.chefOfferAndPrivateDetailsScreen, arguments: {
-      //     AppConstants.uuid: notification.referenceUuid,
-      //   });
-      // } else if (notification.type == NotificationTypes.joinJhefAccepted ||
-      //     notification.type == NotificationTypes.joinJhefRejected) {
-      //   Get.offAllNamed(Routes.navigationBarScreen);
-      // } else
-      if (notification.type == NotificationTypes.withdrawAccepted ||
-          notification.type == NotificationTypes.withdrawRejected ||
-          notification.type == NotificationTypes.walletWithdrawal ||
-          notification.type == NotificationTypes.walletDeposit) {
-        AppSharedData.getUserInfo().then((userData) {
-          Get.toNamed(Routes.walletScreen);
-        });
+    onTap: () async {
+      // if (notification == null) return;
+
+      String type = notification.type ?? '';
+      String? referenceUuid = notification.referenceUuid;
+
+      // General / Notifications
+      if (type == NotificationTypes.general ||
+          type == NotificationTypes.requestToJoinDriverAccepted ||
+          type == NotificationTypes.requestToJoinDriverRejected ||
+          type == NotificationTypes.reportedProblemNew ||
+          type == NotificationTypes.reportedProblemInProgress ||
+          type == NotificationTypes.reportedProblemResolved) {
+        Get.toNamed(Routes.notificationsScreen);
       }
-      //else if (notification.type ==
-      //         NotificationTypes.accountVerificationAccepte ||
-      //     notification.type == NotificationTypes.accountVerificationRejecte) {
-      //   Get.toNamed(Routes.navigationBarScreen);
-      //   if (Get.isRegistered<HomeController>()) {
-      //     HomeController controller = Get.find();
-      //     controller.getLocation();
-      //   }
-      // }
-      else if (notification.type == NotificationTypes.depositOrder) {
-        AppSharedData.getUserInfo().then((userData) {
-          Get.toNamed(Routes.walletScreen);
-        });
+
+      // Orders
+      if (type == NotificationTypes.newOffer ||
+          type == NotificationTypes.newOrder ||
+          type == NotificationTypes.orderCanceled) {
+        if (referenceUuid != null && referenceUuid.isNotEmpty) {
+          if (type == NotificationTypes.newOffer) {
+            _orderDataController.setItemUuid('${referenceUuid}');
+            Get.toNamed(Routes.myAdsDetailsScreen);
+          } else {
+            _orderDataController.setItemUuid('${referenceUuid}');
+            Get.toNamed(Routes.itemAdDetailsScreen);
+          }
+        } else {
+          Get.offAllNamed(
+            Routes.homeScreen,
+            arguments: {'selectedIndex': 1}, // Order screen
+          );
+        }
+      }
+
+      // Offers
+      if (type == NotificationTypes.offerExcluded ||
+          type == NotificationTypes.orderCompleted ||
+          type == NotificationTypes.orderInProgress) {
+        Get.offAllNamed(
+          Routes.homeScreen,
+          arguments: {'selectedIndex': 3}, // Offer screen
+        );
+        // if (referenceUuid != null && referenceUuid.isNotEmpty) {
+        //   _orderDataController.setItemUuid('${referenceUuid}');
+        //   Get.toNamed(Routes.myOfferAdDetailsScreen);
+        // } else {
+        //   Get.offAllNamed(
+        //     Routes.homeScreen,
+        //     arguments: {'selectedIndex': 3}, // Offer screen
+        //   );
+        // }
+      }
+
+      // Wallet
+      if (type == NotificationTypes.withdrawAccepted ||
+          type == NotificationTypes.withdrawRejected ||
+          type == NotificationTypes.walletWithdrawal ||
+          type == NotificationTypes.walletDeposit ||
+          type == NotificationTypes.depositOrder ||
+          type == NotificationTypes.depositCanceledOrder) {
+        Get.toNamed(Routes.walletScreen);
       }
     },
-    //OrdersSerModel
     child: Container(
-      margin: EdgeInsets.only(top: index == 0 ? 24 : 16),
+      margin: EdgeInsets.only(
+        top: index == 0 ? 24 : 16,
+        left: 16.w,
+        right: 16.w,
+        bottom: index == totalItems - 1 ? 24 : 0,
+      ),
       child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomCachedImage(
             imageUrl: notification?.image ?? '',
@@ -109,7 +122,6 @@ Widget buildNotificationItem(
                 verticalSpace(8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                   children: [
                     Text(
                       notification.body ?? '',

@@ -9,7 +9,9 @@ import '../controller/wallet_controller.dart';
 Future<dynamic> WithdrawalReqSheetWidget(
   BuildContext context, {
   required WalletController walletController,
+  required type,
 }) {
+  final typeIs = type == AppConstants.withdraw ? '0' : '1';
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -29,14 +31,15 @@ Future<dynamic> WithdrawalReqSheetWidget(
         child: Container(
           width: Width,
           color: context.colorsCustom.surfacePrimaryWhite,
-          // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TopConBotShWidget(context),
               verticalSpace(10.h),
               Text(
-                    context.withdrawABalance,
+                    typeIs == '0'
+                        ? context.withdrawABalance
+                        : context.rechargeBalance,
                     style: context.textStyles.titleSmall.medium.copyWith(
                       color: context.colorsCustom.TextPrimary,
                     ),
@@ -49,7 +52,9 @@ Future<dynamic> WithdrawalReqSheetWidget(
                   .make(),
               verticalSpace(20.h),
               Text(
-                context.howMuchDoYouWantToWithdraw,
+                typeIs == '0'
+                    ? context.howMuchDoYouWantToWithdraw
+                    : context.howMuchDoYouWantToDis,
                 style: context.textStyles.bodyLarge.bold.copyWith(
                   color: context.colorsCustom.TextPrimary,
                   fontSize: 18.sp,
@@ -57,7 +62,7 @@ Future<dynamic> WithdrawalReqSheetWidget(
               ),
               verticalSpace(15.h),
               Text(
-                context.weWillPrepareTheAmount,
+                typeIs == '0' ? context.weWillPrepareTheAmount : '',
                 style: context.textStyles.bodySmall.medium.copyWith(
                   color: context.colorsCustom.TextSecondary,
                 ),
@@ -69,7 +74,7 @@ Future<dynamic> WithdrawalReqSheetWidget(
                 controller: walletController.amountController,
               ),
               verticalSpace(100.h),
-              _sendAmount(context, walletController),
+              _sendAmount(context, walletController, type),
             ],
           ),
         ),
@@ -78,14 +83,18 @@ Future<dynamic> WithdrawalReqSheetWidget(
   );
 }
 
-Widget _sendAmount(BuildContext context, WalletController controller) {
+Widget _sendAmount(BuildContext context, WalletController controller, type) {
   return Obx(
     () => AppLoadingButton(
-      text: context.withdrawalRequest,
+      text: type == AppConstants.withdraw
+          ? context.withdrawalRequest
+          : context.rechargeBalance,
       onPressed: () async {
-        controller.validateInput(AppConstants.withdraw);
+        controller.validateInput(type);
       },
       isLoading: controller.isButtonPressed.value,
+      isEnabled: !controller.isButtonPressed.value,
+
       isWhiteProgress: true,
     ),
   );

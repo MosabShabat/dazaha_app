@@ -45,7 +45,11 @@ class SavedDeliveryAddressesController extends GetxController {
           addresses.assignAll(model.addressItem ?? []);
           log('عدد العناوين: ${addresses.length}');
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (errorMessage) {
@@ -82,12 +86,20 @@ class SavedDeliveryAddressesController extends GetxController {
           // );
           fetchAddresses(isStore: isStore);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (errorMessage) {
         isLoadingDelete.value = false;
-        showErrorSnackbar(Get.context!, '${errorMessage}');
+        showErrorSnackbar(
+          Get.context!,
+          '${errorMessage}',
+          FirstColor: Colors.red,
+        );
       },
     );
   }

@@ -5,6 +5,7 @@ import '../../../../features/my_ads/widgets/body_tab_bar_widget.dart';
 import '../../../../features/my_ads/widgets/tab_bar_title_widget.dart';
 import '../../../../features/my_ads/widgets/top_row_widget.dart';
 import '../../../core/helpers/app_shared_methods.dart';
+import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../controller/transportation_and_delivery_controller.dart';
 
@@ -20,12 +21,6 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     transportController.resetControllerState();
     transportController.getMyOrders();
-
-    transportController.scrollController.addListener(() {
-      if (transportController.scrollController.position.extentAfter < 200) {
-        transportController.loadMoreOrdersModel();
-      }
-    });
 
     return DefaultTabController(
       length: _statuses.length,
@@ -48,83 +43,102 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: context.colorsCustom.surfacePrimaryWhite,
             body: SafeArea(
-              child: SmartRefresher(
-                controller: _refreshController,
-                onRefresh: () async {
-                  transportController.resetControllerState();
-                  await transportController.refreshOrders();
-                  _refreshController.refreshCompleted();
-                },
-                header: CustomHeader(
-                  builder: (context, status) => SizedBox(
-                    height: 60.h,
-                    child: AppSharedMethods.buildProgressViewWhite(
-                      context,
-                      false,
+              child: Obx(() {
+                if (transportController.isOffline.value) {
+                  return Center(child: NoConnectionTextWidget(context));
+                }
+
+                return SmartRefresher(
+                  controller: _refreshController,
+                  onRefresh: () async {
+                    transportController.resetControllerState();
+                    await transportController.refreshOrders();
+                    _refreshController.refreshCompleted();
+                  },
+                  header: CustomHeader(
+                    builder: (context, status) => SizedBox(
+                      height: 60.h,
+                      child: AppSharedMethods.buildProgressViewWhite(
+                        context,
+                        false,
+                      ),
                     ),
                   ),
-                ),
-                child:
-                    Column(
-                          children: [
-                            TopRowWidget(
-                              context,
-                              title: context.myAds,
-                              size: 20.sp,
-                              style:
-                                  context.textStyles.titleLarge.bold.fontFamily,
-                              GridList: [
-                                context.transportationAndDelivery,
-                                context.buyForMe,
-                                context.removeAndRecycle,
-                                context.dedication,
-                              ],
-                              subTitle: context.ViewYourRequestsByServiceType,
-                              selectedIndex: transportController.selectedIndex,
-                              onTapSel: (index) =>
-                                  transportController.changeSelect(index),
-                              onPress: () =>
-                                  transportController.selectedIndex.value = 0,
-                              onTep: () {
-                                final uuid = switch (transportController
-                                    .selectedIndex
-                                    .value) {
-                                  0 => '69fb5c27-11ef-4637-986f-ed484b388c7f',
-                                  1 => '9cc543c0-793c-43d9-88a6-6e3db6082ef5',
-                                  2 => '7f625412-ca00-431d-a7fd-12863fc851ef',
-                                  _ => '153a7042-eb9e-42b8-9d5c-498623adb5da',
-                                };
-                                orderDataController.setServiceUuid(uuid);
-                                transportController.refreshOrders();
-                                Navigator.pop(context);
-                              },
-                            ),
-
-                            verticalSpace(10.h),
-                            TabBarTitleWidget(
-                              context,
-                              secTap: context.receiveOffers,
-                            ),
-                            Expanded(
-                              child: TabBarView(
-                                children: List.generate(
-                                  _statuses.length,
-                                  (_) => BodyTabBarWidget(
-                                    context,
-                                    controller: transportController,
+                  child:
+                      Column(
+                            children: [
+                              TopRowWidget(
+                                context,
+                                title: context.myAds,
+                                size: 20.sp,
+                                style: context
+                                    .textStyles
+                                    .titleLarge
+                                    .bold
+                                    .fontFamily,
+                                GridList: [
+                                  context.transportationAndDelivery,
+                                  context.buyForMe,
+                                  context.removeAndRecycle,
+                                  context.dedication,
+                                ],
+                                subTitle: context.ViewYourRequestsByServiceType,
+                                selectedIndex:
+                                    transportController.selectedIndex,
+                                onTapSel: (index) =>
+                                    transportController.changeSelect(index),
+                                onPress: () =>
+                                    transportController.selectedIndex.value = 0,
+                                onTep: () {
+                                  final uuid = switch (transportController
+                                      .selectedIndex
+                                      .value) {
+                                    0 => '69fb5c27-11ef-4637-986f-ed484b388c7f',
+                                    1 => '9cc543c0-793c-43d9-88a6-6e3db6082ef5',
+                                    2 => '7f625412-ca00-431d-a7fd-12863fc851ef',
+                                    _ => '153a7042-eb9e-42b8-9d5c-498623adb5da',
+                                  };
+                                  orderDataController.setServiceUuid(uuid);
+                                  transportController.refreshOrders();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              verticalSpace(10.h),
+                              TabBarTitleWidget(
+                                context,
+                                secTap: context.receiveOffers,
+                              ),
+                              Expanded(
+                                child: TabBarView(
+                                  children: List.generate(
+                                    _statuses.length,
+                                    (_) => Obx(() {
+                                      if (transportController.isOffline.value) {
+                                        return Center(
+                                          child: NoConnectionTextWidget(
+                                            context,
+                                          ),
+                                        );
+                                      } else {
+                                        return BodyTabBarWidget(
+                                          context,
+                                          controller: transportController,
+                                        );
+                                      }
+                                    }),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ).box
-                        .width(Width)
-                        .padding(
-                          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
-                        )
-                        .color(context.colorsCustom.surfacePrimaryWhite)
-                        .make(),
-              ),
+                            ],
+                          ).box
+                          .width(Width)
+                          .padding(
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
+                          )
+                          .color(context.colorsCustom.surfacePrimaryWhite)
+                          .make(),
+                );
+              }),
             ),
           );
         },

@@ -25,6 +25,8 @@ Widget MyTextField({
   FontWeight? fontWeight,
   String? Function(String?)? validator,
   keyboardType,
+  onChanged,
+  counterText,
 }) {
   // ✅ لو فيه initialValue و controller فاضي
   if (initialValue != null && controller != null && controller.text.isEmpty) {
@@ -37,6 +39,7 @@ Widget MyTextField({
     readOnly: readOnly,
     onTap: onTap,
     validator: validator,
+    onChanged: onChanged,
     onFieldSubmitted: onSubmitted,
     keyboardType: keyboardType,
     maxLines: maxLines,
@@ -47,6 +50,7 @@ Widget MyTextField({
     decoration: InputDecoration(
       filled: true,
       fillColor: fillColor,
+      counterText: counterText,
       hintText: hintText,
       hintStyle: TextStyle(
         fontFamily: HintTextFontFamily,

@@ -1,6 +1,7 @@
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/network/utils/api_result.dart';
 import 'package:get/get.dart';
+import '../../../constant/exports_libraries.dart';
 import '../../../helpers/app_shared_data.dart';
 import '../../../helpers/constants.dart';
 import '../../../network/utils/dio_factory.dart';
@@ -22,7 +23,7 @@ class AppDeleteBottomSheetController extends GetxController {
         isButtonPressed.value = false;
         if (response.status == true) {
           await removeUserToken();
-          isUserLogin = false;
+          isUserLogin.value = false;
           await AppSharedData.setUserLogin(false);
 
           AppSharedData.clearAllData();
@@ -40,7 +41,11 @@ class AppDeleteBottomSheetController extends GetxController {
             arguments: {AppConstants.resatAll: true},
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

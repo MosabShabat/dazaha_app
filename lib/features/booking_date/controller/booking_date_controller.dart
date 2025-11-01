@@ -90,7 +90,7 @@ class BookingDateController extends GetxController {
     isLoadingTimes.value = true;
     availableTimes.clear();
 
-    final dateStr = DateFormat('yyyy-MM-dd').format(day);
+    final dateStr = DateFormat('yyyy-MM-dd', 'en').format(day);
     final result = await bookingDataRepo.getTime(dateStr);
 
     result.when(

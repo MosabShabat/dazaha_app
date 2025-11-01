@@ -75,6 +75,7 @@ class AdDetailsScreen extends StatelessWidget {
       return AppLoadingButton(
         text: context.continuation,
         isLoading: controller.isButtonPressed.value,
+        isEnabled: !controller.isButtonPressed.value,
         isWhiteProgress: true,
         onPressed: () async {
           // تحديد الحجم والخدمات المساعدة

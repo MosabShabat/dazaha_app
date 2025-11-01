@@ -35,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
         }
 
         if (profileController.isOffline.value) {
-          // حالة عدم الاتصال
+          // عرض NoConnectionTextWidget عند انقطاع الانترنت
           return NoConnectionTextWidget(context);
         }
 

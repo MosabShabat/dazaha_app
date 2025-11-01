@@ -17,9 +17,9 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     _notificationsController.scrollController.addListener(() {
-      if (_notificationsController.scrollController.position.extentAfter < 200) {
+      if (_notificationsController.scrollController.position.extentAfter <
+          200) {
         _notificationsController.loadMoreNotificationsModel();
       }
     });
@@ -32,53 +32,44 @@ class NotificationsScreen extends StatelessWidget {
         widget: Text(
           context.notifications,
           style: context.textStyles.bodyLarge.bold.copyWith(
-                color: context.colorsCustom.TextPrimary,
-                fontSize: 20.sp,
-              ),
+            color: context.colorsCustom.TextPrimary,
+            fontSize: 20.sp,
+          ),
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SmartRefresher(
-                controller: _refreshController,
-                onRefresh: () async {
-                  await _notificationsController.refreshNotifications();
-                  _refreshController.refreshCompleted();
-                },
-                header: CustomHeader(
-                  builder: (BuildContext context, RefreshStatus? status) {
-                    return Container(
-                      height: 60.h,
-                      color: context.colorsCustom.surfacePrimaryWhite,
-                      child: AppSharedMethods.buildProgressViewWhite(
-                        context,
-                        false,
-                      ),
-                    );
-                  },
-                ),
-                child: Obx(() {
-                  if (_notificationsController.isLoading.isTrue &&
-                      _notificationsController.notificationsList.isEmpty) {
-                    return transactionsListShimmer(context, true);
-                  }
-
-                  if (_notificationsController.notificationsList.isEmpty) {
-                    return EmptyNotifications(context);
-                  }
-
-                  return NotListWidget(
-                    context,
-                    controller: _notificationsController,
-                  );
-                }),
-              ),
-            ),
-          ],
+        child: SmartRefresher(
+          controller: _refreshController,
+          onRefresh: () async {
+            print('here : ++++++++++++++++');
+            _notificationsController.resetControllerState();
+            await _notificationsController.refreshNotifications();
+            _refreshController.refreshCompleted();
+          },
+          header: CustomHeader(
+            builder: (BuildContext context, RefreshStatus? status) {
+              return Container(
+                height: 60.h,
+                color: context.colorsCustom.surfacePrimaryWhite,
+                child: AppSharedMethods.buildProgressViewWhite(context, false),
+              );
+            },
+          ),
+          physics: ClampingScrollPhysics(),
+          child: Obx(() => _buildBody(context)),
         ),
       ),
     );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    // return Obx(() {
+    return (_notificationsController.isLoading.isTrue &&
+            _notificationsController.notificationsList.isEmpty)
+        ? transactionsListShimmer(context, true)
+        : (_notificationsController.notificationsList.isEmpty)
+        ? EmptyNotifications(context)
+        : NotListWidget(context, controller: _notificationsController);
+    // });
   }
 }

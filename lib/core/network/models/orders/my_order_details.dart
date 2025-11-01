@@ -135,12 +135,14 @@ class Driver {
     required this.image,
     required this.name,
     required this.rate,
+    required this.mobile
   });
 
   final String? uuid;
   final String? image;
   final String? name;
   final String? rate;
+  final String? mobile;
 
   factory Driver.fromJson(Map<String, dynamic> json) => _$DriverFromJson(json);
   Map<String, dynamic> toJson() => _$DriverToJson(this);

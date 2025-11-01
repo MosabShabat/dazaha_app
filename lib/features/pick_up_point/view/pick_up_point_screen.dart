@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -36,12 +38,8 @@ class PickUpPointScreen extends StatelessWidget {
     final _addAddressCtrl = Get.find<AddADeliveryAddressController>();
     final _savedAddressesCtrl = Get.find<SavedDeliveryAddressesController>();
     final _orderCtrl = Get.find<OrderDataController>();
-    print('!!!!!!!!!!!!!!!!!! Saved addresses: ');
-    for (var i = 0; i < _savedAddressesCtrl.addresses.length; i++) {
-      print(_savedAddressesCtrl.addresses.length);
-      print(_savedAddressesCtrl.addresses[i]);
-    }
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    log('_orderCtrl.SrvType.value :${_orderCtrl.SrvType.value}');
+    log('isAppBar :${isAppBar}');
 
     // تحميل العناوين المحفوظة عند وجود AppBar
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -58,17 +56,36 @@ class PickUpPointScreen extends StatelessWidget {
       final lat = result[AppConstants.lat];
       final lng = result[AppConstants.lng];
       final name = result[AppConstants.placeName];
-
-      if (isAppBar) {
-        _orderCtrl
-          ..setFromLat(lat)
-          ..setFromLng(lng)
-          ..setFromAddress(name);
-      } else {
+      log('lat :${AppConstants.lat}');
+      log('lng :${AppConstants.lng}');
+      log('name :${AppConstants.placeName}');
+      if (_orderCtrl.SrvType.value == '1') {
         _orderCtrl
           ..setToLat(lat)
           ..setToLng(lng)
           ..setToAddress(name);
+
+        print('setToLat : ${_orderCtrl.toLat}');
+        print('setToLng : ${_orderCtrl.toLng}');
+        print('setToAddress :${_orderCtrl.toAddress} ');
+      } else {
+        if (isAppBar) {
+          _orderCtrl
+            ..setFromLat(lat)
+            ..setFromLng(lng)
+            ..setFromAddress(name);
+          print('setToLat : ${_orderCtrl.toLat}');
+          print('setToLng : ${_orderCtrl.toLng}');
+          print('setToAddress :${_orderCtrl.toAddress} ');
+        } else {
+          _orderCtrl
+            ..setToLat(lat)
+            ..setToLng(lng)
+            ..setToAddress(name);
+          print('setToLat : ${_orderCtrl.toLat}');
+          print('setToLng : ${_orderCtrl.toLng}');
+          print('setToAddress :${_orderCtrl.toAddress} ');
+        }
       }
 
       _addAddressCtrl.updateLocation(lat, lng, name);

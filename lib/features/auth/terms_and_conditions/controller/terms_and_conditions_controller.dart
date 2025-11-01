@@ -1,3 +1,4 @@
+import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/network/utils/api_result.dart';
 import 'package:get/get.dart';
 import '../../../../core/network/models/account/app_info.dart';
@@ -26,7 +27,11 @@ class TermsAndConditionsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -52,7 +57,11 @@ class TermsAndConditionsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -78,7 +87,11 @@ class TermsAndConditionsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

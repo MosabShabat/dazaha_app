@@ -136,6 +136,7 @@ class AdvertisementSummaryScreen extends StatelessWidget {
           await _controller.confirmOrders();
         },
         isLoading: _controller.isButtonPressed.value,
+        isEnabled: !_controller.isButtonPressed.value,
         isWhiteProgress: true,
       );
     });

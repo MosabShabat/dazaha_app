@@ -22,7 +22,7 @@ class SelectStoreNameController extends GetxController {
   }
 
   void initializeCounters(int length) {
-    counters.value = List.generate(length, (_) => 0);
+    counters.value = List.generate(length, (_) => 1);
     textControllers.value = List.generate(
       length,
       (_) => TextEditingController(),
@@ -32,7 +32,7 @@ class SelectStoreNameController extends GetxController {
 
   void increment(int index) => counters[index]++;
   void decrement(int index) {
-    if (counters[index] > 0) counters[index]--;
+    if (counters[index] > 1) counters[index]--;
   }
 
   void addNewItem() {
@@ -59,7 +59,7 @@ class SelectStoreNameController extends GetxController {
         return;
       }
     }
-    for (int i = 0; i < textControllers.length; i++) {
+    for (int i = 1; i < textControllers.length; i++) {
       orderController.addItem(
         name: textControllers[i].text,
         quantity: counters[i],

@@ -1,13 +1,19 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
-Widget SearchTextFieldWidget(BuildContext context,{controller, Function(String)? onSubmitted}) {
+Widget SearchTextFieldWidget(
+  BuildContext context, {
+  controller,
+  Function(String)? onSubmitted,
+  onChanged,
+}) {
   return MyTextField(
     Radius: 10.0.r,
     textAlign: TextAlign.start,
     readOnly: false,
     maxLines: 1,
     obscureText: false,
+    onChanged: onChanged,
     onSubmitted: onSubmitted,
     enabledBorderColor: context.colorsCustom.CardBorder,
     controller: controller,

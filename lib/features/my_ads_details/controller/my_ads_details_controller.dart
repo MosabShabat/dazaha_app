@@ -1,5 +1,5 @@
+import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/utils/api_result.dart';
-import 'package:get/get.dart';
 
 import '../../../core/helpers/constants.dart';
 import '../../../core/network/models/orders/my_order_details.dart';
@@ -41,7 +41,11 @@ class MyAdsDetailsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -62,7 +66,11 @@ class MyAdsDetailsController extends GetxController {
           offersList.value = items.map((e) => Offer.fromJson(e)).toList();
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

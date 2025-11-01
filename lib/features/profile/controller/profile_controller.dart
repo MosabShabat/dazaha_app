@@ -21,6 +21,7 @@ class ProfileController extends GetxController {
   RxBool isUserDataLoading = true.obs;
   Rxn<UserData> userData = Rxn<UserData>();
   RxBool isOffline = false.obs;
+  RxBool isLoadingLogout = false.obs;
 
   @override
   void onInit() {
@@ -75,7 +76,9 @@ class ProfileController extends GetxController {
 
   /// تسجيل الخروج
   void logout() async {
+    isLoadingLogout.value = true; // ✅ تشغيل مؤشر التحميل
     isLoading.value = true;
+
     final fcmToken = await AppSharedData.getSecuredString(
       AppSharedKeys.fcmTokenKey,
     );
@@ -84,6 +87,7 @@ class ProfileController extends GetxController {
     result.when(
       success: (response) async {
         isLoading.value = false;
+        isLoadingLogout.value = false; // ✅ إيقاف مؤشر التحميل
         if (response.status == true) {
           await _clearUserData();
           Get.offAllNamed(
@@ -100,6 +104,7 @@ class ProfileController extends GetxController {
       },
       failure: (error) {
         isLoading.value = false;
+        isLoadingLogout.value = false; // ✅ إيقاف مؤشر التحميل
         showSnackbarErrorApi(Get.context!, [error], null);
       },
     );

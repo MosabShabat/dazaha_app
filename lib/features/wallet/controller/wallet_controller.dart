@@ -79,6 +79,10 @@ class WalletController extends GetxController {
                   ),
                 );
               }
+              amountController.clear();
+              getWallet();
+              resetControllerState();
+              refreshController.refreshCompleted();
 
               // Get.toNamed(
               //   Routes.moyasarPaymentMethodScreen,
@@ -133,6 +137,10 @@ class WalletController extends GetxController {
             AppConstants.success,
             showButton: false,
           );
+          amountController.clear();
+          getWallet();
+          resetControllerState();
+          refreshController.refreshCompleted();
           Get.toNamed(Routes.balanceWithdrawalRequestScreen);
         } else {
           isButtonPressed.value = false;

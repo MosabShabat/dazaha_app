@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-
+import '../../../core/widgets/app_snackbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/constants.dart';
@@ -72,12 +73,20 @@ Widget CapPrRowWidget(BuildContext context, {required VoidCallback page}) {
               AppAssets.svgs.call_icon,
               color: context.colorsCustom.surfacePrimaryWhite,
             ),
-          ).onTap(() {
-            // page;
-            // Get.toNamed(
-            //   Routes.priceDetailsReviewScreen,
-            //   arguments: {'page': page},
-            // );
+          ).onTap(() async {
+            final phoneNumber = '${orderDataController.userMobile.value}';
+
+            final uri = Uri(scheme: 'tel', path: phoneNumber);
+
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri);
+            } else {
+              showErrorSnackbar(context, "تعذّر فتح تطبيق الاتصال");
+              // AppSharedMethods.showSnackBarError(
+              //   context,
+              //   "تعذّر فتح تطبيق الاتصال",
+              // );
+            }
           }),
         ],
       ),

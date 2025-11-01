@@ -2,7 +2,6 @@ import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/custom_divider_widget.dart';
-import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 import '../../profile/controller/profile_controller.dart';
 import '../../user_info/widgets/user_info_app_bar_widget.dart';
 import '../../we_are_here_to_help/widgets/cus_list_tail_widget.dart';
@@ -44,21 +43,19 @@ class SettingsScreen extends StatelessWidget {
             verticalSpace(20.h),
             CustomDividerWidget(context),
             verticalSpace(20.h),
-            CusListTailWidget(
-              context,
-              title: context.DeleteMyAccount,
-              iconImg: AppAssets.svgs.trash_icon,
-              onTap: () {
-                if (AppConstants.userToken.isNotEmpty &&
+            (AppConstants.userToken.isNotEmpty &&
                     AppConstants.userToken != '' &&
                     AppConstants.userUUid.isNotEmpty &&
-                    AppConstants.userUUid != '') {
-                  Get.toNamed(Routes.deleteMyAccountScreen);
-                } else {
-                  showLoginRequiredBottomSheet(Get.context!);
-                }
-              },
-            ),
+                    AppConstants.userUUid != '')
+                ? CusListTailWidget(
+                    context,
+                    title: context.DeleteMyAccount,
+                    iconImg: AppAssets.svgs.trash_icon,
+                    onTap: () {
+                      Get.toNamed(Routes.deleteMyAccountScreen);
+                    },
+                  )
+                : SizedBox.shrink(),
           ],
         ),
       ),

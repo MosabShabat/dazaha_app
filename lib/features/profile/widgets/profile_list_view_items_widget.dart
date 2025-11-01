@@ -42,7 +42,9 @@ Widget ProfileListViewItemsWidget(
         }
       },
 
-      'title': () => context.wallet,
+      'title': () => AppConstants.isDriver == '1'
+          ? context.dividendPortfolio
+          : context.wallet,
     },
     {
       'icon': ListProfileIcons[2],
@@ -84,6 +86,7 @@ Widget ProfileListViewItemsWidget(
     },
     {
       'icon': ListProfileIcons[6],
+
       'onTap': () {
         if (AppConstants.userToken.isNotEmpty &&
             AppConstants.userToken != '' &&
@@ -94,7 +97,14 @@ Widget ProfileListViewItemsWidget(
           showLoginRequiredBottomSheet(Get.context!);
         }
       },
-      'title': () => context.logOut,
+      // 'title': () => context.logOut,
+      'title': () =>
+          (AppConstants.userToken.isNotEmpty &&
+              AppConstants.userToken != '' &&
+              AppConstants.userUUid.isNotEmpty &&
+              AppConstants.userUUid != '')
+          ? context.logOut
+          : context.login,
     },
   ];
   return SingleChildScrollView(
@@ -115,6 +125,7 @@ Widget ProfileListViewItemsWidget(
               index,
               context,
               (item['title'] as String Function())(),
+              isLoadingLogout: profileController.isLoadingLogout,
             ),
           ),
         );

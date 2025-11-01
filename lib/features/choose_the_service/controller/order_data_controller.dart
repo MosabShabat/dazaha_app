@@ -6,7 +6,9 @@ class OrderDataController extends GetxController {
   RxString itemUuid = ''.obs;
   RxString timeUuid = ''.obs;
   RxString data = ''.obs;
+  RxString SrvType = ''.obs;
   RxString OrderUuid = ''.obs;
+  RxString tripState = ''.obs;
   RxString filterType = ''.obs;
   RxString filterNum = ''.obs;
   RxString exceptPrice = ''.obs;
@@ -16,6 +18,7 @@ class OrderDataController extends GetxController {
   RxString userImage = ''.obs;
   RxString userRate = ''.obs;
   RxString userName = ''.obs;
+  RxString userMobile = ''.obs;
   RxString userUuid = ''.obs;
   RxString orderId = ''.obs;
   RxString orderTitle = ''.obs;
@@ -72,6 +75,7 @@ class OrderDataController extends GetxController {
   void setItemUuid(String value) => itemUuid.value = value;
   void setTimeUuid(String value) => timeUuid.value = value;
   void setUserName(String value) => userName.value = value;
+  void setUserMobile(String value) => userMobile.value = value;
   void setUserImage(String value) => userImage.value = value;
   void setUserRate(String value) => userRate.value = value;
   void setUserUuid(String value) => userUuid.value = value;
@@ -79,8 +83,9 @@ class OrderDataController extends GetxController {
   void setPlaceName(String value) => placeName.value = value;
   void setFilterType(String value) => filterType.value = value;
   void setFilterNum(String value) => filterNum.value = value;
+  void setSrvType(String value) => SrvType.value = value;
 
-  //placeName
+  //SrvType
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -88,8 +93,9 @@ class OrderDataController extends GetxController {
   void setOrderIdVar(String value) => orderIdVar.value = value;
   void setOfferStatus(String value) => offerStatus.value = value;
   void setReviewType(String value) => reviewType.value = value;
+  void setTripState(String value) => tripState.value = value;
 
-  //reviewType
+  //RxString tripState = ''.obs;
 
   void setTimeUuids(List<String> values) => timeUuids.assignAll(values);
 
@@ -171,6 +177,9 @@ class OrderDataController extends GetxController {
     data.value = '';
     userUuid.value = '';
     from.value = '';
+    tripState.value = '';
+    userMobile.value = '';
+    SrvType.value = '';
     filterType.value = '';
     filterNum.value = '';
     itemStatus.value = '';

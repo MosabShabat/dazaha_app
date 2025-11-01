@@ -16,7 +16,8 @@ class NotificationsController extends GetxController {
   RxInt currentPage = 1.obs;
   RxBool hasMorePages = true.obs;
 
-  RxList<NotificationItem> notificationsList = <NotificationItem>[].obs;
+  Rx<Notifications>? notificationsModel;
+  var notificationsList = <NotificationItem>[].obs;
 
   final ScrollController scrollController = ScrollController();
 
@@ -25,6 +26,12 @@ class NotificationsController extends GetxController {
     super.onInit();
     resetControllerState();
     getNotifications();
+
+    // scrollController.addListener(() {
+    //   if (scrollController.position.extentAfter < 200) {
+    //     loadMoreNotificationsModel();
+    //   }
+    // });
   }
 
   Future<void> getNotifications() async {
@@ -101,5 +108,11 @@ class NotificationsController extends GetxController {
 
   void _setLoadingMore(bool value) {
     isLoadingMore.value = value;
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }

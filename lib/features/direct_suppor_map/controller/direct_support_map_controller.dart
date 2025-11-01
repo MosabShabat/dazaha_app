@@ -16,49 +16,41 @@ class DirectSupportMapController extends GetxController {
   final OrderDataController _orderDataController = Get.find();
 
   final selectedCase = 0.obs; // 0: started, 1: delivered, 2: completed
-  RxBool isLoading = true.obs;
+  RxBool isButtonPressed = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     AppConstants.orderUuid = _orderDataController.itemUuid.value;
-    putState('started'); // البداية: الرحلة بدأت
   }
 
   Future<void> putState(String state) async {
-    isLoading.value = true;
+    isButtonPressed.value = true;
     final result = await _directSupportMapRepo.putState(state);
 
     result.when(
       success: (response) {
-        isLoading.value = false;
-
         if (response.status == true) {
-          if (response.data != null) {
-            if (state == 'started')
-              selectedCase.value = 0;
-            else if (state == 'delivered')
+          isButtonPressed.value = false;
+          switch (state) {
+            case 'started':
               selectedCase.value = 1;
-            else if (state == 'completed')
+              break;
+            case 'delivered':
               selectedCase.value = 2;
-          } else {
-            print('response.errors : ${response.errors}');
-
-            showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
+              break;
+            case 'completed':
+              selectedCase.value = 3; // أو أي رقم مناسب
+              break;
           }
+          isButtonPressed.value = false;
         } else {
-          print('response.message : ${response.message}');
-          response.message == 'Offer in progress not found!'
-              ? SizedBox.shrink()
-              : showErrorSnackbar(
-                  Get.context!,
-                  response.message ?? '',
-                  FirstColor: Colors.red,
-                );
+          isButtonPressed.value = false;
+          showErrorSnackbar(Get.context!, response.message ?? '');
         }
       },
       failure: (error) {
-        isLoading.value = false;
+        isButtonPressed.value = false;
         showSnackbarErrorApi(Get.context!, [error], null);
       },
     );
@@ -128,7 +120,6 @@ class DirectSupportMapController extends GetxController {
       // فتح Google Maps
       if (await canLaunchUrl(googleMapsUri)) {
         await launchUrl(googleMapsUri, mode: LaunchMode.externalApplication);
-        putState('delivered');
       } else {
         Get.snackbar('خطأ', 'تعذّر فتح Google Maps');
       }

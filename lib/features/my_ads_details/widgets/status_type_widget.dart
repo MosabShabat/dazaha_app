@@ -33,6 +33,7 @@ Widget StatusTypeWidget(
     orderDataController.setToLng(orderData.toLng ?? '');
     orderDataController.setUserImage(orderData.driver!.image ?? '');
     orderDataController.setUserName(orderData.driver!.name ?? '');
+    orderDataController.setUserMobile('${orderData.driver!.mobile ?? ''}');
     orderDataController.setUserRate('${orderData.driver!.rate ?? ''}');
     orderDataController.setUserUuid('${orderData.driver!.uuid ?? ''}');
     AppConstants.userName = '${orderData.driver!.name ?? ''}';
@@ -92,6 +93,10 @@ Widget StatusTypeWidget(
                     fromTitle: '${order.fromAddress ?? ''}',
                     toDet: '${order.to ?? ''}',
                     toTitle: '${order.toAddress ?? ''}',
+                    fromLat: order.fromLat,
+                    fromLng: order.fromLng,
+                    toLat: order.toLat,
+                    toLng: order.toLng,
                   ),
                   verticalSpace(20.h),
                   CaptainInfoWidget(context, order.driver!),

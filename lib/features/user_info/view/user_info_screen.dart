@@ -57,9 +57,7 @@ class UserInfoScreen extends StatelessWidget {
               firstName: user.firstName ?? '',
               lastName: user.lastName ?? '',
               email: user.email ?? '',
-              mobileNumber: _formatPhoneNumber(
-                '${user.mobileNumber ?? ''}${user.mobilePrefix ?? ''}+',
-              ),
+              mobileNumber: _formatPhoneNumber('${user.mobileNumber ?? ''}'),
               firstNameController: _userInfoController.firstNameController,
               lastNameController: _userInfoController.lastNameController,
               emailController: _userInfoController.emailController,
@@ -69,6 +67,7 @@ class UserInfoScreen extends StatelessWidget {
               () => AppLoadingButton(
                 text: context.saveChanges,
                 isLoading: _userInfoController.isButtonPressed.value,
+                isEnabled: !_userInfoController.isButtonPressed.value,
                 isWhiteProgress: true,
                 onPressed: () async {
                   if (await _userInfoController.validateAndUpdate(context)) {

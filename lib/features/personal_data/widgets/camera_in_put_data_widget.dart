@@ -74,9 +74,9 @@ Widget _buildCameraInputWidget(
                   ),
                 ),
               ],
-            ).onTap(_pickImage),
+            ),
           ),
-        );
+        ).onTap(_pickImage);
       }),
     ],
   );

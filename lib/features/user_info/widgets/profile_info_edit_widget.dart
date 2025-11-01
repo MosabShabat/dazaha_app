@@ -1,3 +1,5 @@
+import '../../../../features/auth/login/widgets/login_text_field_widget.dart';
+
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../features/auth/register/widgets/cus_register_info_widget.dart';
@@ -62,25 +64,10 @@ Widget ProfileInfoEditWidget(
               ],
             ),
             verticalSpace(15.h),
-            MyTextField(
-              Radius: 8.0,
-              textAlign: TextAlign.start,
-              readOnly: true,
-              maxLines: 1,
-              obscureText: false,
-              enabledBorderColor: context.colorsCustom.CardBorder,
-              keyboardType: TextInputType.number,
+            LoginTextFieldWidget(
+              context,
               hintText: mobileNumber,
-              hintStyleColor: context.colorsCustom.TextSecondary,
-              HintTextFontFamily:
-                  context.textStyles.bodySmall.medium.fontFamily,
-              HintTextFontSize: 12.0.sp,
-              fontWeight: FontWeight.w500,
-              suffixIcon: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                child: SvgPicture.asset(AppAssets.svgs.mask_group_icon),
-              ),
-              fillColor: context.colorsCustom.surfacePrimaryWhite,
+              readOnly: true,
             ),
           ],
         ),

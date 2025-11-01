@@ -19,6 +19,8 @@ class UserInfoController extends GetxController {
   final ProfileController _profileController = Get.find<ProfileController>();
 
   final firstNameController = TextEditingController();
+  final mobileController = TextEditingController();
+
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
 
@@ -91,7 +93,11 @@ class UserInfoController extends GetxController {
       _handleResponse(result);
     } catch (e) {
       _setButtonPressed(false);
-      showErrorSnackbar(Get.context!, 'Error processing image: $e');
+      showErrorSnackbar(
+        Get.context!,
+        'Error processing image: $e',
+        FirstColor: Colors.red,
+      );
     }
   }
 
@@ -117,7 +123,11 @@ class UserInfoController extends GetxController {
 
           Get.toNamed(Routes.homeScreen);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

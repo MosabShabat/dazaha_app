@@ -10,60 +10,68 @@ Widget WithRecRowBottomWidget(
   required WalletController walletController,
 }) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      CusButtonWidget(
-        context,
-        H: 38.0.h,
-        W: 148.0.w,
-        backGroundColor: context.colorsCustom.surfacePrimaryBlack,
-        radius: 19.5.r,
-        widget: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              context.withdrawABalance,
-              style: context.textStyles.bodySmall.medium.copyWith(
-                color: context.colorsCustom.ButtonLabelPrimary,
+      AppConstants.isDriver == '1'
+          ? CusButtonWidget(
+              context,
+              H: 38.0.h,
+              W: 148.0.w,
+              backGroundColor: context.colorsCustom.surfacePrimaryBlack,
+              radius: 19.5.r,
+              widget: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    context.withdrawABalance,
+                    style: context.textStyles.bodySmall.medium.copyWith(
+                      color: context.colorsCustom.ButtonLabelPrimary,
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    AppAssets.svgs.import_arrow_up_icon,
+                    color: context.colorsCustom.surfacePrimaryWhite,
+                  ),
+                ],
               ),
-            ),
-            SvgPicture.asset(
-              AppAssets.svgs.import_arrow_up_icon,
-              color: context.colorsCustom.surfacePrimaryWhite,
-            ),
-          ],
-        ),
-        onTap: () {
-          WithdrawalReqSheetWidget(context, walletController: walletController);
-        },
-      ),
-      CusButtonWidget(
-        context,
-        H: 38.0.h,
-        W: 148.0.w,
-        backGroundColor: context.colorsCustom.BluePrimary,
-        radius: 19.5.r,
-        onTap: () {
-          walletController.amountController.text = '100';
-          walletController.validateInput(AppConstants.deposit);
-        },
+              onTap: () {
+                WithdrawalReqSheetWidget(
+                  context,
+                  walletController: walletController,
+                  type: AppConstants.withdraw,
+                );
+              },
+            )
+          : CusButtonWidget(
+              context,
+              H: 38.0.h,
+              W: 148.0.w,
+              backGroundColor: context.colorsCustom.BluePrimary,
+              radius: 19.5.r,
+              onTap: () {
+                WithdrawalReqSheetWidget(
+                  context,
+                  walletController: walletController,
+                  type: AppConstants.deposit,
+                );
+              },
 
-        widget: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              context.rechargeBalance,
-              style: context.textStyles.bodySmall.medium.copyWith(
-                color: context.colorsCustom.ButtonLabelPrimary,
+              widget: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    context.rechargeBalance,
+                    style: context.textStyles.bodySmall.medium.copyWith(
+                      color: context.colorsCustom.ButtonLabelPrimary,
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    AppAssets.svgs.import_arrow_down_icon,
+                    color: context.colorsCustom.surfacePrimaryWhite,
+                  ),
+                ],
               ),
             ),
-            SvgPicture.asset(
-              AppAssets.svgs.import_arrow_down_icon,
-              color: context.colorsCustom.surfacePrimaryWhite,
-            ),
-          ],
-        ),
-      ),
     ],
   );
 }

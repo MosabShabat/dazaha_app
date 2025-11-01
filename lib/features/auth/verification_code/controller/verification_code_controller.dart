@@ -11,6 +11,7 @@ import '../../../../core/network/utils/dio_factory.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../features/auth/verification_code/controller/verification_code_repo.dart';
+import '../../../home_page/controller/home_page_controller.dart';
 
 class VerificationCodeController extends GetxController {
   final VerificationCodeRepo _verificationCodeRepo =
@@ -113,7 +114,6 @@ class VerificationCodeController extends GetxController {
             response.data as Map<String, dynamic>,
           );
           if (verificationModel.userExists == false) {
-            print('User does not exist, navigating to create account screen');
             Get.offAllNamed(
               Routes.registerScreen,
               arguments: {
@@ -122,15 +122,25 @@ class VerificationCodeController extends GetxController {
               },
             );
           } else {
-            // userName = verificationModel.user!.firstName ?? '';
-            // userType = verificationModel.user!.isChef ?? 3;
-            isUserLogin = true;
+            // حفظ حالة تسجيل الدخول
+            isUserLogin.value = true;
             await AppSharedData.setUserLogin(true);
             await AppSharedData.setUserInfo(verificationModel.user!);
+
+            // حفظ التوكن
             await saveUserToken(verificationModel.user?.token ?? '');
 
-            if (resetAll == true) {
-              Get.offAllNamed(Routes.homeScreen);
+            // تحديث HomePageController بعد تسجيل الدخول
+            if (Get.isRegistered<HomePageController>()) {
+              final homeController = Get.find<HomePageController>();
+              await homeController.refreshAfterLogin();
+            }
+            //
+            if (resetAll) {
+              Get.offAllNamed(
+                Routes.homeScreen,
+                arguments: {'selectedIndex': 0},
+              );
             } else {
               Get.close(2);
             }

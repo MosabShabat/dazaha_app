@@ -38,17 +38,18 @@ Widget SliverAppBarWidget(
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              // فتح العرض الكامل عند الضغط
-              Get.to(
-                () => FullScreenImageViewer(
-                  images: type == 1
-                      ? [imageItem]
-                      : imageItem
-                            .map<String>((e) => e.image as String)
-                            .toList(),
-                  initialIndex: sliController.page?.toInt() ?? 0,
-                ),
-              );
+              type == 1
+                  ? SizedBox.shrink()
+                  : Get.to(
+                      () => FullScreenImageViewer(
+                        images: type == 1
+                            ? [imageItem]
+                            : imageItem
+                                  .map<String>((e) => e.image as String)
+                                  .toList(),
+                        initialIndex: sliController.page?.toInt() ?? 0,
+                      ),
+                    );
             },
             child: Stack(
               fit: StackFit.expand,

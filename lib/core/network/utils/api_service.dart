@@ -182,7 +182,11 @@ abstract class ApiService {
   });
 
   @GET('${ApiConstants.ordersUrl}/{uuid}')
-  Future<AppResponse> getOrderDetails(@Path('uuid') String orderUuid);
+  Future<AppResponse> getOrderDetails(
+    @Path('uuid') String orderUuid,
+    @Query('lat') String? lat,
+    @Query('lng') String? lng,
+  );
 
   @GET('${ApiConstants.offers}/{uuid}')
   Future<AppResponse> getOfferDetails(@Path('uuid') String orderUuid);

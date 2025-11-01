@@ -58,6 +58,7 @@ class verificationCodeScreen extends StatelessWidget {
             _verificationCodeController.validateAndProceed(context, resatAll);
           },
           isLoading: _verificationCodeController.isButtonPressed.value,
+          isEnabled: !_verificationCodeController.isButtonPressed.value,
           isWhiteProgress: true,
         ),
       );

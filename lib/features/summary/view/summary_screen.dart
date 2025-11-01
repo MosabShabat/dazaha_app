@@ -120,6 +120,8 @@ class SummaryScreen extends StatelessWidget {
         text: context.postTheAd,
         onPressed: adController.confirmOrders,
         isLoading: adController.isButtonPressed.value,
+        isEnabled: !adController.isButtonPressed.value,
+
         isWhiteProgress: true,
       ),
     );

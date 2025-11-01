@@ -33,17 +33,36 @@ Widget PickUpPointListViewWidget(
 
         return GestureDetector(
           onTap: () {
-            if (isAppBar) {
-              orderDataController
-                ..setFromAddress(address.name!)
-                ..setFromLat(address.lat!)
-                ..setFromLng(address.lng!);
-            } else {
+            print('=========Koh ============');
+            print(
+              'orderDataController.SrvType.value : ${orderDataController.SrvType.value}',
+            );
+            if (orderDataController.SrvType.value == '1') {
+              print('______AAA______');
               orderDataController
                 ..setToAddress(address.name!)
                 ..setToLat(address.lat!)
                 ..setToLng(address.lng!);
+            } else {
+              print('==========GGG===========');
+
+              if (isAppBar) {
+                print('==========DDD===========');
+
+                orderDataController
+                  ..setFromAddress(address.name!)
+                  ..setFromLat(address.lat!)
+                  ..setFromLng(address.lng!);
+              } else {
+                print('==========FFF===========');
+
+                orderDataController
+                  ..setToAddress(address.name!)
+                  ..setToLat(address.lat!)
+                  ..setToLng(address.lng!);
+              }
             }
+
             onTap(); // تنفيذ الدالة المرسلة من الخارج
           },
           child:

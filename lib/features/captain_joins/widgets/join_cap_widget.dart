@@ -35,40 +35,11 @@ Widget JoinCapWidget(BuildContext context) {
       child: GeneralScreenWidget(
         context,
         wid: [
-          AppConstants.isDriver == '' || AppConstants.isDriver.isEmpty
-              ? SizedBox.shrink()
-              : _closeIcon(),
+          _closeIcon(),
           verticalSpace(20.h),
-          AppConstants.isDriver == '1'
-              ? SizedBox.shrink()
-              : verticalSpace(150.h),
           TopCloseImgWidget(),
           verticalSpace(15.h),
-          AppConstants.isDriver == '1'
-              ? _bodyCaptainWidget(context, captainJoinsController: _controller)
-              : Column(
-                  children: [
-                    Text(
-                      '${context.joinAsCap}',
-                      textAlign: TextAlign.center,
-                      style: context.textStyles.bodyLarge.bold.copyWith(
-                        color: context.colorsCustom.TextPrimary,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ).box.alignCenter.make(),
-                    verticalSpace(20.h),
-                    Text(
-                      '${context.offerDevSer}',
-                      textAlign: TextAlign.center,
-                      style: context.textStyles.bodyLarge.medium.copyWith(
-                        color: context.colorsCustom.TextSecondary,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ).box.alignCenter.make(),
-                  ],
-                ),
+          _bodyCaptainWidget(context, captainJoinsController: _controller),
         ],
       ),
     ),

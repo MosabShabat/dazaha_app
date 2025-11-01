@@ -5,6 +5,8 @@ import '../../../core/widgets/app_button_back.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../controller/wallet_controller.dart';
+
 class PaymentWebViewScreen extends StatefulWidget {
   final String paymentUrl;
 
@@ -17,6 +19,7 @@ class PaymentWebViewScreen extends StatefulWidget {
 class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   late final WebViewController _controller;
   bool _isLoading = true;
+  final WalletController _walletController = Get.find();
 
   @override
   void initState() {
@@ -31,9 +34,17 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             // 👀 Listen to URL changes
             if (url.contains('/payment/success')) {
               Navigator.of(context).pop();
+              _walletController.amountController.clear();
+              _walletController.getWallet();
+              _walletController.resetControllerState();
+              _walletController.refreshController.refreshCompleted();
               showSuccessSnackbar(context, '${context.operationSuccessful}');
             } else if (url.contains('/payment/failure')) {
               Navigator.of(context).pop();
+              _walletController.getWallet();
+              _walletController.resetControllerState();
+              _walletController.refreshController.refreshCompleted();
+
               showErrorSnackbar(
                 context,
                 '${context.operationFailedTryAgain}',

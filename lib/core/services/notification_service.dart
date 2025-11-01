@@ -1,9 +1,13 @@
 // import 'dart:convert';
 import 'dart:convert';
 import 'dart:developer';
+import '../../../../features/document/controller/document_controller.dart';
+import '../../../../features/my_ads/controller/transportation_and_delivery_controller.dart';
+import '../../../../features/notifications/controller/notifications_controller.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // import 'package:get/get.dart';
+import '../../features/choose_the_service/controller/order_data_controller.dart';
 import '../../features/wallet/controller/wallet_controller.dart';
 import '../constant/exports_libraries.dart';
 import '../helpers/app_shared_data.dart';
@@ -13,7 +17,7 @@ import '../routes/routes.dart';
 class NotificationService {
   //new changes
   static final NotificationService _instance = NotificationService._internal();
-
+  OrderDataController _orderDataController = Get.find();
   factory NotificationService() {
     return _instance;
   }
@@ -122,63 +126,66 @@ class NotificationService {
 
   void _handleForegroundNotification(Map<String, dynamic> data) {
     String? type = data[NotificationTypes.type];
-    // String referenceUuid = data[NotificationTypes.referenceUuid];
+    String referenceUuid = data[NotificationTypes.referenceUuid];
 
-    //   if (type == NotificationTypes.newPurchase &&
-    //       Get.isRegistered<ChefPurchaseOrdersController>()) {
-    //     ChefPurchaseOrdersController controller = Get.find();P
-    //     controller.resetControllerState();
-    //     controller.getPurchasesOrders();
-    //   }
-    // if (type == NotificationTypes.purchaseCaptainWay &&
-    //     Get.isRegistered<PurchasesOrderDetailsController>()) {
-    //   PurchasesOrderDetailsController controller = Get.find();
-    //   controller.getPurchasesOrderDetails(referenceUuid);
-    // }
-    // if (type == NotificationTypes.purchaseCompleted &&
-    //     Get.isRegistered<ChefPurchasesOrderDetailsController>()) {
-    //   ChefPurchasesOrderDetailsController controller = Get.find();
-    //   controller.getChefPurchasesDetails(referenceUuid);
-    // }
-    // if ((type == NotificationTypes.newOrder ||
-    //         type == NotificationTypes.orderCanceled) &&
-    //     Get.isRegistered<CookOtherOrdersController>()) {
-    //   CookOtherOrdersController controller = Get.find();
-    //   controller.getAddressData(false);
-    // }
-    // if (type == NotificationTypes.newOffer &&
-    //     Get.isRegistered<CookMeOrderDetailsController>()) {
-    //   CookMeOrderDetailsController controller = Get.find();
-    //   controller.sortOffers(referenceUuid, AppConstants.distance);
-    // }
-    // if (type == NotificationTypes.orderProgress &&
-    //     Get.isRegistered<ChefMyOffersController>()) {
-    //   ChefMyOffersController controller = Get.find();
-    //   controller.getAddressData();
-    // }
-    // if ((type == NotificationTypes.orderProgress ||
-    //         type == NotificationTypes.orderCompleted) &&
-    //     Get.isRegistered<ChefOfferAndPrivateDetailsController>()) {
-    //   ChefOfferAndPrivateDetailsController controller = Get.find();
-    //   controller.chefOfferDetials(referenceUuid);
-    // }
-    // if (type == NotificationTypes.orderCaptainWay &&
-    //     Get.isRegistered<CookMeOrderDetailsController>()) {
-    //   CookMeOrderDetailsController controller = Get.find();
-    //   controller.userCookMeDetails(referenceUuid, AppConstants.distance);
-    // }
+    // General / Notifications
 
-    // if ((type == NotificationTypes.joinJhefAccepted ||
-    //         type == NotificationTypes.joinJhefRejected) &&
-    //     Get.isRegistered<UserAccountController>()) {
-    //   Get.offAllNamed(Routes.navigationBarScreen);
-    //   if (Get.isRegistered<HomeController>()) {
-    //     HomeController controller = Get.find();
-    //     controller.getLocation();
-    //   }
-    // }
+    if ((type == NotificationTypes.general ||
+            type == NotificationTypes.requestToJoinDriverAccepted ||
+            type == NotificationTypes.requestToJoinDriverRejected ||
+            type == NotificationTypes.reportedProblemNew ||
+            type == NotificationTypes.reportedProblemInProgress ||
+            type == NotificationTypes.reportedProblemResolved) &&
+        Get.isRegistered<NotificationsController>()) {
+      NotificationsController controller = Get.find();
+      controller.resetControllerState();
+      controller.getNotifications();
+    }
+    // Offers
+    if ((type == NotificationTypes.offerExcluded) &&
+        Get.isRegistered<DocumentController>()) {
+      DocumentController controller = Get.find();
+      controller.resetControllerState();
+      controller.getOffers();
+      if (referenceUuid != '' && referenceUuid.isNotEmpty) {
+        _orderDataController.setItemUuid('${referenceUuid}');
+        Get.toNamed(Routes.myOfferAdDetailsScreen);
+      } else {
+        Get.offAllNamed(
+          Routes.homeScreen,
+          arguments: {'selectedIndex': 3}, // Order screen
+        );
+      }
+    }
+    // Orders
+    if ((type == NotificationTypes.newOffer ||
+            type == NotificationTypes.newOrder ||
+            type == NotificationTypes.orderCanceled ||
+            type == NotificationTypes.orderInProgress ||
+            type == NotificationTypes.orderCompleted) &&
+        Get.isRegistered<TransportationAndDeliveryController>()) {
+      TransportationAndDeliveryController controller = Get.find();
+      controller.resetControllerState();
+      controller.getMyOrders();
+      if (referenceUuid != '' && referenceUuid.isNotEmpty) {
+        if (type == NotificationTypes.newOffer) {
+          _orderDataController.setItemUuid('${referenceUuid}');
+          Get.toNamed(Routes.myAdsDetailsScreen);
+        } else {
+          _orderDataController.setItemUuid('${referenceUuid}');
+          Get.toNamed(Routes.itemAdDetailsScreen);
+        }
+      } else {
+        Get.offAllNamed(
+          Routes.homeScreen,
+          arguments: {'selectedIndex': 1}, // Order screen
+        );
+      }
+    }
 
-    if ((type == NotificationTypes.withdrawAccepted ||
+    if ((type == NotificationTypes.depositOrder ||
+            type == NotificationTypes.depositCanceledOrder ||
+            type == NotificationTypes.withdrawAccepted ||
             type == NotificationTypes.withdrawRejected ||
             type == NotificationTypes.walletWithdrawal ||
             type == NotificationTypes.walletDeposit) &&
@@ -187,13 +194,6 @@ class NotificationService {
       controller.resetControllerState();
       controller.getWallet();
     }
-
-    //   if ((type == NotificationTypes.accountVerificationAccepte ||
-    //           type == NotificationTypes.accountVerificationRejecte) &&
-    //       Get.isRegistered<ChefAccountController>()) {
-    //     ChefAccountController controller = Get.find();
-    //     controller.profile();
-    //   }
   }
 
   void _onNotificationClicked(String type, String referenceUuid) {
@@ -201,58 +201,44 @@ class NotificationService {
     log("Notification clicked: $referenceUuid");
 
     switch (type) {
-      // case NotificationTypes.newPurchase:
-      //   Get.toNamed(
-      //     Routes.chefPurchasesOrderDetailsScreen,
-      //     arguments: {AppConstants.uuid: referenceUuid},
-      //   );
-      //   break;
-      // case NotificationTypes.purchaseCaptainWay:
-      //   Get.toNamed(
-      //     Routes.purchasesOrderDetailsScreen,
-      //     arguments: {AppConstants.uuid: referenceUuid},
-      //   );
-      //   break;
-      // case NotificationTypes.purchaseCompleted:
-      //   Get.toNamed(
-      //     Routes.chefPurchasesOrderDetailsScreen,
-      //     arguments: {AppConstants.uuid: referenceUuid},
-      //   );
-      //   break;
-      // case NotificationTypes.newOrder:
-      // case NotificationTypes.orderCanceled:
-      //   Get.toNamed(Routes.cookOtherOrdersScreen);
-      //   break;
-      // case NotificationTypes.newOffer:
-      // case NotificationTypes.orderCaptainWay:
-      //   Get.toNamed(
-      //     Routes.cookMeOrderDetailsScreen,
-      //     arguments: {AppConstants.uuid: referenceUuid},
-      //   );
-      //   break;
-      // case NotificationTypes.orderProgress:
-      // case NotificationTypes.orderCompleted:
-      //   Get.toNamed(
-      //     Routes.chefOfferAndPrivateDetailsScreen,
-      //     arguments: {AppConstants.uuid: referenceUuid},
-      //   );
-      //   break;
-      // case NotificationTypes.joinJhefAccepted:
-      // case NotificationTypes.joinJhefRejected:
-      //   Get.offAllNamed(Routes.navigationBarScreen);
-      //   break;
+      // General / Notifications
+      case NotificationTypes.general:
+      case NotificationTypes.requestToJoinDriverAccepted:
+      case NotificationTypes.requestToJoinDriverRejected:
+      case NotificationTypes.reportedProblemNew:
+      case NotificationTypes.reportedProblemInProgress:
+      case NotificationTypes.reportedProblemResolved:
+        Get.toNamed(Routes.notificationsScreen);
+        break;
+      // Orders
+      case NotificationTypes.newOrder:
+      case NotificationTypes.orderCanceled:
+      case NotificationTypes.orderInProgress:
+      case NotificationTypes.orderCompleted:
+        Get.offAllNamed(
+          Routes.homeScreen,
+          arguments: {'selectedIndex': 1}, // Order screen
+        );
+        break;
+      // عروض Offer
+      // Offers
+      case NotificationTypes.newOffer:
+      case NotificationTypes.offerExcluded:
+        Get.offAllNamed(
+          Routes.homeScreen,
+          arguments: {'selectedIndex': 3}, // Offer screen
+        );
+        break;
+      // Wallet
       case NotificationTypes.withdrawAccepted:
       case NotificationTypes.withdrawRejected:
+      case NotificationTypes.walletWithdrawal:
+      case NotificationTypes.walletDeposit:
+      case NotificationTypes.depositOrder:
+      case NotificationTypes.depositCanceledOrder:
         Get.toNamed(Routes.walletScreen);
         break;
-      // case NotificationTypes.accountVerificationAccepte:
-      // case NotificationTypes.accountVerificationRejecte:
-      //   Get.toNamed(Routes.navigationBarScreen);
-      //   if (Get.isRegistered<HomeController>()) {
-      //     HomeController controller = Get.find();
-      //     controller.getLocation();
-      //   }
-      //   break;
+
       default:
         log('Unknown notification payload: $type');
     }

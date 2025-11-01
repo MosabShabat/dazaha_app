@@ -123,6 +123,8 @@ class ChooseTheServiceController extends GetxController {
   }
 
   Future<void> getIntro(String serviceUuid) async {
+    if (isOffline.value) return; // ✅ توقف عن طلب الشبكة إذا لا يوجد اتصال
+
     _setLoading(true);
     final result = await _chooseTheServiceRepo.getIntro(
       serviceUuid: serviceUuid,
@@ -131,7 +133,6 @@ class ChooseTheServiceController extends GetxController {
     result.when(
       success: (response) {
         _setLoading(false);
-
         final data = response.data;
         if (data != null) {
           serviceModel = ServiceModel.fromJson(data).obs;
@@ -140,8 +141,9 @@ class ChooseTheServiceController extends GetxController {
       },
       failure: (error) {
         _setLoading(false);
-
-        debugPrint("getIntro API Error: ${error}");
+        if (!isOffline.value) {
+          debugPrint("getIntro API Error: $error");
+        }
       },
     );
   }

@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/services.dart';
-
 import '../../../features/home_page/controller/home_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constant/exports_libraries.dart';
 import 'app_shared_data.dart';
 
-bool isUserLogin = false;
+RxBool isUserLogin = false.obs;
 bool isOpenBefore = true;
 String userName = '';
 int userType = -1;
@@ -24,7 +21,7 @@ final unreadChatsLocal = 0.obs;
 Future<void> initializeAppPreferences() async {
   final prefs = await SharedPreferences.getInstance();
   isOpenBefore = prefs.getBool(AppSharedKeys.isOpenBeforeKey) ?? false;
-  isUserLogin = prefs.getBool(AppSharedKeys.isUserLoggedInKey) ?? false;
+  isUserLogin.value = prefs.getBool(AppSharedKeys.isUserLoggedInKey) ?? false;
 }
 
 class AppSharedKeys {
@@ -156,12 +153,36 @@ class AppConstants {
 class NotificationTypes {
   static const String type = 'type';
   static const String referenceUuid = 'reference_uuid';
+
+  // General
   static const String general = 'general';
+  static const String requestToJoinDriverAccepted =
+      'request_to_join_driver_accepted';
+  static const String requestToJoinDriverRejected =
+      'request_to_join_driver_rejected';
+  static const String reportedProblemNew = 'reported_problem_new';
+  static const String reportedProblemInProgress =
+      'reported_problem_in_progress';
+  static const String reportedProblemResolved = 'reported_problem_resolved';
+
+  // Orders
+  static const String newOrder = 'new_order';
+  static const String orderCanceled = 'order_canceled';
+  static const String orderInProgress = 'order_in_progress';
+  static const String orderCompleted = 'order_completed';
+
+  // Offers
+  static const String newOffer = 'new_offer';
+  static const String offerExcluded = 'offer_excluded';
+
+//order_completed
+  // Wallet
   static const String withdrawAccepted = 'wallet_withdrawal_accepted';
   static const String withdrawRejected = 'wallet_withdrawal_rejected';
   static const String walletWithdrawal = 'wallet_withdrawal';
   static const String walletDeposit = 'wallet_deposit';
   static const String depositOrder = 'deposit_order';
+  static const String depositCanceledOrder = 'deposit_canceled_order';
 }
 
 class MessageTypes {

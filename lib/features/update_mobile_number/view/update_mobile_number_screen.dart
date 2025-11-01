@@ -59,6 +59,8 @@ class UpdateMobileNumberScreen extends StatelessWidget {
                   },
                   isLoading:
                       _updateMobileNumberController.isButtonPressed.value,
+                  isEnabled: !_updateMobileNumberController.isButtonPressed.value,
+
                   isWhiteProgress: true,
                 );
               }),

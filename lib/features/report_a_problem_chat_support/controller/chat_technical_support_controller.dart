@@ -1,26 +1,28 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import '../../../core/network/utils/api_result.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
-import '../../../core/constant/exports_libraries.dart';
 import 'package:dio/dio.dart' as dio;
+import '../../../core/network/utils/api_error_model.dart';
+import '../../../core/network/utils/api_result.dart';
+import '../../../core/network/utils/app_response.dart';
 import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/helpers/constants.dart';
+import '../../../core/widgets/app_snackbar.dart';
+import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/models/chat/general_message.dart';
 import '../../../core/network/models/chat/message.dart';
-import '../../../core/network/utils/api_error_model.dart';
-import '../../../core/network/utils/app_response.dart';
-import '../../../core/widgets/app_snackbar.dart';
 import 'chat_technical_support_repo.dart';
+
+// استدعاء كلاس Reverb و WebsocketResponse (ضع الملف حيث تريده ومساره صحيح)
+import 'reverb_options.dart';
+import 'web_socket_response.dart';
 
 class ChatTechnicalSupportController extends GetxController
     with WidgetsBindingObserver {
   final ChatTechnicalSupportRepo _chatRepo =
       Get.find<ChatTechnicalSupportRepo>();
 
-  late PusherChannelsFlutter pusher;
+  late SimpleFlutterReverb reverb;
 
   RxBool isLoading = true.obs;
 
@@ -36,11 +38,17 @@ class ChatTechnicalSupportController extends GetxController
   RxBool showNameTop = false.obs;
 
   RxBool isKeyboardVisible = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     scrollController.addListener(scrollListener);
     WidgetsBinding.instance.addObserver(this);
+
+    final receiver = Get.arguments?['receiverUuid'] ?? 'technical_support';
+
+    initReverb(receiver); // ✅ اشترك أولاً
+    getMessages(receiver); // ثم جلب الرسائل السابقة
   }
 
   @override
@@ -59,6 +67,35 @@ class ChatTechnicalSupportController extends GetxController
     }
   }
 
+  /// ====== Reverb init and listen (replace Pusher) ======
+  void initReverb(String channel) async {
+    print("🟢 Initializing Reverb connection to channel: $channel");
+    reverb = SimpleFlutterReverb(
+      options: ReverbOptions(
+        scheme: 'wss',
+        host: 'panel.dizzha.com',
+        port: 443,
+        appKey: 'kdgjxo6cgzq8ldqdqjhn',
+      ),
+    );
+
+    reverb.listen((event) {
+      print("📩 WebSocket Event received: ${event.event}");
+      if (event.event == 'specialist-chat.message') {
+        try {
+          final message = Message.fromJson(event.data!);
+          log('message: ${message.content}');
+          messages.add(message);
+          messages.refresh(); // ✅ refresh لضمان تحديث Obx
+          scrollToBottom();
+        } catch (e) {
+          print('❌ Failed to parse incoming message: $e');
+        }
+      }
+    }, channel);
+  }
+
+  /// ====== Fetch messages using your repo (كما كان في الأصل) ======
   void getMessages(String receiverUuid) async {
     isLoading.value = true;
     final result = await _chatRepo.getMessages(receiverUuid);
@@ -91,51 +128,7 @@ class ChatTechnicalSupportController extends GetxController
     );
   }
 
-  Future<void> initPusher() async {
-    try {
-      pusher = PusherChannelsFlutter.getInstance();
-      await pusher.init(
-        apiKey: MessageTypes.chatApiKey,
-        cluster: MessageTypes.chatCluster,
-        onEvent: onEvent,
-        onConnectionStateChange: onConnectionStateChange,
-        onError: onError,
-      );
-
-      await pusher.connect();
-      await pusher.subscribe(channelName: await MessageTypes.chatChannelName);
-      print("Pusher initialization created");
-    } catch (e) {
-      print("Pusher initialization failed: $e");
-    }
-  }
-
-  void onEvent(PusherEvent event) {
-    print('Event received: ${event.eventName} : ${event.data}');
-    if (event.eventName == "MessageSent") {
-      try {
-        final generalMessageJson =
-            jsonDecode(event.data) as Map<String, dynamic>;
-        final message = Message.fromJson(generalMessageJson);
-        messages.add(message);
-        messages.refresh();
-        Future.delayed(Duration(milliseconds: 100), scrollToBottom);
-      } catch (e) {
-        print("Failed to parse message: $e");
-      }
-    }
-  }
-
-  void onConnectionStateChange(String? currentState, String? previousState) {
-    print(
-      "Pusher connection state changed: $currentState (from $previousState)",
-    );
-  }
-
-  void onError(String message, int? code, dynamic exception) {
-    print("Pusher error: $message");
-  }
-
+  /// ====== Send message (keeps original flow) ======
   Future<void> sendMessage(
     String receiverUuid,
     String contentType,
@@ -205,6 +198,7 @@ class ChatTechnicalSupportController extends GetxController
     result.when(
       success: (response) async {
         if (response.status == true) {
+          // نجاح الإرسال — الخادم قد يرسل نفس الرسالة عبر WebSocket
         } else {
           showErrorSnackbar(Get.context!, response.message ?? '');
         }
@@ -225,42 +219,33 @@ class ChatTechnicalSupportController extends GetxController
       showNameTop.value = true;
     } else {
       log('scroll false');
-
       showNameTop.value = false;
     }
   }
 
   void scrollToBottom() {
     if (scrollController.hasClients) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      try {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      } catch (e) {
+        // قد يحصل خطأ عند عدم وجود clients أو أثناء الاغلاق
+      }
     }
   }
 
   @override
   void onClose() {
     super.onClose();
-    // disconnectPusher();
+    try {
+      reverb.close();
+    } catch (e) {
+      print("⚠️ Error closing reverb: $e");
+    }
     WidgetsBinding.instance.removeObserver(this);
     scrollController.dispose();
   }
-
-  // Future<void> disconnectPusher() async {
-  //   try {
-  //     await pusher.unsubscribe(channelName: await MessageTypes.chatChannelName);
-  //     await pusher.disconnect();
-  //     if (Get.isRegistered<DirectSupportController>()) {
-  //       DirectSupportController controller = Get.find();
-  //       controller.initPusher();
-  //       controller.getChats(false);
-  //     }
-
-  //     print("Pusher disconnected");
-  //   } catch (e) {
-  //     print("Failed to disconnect Pusher: $e");
-  //   }
-  // }
 }

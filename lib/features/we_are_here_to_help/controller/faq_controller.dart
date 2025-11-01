@@ -4,6 +4,7 @@ import '../../../../core/network/models/faq/faq_model_item.dart';
 import '../../../../core/network/utils/api_result.dart';
 import 'package:get/get.dart';
 import '../../../../../core/widgets/app_snackbar.dart';
+import '../../../core/constant/exports_libraries.dart';
 import 'faq_repo.dart';
 
 class FAQController extends GetxController {
@@ -40,7 +41,11 @@ class FAQController extends GetxController {
             log('faqModelItems.length ${faqModelItems.length}');
           }
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

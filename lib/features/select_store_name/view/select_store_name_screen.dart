@@ -67,6 +67,8 @@ class SelectStoreNameScreen extends StatelessWidget {
           controller.validationInputData(context);
         },
         isLoading: controller.isButtonPressed.value,
+        isEnabled: !controller.isButtonPressed.value,
+
         isWhiteProgress: true,
       );
     });

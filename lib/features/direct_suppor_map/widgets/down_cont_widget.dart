@@ -3,6 +3,7 @@ import '../../../../core/constant/exports_widgets.dart';
 import '../../../../features/direct_suppor_map/controller/direct_support_map_controller.dart';
 import '../../../../features/direct_suppor_map/widgets/cap_pr_row_widget.dart';
 import '../../../../features/direct_suppor_map/widgets/end_the_trip_widget.dart';
+import '../../../core/widgets/app_loading_button.dart';
 import '../../my_ads_details/widgets/from_to_cou_widget.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 
@@ -12,6 +13,10 @@ Widget DownContWidget(
   required VoidCallback page,
   required DirectSupportMapController controller,
   required OrderDataController orderDataController,
+  required fromLat,
+  required fromLng,
+  required toLat,
+  required toLng,
 }) {
   return Container(
     decoration: BoxDecoration(
@@ -37,35 +42,74 @@ Widget DownContWidget(
             DelText2: '${orderDataController.to}',
             DetText2: '',
             verticalSpaceItems: 15.h,
+            fromLat: fromLat,
+            fromLng: fromLng,
+            conWidth: 338.w,
+            toLat: toLat,
+            toLng: toLng,
           ),
           if (isShow)
             Obx(() {
               switch (controller.selectedCase.value) {
                 case 0: // started
-                  return GeneralBottomAppWidget(
-                    context,
+                  return AppLoadingButton(
                     text: context.startTheJourney,
-                    onTap: () async {
+                    isEnabled: !controller.isButtonPressed.value,
+                    onPressed: () async {
+                      controller.putState('started');
                       await controller.openGoogleMaps();
-                    },//0598699787
+                      controller.selectedCase.value = 1;
+                    },
+                    isLoading: controller.isButtonPressed.value,
+                    isWhiteProgress: true,
                   );
+                // GeneralBottomAppWidget(
+                //   context,
+                //   text: context.startTheJourney,
+                //   onTap: () async {
+                //     await controller.openGoogleMaps();
+                //   },
+                // );
 
                 case 1: // delivered
-                  return GeneralBottomAppWidget(
-                    context,
+                  return AppLoadingButton(
                     text: context.iArrivedHome,
-                    onTap: () => controller.putState('completed'),
+                    isEnabled: !controller.isButtonPressed.value,
+                    onPressed: () async {
+                      controller.putState('delivered');
+                      controller.selectedCase.value = 2;
+                    },
+                    isLoading: controller.isButtonPressed.value,
+                    isWhiteProgress: true,
                   );
+
+                //  GeneralBottomAppWidget(
+                //   context,
+                //   text: context.iArrivedHome,
+                //   onTap: () => controller.putState('completed'),
+                // );
                 case 2: // completed
                 default:
-                  return GeneralBottomAppWidget(
-                    context,
+                  return AppLoadingButton(
                     text: context.endTheTrip,
-                    backgroundColorB: context.colorsCustom.surfacePrimaryBlack,
-                    textColorB: context.colorsCustom.surfacePrimaryWhite,
-                    fontWeight: FontWeight.w500,
-                    onTap: () => EndTheTripWidget(context),
+                    isEnabled: !controller.isButtonPressed.value,
+                    buttonColor: context.colorsCustom.surfacePrimaryBlack,
+
+                    onPressed: () async {
+                      controller.putState('completed');
+                      EndTheTripWidget(context);
+                    },
+                    isLoading: controller.isButtonPressed.value,
+                    isWhiteProgress: true,
                   );
+                // GeneralBottomAppWidget(
+                //   context,
+                //   text: context.endTheTrip,
+                //   backgroundColorB: context.colorsCustom.surfacePrimaryBlack,
+                //   textColorB: context.colorsCustom.surfacePrimaryWhite,
+                //   fontWeight: FontWeight.w500,
+                //   onTap: () => EndTheTripWidget(context),
+                // );
               }
             }),
         ],

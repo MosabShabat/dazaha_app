@@ -31,6 +31,7 @@ class AppTextFormField extends StatelessWidget {
   final bool? hintCenter;
   final Function(String)? onFieldSubmitted;
   final VoidCallback? onTap;
+  final bool readOnly;
 
   const AppTextFormField({
     super.key,
@@ -61,6 +62,7 @@ class AppTextFormField extends StatelessWidget {
     this.onFieldSubmitted,
     this.onTap,
     this.hintCenter = false,
+    this.readOnly = false,
   });
 
   @override
@@ -79,6 +81,7 @@ class AppTextFormField extends StatelessWidget {
       selectionControls: materialTextSelectionControls,
       controller: controller,
       enabled: enabled,
+      readOnly: readOnly,
       decoration: InputDecoration(
         isDense: true,
         contentPadding:

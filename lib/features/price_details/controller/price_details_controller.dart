@@ -1,3 +1,5 @@
+import 'package:dazaha_app/core/constant/exports_widgets.dart';
+
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/models/orders/order_details.dart';
 import '../../../core/network/utils/api_result.dart';
@@ -15,7 +17,7 @@ class PriceDetailsController extends GetxController {
 
   void submitPrice(BuildContext context, String page) {
     if (priceController.text.isEmpty) {
-      showErrorSnackbar(context, 'Enter Price');
+      showErrorSnackbar(context, context.enterAmount, FirstColor: Colors.amber);
       return;
     }
 
@@ -40,7 +42,11 @@ class PriceDetailsController extends GetxController {
 
             Get.toNamed(page);
           } else {
-            showErrorSnackbar(Get.context!, response.message ?? '');
+            showErrorSnackbar(
+              Get.context!,
+              response.message ?? '',
+              FirstColor: Colors.red,
+            );
           }
         },
         failure: (error) {
@@ -50,7 +56,7 @@ class PriceDetailsController extends GetxController {
       );
     } catch (_) {
       _setButtonPressed(false);
-      showErrorSnackbar(context, 'An error occurred');
+      showErrorSnackbar(context, context.error, FirstColor: Colors.red);
     }
   }
 

@@ -85,6 +85,8 @@ class PriceDetailsReviewScreen extends StatelessWidget {
           controller.postRating(context);
         },
         isLoading: controller.isButtonPressed.value,
+        isEnabled: !controller.isButtonPressed.value,
+
         isWhiteProgress: true,
       ),
     );

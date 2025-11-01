@@ -44,6 +44,11 @@ class buyMeScreen extends StatelessWidget {
         result[AppConstants.lng],
         result[AppConstants.placeName],
       );
+      print('+++++++++++++++++++++++++++++++');
+      print("setFromLat : ${orderController.fromLat}");
+      print("setFromLng: ${orderController.fromLng}");
+      print("setFromAddress: ${orderController.fromAddress}");
+      print('+++++++++++++++++++++++++++++++');
 
       debugPrint(
         'Updated location: ${orderController.fromLat.value}, '

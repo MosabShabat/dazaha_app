@@ -60,6 +60,9 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
       orderDataController.setToLng(offerDetails.order!.toLng ?? '');
       orderDataController.setUserImage(offerDetails.order!.user!.image ?? '');
       orderDataController.setUserName(offerDetails.order!.user!.fullName ?? '');
+      orderDataController.setUserMobile(
+        '${offerDetails.order!.user!.mobile ?? ''}',
+      );
       orderDataController.setUserRate(
         '${offerDetails.order!.user!.ratingPercentage ?? ''}',
       );

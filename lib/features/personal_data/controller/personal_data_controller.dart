@@ -57,7 +57,15 @@ class PersonalDataController extends GetxController {
       showErrorSnackbar(context, context.enterVanOr, FirstColor: Colors.amber);
       return false;
     }
-    _registerController.toggleChecked(context);
+
+    if (_registerController.isChecked.value == false) {
+      showErrorSnackbar(
+        context,
+        context.termsAndConditions,
+        FirstColor: Colors.amber,
+      );
+      return false;
+    }
     await _postData();
     return true;
   }
@@ -101,7 +109,11 @@ class PersonalDataController extends GetxController {
           _profileController.fetchUserData();
           Get.toNamed(Routes.captainMembershipRequestScreen);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

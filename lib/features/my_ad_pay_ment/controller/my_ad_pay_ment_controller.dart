@@ -42,7 +42,7 @@ class MyAdPayMentController extends GetxController {
   // Validate coupon input
   void validateInput(BuildContext context) {
     if (couponCodeController.text.trim().isEmpty) {
-      showErrorSnackbar(context, context.enterCouponHere);
+      showErrorSnackbar(context, context.enterCouponHere,FirstColor: Colors.amber);
       return;
     }
     _fetchPayment(couponCodeController.text, AppConstants.coupon);
@@ -59,7 +59,7 @@ class MyAdPayMentController extends GetxController {
         if (response.status == true && response.data != null) {
           _updatePaymentModel(response, couponCode);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(Get.context!, response.message ?? '',FirstColor: Colors.red);
         }
       },
       failure: (error) {
@@ -109,7 +109,7 @@ class MyAdPayMentController extends GetxController {
           AppConstants.typeReq == 'order';
           Get.toNamed(Routes.reviewPayMentScreen);
         } else {
-          showErrorSnackbar(context, response.message ?? '');
+          showErrorSnackbar(context, response.message ?? '',FirstColor: Colors.red);
         }
       },
       failure: (error) {

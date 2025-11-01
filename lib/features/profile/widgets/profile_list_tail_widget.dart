@@ -1,11 +1,13 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/constants.dart';
 
 Widget ProfileListTailWidget(
   int index,
   BuildContext context,
-  String titleText, // <-- change
-) {
+  String titleText, {
+  RxBool? isLoadingLogout, // ✅ تمرير observable
+}) {
   final isLast = index == ListProfileIcons.lastIndex;
 
   return SizedBox(
@@ -20,20 +22,41 @@ Widget ProfileListTailWidget(
         child: SvgPicture.asset(
           ListProfileIcons[index],
           color: isLast
-              ? context.colorsCustom.redColor
+              ? (AppConstants.userToken.isNotEmpty &&
+                        AppConstants.userToken != '' &&
+                        AppConstants.userUUid.isNotEmpty &&
+                        AppConstants.userUUid != '')
+                    ? context.colorsCustom.redColor
+                    : context.colorsCustom.TealGreenSecondary
               : context.colorsCustom.surfacePrimaryBlack,
         ),
       ),
       title: Text(
-        titleText, // <-- use directly
+        titleText,
         style: context.textStyles.bodySmall.medium.copyWith(
           color: isLast
-              ? context.colorsCustom.redColor
+              ? (AppConstants.userToken.isNotEmpty &&
+                        AppConstants.userToken != '' &&
+                        AppConstants.userUUid.isNotEmpty &&
+                        AppConstants.userUUid != '')
+                    ? context.colorsCustom.redColor
+                    : context.colorsCustom.TealGreenSecondary
               : context.colorsCustom.TextPrimary,
         ),
       ),
       trailing: isLast
-          ? const SizedBox(width: 18)
+          ? Obx(
+              () => isLoadingLogout?.value == true
+                  ? SizedBox(
+                      width: 18.w,
+                      height: 18.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: context.colorsCustom.redColor,
+                      ),
+                    )
+                  : const SizedBox(width: 18),
+            )
           : Icon(
               Icons.arrow_forward_ios,
               size: 16.w,

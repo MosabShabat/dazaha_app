@@ -179,7 +179,11 @@ class AddADeliveryAddressController extends GetxController {
           _savedDeliveryAddressesController.fetchAddresses();
           Get.back(result: true);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -287,7 +291,11 @@ class AddADeliveryAddressController extends GetxController {
           _savedDeliveryAddressesController.fetchAddresses();
           Get.back(result: true);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -312,7 +320,11 @@ class AddADeliveryAddressController extends GetxController {
             rawCountries.map((e) => CountryModel.fromJson(e)).toList(),
           );
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

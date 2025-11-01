@@ -1,3 +1,4 @@
+
 import '../../../core/constant/exports_widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -117,22 +118,48 @@ class AdDetailsController extends GetxController {
       print('Date items:$itemsData');
 
       print('==========================');
+      String convertArabicDateToEnglish(String date) {
+        const arabicNumbers = [
+          '٠',
+          '١',
+          '٢',
+          '٣',
+          '٤',
+          '٥',
+          '٦',
+          '٧',
+          '٨',
+          '٩',
+        ];
+        for (int i = 0; i < 10; i++) {
+          date = date.replaceAll(arabicNumbers[i], i.toString());
+        }
+        return date;
+      }
+
+      final String englishDate = convertArabicDateToEnglish(
+        _orderDataController.data.value,
+      );
+      print('English date: $englishDate'); // يجب أن يطبع 2025-10-29
+
+      print('formattedDate : ${englishDate}');
+
       final result = await _ordersRepo.createOrder(
         orderType: orderType,
         serviceUuid: _orderDataController.serviceUuid.value,
-        date: _orderDataController.data.value,
+        date: englishDate,
         timeUuids: _orderDataController.timeUuids,
         fromLat: _orderDataController.fromLat.value,
         fromLng: _orderDataController.fromLng.value,
         fromAddress: _orderDataController.fromAddress.value,
         toLat: orderType == "type2"
-            ? _orderDataController.fromLat.value
+            ? _orderDataController.toLat.value
             : _orderDataController.toLat.value,
         toLng: orderType == "type2"
-            ? _orderDataController.fromLng.value
+            ? _orderDataController.toLng.value
             : _orderDataController.toLng.value,
         toAddress: orderType == "type2"
-            ? _orderDataController.fromAddress.value
+            ? _orderDataController.toAddress.value
             : _orderDataController.toAddress.value,
         title: titleController.text,
         description: decController.text,

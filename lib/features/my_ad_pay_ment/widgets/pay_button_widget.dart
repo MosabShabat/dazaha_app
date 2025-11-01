@@ -26,6 +26,8 @@ Widget PayButtonWidget(
         }
       },
       isLoading: controller.isButtonPressed.value,
+      isEnabled: !controller.isButtonPressed.value,
+
       isWhiteProgress: true,
     );
   });
