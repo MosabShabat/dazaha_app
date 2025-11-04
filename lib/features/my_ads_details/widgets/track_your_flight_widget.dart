@@ -10,7 +10,7 @@ Widget TrackYourFlightWidget(
   required VoidCallback page,
   required rating,
 }) {
-  print('@@@@@@@@@@@@@ $page @@@@@@@@@@@@');
+  print('@@@@@@@@@@@@@ $isShow @@@@@@@@@@@@');
   return isShow == 'in_progress'
       ? TrackYourFlightFirstShowWidget(
           context,
@@ -18,5 +18,5 @@ Widget TrackYourFlightWidget(
           isShow: isShowBo,
           page: page,
         )
-      : RectangleReviewWidget(context,rating: rating);
+      : RectangleReviewWidget(context, rating: rating);
 }

@@ -1,5 +1,4 @@
-import 'package:dazaha_app/core/constant/exports_widgets.dart';
-
+import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/models/orders/order_details.dart';
 import '../../../core/network/utils/api_result.dart';
@@ -11,27 +10,35 @@ class PriceDetailsController extends GetxController {
   final TextEditingController priceController = TextEditingController();
   final PriceDetailsRepo _repo = Get.find<PriceDetailsRepo>();
   final OrderDataController _orderController = Get.find<OrderDataController>();
-
+  //   orderController.serviceUuid.value ==            '153a7042-eb9e-42b8-9d5c-498623adb5da'
   Rxn<OrderDetails> summaryData = Rxn<OrderDetails>();
   RxBool isButtonPressed = false.obs;
 
   void submitPrice(BuildContext context, String page) {
-    if (priceController.text.isEmpty) {
+    final isOptionalService =
+        _orderController.serviceUuid.value ==
+        '153a7042-eb9e-42b8-9d5c-498623adb5da';
+
+    // ✅ إذا لم يكن السعر اختياري وتارك الحقل فارغ → أظهر رسالة خطأ
+    if (!isOptionalService && priceController.text.isEmpty) {
       showErrorSnackbar(context, context.enterAmount, FirstColor: Colors.amber);
       return;
     }
 
-    _orderController
-      ..setLikedPrice(priceController.text)
-      ..setOrderUuid(_orderController.OrderUuid.value);
+    // ✅ فقط في حالة إدخال سعر (أو إذا الخدمة تتطلب سعر)
+    if (priceController.text.isNotEmpty) {
+      _orderController.setLikedPrice(priceController.text);
+    }
 
-    _postSummary(context, page);
+    _orderController.setOrderUuid(_orderController.OrderUuid.value);
+
+    _postSummary(context, page, _orderController.likedPrice.value);
   }
 
-  Future<void> _postSummary(BuildContext context, String page) async {
+  Future<void> _postSummary(BuildContext context, String page, price) async {
     _setButtonPressed(true);
     try {
-      final result = await _repo.summaryPostOrders();
+      final result = await _repo.summaryPostOrders(price: price);
       result.when(
         success: (response) {
           _setButtonPressed(false);

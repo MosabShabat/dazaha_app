@@ -61,8 +61,10 @@ void showCustomSnackbar({
       children: [
         Text(
           textTitle,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
           style: titleStyle ?? AppTextStyles.font16Black700Bold(context),
-        ),
+        ).box.width(315.w).make(),
       ],
     ),
     messageText: Row(
@@ -71,9 +73,11 @@ void showCustomSnackbar({
             ? SizedBox.shrink()
             : Text(
                 text,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style:
                     messageStyle ?? AppTextStyles.font14Black500Medium(context),
-              ),
+              ).box.width(200.w).height(40.h).make(),
       ],
     ),
     snackPosition: snackPosition,

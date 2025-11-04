@@ -92,7 +92,9 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
             TopDetRowWidget(
               context,
               isShow: false,
-              title: context.offerDetails,
+              title: offerDetails.status == 'pending'
+                  ? context.offerDetails
+                  : context.adDetails,
               status: offerDetails.status,
               statusText: offerDetails.statusText,
               subTitle:

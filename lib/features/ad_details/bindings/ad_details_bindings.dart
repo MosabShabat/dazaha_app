@@ -4,6 +4,8 @@ import '../../../features/choose_the_service/controller/order_data_controller.da
 
 import '../../../core/network/utils/api_service.dart';
 import '../../add_a_delivery_address/controller/add_a_delivery_repo.dart';
+import '../../price_details/controller/price_details_controller.dart';
+import '../../price_details/controller/price_details_repo.dart';
 import '../controller/ad_details_repo.dart';
 
 class AdDetailsBindings extends Bindings {
@@ -13,7 +15,11 @@ class AdDetailsBindings extends Bindings {
       () => AddADeliveryRepo(Get.find<ApiService>()),
     );
     Get.lazyPut<OrdersRepo>(() => OrdersRepo(Get.find<ApiService>()));
-    //OrdersRepo
+    //PriceDetailsController
+    Get.lazyPut<PriceDetailsRepo>(
+      () => PriceDetailsRepo(Get.find<ApiService>()),
+    );
+    Get.lazyPut(() => PriceDetailsController());
     Get.lazyPut(() => AdDetailsController());
     Get.lazyPut(() => OrderDataController());
   }

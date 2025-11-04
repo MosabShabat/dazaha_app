@@ -10,6 +10,8 @@ part 'order_details_item.g.dart';
 class OrdersDetailsItem {
   OrdersDetailsItem({
     required this.uuid,
+    required this.isMe,
+    required this.myOfferAdded,
     required this.serviceUuid,
     required this.title,
     required this.serviceTitle,
@@ -37,6 +39,10 @@ class OrdersDetailsItem {
   });
 
   final String? uuid;
+  @JsonKey(name: 'my_offer_added')
+  final bool? myOfferAdded;
+  @JsonKey(name: 'is_me')
+  final bool? isMe;
   @JsonKey(name: 'service_uuid')
   final String? serviceUuid;
 

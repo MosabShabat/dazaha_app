@@ -1,4 +1,4 @@
-import 'package:dazaha_app/core/constant/exports_libraries.dart';
+import '../../../core/constant/exports_libraries.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';

@@ -14,6 +14,9 @@ class AddADeliveryAddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isEdit =
         Get.arguments != null && Get.arguments[AppConstants.isEdit] == true;
+    final goBackAfterSave = Get.arguments != null
+        ? (Get.arguments['goBackAfterSave'] ?? false)
+        : false;
 
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
@@ -27,7 +30,9 @@ class AddADeliveryAddressScreen extends StatelessWidget {
             SubTitle: '',
             isShow: true,
           ),
-          AddressInfoWidget(),
+          AddressInfoWidget(
+            goBackAfterSave: goBackAfterSave, // <-- هنا
+          ),
         ],
       ),
     );

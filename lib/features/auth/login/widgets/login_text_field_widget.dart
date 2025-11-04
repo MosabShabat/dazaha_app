@@ -45,7 +45,7 @@ Widget LoginTextFieldWidget(
           child: AppTextFormField(
             controller: controller,
             textDirection: TextDirection.ltr,
-            maxLength: 9,
+            maxLength: 10,
             readOnly: readOnly ?? false,
             hasBorder: false,
             keyboardType: TextInputType.phone,

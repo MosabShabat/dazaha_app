@@ -109,9 +109,13 @@ class buyMeScreen extends StatelessWidget {
                               i++
                             ) {
                               savedAddressesController.deleteAddress(
-                                savedAddressesController.addresses[i].uuid!,
-                                isStore: 1,
+                                '${savedAddressesController.addresses[i].uuid!}',
+                                isStore: '1',
                               );
+                              // savedAddressesController.index!.value = '1';
+                              // savedAddressesController.fetchAddresses(
+                              //   isStore: '1',
+                              // );
                             }
                           },
                           Widget: savedAddressesController.addresses.isEmpty

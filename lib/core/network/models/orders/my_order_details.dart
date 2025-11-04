@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../cart/bill_item.dart';
+import 'times_order.dart';
 
 part 'my_order_details.g.dart';
 
@@ -28,7 +29,7 @@ class MyOrderDetails {
     required this.toLng,
     required this.driver,
     required this.date,
-    required this.time,
+    required this.times,
     required this.rating,
     required this.payment,
   });
@@ -75,10 +76,10 @@ class MyOrderDetails {
   final String? toLat;
   @JsonKey(name: 'to_lng')
   final String? toLng;
-
+  //List<Offer>?
   final Driver? driver;
   final String? date;
-  final String? time;
+  final List<TimesOrder>? times;
   final String? rating;
   final Payment? payment;
 
@@ -92,16 +93,19 @@ class MyOrderDetails {
 class Offer {
   Offer({
     required this.uuid,
-    required this.user,
+    required this.driver,
     required this.price,
     required this.currency,
+    required this.dateTime,
     required this.addedAt,
   });
 
   final String? uuid;
-  final User? user;
+  final Driver? driver;
   final String? price;
   final String? currency;
+  @JsonKey(name: 'date_time')
+  final String? dateTime;
 
   @JsonKey(name: 'added_at')
   final String? addedAt;
@@ -135,7 +139,7 @@ class Driver {
     required this.image,
     required this.name,
     required this.rate,
-    required this.mobile
+    required this.mobile,
   });
 
   final String? uuid;

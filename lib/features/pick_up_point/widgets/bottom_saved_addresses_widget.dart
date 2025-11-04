@@ -26,7 +26,12 @@ Widget BottomSavedAddressesWidget(
           context,
           isBlack: false,
           onTap: () async {
-            final result = await Get.toNamed(Routes.addADeliveryAddressScreen);
+            final result = await Get.toNamed(
+              Routes.addADeliveryAddressScreen,
+              arguments: {
+                "isAppBar": isAppBar, "goBackAfterSave": true, // <-- أضف هذا
+              },
+            );
 
             if (result == true) {
               savedDeliveryAddressesController.fetchAddresses();

@@ -92,9 +92,15 @@ Widget _nameLocationWidget(
         : user?.name;
 
     // موقع المستخدم: يظهر فورًا الإحداثيات أو آخر اسم محفوظ
-    final location = controller.currentLocation.value.isNotEmpty
+    final fullLocation = controller.currentLocation.value.isNotEmpty
         ? controller.currentLocation.value
-        : 'جاري تحديد الموقع...';
+        : 'جارِ تحديد الموقع...';
+
+    // تحديد أول 3 كلمات فقط
+    final words = fullLocation.split(' ');
+    final location = words.length > 4
+        ? '${words.sublist(0, 4).join(' ')}...'
+        : fullLocation;
 
     return SizedBox(
       width: 160.w,

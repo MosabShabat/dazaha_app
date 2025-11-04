@@ -20,7 +20,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="true"/>
 
     <application
-    android:label="Dazaha"
+    android:label="دزها"
     android:name="${applicationName}"
     android:icon="@mipmap/ic_launcher"
     android:usesCleartextTraffic="true">

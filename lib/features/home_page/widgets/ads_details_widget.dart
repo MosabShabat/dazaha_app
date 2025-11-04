@@ -43,6 +43,12 @@ Widget AdsDetailsWidget(
           }
 
           final serData = latestOrders[index];
+          String limitWords(String? text, int maxWords) {
+            if (text == null || text.isEmpty) return '';
+            final words = text.split(' ');
+            if (words.length <= maxWords) return text;
+            return words.take(maxWords).join(' ') + '...';
+          }
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,12 +64,13 @@ Widget AdsDetailsWidget(
                 ),
               ),
               Text(
-                serData.title ?? '',
+                limitWords(serData.title, 3),
                 style: context.textStyles.bodySmall.medium.copyWith(
                   color: context.colorsCustom.TextPrimary,
                   fontSize: 12.sp,
                 ),
               ),
+
               Text(
                 '${serData.likedPrice ?? 0} ${serData.currency ?? ''}',
                 style: context.textStyles.bodySmall.bold.copyWith(

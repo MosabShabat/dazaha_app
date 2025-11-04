@@ -10,11 +10,11 @@ class PriceDetailsRepo {
   OrderDataController _orderDataController = Get.find<OrderDataController>();
   PriceDetailsRepo(this._apiService);
 
-  Future<ApiResult<AppResponse>> summaryPostOrders() async {
+  Future<ApiResult<AppResponse>> summaryPostOrders({price}) async {
     try {
       final response = await _apiService.summaryPostOrders(
-        _orderDataController.OrderUuid.value,
-        _orderDataController.likedPrice.value,
+        orderUuid: _orderDataController.OrderUuid.value,
+        likedPrice: price,
       );
       print('Response from summaryPostOrders: $response');
 

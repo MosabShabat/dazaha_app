@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../../features/choose_the_service/controller/order_data_controller.dart';
 
 import '../../../core/constant/exports_libraries.dart';
@@ -58,13 +60,6 @@ Widget ListTimeWidget(
                             .value ==
                         index;
 
-              orderDataController.setTimeUuid(timeItem[0].uuid);
-
-              // print('ZZZZZZZZZZZZZZZZZZZZZZZZZ');
-              // print(controller.orderDetailsItem!.value.times![index].uuid);
-              // print(controller.orderDetailsItem!.value.times![index].time);
-
-              // print('ZZZZZZZZZZZZZZZZZZZZZZZZZ');
               return Container(
                     child: Center(
                       child: Text(
@@ -100,6 +95,8 @@ Widget ListTimeWidget(
                         index,
                       );
                     }
+                    orderDataController.setTimeUuid(timeItem[index].uuid);
+                    log(timeItem[index].time);
                     orderDataController.setTimeUuid(timeItem[index].uuid);
                     print('GGGGGGGGGGGGGGGGGGGGGGGGGGGG');
                     print(orderDataController.timeUuid);

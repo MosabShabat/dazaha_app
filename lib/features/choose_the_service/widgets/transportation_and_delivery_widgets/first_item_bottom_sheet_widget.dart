@@ -15,6 +15,7 @@ Future<dynamic> FirstItemBottomSheetWidget(
   OrderDataController orderController = Get.find();
   return showModalBottomSheet(
     isScrollControlled: true,
+    useSafeArea: true,
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../core/helpers/constants.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
@@ -23,21 +25,26 @@ class ItemAdDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("AppConstants.isDriver : ${AppConstants.isDriver}");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       orderDataController.clearAll();
     });
 
     final bool isShow = (Get.arguments as Map?)?['isShow'] ?? false;
+    return Obx(() {
+      if (controller.isLoading.isTrue)
+        return OrderDetailsShimmerWidget(context);
+      _setServiceNumber(controller, orderDataController);
 
-    return Scaffold(
-      backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      body: Obx(() {
-        if (controller.isLoading.isTrue) return OrderDetailsShimmerWidget();
-
-        // تعيين رقم الخدمة بناءً على UUID
-        _setServiceNumber(controller, orderDataController);
-
-        return CustomScrollView(
+      return Scaffold(
+        backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+        bottomNavigationBar: // الزر السفلي (BottomNavigationBarWidget)
+            isShow &&
+                controller.orderDetailsItem!.value.isMe == false &&
+                controller.orderDetailsItem!.value.isMe == false
+            ? _buildBottomNav(context, controller)
+            : const SizedBox.shrink(),
+        body: CustomScrollView(
           slivers: [
             // SliverAppBar للصور
             _buildSliverAppBar(context, controller, orderDataController),
@@ -51,18 +58,10 @@ class ItemAdDetailsScreen extends StatelessWidget {
                 isShow,
               ),
             ),
-
-            // الزر السفلي (BottomNavigationBarWidget)
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: isShow
-                  ? _buildBottomNav(context, controller)
-                  : const SizedBox.shrink(),
-            ),
           ],
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   /// تحديد رقم الخدمة بناءً على serviceUuid
@@ -229,7 +228,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
     final item = controller.orderDetailsItem!.value;
     final orderDataController = Get.find<OrderDataController>();
 
-    return AppConstants.isDriver == '1'
+    return AppConstants.isDriver == '1' || AppConstants.isDriver == 1
         ? BottomNavigationBarWidget(
             text: context.addAnOffer,
             context,

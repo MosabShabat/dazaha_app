@@ -9,6 +9,7 @@ import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
+import '../../document/controller/document_controller.dart';
 import '../../item_ad_details/widgets/my_offer_to_customer_widget.dart';
 import 'offer_details_repo.dart';
 
@@ -22,6 +23,7 @@ class MyOfferAdDetailsController extends GetxController {
   var isLoadingDelete = false.obs;
 
   var selectedIndex = 0.obs;
+  
 
   Rx<OfferDetail>? offerDetailsItem;
 
@@ -88,22 +90,37 @@ class MyOfferAdDetailsController extends GetxController {
 
   void _handleOfferResponse(ApiResult<AppResponse> result) {
     result.when(
-      success: (response) {
+      success: (response) async {
         _setButtonPressed(false);
+
         if (response.status == true) {
-          Get.back();
-          Get.back();
+          // 1️⃣ جلب بيانات العرض الجديدة من السيرفر بعد التحديث
+          final updatedResult = await _offerDetailsRepo.getOfferDetails();
+          updatedResult.when(
+            success: (updatedResponse) {
+              if (updatedResponse.status == true &&
+                  updatedResponse.data != null) {
+                offerDetailsItem?.value = OfferDetail.fromJson(
+                  updatedResponse.data,
+                );
+              }
+            },
+            failure: (_) {},
+          );
+
+          // 2️⃣ تحديث قائمة العروض في الشاشة الرئيسية
+          final documentController = Get.find<DocumentController>();
+          documentController.refreshOrders();
+
+          // 3️⃣ إغلاق الـ BottomSheet والشاشة
+          Get.back(); // إغلاق الـ BottomSheet
+          Get.back(); // العودة إلى الشاشة السابقة
+
           MyOfferToCustomerWidget(
             Get.context!,
             IsShowRow: false,
             title: '${Get.context!.displaySuccessfullyUpdated}',
-            onTap: () {
-              // orderDataController.clearAll();
-              // Get.offAllNamed(
-              //   Routes.homeScreen,
-              //   arguments: {'selectedIndex': 3},
-              // );
-            },
+            onTap: () {},
           );
         } else {
           showErrorSnackbar(

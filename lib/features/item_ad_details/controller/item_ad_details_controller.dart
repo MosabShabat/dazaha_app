@@ -1,4 +1,6 @@
-import 'package:dazaha_app/core/constant/exports_widgets.dart';
+import 'dart:developer';
+
+import '../../../core/constant/exports_widgets.dart';
 
 import '../../../../core/helpers/constants.dart';
 
@@ -22,7 +24,7 @@ class ItemAdDetailsController extends GetxController {
 
   final TextEditingController priceController = TextEditingController();
   RxBool isButtonPressed = false.obs;
-//0598280909
+  //0598280909
   var selectedIndex = 0.obs;
 
   @override
@@ -59,7 +61,11 @@ class ItemAdDetailsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '',FirstColor: Colors.red);
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -77,19 +83,21 @@ class ItemAdDetailsController extends GetxController {
 
   void validationInputData(BuildContext context) {
     if (priceController.text.isEmpty) {
-      showErrorSnackbar(context, context.enterAmount,FirstColor: Colors.amber);
+      showErrorSnackbar(context, context.enterAmount, FirstColor: Colors.amber);
       return;
     }
+    log(
+      ' _orderDataController.timeUuid.value :${_orderDataController.timeUuid.value}',
+    );
     _orderDataController.setLikedPrice(priceController.text);
-    _orderDataController.setTimeUuid(_orderDataController.timeUuid.value);
 
-    AddOffer(context);
+    AddOffer(context, '${_orderDataController.timeUuid.value}');
   }
 
-  void AddOffer(BuildContext context) async {
+  void AddOffer(BuildContext context, timeUuid) async {
     _setButtonPressed(true);
     try {
-      final result = await _itemAdDetailsRepo.AddOffer();
+      final result = await _itemAdDetailsRepo.AddOffer(timeUuid);
       _handleOrderResponse(result);
     } catch (e) {
       _setButtonPressed(false);

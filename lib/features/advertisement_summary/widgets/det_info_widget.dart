@@ -19,9 +19,9 @@ Widget DetInfoWidget(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(textTitle, style: titleStyle, maxLines: 5),
+        Text(textTitle, style: titleStyle, maxLines: 60),
         verticalSpace(10.h),
-        Text(TextSubTitle, style: subTitleStyle, maxLines: 5),
+        Text(TextSubTitle, style: subTitleStyle, maxLines: 60),
       ],
     ),
   );

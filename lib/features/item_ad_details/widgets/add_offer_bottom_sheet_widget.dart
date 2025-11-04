@@ -32,7 +32,10 @@ Future<dynamic> AddOfferBottomSheetWidget(
       final controller = isUpdate
           ? Get.find<MyOfferAdDetailsController>()
           : Get.find<ItemAdDetailsController>();
-
+      // ✅ ضع هذا السطر هنا
+      if (orderDataController.timeUuid.value.isEmpty && timeItem.isNotEmpty) {
+        orderDataController.setTimeUuid(timeItem.first.uuid);
+      }
       return SingleChildScrollView(
         padding: EdgeInsets.only(
           left: 16.w,
@@ -111,6 +114,7 @@ Future<dynamic> AddOfferBottomSheetWidget(
               _buildSaveButton(
                 context,
                 controller: controller,
+
                 isUpdate: isUpdate,
               ),
               verticalSpace(20.h),
@@ -126,6 +130,7 @@ Future<dynamic> AddOfferBottomSheetWidget(
 Widget _buildSaveButton(
   BuildContext context, {
   required dynamic controller,
+
   required bool isUpdate,
 }) {
   return Obx(() {

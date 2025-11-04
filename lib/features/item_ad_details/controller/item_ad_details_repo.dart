@@ -33,11 +33,11 @@ class ItemAdDetailsRepo {
     }
   }
 
-  Future<ApiResult<AppResponse>> AddOffer() async {
+  Future<ApiResult<AppResponse>> AddOffer(timeUuid) async {
     try {
       final response = await _apiService.AddOffer(
         AppConstants.orderUuid,
-        _orderDataController.timeUuid.value,
+        timeUuid,
         _orderDataController.likedPrice.value,
       );
       print('Response from AddOffer: $response');

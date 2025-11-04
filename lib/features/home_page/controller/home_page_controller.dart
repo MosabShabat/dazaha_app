@@ -10,7 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/helpers/app_shared_data.dart';
-import '../../../core/helpers/app_shared_methods.dart';
+// import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/network/models/auth/user_data.dart';
 import '../../../core/network/models/home/home_data_model.dart';
@@ -51,7 +51,7 @@ class HomePageController extends GetxController {
     getLocation();
   }
 
-   /// تحميل بيانات المستخدم من AppSharedData عند بدء التطبيق
+  /// تحميل بيانات المستخدم من AppSharedData عند بدء التطبيق
   void loadCurrentUser() {
     final currentUser = AppSharedData.currentUserInfo;
     if (currentUser != null) {
@@ -71,15 +71,12 @@ class HomePageController extends GetxController {
 
   Future<void> getLocation() async {
     try {
-      bool serviceEnabled = await _checkLocationService();
-      if (!serviceEnabled) return;
-
+      // bool serviceEnabled = await _checkLocationService();
+      // if (!serviceEnabled) return;
       LocationPermission permission = await _requestLocationPermission();
       if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
+          permission == LocationPermission.deniedForever)
         return;
-      }
-
       Position position = await _getCurrentPosition();
       await _updateLocationData(position);
     } catch (e) {
@@ -87,23 +84,21 @@ class HomePageController extends GetxController {
     }
   }
 
-  Future<bool> _checkLocationService() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      if (Get.context != null) {
-        AppSharedMethods.showLocationServicesDialog(
-          context: Get.context!,
-          onConfirm: () async {
-            Get.back();
-            await Geolocator.openLocationSettings();
-            await Future.delayed(const Duration(seconds: 2));
-            getLocation();
-          },
-        );
-      }
-    }
-    return serviceEnabled;
-  }
+  // Future<bool> _checkLocationService() async {
+  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     AppSharedMethods.showLocationServicesDialog(
+  //       context: Get.context!,
+  //       onConfirm: () async {
+  //         Get.back();
+  //         await Geolocator.openLocationSettings();
+  //         await Future.delayed(Duration(seconds: 2));
+  //         getLocation();
+  //       },
+  //     );
+  //   }
+  //   return serviceEnabled;
+  // }
 
   Future<LocationPermission> _requestLocationPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
@@ -114,16 +109,10 @@ class HomePageController extends GetxController {
   }
 
   Future<Position> _getCurrentPosition() async {
-    try {
-      return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.bestForNavigation,
-        timeLimit: const Duration(seconds: 30),
-      );
-    } on TimeoutException catch (_) {
-      Position? lastPosition = await Geolocator.getLastKnownPosition();
-      if (lastPosition != null) return lastPosition;
-      rethrow;
-    }
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.bestForNavigation,
+      timeLimit: const Duration(seconds: 10),
+    );
   }
 
   Future<void> _updateLocationData(Position position) async {
@@ -137,19 +126,26 @@ class HomePageController extends GetxController {
       );
 
       if (placemarks.isNotEmpty) {
-        final place = placemarks.first;
-        currentLocation.value =
-            place.locality ??
-            place.subLocality ??
-            place.administrativeArea ??
-            place.thoroughfare ??
-            place.name ??
-            'Unknown Place';
+        Placemark place = placemarks[0];
+        String? locality = place.locality;
+        String? subLocality = place.subLocality;
+        String? administrativeArea = place.administrativeArea;
+        String? thoroughfare = place.thoroughfare;
+        String? name = place.name;
+        currentLocation.value = (locality?.isNotEmpty == true
+            ? locality
+            : (subLocality?.isNotEmpty == true
+                  ? subLocality
+                  : (administrativeArea?.isNotEmpty == true
+                        ? administrativeArea
+                        : (thoroughfare?.isNotEmpty == true
+                              ? thoroughfare
+                              : (name ?? Get.context!.unknownPlace)))))!;
       } else {
-        currentLocation.value = 'Unknown Place';
+        currentLocation.value = Get.context!.unknownPlace;
       }
     } catch (e) {
-      currentLocation.value = 'Unknown Location';
+      currentLocation.value = Get.context!.currentLocation;
     }
 
     AppSharedData.removeSecuredData(AppSharedKeys.deliveryAddressUuid);
@@ -162,19 +158,17 @@ class HomePageController extends GetxController {
       longitude.value.toString(),
     );
 
-    if (currentLocation.value.isEmpty) {
-      currentLocation.value = 'Unknown Location';
+    if (currentLocation.value.isEmpty || currentLocation.value == '') {
+      currentLocation.value = Get.context!.unknownLocation;
     }
-
     AppSharedData.setSecuredString(
       AppSharedKeys.placeName,
       currentLocation.value,
     );
+    latConstant = '${latitude.value}';
+    lngConstant = '${longitude.value}';
 
-    latConstant = latitude.value.toString();
-    lngConstant = longitude.value.toString();
-
-    await getHome(latitude.value.toString(), longitude.value.toString());
+    getHome('${latitude.value}', '${longitude.value}');
   }
 
   Future<void> getHome(String lat, String lng) async {
@@ -264,17 +258,6 @@ class HomePageController extends GetxController {
     log('Home Controller close');
     super.onClose();
   }
-
-  // void refreshAfterLogin() async {
-  //   final currentUser = AppSharedData.currentUserInfo;
-  //   if (currentUser != null) {
-  //     userData.value = currentUser; // تحديث observable
-  //     await refreshData(latitude.value.toString(), longitude.value.toString());
-  //     log('Home data refreshed after login');
-  //   } else {
-  //     log('No user data found for refresh');
-  //   }
-  // }
 
   void listenConnection() {
     Connectivity().onConnectivityChanged.listen((

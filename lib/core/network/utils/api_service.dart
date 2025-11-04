@@ -165,10 +165,10 @@ abstract class ApiService {
   Future<AppResponse> summaryOrders();
 
   @POST(ApiConstants.summaryOrders)
-  Future<AppResponse> summaryPostOrders(
-    @Field('order_uuid') String orderUuid,
-    @Field('liked_price') String likedPrice,
-  );
+  Future<AppResponse> summaryPostOrders({
+    @Field('order_uuid') String? orderUuid,
+    @Field('liked_price') String? likedPrice,
+  });
 
   @POST(ApiConstants.confirmOrders)
   Future<AppResponse> confirmOrders(@Field('order_uuid') String orderUuid);

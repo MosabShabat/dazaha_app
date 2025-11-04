@@ -41,7 +41,11 @@ Widget MyTextField({
     validator: validator,
     onChanged: onChanged,
     onFieldSubmitted: onSubmitted,
-    keyboardType: keyboardType,
+    keyboardType:
+        keyboardType ??
+        (maxLines != null && maxLines > 1
+            ? TextInputType.multiline
+            : TextInputType.name),
     maxLines: maxLines,
     maxLength: maxLength,
     textAlign: textAlign ?? TextAlign.start,

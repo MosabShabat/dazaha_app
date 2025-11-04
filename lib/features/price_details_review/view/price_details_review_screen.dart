@@ -14,62 +14,66 @@ class PriceDetailsReviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //     final PickUpMethodUponDeliveryController controller = Get.put(
-    //   PickUpMethodUponDeliveryController(),
-    // );
-    return Scaffold(
-      backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      body: Stack(
-        children: [
-          TopEnmWidget(context),
-          Container(
-            width: Width.w,
-            height: Height.h,
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CapInDetWidget(context),
-                verticalSpace(20.h),
-                Text(
-                  '${context.howWasYourExperienceWith} ${AppConstants.userName} ؟',
-                  style: context.textStyles.bodyLarge.medium.copyWith(
-                    color: context.colorsCustom.TextPrimary,
-                    fontSize: 18.sp,
+    return WillPopScope(
+      onWillPop: () async {
+        // ✅ عند الضغط على زر الرجوع من النظام
+        Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 3});
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+        body: Stack(
+          children: [
+            TopEnmWidget(context),
+            Container(
+              width: Width.w,
+              height: Height.h,
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CapInDetWidget(context),
+                  verticalSpace(20.h),
+                  Text(
+                    '${context.howWasYourExperienceWith} ${AppConstants.userName} ؟',
+                    style: context.textStyles.bodyLarge.medium.copyWith(
+                      color: context.colorsCustom.TextPrimary,
+                      fontSize: 18.sp,
+                    ),
                   ),
-                ),
-                verticalSpace(20.h),
-                Text(
-                  context.rateYourExperience,
-                  style: context.textStyles.bodySmall.regular.copyWith(
-                    color: context.colorsCustom.TextPrimary,
+                  verticalSpace(20.h),
+                  Text(
+                    context.rateYourExperience,
+                    style: context.textStyles.bodySmall.regular.copyWith(
+                      color: context.colorsCustom.TextPrimary,
+                    ),
                   ),
-                ),
-                verticalSpace(40.h),
-                StarRatingWidget(context),
-                verticalSpace(40.h),
-                _sendRating(context, _priceDetailsReviewController),
-                // GeneralBottomAppWidget(
-                //   context,
-                //   text: context.submitEvaluation,
-                //   onTap: page,
-                // ),
-                verticalSpace(40.h),
-                Text(
-                  context.home,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  style: context.textStyles.bodyLarge.medium.copyWith(
-                    color: context.colorsCustom.TextPrimary,
-                  ),
-                ).onTap(() {
-                  Get.offAllNamed(Routes.homeScreen); //
-                }),
-              ],
+                  verticalSpace(40.h),
+                  StarRatingWidget(context),
+                  verticalSpace(40.h),
+                  _sendRating(context, _priceDetailsReviewController),
+                  // GeneralBottomAppWidget(
+                  //   context,
+                  //   text: context.submitEvaluation,
+                  //   onTap: page,
+                  // ),
+                  verticalSpace(40.h),
+                  Text(
+                    context.home,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: context.textStyles.bodyLarge.medium.copyWith(
+                      color: context.colorsCustom.TextPrimary,
+                    ),
+                  ).onTap(() {
+                    Get.offAllNamed(Routes.homeScreen); //
+                  }),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

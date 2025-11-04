@@ -1,7 +1,7 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
-Widget TabBarTitleWidget(BuildContext context,{required secTap}) {
+Widget TabBarTitleWidget(BuildContext context, {required secTap}) {
   return Container(
     height: Width * 0.12,
     width: Width,
@@ -34,7 +34,7 @@ Widget TabBarTitleWidget(BuildContext context,{required secTap}) {
       //   fontWeight: FontWeight.w500,
       // ),
       tabs: [
-        Tab(text: context.all),
+        // Tab(text: context.all),
         Tab(text: secTap),
         Tab(text: context.underDelivery),
         Tab(text: context.complete),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../core/constant/exports_libraries.dart';
@@ -27,20 +29,27 @@ class WalletScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      body: Container(
-        width: Width,
-        child: Column(
+      body: Obx(
+        () => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TopBoxWidget(context, controller: _walletController),
             Expanded(
+              //0592510942
               child: SmartRefresher(
                 scrollController: _walletController.scrollController,
                 controller: _walletController.refreshController,
-                onRefresh: () {
+                onRefresh: () async {
+                  _walletController.walletModel!.value.recordTransactionsModel!
+                      .clear(); // تنظيف القائمة
+                  await _walletController.getWallet(); // إعادة تحميل البيانات
                   _walletController.resetControllerState();
                   _walletController.refreshController.refreshCompleted();
-                },
+                  log(
+                    '_walletController.recordTransactionsModel.length : ${_walletController.recordTransactionsModel.length}',
+                  );
+                },//46
+                //0592510942
                 physics: ClampingScrollPhysics(),
                 header: CustomHeader(
                   builder: (BuildContext context, RefreshStatus? status) {
@@ -54,95 +63,84 @@ class WalletScreen extends StatelessWidget {
                     );
                   },
                 ),
-                child: SingleChildScrollView(
-                  child: Obx(() {
-                    return _walletController.isLoading.isTrue
-                        ? Container(
-                            height: Height / 2,
-                            color: context.colorsCustom.surfacePrimaryWhite,
-                            child: Center(
-                              child: ProgressViewWhite(context, false),
+                child: _walletController.isLoading.isTrue
+                    ? Container(
+                        height: Height / 2,
+                        color: context.colorsCustom.surfacePrimaryWhite,
+                        child: Center(child: ProgressViewWhite(context, false)),
+                      )
+                    : _walletController
+                          .walletModel!
+                          .value
+                          .recordTransactionsModel!
+                          .isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              AppAssets.json.the_financial_empty_json,
+                              width: 300.w,
+                              height: 300.w,
                             ),
-                          )
-                        : _walletController
-                              .walletModel!
-                              .value
-                              .recordTransactionsModel!
-                              .isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Lottie.asset(
-                                  AppAssets.json.the_financial_empty_json,
-                                  width: 300.w,
-                                  height: 300.w,
-                                ),
-                                verticalSpace(20.h),
-                                Text(
-                                  context.dataEmpty,
-                                  textAlign: TextAlign.center,
-                                  style: context.textStyles.titleLarge.bold
-                                      .copyWith(
-                                        color: context
-                                            .colorsCustom
-                                            .surfacePrimaryBlack,
-                                      ),
-                                ),
-                              ],
+                            verticalSpace(20.h),
+                            Text(
+                              context.dataEmpty,
+                              textAlign: TextAlign.center,
+                              style: context.textStyles.titleLarge.bold
+                                  .copyWith(
+                                    color: context
+                                        .colorsCustom
+                                        .surfacePrimaryBlack,
+                                  ),
                             ),
-                          )
-                        : Column(
-                            children: [
-                              verticalSpace(10.h),
-                              TopRowWidget(
-                                context,
-                                title: context.recordMovements,
-                                size: 20.sp,
-                                style: context
-                                    .textStyles
-                                    .titleLarge
-                                    .bold
-                                    .fontFamily,
-                                GridList: [
-                                  context.income,
-                                  context.withdrawABalance,
-                                  context.successful,
-                                  context.failed,
-                                ],
-                                subTitle: context.ViewYourRequestsByServiceType,
-                                selectedIndex: _walletController.selectedIndex,
-                                onTapSel: (index) =>
-                                    _walletController.changeSelect(index),
-                                onPress: () =>
-                                    _walletController.selectedIndex.value = 0,
-                                onTep: () {
-                                  final status = switch (_walletController
-                                      .selectedIndex
-                                      .value) {
-                                    0 => 'wallet_deposit',
-                                    1 => 'wallet_withdrawal',
-                                    2 => 'paid',
-                                    _ => 'failed',
-                                  };
-                                  orderDataController.setFilterType(
-                                    '${status}',
-                                  );
-                                  orderDataController.setFilterNum(
-                                    '${_walletController.selectedIndex.value}',
-                                  );
-                                  _walletController.refreshWallet();
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              WalletMoveMentListWidget(
-                                context,
-                                controller: _walletController,
-                              ),
+                          ],
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          verticalSpace(10.h),
+                          TopRowWidget(
+                            context,
+                            title: context.recordMovements,
+                            size: 20.sp,
+                            style:
+                                context.textStyles.titleLarge.bold.fontFamily,
+                            GridList: [
+                              context.income,
+                              context.withdrawABalance,
+                              context.successful,
+                              context.failed,
                             ],
-                          ).paddingSymmetric(horizontal: 16.w);
-                  }),
-                ),
+                            subTitle: context.ViewYourRequestsByServiceType,
+                            selectedIndex: _walletController.selectedIndex,
+                            onTapSel: (index) =>
+                                _walletController.changeSelect(index),
+                            onPress: () =>
+                                _walletController.selectedIndex.value = 0,
+                            onTep: () {
+                              final status = switch (_walletController
+                                  .selectedIndex
+                                  .value) {
+                                0 => 'wallet_deposit',
+                                1 => 'wallet_withdrawal',
+                                2 => 'paid',
+                                _ => 'failed',
+                              };
+                              orderDataController.setFilterType('${status}');
+                              orderDataController.setFilterNum(
+                                '${_walletController.selectedIndex.value}',
+                              );
+                              _walletController.refreshWallet();
+                              Navigator.pop(context);
+                            },
+                          ),
+                          WalletMoveMentListWidget(
+                            context,
+                            controller: _walletController,
+                          ),
+                        ],
+                      ).paddingSymmetric(horizontal: 16.w),
               ),
             ),
           ],

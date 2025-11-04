@@ -114,11 +114,11 @@ class _CustomCameraScreenState extends State<CustomCameraScreen> {
     final xFilesList = _capturedImages.map((f) => XFile(f.path)).toList();
     orderDataController.setImages(xFilesList);
 
-    chooseController.showToast(
-      context,
-      "تم حفظ الصور بنجاح",
-      context.colorsCustom.TealGreenSecondary,
-    );
+    // chooseController.showToast(
+    //   context,
+    //   "تم حفظ الصور بنجاح",
+    //   context.colorsCustom.TealGreenSecondary,
+    // );
 
     // العودة ثم الانتقال للصفحة المطلوبة
     Get.toNamed(widget.page, arguments: widget.arguments);

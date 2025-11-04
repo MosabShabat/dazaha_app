@@ -26,6 +26,7 @@ Widget TransportInfoWidget(
       verticalSpace(10.h),
       Text(
         description,
+        maxLines: 60,
         style: context.textStyles.labelMedium.medium.copyWith(
           color: context.colorsCustom.TextSecondary,
         ),

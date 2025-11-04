@@ -85,13 +85,15 @@ Widget RowDetCasWidget(
                   ),
                 ],
               ),
-              Text(
-                '${order.offersCount ?? 0} ${context.offerTextMp}',
-                style: context.textStyles.headlineSmall.bold.copyWith(
-                  color: context.colorsCustom.TealGreenSecondary,
-                  fontSize: 14.sp,
-                ),
-              ),
+              order.status == 'receiving_offers'
+                  ? Text(
+                      '${order.offersCount ?? 0} ${context.offerTextMp}',
+                      style: context.textStyles.headlineSmall.bold.copyWith(
+                        color: context.colorsCustom.TealGreenSecondary,
+                        fontSize: 14.sp,
+                      ),
+                    )
+                  : SizedBox.shrink(),
             ],
           ).box.height(100.w).make(),
           Spacer(),

@@ -103,8 +103,9 @@ extension TranslationsExtension on BuildContext {
       tr('a_simple_explanation_of_the_items');
   String get joinAsCap => tr('join_as_cap');
   String get offerDevSer => tr('offer_dev_ser');
+  String get whatGiftWouldYouLikeToGive => tr('what_gift_would_you_like_to_give');
 
-  //offer_dev_ser
+  //what_gift_would_you_like_to_give
   String get forExampleSize => tr('example_size_weight');
   String get whatAreTheSizesOfTheItems => tr('what_are_the_sizes_of_the_items');
   String get small => tr('small');
@@ -329,6 +330,9 @@ String get howMuchDoYouWantToDis =>
   String get addAnOffer => tr('add_an_offer');
   String get setYourPriceAndBe => tr('set_your_price_and_be');
   String get askingPrice => tr('asking_price');
+  String get expectedPrice => tr('expected_price');
+
+  //expected_price
   String get yourPriceForDisplay => tr('your_price_for_display');
   String get yourPriceHere => tr('your_price_here');
   String get yourOfferHasReachedTheCustomer =>

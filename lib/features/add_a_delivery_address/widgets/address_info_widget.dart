@@ -16,18 +16,21 @@ class AddressInfoWidget extends StatelessWidget {
 
   final SavedDeliveryAddressesController _savedDeliveryAddressesController =
       Get.find();
+
   final bool isEdit;
   final String? addressUuid;
-  AddressInfoWidget({super.key})
+  final bool goBackAfterSave;
+
+  AddressInfoWidget({super.key, goBackAfterSave})
     : isEdit =
           Get.arguments != null && Get.arguments[AppConstants.isEdit] == true,
       addressUuid = Get.arguments != null
           ? Get.arguments[AppConstants.addressUuid]
-          : null {
-    if (isEdit && addressUuid != null) {
-      controller.getddressDetails(addressUuid!);
-    }
-  }
+          : null,
+      goBackAfterSave = Get.arguments != null
+          ? (Get.arguments['goBackAfterSave'] ?? false)
+          : false;
+
   @override
   Widget build(BuildContext context) {
     // حالة التعديل ننتظر تحميل التفاصيل
@@ -93,7 +96,7 @@ class AddressInfoWidget extends StatelessWidget {
           ),
         ),
         verticalSpace(15.h),
-        buildLocationButton(context, controller),
+        buildLocationSavedButton(context, controller),
         verticalSpace(50.h),
         Obx(() {
           return AppLoadingButton(
@@ -105,6 +108,9 @@ class AddressInfoWidget extends StatelessWidget {
                 addressUuid: addressUuid,
               );
               _savedDeliveryAddressesController.fetchAddresses();
+              // if (goBackAfterSave) {
+              //   Get.back(result: true); // <-- العودة إلى PickUpPointScreen
+              // }
               // Get.back(result: true);
             },
             isLoading: controller.isButtonPressed.value,
@@ -118,6 +124,58 @@ class AddressInfoWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget buildLocationSavedButton(
+  BuildContext context,
+  AddADeliveryAddressController controller, {
+  isAppBar,
+}) {
+  OrderDataController orderDataController = Get.find();
+
+  return Obx(
+    () => AppTextButton(
+      context,
+      buttonHeight: 52.h,
+      buttonText: controller.locationName.isNotEmpty
+          ? controller.locationName.value
+          : context.selectLocation,
+      svgIconPathEnd: AppAssets.svgs.location_add_icon,
+      svgColor: context.colorsCustom.TextSecondary,
+      onPressed: () async {
+        // اذهب لاختيار الموقع على الخريطة
+        final result = await Get.toNamed(Routes.selectALocationOnTheMapScreen);
+
+        if (result != null) {
+          final lat = result[AppConstants.lat];
+          final lng = result[AppConstants.lng];
+          final placeName = result[AppConstants.placeName];
+          //              name == '' || name == null ? '${context.unknownPlace}' : name,
+          final lastName = placeName == '' || placeName == null
+              ? '${context.unknownPlace}'
+              : placeName;
+          // حدّث قيمة الزر
+          controller.updateLocation(lat, lng, lastName);
+          print('==========BBB===========');
+          print('isAppBar : $isAppBar');
+          print(
+            'orderDataController.SrvType.value : ${orderDataController.SrvType.value}',
+          );
+        }
+      },
+      hasBorder: true,
+      borderColor: context.colorsCustom.CardBorder,
+      textStyle: TextStyle(
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w300,
+        color: context.colorsCustom.TextSecondary,
+        fontFamily: 'sans',
+      ),
+      backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+      mainAxisAlignment: MainAxisAlignment.start,
+      enableHover: false,
+    ),
+  );
 }
 
 Widget buildLocationButton(
@@ -144,17 +202,21 @@ Widget buildLocationButton(
           final lat = result[AppConstants.lat];
           final lng = result[AppConstants.lng];
           final placeName = result[AppConstants.placeName];
-
+          //              name == '' || name == null ? '${context.unknownPlace}' : name,
+          final lastName = placeName == '' || placeName == null
+              ? '${context.unknownPlace}'
+              : placeName;
           // حدّث قيمة الزر
-          controller.updateLocation(lat, lng, placeName);
+          controller.updateLocation(lat, lng, lastName);
           print('==========BBB===========');
+          print('isAppBar : $isAppBar');
           print(
             'orderDataController.SrvType.value : ${orderDataController.SrvType.value}',
           );
           if (orderDataController.SrvType.value == '1') {
             orderDataController.setToLat('$lat');
             orderDataController.setToLng('$lng');
-            orderDataController.setToAddress('$placeName');
+            orderDataController.setToAddress('$lastName');
             orderDataController.setServiceUuid(
               orderDataController.serviceUuid.value,
             );
@@ -176,7 +238,7 @@ Widget buildLocationButton(
               if (isAppBar == true) {
                 orderDataController.setFromLat('$lat');
                 orderDataController.setFromLng('$lng');
-                orderDataController.setFromAddress('$placeName');
+                orderDataController.setFromAddress('$lastName');
                 orderDataController.setServiceUuid(
                   orderDataController.serviceUuid.value,
                 );
@@ -197,7 +259,7 @@ Widget buildLocationButton(
               } else {
                 orderDataController.setToLat('$lat');
                 orderDataController.setToLng('$lng');
-                orderDataController.setToAddress('$placeName');
+                orderDataController.setToAddress('$lastName');
                 orderDataController.setServiceUuid(
                   orderDataController.serviceUuid.value,
                 );

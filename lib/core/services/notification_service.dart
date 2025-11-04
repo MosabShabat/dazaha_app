@@ -212,17 +212,34 @@ class NotificationService {
         break;
       // Orders
       case NotificationTypes.newOrder:
+      case NotificationTypes.newOffer:
       case NotificationTypes.orderCanceled:
       case NotificationTypes.orderInProgress:
       case NotificationTypes.orderCompleted:
-        Get.offAllNamed(
-          Routes.homeScreen,
-          arguments: {'selectedIndex': 1}, // Order screen
-        );
+        if (referenceUuid != '' && referenceUuid.isNotEmpty) {
+          if (type == NotificationTypes.newOffer) {
+            _orderDataController.setItemUuid('${referenceUuid}');
+            Get.toNamed(Routes.myAdsDetailsScreen);
+          } else {
+            _orderDataController.setItemUuid('${referenceUuid}');
+            Get.toNamed(
+              Routes.itemAdDetailsScreen,
+              arguments: {"isShow": true},
+            );
+          }
+        } else {
+          Get.offAllNamed(
+            Routes.homeScreen,
+            arguments: {'selectedIndex': 1}, // Order screen
+          );
+        }
+        // Get.offAllNamed(
+        //   Routes.homeScreen,
+        //   arguments: {'selectedIndex': 1}, // Order screen
+        // );
         break;
       // عروض Offer
       // Offers
-      case NotificationTypes.newOffer:
       case NotificationTypes.offerExcluded:
         Get.offAllNamed(
           Routes.homeScreen,

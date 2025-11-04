@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../core/widgets/app_snackbar.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
@@ -11,11 +12,14 @@ import '../../../core/network/utils/app_response.dart';
 import '../../../core/network/models/orders/my_orders.dart';
 
 class TransportationAndDeliveryController extends GetxController {
-  RxInt selectedIndex = 0.obs;
+  static TransportationAndDeliveryController get to =>
+      Get.find<TransportationAndDeliveryController>();
+  final MyAdsRepo _myAdsRepo = Get.find<MyAdsRepo>();
 
   final OrderDataController orderDataController = Get.find();
   TextEditingController searchController = TextEditingController();
-  final MyAdsRepo _myAdsRepo = Get.find<MyAdsRepo>();
+  final RefreshController refreshController = RefreshController();
+  RxInt selectedIndex = 0.obs;
 
   RxBool isLoading = false.obs;
   RxBool isLoadingMore = false.obs;
@@ -31,18 +35,18 @@ class TransportationAndDeliveryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    listenConnection();
-    resetControllerState();
-    getMyOrders();
+    orderDataController.setOfferStatus('receiving_offers');
 
-    scrollController.addListener(() {
-      if (scrollController.position.extentAfter < 200) {
-        loadMoreOrders();
-      }
-    });
+    listenConnection();
+
+    scrollController.addListener(_scrollListener);
+
     debounce(searchText, (_) {
       refreshOrders();
     }, time: Duration(milliseconds: 500));
+
+    resetControllerState();
+    getMyOrders();
   }
 
   // استماع لتغير حالة الإنترنت
@@ -52,9 +56,14 @@ class TransportationAndDeliveryController extends GetxController {
     });
   }
 
+  void _scrollListener() {
+    if (scrollController.position.extentAfter < 200) {
+      loadMoreOrders();
+    }
+  }
+
   Future<void> getMyOrders() async {
     if (isLoading.value || !hasMorePages.value) return;
-    if (isOffline.value) return; // توقف عند عدم وجود إنترنت
 
     _setLoading(true);
     final result = await _myAdsRepo.getMyOrders(
@@ -73,8 +82,7 @@ class TransportationAndDeliveryController extends GetxController {
   }
 
   Future<void> loadMoreOrders() async {
-    if (isLoadingMore.value || !hasMorePages.value) return;
-    if (isOffline.value) return;
+    if (isLoadingMore.value || !hasMorePages.value || isOffline.value) return;
 
     _setLoadingMore(true);
     currentPage.value += 1;
@@ -125,15 +133,41 @@ class TransportationAndDeliveryController extends GetxController {
   }
 
   Future<void> refreshOrders() async {
+    if (isLoading.value || isOffline.value) return;
+
     ordersList.clear();
     currentPage.value = 1;
     hasMorePages.value = true;
-    await getMyOrders();
+
+    _setLoading(true);
+    try {
+      final result = await _myAdsRepo.getMyOrders(
+        serviceUuid: orderDataController.serviceUuid.isNotEmpty
+            ? '${orderDataController.serviceUuid}'
+            : '',
+        status: orderDataController.offerStatus.isNotEmpty
+            ? '${orderDataController.offerStatus}'
+            : '',
+        search: searchText.value.isNotEmpty ? searchText.value : null,
+        page: currentPage.value,
+      );
+
+      _handleApiResult(result);
+    } catch (e) {
+      log("RefreshOrders error: $e");
+    } finally {
+      _setLoading(false);
+      // مهم جدًا: تحقق من حالة RefreshController
+      if (refreshController.isRefresh) {
+        refreshController.refreshCompleted();
+      }
+    }
   }
 
   void resetControllerState() {
     currentPage.value = 1;
     hasMorePages.value = true;
+    ordersList.clear();
   }
 
   void _setLoadingMore(bool value) => isLoadingMore.value = value;
@@ -141,10 +175,10 @@ class TransportationAndDeliveryController extends GetxController {
   void changeSelect(int index) => selectedIndex.value = index;
 
   @override
-  void dispose() {
-    orderDataController.clearAll();
-    orderDataController.setOfferStatus('');
-    super.dispose();
+  void onClose() {
+    scrollController.dispose();
+    refreshController.dispose();
+    super.onClose();
     log('TransportationAndDeliveryController disposed');
   }
 }

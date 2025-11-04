@@ -4,6 +4,7 @@ import '../../../core/constant/exports_libraries.dart';
 import '../../../core/widgets/custom_divider_widget.dart';
 import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 import '../controller/profile_controller.dart';
+import 'log_out_dialog_widget.dart';
 import 'profile_list_tail_widget.dart';
 
 Widget ProfileListViewItemsWidget(
@@ -86,17 +87,17 @@ Widget ProfileListViewItemsWidget(
     },
     {
       'icon': ListProfileIcons[6],
-
       'onTap': () {
         if (AppConstants.userToken.isNotEmpty &&
             AppConstants.userToken != '' &&
             AppConstants.userUUid.isNotEmpty &&
             AppConstants.userUUid != '') {
-          profileController.logout();
+          LogOutDialogWidget(context, profileController);
         } else {
           showLoginRequiredBottomSheet(Get.context!);
         }
       },
+
       // 'title': () => context.logOut,
       'title': () =>
           (AppConstants.userToken.isNotEmpty &&

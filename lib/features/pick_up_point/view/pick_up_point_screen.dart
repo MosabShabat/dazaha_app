@@ -49,6 +49,11 @@ class PickUpPointScreen extends StatelessWidget {
     // الاستماع لتغير موقع المستخدم
     _addAddressCtrl.locationName.listen((location) async {
       if (location.isEmpty) return;
+      // تحقق إذا أردنا فقط تحديث البيانات وليس الانتقال
+      if (Get.arguments != null && Get.arguments['goBackAfterSave'] == true) {
+        return; // فقط تحديث القيم بدون توجيه
+      }
+
       final result = await Get.toNamed(page, arguments: pageArgs);
       if (result == null) return;
 
@@ -63,7 +68,9 @@ class PickUpPointScreen extends StatelessWidget {
         _orderCtrl
           ..setToLat(lat)
           ..setToLng(lng)
-          ..setToAddress(name);
+          ..setToAddress(
+            name == '' || name == null ? '${context.unknownPlace}' : name,
+          );
 
         print('setToLat : ${_orderCtrl.toLat}');
         print('setToLng : ${_orderCtrl.toLng}');
@@ -73,7 +80,9 @@ class PickUpPointScreen extends StatelessWidget {
           _orderCtrl
             ..setFromLat(lat)
             ..setFromLng(lng)
-            ..setFromAddress(name);
+            ..setFromAddress(
+              name == '' || name == null ? '${context.unknownPlace}' : name,
+            );
           print('setToLat : ${_orderCtrl.toLat}');
           print('setToLng : ${_orderCtrl.toLng}');
           print('setToAddress :${_orderCtrl.toAddress} ');
@@ -81,7 +90,9 @@ class PickUpPointScreen extends StatelessWidget {
           _orderCtrl
             ..setToLat(lat)
             ..setToLng(lng)
-            ..setToAddress(name);
+            ..setToAddress(
+              name == '' || name == null ? '${context.unknownPlace}' : name,
+            );
           print('setToLat : ${_orderCtrl.toLat}');
           print('setToLng : ${_orderCtrl.toLng}');
           print('setToAddress :${_orderCtrl.toAddress} ');

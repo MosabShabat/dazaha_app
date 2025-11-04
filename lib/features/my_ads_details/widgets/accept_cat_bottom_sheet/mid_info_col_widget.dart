@@ -62,9 +62,10 @@ Widget MidInfoColWidget(
             backgroundImage: CachedNetworkImageProvider(image),
             radius: 30.w,
           ),
-          horizontalSpace(5.w),
+          horizontalSpace(10.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
                 name,
@@ -73,7 +74,6 @@ Widget MidInfoColWidget(
                   color: context.colorsCustom.TextPrimary,
                 ),
               ),
-              verticalSpace(10.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -89,7 +89,7 @@ Widget MidInfoColWidget(
                 ],
               ),
             ],
-          ),
+          ).box.height(50.h).make(),
         ],
       ),
       verticalSpace(20.h),

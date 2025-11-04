@@ -110,9 +110,11 @@ class VerificationCodeController extends GetxController {
         );
         if (response.status == true) {
           isButtonPressed.value = false;
+
           VerificationModel verificationModel = VerificationModel.fromJson(
             response.data as Map<String, dynamic>,
           );
+
           if (verificationModel.userExists == false) {
             Get.offAllNamed(
               Routes.registerScreen,
@@ -122,30 +124,67 @@ class VerificationCodeController extends GetxController {
               },
             );
           } else {
-            // حفظ حالة تسجيل الدخول
             isUserLogin.value = true;
-            await AppSharedData.setUserLogin(true);
-            await AppSharedData.setUserInfo(verificationModel.user!);
 
-            // حفظ التوكن
-            await saveUserToken(verificationModel.user?.token ?? '');
+            // تنفيذ هذه العمليات بشكل غير متزامن
+            unawaited(AppSharedData.setUserLogin(true));
+            unawaited(AppSharedData.setUserInfo(verificationModel.user!));
+            unawaited(saveUserToken(verificationModel.user?.token ?? ''));
 
-            // تحديث HomePageController بعد تسجيل الدخول
-            if (Get.isRegistered<HomePageController>()) {
-              final homeController = Get.find<HomePageController>();
-              await homeController.refreshAfterLogin();
-            }
-            //
+            // انتقل أولًا، ثم قم بالتحديث في الخلفية
             if (resetAll) {
               Get.offAllNamed(
                 Routes.homeScreen,
                 arguments: {'selectedIndex': 0},
               );
+              Future.microtask(() async {
+                if (Get.isRegistered<HomePageController>()) {
+                  final homeController = Get.find<HomePageController>();
+                  await homeController.refreshAfterLogin();
+                }
+              });
             } else {
               Get.close(2);
             }
           }
-        } else {
+        }
+        // if (response.status == true) {
+        //   isButtonPressed.value = false;
+        //   VerificationModel verificationModel = VerificationModel.fromJson(
+        //     response.data as Map<String, dynamic>,
+        //   );
+        //   if (verificationModel.userExists == false) {
+        //     Get.offAllNamed(
+        //       Routes.registerScreen,
+        //       arguments: {
+        //         AppConstants.phoneNumber: phoneNumber.value,
+        //         AppConstants.code: verificationModel.code,
+        //       },
+        //     );
+        //   } else {
+        //     // حفظ حالة تسجيل الدخول
+        //     isUserLogin.value = true;
+        //     await AppSharedData.setUserLogin(true);
+        //     await AppSharedData.setUserInfo(verificationModel.user!);
+        //     // حفظ التوكن
+        //     await saveUserToken(verificationModel.user?.token ?? '');
+        //     // تحديث HomePageController بعد تسجيل الدخول
+        //     if (Get.isRegistered<HomePageController>()) {
+        //       final homeController = Get.find<HomePageController>();
+        //       await homeController.refreshAfterLogin();
+        //     }
+        //     //
+        //     if (resetAll) {
+        //       Get.offAllNamed(
+        //         Routes.homeScreen,
+        //         arguments: {'selectedIndex': 0},
+        //       );
+        //     } else {
+        //       Get.close(2);
+        //     }
+        //   }
+        // }
+        else {
           isButtonPressed.value = false;
           showErrorSnackbar(context, response.message ?? '');
         }

@@ -3,6 +3,7 @@ import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/widgets/def_app_bar_widget.dart';
 import '../../../../features/my_ads_details/widgets/tob_column_widget.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
+// import '../../my_offer_ad_details/widgets/my_offer_app_bar_widget.dart';
 import '../controller/my_ads_details_controller.dart';
 import '../widgets/my_order_details_shimmer_widget.dart';
 import '../widgets/status_type_widget.dart';
@@ -24,13 +25,13 @@ class MyAdsDetailsScreen extends StatelessWidget {
       return Scaffold(
         backgroundColor: context.colorsCustom.surfacePrimaryWhite,
         appBar: DefAppBarWidget(context),
-        //  MyOfferAppBarWidget(
+        // MyOfferAppBarWidget(
         //   context,
-        //   status: 'pending',
-        //   price: myOrderDetails.likedPrice,
-        //   curr: myOrderDetails.currency,
-        //   timeLen: myOrderDetails.order!.times!.length,
-        //   timeItem: myOrderDetails.order!.times!,
+        //   status: 'receiving_offers',
+        //   price: order.likedPrice,
+        //   curr: order.currency,
+        //   timeLen: order.times!.length,
+        //   timeItem: order.times!,
         // ),
         body: SingleChildScrollView(
           child: Column(

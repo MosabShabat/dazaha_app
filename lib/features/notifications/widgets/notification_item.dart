@@ -34,14 +34,19 @@ Widget buildNotificationItem(
       // Orders
       if (type == NotificationTypes.newOffer ||
           type == NotificationTypes.newOrder ||
-          type == NotificationTypes.orderCanceled) {
+          type == NotificationTypes.orderCanceled ||
+          type == NotificationTypes.orderCompleted ||
+          type == NotificationTypes.orderInProgress) {
         if (referenceUuid != null && referenceUuid.isNotEmpty) {
           if (type == NotificationTypes.newOffer) {
             _orderDataController.setItemUuid('${referenceUuid}');
             Get.toNamed(Routes.myAdsDetailsScreen);
           } else {
             _orderDataController.setItemUuid('${referenceUuid}');
-            Get.toNamed(Routes.itemAdDetailsScreen);
+            Get.toNamed(
+              Routes.itemAdDetailsScreen,
+              arguments: {"isShow": true},
+            );
           }
         } else {
           Get.offAllNamed(
@@ -52,9 +57,7 @@ Widget buildNotificationItem(
       }
 
       // Offers
-      if (type == NotificationTypes.offerExcluded ||
-          type == NotificationTypes.orderCompleted ||
-          type == NotificationTypes.orderInProgress) {
+      if (type == NotificationTypes.offerExcluded) {
         Get.offAllNamed(
           Routes.homeScreen,
           arguments: {'selectedIndex': 3}, // Offer screen
@@ -125,8 +128,10 @@ Widget buildNotificationItem(
                   children: [
                     Text(
                       notification.body ?? '',
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.font12Black500Medium(context),
-                    ),
+                    ).box.width(200.w).make(),
                     Text(
                       notification.timeAgo ?? '',
                       style: AppTextStyles.font12Grey400Regular(context),

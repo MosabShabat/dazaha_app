@@ -1,4 +1,3 @@
-
 import '../../../core/constant/exports_widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +13,13 @@ import '../../../../core/widgets/app_snackbar.dart';
 import '../../add_a_delivery_address/controller/add_a_delivery_repo.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../../../../features/ad_details/controller/ad_details_repo.dart';
+import '../../price_details/controller/price_details_controller.dart';
 
 class AdDetailsController extends GetxController {
   final AddADeliveryRepo _addRepo = Get.find();
   final OrdersRepo _ordersRepo = Get.find();
   final OrderDataController _orderDataController = Get.find();
-
+  final PriceDetailsController priceDetailsController = Get.find();
   RxBool isButtonPressed = false.obs;
   RxBool isDataLoading = true.obs;
 
@@ -60,10 +60,14 @@ class AdDetailsController extends GetxController {
     _orderDataController.setTitle(titleController.text);
     _orderDataController.setDescription(decController.text);
 
-    submitOrderRequest(orderType, page);
+    submitOrderRequest(context, orderType, page);
   }
 
-  Future<void> submitOrderRequest(String orderType, page) async {
+  Future<void> submitOrderRequest(
+    BuildContext context,
+    String orderType,
+    page,
+  ) async {
     _setButtonPressed(true);
     try {
       // تجهيز الملفات والصور
@@ -174,7 +178,7 @@ class AdDetailsController extends GetxController {
         items: orderType == "type2" ? itemsData : null,
       );
 
-      _handleResponse(result, page);
+      _handleResponse(context, result, page);
     } catch (e) {
       _setButtonPressed(false);
       showErrorSnackbar(
@@ -185,7 +189,11 @@ class AdDetailsController extends GetxController {
     }
   }
 
-  void _handleResponse(ApiResult<AppResponse> result, page) {
+  void _handleResponse(
+    BuildContext context,
+    ApiResult<AppResponse> result,
+    page,
+  ) {
     result.when(
       success: (response) {
         _setButtonPressed(false);
@@ -206,7 +214,13 @@ class AdDetailsController extends GetxController {
             //   AppConstants.success,
             //   showButton: false,
             // );
-            Get.toNamed(Routes.priceDetailsScreen, arguments: {'page': page});
+            if (_orderDataController.serviceUuid.value ==
+                '153a7042-eb9e-42b8-9d5c-498623adb5da') {
+              priceDetailsController.priceController.text = '2';
+              priceDetailsController.submitPrice(context, page);
+            } else {
+              Get.toNamed(Routes.priceDetailsScreen, arguments: {'page': page});
+            }
           }
         } else {
           showErrorSnackbar(

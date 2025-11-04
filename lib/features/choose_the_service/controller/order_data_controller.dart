@@ -25,6 +25,8 @@ class OrderDataController extends GetxController {
   RxString reviewType = ''.obs;
   RxString itemStatus = ''.obs;
   RxString placeName = ''.obs;
+  RxString orderStatus = ''.obs;
+  RxString isListen = ''.obs;
 
   RxList<String> itemNames = <String>[].obs;
   RxList<int> itemQuantities = <int>[].obs;
@@ -84,8 +86,10 @@ class OrderDataController extends GetxController {
   void setFilterType(String value) => filterType.value = value;
   void setFilterNum(String value) => filterNum.value = value;
   void setSrvType(String value) => SrvType.value = value;
+  void setOrderStatus(String value) => orderStatus.value = value;
+  void setIsListen(String value) => isListen.value = value;
 
-  //SrvType
+  //isListen
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -177,6 +181,7 @@ class OrderDataController extends GetxController {
     data.value = '';
     userUuid.value = '';
     from.value = '';
+    isListen.value = '';
     tripState.value = '';
     userMobile.value = '';
     SrvType.value = '';
@@ -188,6 +193,7 @@ class OrderDataController extends GetxController {
     userRate.value = '';
     orderId.value = '';
     placeName.value = '';
+    orderStatus.value = '';
     orderTitle.value = '';
     to.value = '';
     OrderUuid.value = '';

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/constants.dart';
@@ -20,6 +22,9 @@ Widget StatusTypeWidget(
   OrderDataController orderDataController,
   MyAdsDetailsController myAdsDetailsController,
 ) {
+  log(
+    'myAdsDetailsController.myOrderDetails!.value.status : ${myAdsDetailsController.myOrderDetails!.value.status}',
+  );
   if (myAdsDetailsController.myOrderDetails!.value.status !=
       'receiving_offers') {
     final orderData = myAdsDetailsController.myOrderDetails!.value;
@@ -36,6 +41,9 @@ Widget StatusTypeWidget(
     orderDataController.setUserMobile('${orderData.driver!.mobile ?? ''}');
     orderDataController.setUserRate('${orderData.driver!.rate ?? ''}');
     orderDataController.setUserUuid('${orderData.driver!.uuid ?? ''}');
+    orderDataController.setOrderStatus('${orderData.status}');
+    // orderDataController.setItemStatus('${orderData.statusText}');
+
     AppConstants.userName = '${orderData.driver!.name ?? ''}';
     AppConstants.orderId = '${orderData.orderId ?? ''}';
     AppConstants.orderTitle = '${orderData.title ?? ''}';
@@ -78,7 +86,7 @@ Widget StatusTypeWidget(
                   verticalSpace(10.h),
                   TrackYourFlightWidget(
                     context,
-                    isShow: orderDataController.itemStatus.value,
+                    isShow: orderDataController.orderStatus.value,
                     BottomText: context.tracking,
                     isShowBo: false,
                     rating: '${order.rating ?? ''}',
@@ -105,7 +113,7 @@ Widget StatusTypeWidget(
                     context,
                     title: context.transferDate,
                     date: order.date ?? '',
-                    time: order.time ?? '',
+                    time: order.times ?? '',
                   ),
                   verticalSpace(20.h),
                   PayMthWidget(
