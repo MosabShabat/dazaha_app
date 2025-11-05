@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../core/widgets/app_snackbar.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
+import '../../home/controller/home_controller.dart';
 import 'my_ads_repo.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
@@ -32,10 +33,19 @@ class TransportationAndDeliveryController extends GetxController {
   RxList<ItemMyOrders> ordersList = <ItemMyOrders>[].obs;
   final ScrollController scrollController = ScrollController();
 
+  final HomeController homeController = Get.find<HomeController>();
+
+  late final tabIndex = homeController.extraTabIndex.value;
+
   @override
   void onInit() {
     super.onInit();
-    orderDataController.setOfferStatus('receiving_offers');
+
+    tabIndex == 0
+        ? orderDataController.setOfferStatus('receiving_offers')
+        : tabIndex == 1
+        ? orderDataController.setOfferStatus('in_progress')
+        : orderDataController.setOfferStatus('completed');
 
     listenConnection();
 
@@ -177,6 +187,7 @@ class TransportationAndDeliveryController extends GetxController {
   @override
   void onClose() {
     scrollController.dispose();
+    homeController.extraTabIndex.value = 0;
     refreshController.dispose();
     super.onClose();
     log('TransportationAndDeliveryController disposed');

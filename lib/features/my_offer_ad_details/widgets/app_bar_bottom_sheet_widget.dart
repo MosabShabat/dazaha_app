@@ -8,6 +8,7 @@ import '../../../features/my_offer_ad_details/widgets/delete_bottom_sheet_widget
 Future<dynamic> AppBarBottomSheetWidget(
   BuildContext context, {
   required int timeLen,
+  required offerOrOrder,
   required List<dynamic> timeItem,
   required dynamic price,
   required String curr,
@@ -42,27 +43,29 @@ Future<dynamic> AppBarBottomSheetWidget(
                 )
                 .make(),
             verticalSpace(15.h),
-            _buildOptionTile(
-              context,
-              iconPath: AppAssets.svgs.edit_2_icon,
-              title: context.edit,
-              onTap: () {
-                AddOfferBottomSheetWidget(
-                  context,
-                  price: price,
-                  curr: curr,
-                  timeLen: timeLen,
-                  timeItem: timeItem,
-                  isUpdate: true,
-                );
-              },
-            ),
+            offerOrOrder == 'order'
+                ? SizedBox.shrink()
+                : _buildOptionTile(
+                    context,
+                    iconPath: AppAssets.svgs.edit_2_icon,
+                    title: context.edit,
+                    onTap: () {
+                      AddOfferBottomSheetWidget(
+                        context,
+                        price: price,
+                        curr: curr,
+                        timeLen: timeLen,
+                        timeItem: timeItem,
+                        isUpdate: true,
+                      );
+                    },
+                  ),
             verticalSpace(15.h),
             _buildOptionTile(
               context,
               iconPath: AppAssets.svgs.trash_icon,
               title: context.delete,
-              onTap: () => DeleteBottomSheetWidget(context),
+              onTap: () => DeleteBottomSheetWidget(context, offerOrOrder),
             ),
             verticalSpace(20.h),
           ],

@@ -40,7 +40,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
         backgroundColor: context.colorsCustom.surfacePrimaryWhite,
         bottomNavigationBar: // الزر السفلي (BottomNavigationBarWidget)
             isShow &&
-                controller.orderDetailsItem!.value.isMe == false &&
+                controller.orderDetailsItem!.value.myOfferAdded == false &&
                 controller.orderDetailsItem!.value.isMe == false
             ? _buildBottomNav(context, controller)
             : const SizedBox.shrink(),
@@ -70,6 +70,9 @@ class ItemAdDetailsScreen extends StatelessWidget {
     OrderDataController orderDataController,
   ) {
     final uuid = controller.orderDetailsItem!.value.serviceUuid;
+    orderDataController.setServiceUuid(
+      '${controller.orderDetailsItem!.value.serviceUuid}',
+    );
     orderDataController.setServiceNumber(
       uuid == '69fb5c27-11ef-4637-986f-ed484b388c7f'
           ? '0'
@@ -180,6 +183,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
         if (isShow)
           AdvertiserRowWidget(
             context,
+            uuid: item.user?.uuid ?? '',
             image: item.user?.image ?? '',
             name: item.user?.fullName ?? '',
             orderCount: item.user?.ordersCount ?? '',

@@ -40,15 +40,22 @@ class DocumentScreen extends StatelessWidget {
           builder: (context) {
             final tabController = DefaultTabController.of(context);
 
+            // ✅ الانتقال للتبويب المطلوب بعد بناء الواجهة لأول مرة فقط
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              tabController.addListener(() {
-                if (!tabController.indexIsChanging) {
-                  orderDataController.setOfferStatus(
-                    _statuses[tabController.index],
-                  );
-                  documentController.refreshOrders();
-                }
-              });
+              if (documentController.tabIndex >= 0 &&
+                  documentController.tabIndex < _statuses.length) {
+                tabController.animateTo(documentController.tabIndex);
+              }
+            });
+
+            // ✅ مستمع لتغيير التبويب
+            tabController.addListener(() {
+              if (!tabController.indexIsChanging) {
+                orderDataController.setOfferStatus(
+                  _statuses[tabController.index],
+                );
+                documentController.refreshOrders();
+              }
             });
 
             return Scaffold(

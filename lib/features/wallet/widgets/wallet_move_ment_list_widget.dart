@@ -36,7 +36,8 @@ Widget WalletMoveMentListWidget(
           ],
         );
       }
-      var transactions = controller.walletModel!.value.recordTransactionsModel![index];
+      var transactions =
+          controller.walletModel!.value.recordTransactionsModel![index];
       return ListTile(
         contentPadding: EdgeInsetsDirectional.only(
           start: 0,
@@ -60,14 +61,14 @@ Widget WalletMoveMentListWidget(
               ),
             ),
             horizontalSpace(10.w),
-            SvgPicture.asset(
-              transactions.type == 'wallet_deposit'
-                  ? AppAssets.svgs.import_arrow_down_icon
-                  : AppAssets.svgs.import_arrow_up_icon,
-              color: transactions.type == 'wallet_deposit'
-                  ? context.colorsCustom.LightGreen
-                  : context.colorsCustom.redColor,
-            ),
+            // SvgPicture.asset(
+            //   transactions.type == 'wallet_deposit'
+            //       ? AppAssets.svgs.import_arrow_down_icon
+            //       : AppAssets.svgs.import_arrow_up_icon,
+            //   color: transactions.type == 'wallet_deposit'
+            //       ? context.colorsCustom.LightGreen
+            //       : context.colorsCustom.redColor,
+            // ),
           ],
         ),
         subtitle: Text(
@@ -82,7 +83,7 @@ Widget WalletMoveMentListWidget(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '${transactions.amount} ${context.currency}',
+              '${transactions.amount} ${transactions.currency}',
               textAlign: TextAlign.start,
               style: context.textStyles.bodyMedium.medium.copyWith(
                 color: context.colorsCustom.TextPrimary,

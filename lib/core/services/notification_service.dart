@@ -45,6 +45,12 @@ class NotificationService {
         message.data,
       );
     });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      log('Notification opened from background: ${message.data}');
+      String? type = message.data[NotificationTypes.type];
+      String? referenceUuid = message.data[NotificationTypes.referenceUuid];
+      _onNotificationClicked(type ?? '', referenceUuid ?? '');
+    });
 
     await _checkInitialMessage();
   }
@@ -65,12 +71,12 @@ class NotificationService {
   Future<void> _initializeLocalNotifications() async {
     const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
+
     final DarwinInitializationSettings iosInitializationSettings =
         DarwinInitializationSettings(
           requestAlertPermission: true,
           requestSoundPermission: true,
           requestBadgePermission: true,
-          notificationCategories: [],
         );
 
     final InitializationSettings initializationSettings =
@@ -81,11 +87,19 @@ class NotificationService {
 
     await _localNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse response) async {
-        if (response.payload != null) {
-          print('Notification payload: ${response.payload}');
-        }
-      },
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) async {
+            if (notificationResponse.payload != null) {
+              try {
+                final data = jsonDecode(notificationResponse.payload!);
+                String? type = data[NotificationTypes.type];
+                String? referenceUuid = data[NotificationTypes.referenceUuid];
+                _onNotificationClicked(type ?? '', referenceUuid ?? '');
+              } catch (e) {
+                log('Error parsing notification payload: $e');
+              }
+            }
+          },
     );
   }
 
@@ -129,6 +143,8 @@ class NotificationService {
     String referenceUuid = data[NotificationTypes.referenceUuid];
 
     // General / Notifications
+    log('type : $type');
+    log('type : $referenceUuid');
 
     if ((type == NotificationTypes.general ||
             type == NotificationTypes.requestToJoinDriverAccepted ||
@@ -171,9 +187,35 @@ class NotificationService {
         if (type == NotificationTypes.newOffer) {
           _orderDataController.setItemUuid('${referenceUuid}');
           Get.toNamed(Routes.myAdsDetailsScreen);
-        } else {
+        } else if (type == NotificationTypes.newOrder) {
           _orderDataController.setItemUuid('${referenceUuid}');
-          Get.toNamed(Routes.itemAdDetailsScreen);
+          Get.toNamed(Routes.itemAdDetailsScreen, arguments: {"isShow": true});
+        } else if (type == NotificationTypes.orderInProgress ||
+            type == NotificationTypes.orderCompleted) {
+          print('Here tap');
+          int tabIndex = 0;
+
+          // تحديد أي تبويب نريد فتحه داخل DocumentScreen
+          if (type == NotificationTypes.orderInProgress) {
+            tabIndex = 1; // التبويب الثاني
+
+            Get.offAllNamed(
+              Routes.homeScreen,
+              arguments: {
+                'selectedIndex': 3, // صفحة DocumentScreen
+                'tabIndex': tabIndex, // أي تبويب نريد فتحه
+              },
+            );
+          } else if (type == NotificationTypes.orderCompleted) {
+            tabIndex = 2; // التبويب الثالث
+            Get.offAllNamed(
+              Routes.homeScreen,
+              arguments: {
+                'selectedIndex': 1, // صفحة DocumentScreen
+                'tabIndex': tabIndex, // أي تبويب نريد فتحه
+              },
+            );
+          }
         }
       } else {
         Get.offAllNamed(

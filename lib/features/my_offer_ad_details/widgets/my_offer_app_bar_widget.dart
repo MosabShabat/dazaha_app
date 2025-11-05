@@ -4,6 +4,7 @@ import '../../../../features/my_offer_ad_details/widgets/app_bar_bottom_sheet_wi
 
 AppBar MyOfferAppBarWidget(
   BuildContext context, {
+  required offerOrOrder,
   required status,
   required timeLen,
   required timeItem,
@@ -44,6 +45,7 @@ AppBar MyOfferAppBarWidget(
                     .onTap(() {
                       AppBarBottomSheetWidget(
                         context,
+                        offerOrOrder: offerOrOrder,
                         curr: curr,
                         price: price,
                         timeItem: timeItem,
@@ -52,7 +54,9 @@ AppBar MyOfferAppBarWidget(
                     }),
                 horizontalSpace(10.w),
                 Text(
-                  context.displayManagement,
+                  offerOrOrder == 'offer'
+                      ? context.displayManagement
+                      : context.advertisingManagement,
                   style: context.textStyles.bodySmall.medium.copyWith(
                     color: context.colorsCustom.TextPrimary,
                   ),

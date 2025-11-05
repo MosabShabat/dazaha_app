@@ -9,6 +9,7 @@ class HomeController extends GetxController {
   RxInt selectedIndex;
   RxBool isOffline = false.obs;
   RxBool isLoading = false.obs; // ← للتحكم في عرض Progress
+  RxInt extraTabIndex = 0.obs;
 
   Connectivity _connectivity = Connectivity();
   int lastIndexBeforeChooseService = 0;

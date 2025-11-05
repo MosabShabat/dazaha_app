@@ -61,10 +61,17 @@ class HomePageController extends GetxController {
 
   /// تحديث البيانات بعد تسجيل الدخول
   Future<void> refreshAfterLogin() async {
+    // منع تكرار التحديث إذا كان جاريًا
+    if (isRefreshing.value) {
+      log('refreshAfterLogin: already refreshing, skipping duplicate call');
+      return;
+    }
+    isRefreshing.value = true;
+
     final currentUser = AppSharedData.currentUserInfo;
     if (currentUser != null) {
       userData.value = currentUser;
-      await refreshData(latitude.value.toString(), longitude.value.toString());
+      // await refreshData(latitude.value.toString(), longitude.value.toString());
       log('Home data refreshed after login');
     }
   }

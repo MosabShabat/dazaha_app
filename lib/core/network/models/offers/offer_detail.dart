@@ -12,6 +12,7 @@ class OfferDetail {
     required this.time,
     required this.status,
     required this.statusText,
+    required this.state,
     required this.addedAt,
     required this.rating,
     required this.order,
@@ -25,6 +26,8 @@ class OfferDetail {
 
   @JsonKey(name: 'status_text')
   final String? statusText;
+  final String? state;
+
 
   @JsonKey(name: 'added_at')
   final String? addedAt;

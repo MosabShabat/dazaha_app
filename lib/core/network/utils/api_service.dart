@@ -220,6 +220,9 @@ abstract class ApiService {
   @GET('${ApiConstants.myOrder}/{uuid}')
   Future<AppResponse> getMyOrderDetails(@Path('uuid') String orderUuid);
 
+  @DELETE('${ApiConstants.myOrder}/{uuid}')
+  Future<AppResponse> deleteOrder(@Path('uuid') String orderUuid);
+
   @GET('${ApiConstants.myOrder}/{uuid}/offers')
   Future<AppResponse> getMyOrderOffers(
     @Path('uuid') String orderUuid,

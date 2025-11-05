@@ -1,11 +1,10 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/widgets/top_con_bot_sh_widget.dart';
+import '../../my_ads_details/controller/my_ads_details_controller.dart';
 import '../controller/my_offer_ad_details_controller.dart';
 
-Future<dynamic> DeleteBottomSheetWidget(BuildContext context) {
-  final MyOfferAdDetailsController controller = Get.find();
-
+Future<dynamic> DeleteBottomSheetWidget(BuildContext context, offerOrOrder) {
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -25,7 +24,9 @@ Future<dynamic> DeleteBottomSheetWidget(BuildContext context) {
               TopConBotShWidget(context),
               verticalSpace(10.h),
               Text(
-                    context.deleteQuote,
+                    offerOrOrder == 'order'
+                        ? context.deleteTheAd
+                        : context.deleteQuote,
                     style: context.textStyles.titleSmall.medium.copyWith(
                       color: context.colorsCustom.TextPrimary,
                     ),
@@ -38,28 +39,44 @@ Future<dynamic> DeleteBottomSheetWidget(BuildContext context) {
                   .make(),
               verticalSpace(15.h),
               Text(
-                context.doYouWantToDeleteTheQuote,
+                offerOrOrder == 'order'
+                    ? context.doYouWantToDeleteTheAd
+                    : context.doYouWantToDeleteTheQuote,
                 style: context.textStyles.titleSmall.bold.copyWith(
                   color: context.colorsCustom.TextPrimary,
                   fontSize: 18.sp,
                 ),
               ),
               verticalSpace(20.h),
-              Text(
-                context.ifYouLikeYou,
-                style: context.textStyles.titleSmall.medium.copyWith(
-                  color: context.colorsCustom.TextSecondary,
-                ),
-              ),
+              offerOrOrder == 'order'
+                  ? SizedBox.shrink()
+                  : Text(
+                      context.ifYouLikeYou,
+                      style: context.textStyles.titleSmall.medium.copyWith(
+                        color: context.colorsCustom.TextSecondary,
+                      ),
+                    ),
               verticalSpace(60.h),
               GeneralBottomAppWidget(
                 context,
-                text: context.yesDeleteTheOffer,
+                text: offerOrOrder == 'order'
+                    ? '${context.yes}, ${context.delete}'
+                    : context.yesDeleteTheOffer,
                 onTap: () {
-                  controller.deleteOffer();
+                  if (offerOrOrder == 'order') {
+                    final MyAdsDetailsController controllerAdd = Get.find();
+                    controllerAdd.deleteOrder();
+                  } else if (offerOrOrder == 'offer') {
+                    final MyOfferAdDetailsController controllerOffer =
+                        Get.find();
+                    controllerOffer.deleteOffer();
+                  }
+
                   Get.offAllNamed(
                     Routes.homeScreen,
-                    arguments: {'selectedIndex': 3},
+                    arguments: {
+                      'selectedIndex': offerOrOrder == 'order' ? 1 : 3,
+                    },
                   );
                 },
                 backgroundColorB: context.colorsCustom.surfacePrimaryBlack,

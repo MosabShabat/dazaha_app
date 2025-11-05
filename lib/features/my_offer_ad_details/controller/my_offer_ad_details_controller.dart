@@ -23,7 +23,6 @@ class MyOfferAdDetailsController extends GetxController {
   var isLoadingDelete = false.obs;
 
   var selectedIndex = 0.obs;
-  
 
   Rx<OfferDetail>? offerDetailsItem;
 
@@ -34,6 +33,7 @@ class MyOfferAdDetailsController extends GetxController {
     getOfferDetails();
   }
 
+  //delete_the_ad  do_you_want_to_delete_the_ad
   void getOfferDetails() async {
     isLoading.value = true;
     final result = await _offerDetailsRepo.getOfferDetails();

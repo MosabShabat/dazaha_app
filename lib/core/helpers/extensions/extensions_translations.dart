@@ -103,7 +103,8 @@ extension TranslationsExtension on BuildContext {
       tr('a_simple_explanation_of_the_items');
   String get joinAsCap => tr('join_as_cap');
   String get offerDevSer => tr('offer_dev_ser');
-  String get whatGiftWouldYouLikeToGive => tr('what_gift_would_you_like_to_give');
+  String get whatGiftWouldYouLikeToGive =>
+      tr('what_gift_would_you_like_to_give');
 
   //what_gift_would_you_like_to_give
   String get forExampleSize => tr('example_size_weight');
@@ -265,6 +266,9 @@ extension TranslationsExtension on BuildContext {
 
   //operation_failed_try_again
   String get delete => tr('delete');
+  String get deleteTheAd => tr('delete_the_ad');
+  String get doYouWantToDeleteTheAd => tr('do_you_want_to_delete_the_ad');
+
   String get weAreHereToHelp => tr('we_are_here_to_help');
   String get liveSupport => tr('live_support');
   String get frequentlyAskedQuestions => tr('frequently_asked_questions');
@@ -287,9 +291,8 @@ extension TranslationsExtension on BuildContext {
   String get recordMovements => tr('record_movements');
   String get howMuchDoYouWantToWithdraw =>
       tr('how_much_do_you_want_to_withdraw');
-String get howMuchDoYouWantToDis =>
-      tr('how_much_do_you_want_to_dis');
-      //how_much_do_you_want_to_dis
+  String get howMuchDoYouWantToDis => tr('how_much_do_you_want_to_dis');
+  //how_much_do_you_want_to_dis
   String get weWillPrepareTheAmount => tr('we_will_prepare_the_amount');
   String get withdrawalRequest => tr('withdrawal_request');
   String get balanceWithdrawalRequest => tr('balance_withdrawal_request');
@@ -332,13 +335,15 @@ String get howMuchDoYouWantToDis =>
   String get askingPrice => tr('asking_price');
   String get expectedPrice => tr('expected_price');
 
-  //expected_price
+  //advertising_management
   String get yourPriceForDisplay => tr('your_price_for_display');
   String get yourPriceHere => tr('your_price_here');
   String get yourOfferHasReachedTheCustomer =>
       tr('your_offer_has_reached_the_customer');
   String get myOffers => tr('my_offers');
   String get displayManagement => tr('display_management');
+  String get advertisingManagement => tr('advertising_management');
+
   String get offerDetails => tr('offer_details');
   String get published => tr('published');
   String get viewPrice => tr('view_price');

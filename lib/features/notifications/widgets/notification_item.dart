@@ -41,12 +41,38 @@ Widget buildNotificationItem(
           if (type == NotificationTypes.newOffer) {
             _orderDataController.setItemUuid('${referenceUuid}');
             Get.toNamed(Routes.myAdsDetailsScreen);
-          } else {
+          } else if (type == NotificationTypes.newOrder) {
             _orderDataController.setItemUuid('${referenceUuid}');
             Get.toNamed(
               Routes.itemAdDetailsScreen,
               arguments: {"isShow": true},
             );
+          } else if (type == NotificationTypes.orderInProgress ||
+              type == NotificationTypes.orderCompleted) {
+            print('Here tap');
+            int tabIndex = 0;
+
+            // تحديد أي تبويب نريد فتحه داخل DocumentScreen
+            if (type == NotificationTypes.orderInProgress) {
+              tabIndex = 1; // التبويب الثاني
+
+              Get.offAllNamed(
+                Routes.homeScreen,
+                arguments: {
+                  'selectedIndex': 3, // صفحة DocumentScreen
+                  'tabIndex': tabIndex, // أي تبويب نريد فتحه
+                },
+              );
+            } else if (type == NotificationTypes.orderCompleted) {
+              tabIndex = 2; // التبويب الثالث
+              Get.offAllNamed(
+                Routes.homeScreen,
+                arguments: {
+                  'selectedIndex': 1, // صفحة DocumentScreen
+                  'tabIndex': tabIndex, // أي تبويب نريد فتحه
+                },
+              );
+            }
           }
         } else {
           Get.offAllNamed(

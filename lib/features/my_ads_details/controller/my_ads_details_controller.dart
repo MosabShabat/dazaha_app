@@ -1,9 +1,13 @@
+import 'package:dazaha_app/core/constant/exports_widgets.dart';
+
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/utils/api_result.dart';
 
 import '../../../core/helpers/constants.dart';
 import '../../../core/network/models/orders/my_order_details.dart';
+import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar.dart';
+import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import 'my_ads_details_repo.dart';
 
@@ -15,6 +19,7 @@ class MyAdsDetailsController extends GetxController {
   RxBool isLoading = true.obs;
   RxBool isOffersLoading = true.obs;
   RxList<Offer> offersList = <Offer>[].obs;
+  var isLoadingDelete = false.obs;
 
   Rx<MyOrderDetails>? myOrderDetails;
 
@@ -55,6 +60,46 @@ class MyAdsDetailsController extends GetxController {
     );
   }
 
+  void deleteOrder() async {
+    _setLoadingDelete(true);
+    final result = await _myOrderDetailsRepo.deleteOrder();
+    _handleResult(
+      result,
+      onSuccess: (response) {
+        if (response.status == true) {
+          _setLoadingDelete(false);
+          showSnackbarWithButton(
+            Get.context!,
+            Get.context!.successful,
+            AppConstants.success,
+            showButton: false,
+          );
+        } else {
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
+        }
+      },
+    );
+  }
+
+  void _handleResult(
+    dynamic result, {
+    required Function(AppResponse) onSuccess,
+  }) {
+    if (result is Success<AppResponse>) {
+      _setLoading(false);
+      _setLoadingDelete(false);
+      onSuccess(result.data);
+    } else if (result is Failure) {
+      _setLoading(false);
+      _setLoadingDelete(false);
+      showSnackbarErrorApi(Get.context!, [result.error], null);
+    }
+  }
+
   void getMyOrderOffers(String orderBy) async {
     isOffersLoading.value = true;
     final result = await _myOrderDetailsRepo.getMyOrderOffers(orderBy);
@@ -93,6 +138,14 @@ class MyAdsDetailsController extends GetxController {
         getMyOrderOffers("rate");
         break;
     }
+  }
+
+  _setLoadingDelete(bool value) {
+    isLoadingDelete.value = value;
+  }
+
+  void _setLoading(bool value) {
+    isLoading.value = value;
   }
 
   @override

@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/constants.dart';
 import 'rating_circle.dart';
 
 Widget AdvertiserRowWidget(
   BuildContext context, {
+  required uuid,
   required image,
   required name,
   required orderCount,
@@ -53,8 +55,33 @@ Widget AdvertiserRowWidget(
               ),
             ],
           ),
-          RatingCircle(rating: rating),
-      
+
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: context.colorsCustom.CardBackgroundLightGray,
+                radius: 20.w,
+                child: SvgPicture.asset(
+                  AppAssets.svgs.message_icon,
+                  color: context.colorsCustom.surfacePrimaryBlack,
+                ),
+              ).onTap(() {
+                Get.toNamed(
+                  Routes.reportAProblemChatSupportScreen,
+                  arguments: {
+                    AppConstants.liveSupport: false,
+                    AppConstants.uuid: '${uuid}',
+                    AppConstants.receiverImage: '${image}',
+                    AppConstants.receiverName: '${name}',
+                    AppConstants.receiverVerify: true,
+                  },
+                );
+                // Get.toNamed(Routes.reportAProblemChatSupportScreen);
+              }),
+              horizontalSpace(5.w),
+              RatingCircle(rating: rating),
+            ],
+          ),
         ],
       ),
       verticalSpace(20.h),

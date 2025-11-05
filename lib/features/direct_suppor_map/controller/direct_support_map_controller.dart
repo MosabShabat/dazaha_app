@@ -21,9 +21,18 @@ class DirectSupportMapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print(
+      '_orderDataController.stateCase.value : ${_orderDataController.stateCase.value}',
+    );
+    _orderDataController.stateCase.value == 'pending'
+        ? selectedCase.value = 0
+        : _orderDataController.stateCase.value == 'started'
+        ? selectedCase.value = 1
+        : selectedCase.value = 2;
     AppConstants.orderUuid = _orderDataController.itemUuid.value;
   }
 
+  //delivered
   Future<void> putState(String state) async {
     isButtonPressed.value = true;
     final result = await _directSupportMapRepo.putState(state);

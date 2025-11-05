@@ -24,10 +24,23 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = Get.arguments;
-    if (args != null && args['selectedIndex'] != null) {
-      navigationController.selectedIndex.value =
-          int.tryParse(args['selectedIndex'].toString()) ?? 0;
+    int? tabIndex;
+
+    if (args != null) {
+      if (args['selectedIndex'] != null) {
+        navigationController.selectedIndex.value =
+            int.tryParse(args['selectedIndex'].toString()) ?? 0;
+      }
+
+      if (args['tabIndex'] != null) {
+        tabIndex = int.tryParse(args['tabIndex'].toString()) ?? 0;
+      }
     }
+    // حفظ tabIndex في HomeController ليتم تمريره لاحقًا
+    if (tabIndex != null) {
+      navigationController.extraTabIndex.value = tabIndex;
+    }
+
     return WillPopScope(
       onWillPop: () async {
         if (navigationController.selectedIndex.value != 0) {

@@ -6,17 +6,17 @@ part 'current_order.g.dart';
 class CurrentOrder {
   CurrentOrder({
     this.uuid,
-    @JsonKey(name: 'service_uuid') this.serviceUuid,
+    this.serviceUuid,
     this.title,
     this.image,
-    @JsonKey(name: 'order_id') this.orderId,
+    this.orderId,
     this.date,
     this.time,
     this.timeAgo,
     this.from,
     this.to,
     this.status,
-    @JsonKey(name: 'status_text') this.statusText,
+    this.statusText,
   });
 
   final String? uuid;

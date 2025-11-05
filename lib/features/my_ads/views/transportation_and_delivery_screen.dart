@@ -36,15 +36,19 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
           final tabController = DefaultTabController.of(context);
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            tabController.addListener(() {
-              if (!tabController.indexIsChanging) {
-                orderDataController.setOfferStatus(
-                  _statuses[tabController.index],
-                );
-                transportController.resetControllerState();
-                transportController.refreshOrders();
-              }
-            });
+            if (transportController.tabIndex >= 0 &&
+                transportController.tabIndex < _statuses.length) {
+              tabController.animateTo(transportController.tabIndex);
+            }
+          });
+          tabController.addListener(() {
+            if (!tabController.indexIsChanging) {
+              orderDataController.setOfferStatus(
+                _statuses[tabController.index],
+              );
+              transportController.resetControllerState();
+              transportController.refreshOrders();
+            }
           });
 
           return Scaffold(

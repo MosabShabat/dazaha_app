@@ -27,6 +27,7 @@ class OrderDataController extends GetxController {
   RxString placeName = ''.obs;
   RxString orderStatus = ''.obs;
   RxString isListen = ''.obs;
+  RxString stateCase = ''.obs;
 
   RxList<String> itemNames = <String>[].obs;
   RxList<int> itemQuantities = <int>[].obs;
@@ -88,8 +89,9 @@ class OrderDataController extends GetxController {
   void setSrvType(String value) => SrvType.value = value;
   void setOrderStatus(String value) => orderStatus.value = value;
   void setIsListen(String value) => isListen.value = value;
+  void setStateCase(String value) => stateCase.value = value;
 
-  //isListen
+  //stateCase
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -188,6 +190,7 @@ class OrderDataController extends GetxController {
     filterType.value = '';
     filterNum.value = '';
     itemStatus.value = '';
+    stateCase.value = '';
     userName.value = '';
     userImage.value = '';
     userRate.value = '';

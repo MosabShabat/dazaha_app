@@ -23,6 +23,15 @@ class MyAdsDetailsRepo {
     }
   }
 
+  Future<ApiResult<AppResponse>> deleteOrder() async {
+    try {
+      final response = await _apiService.deleteOrder(AppConstants.orderUuid);
+      return ApiResult.success(response);
+    } catch (e) {
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
+
   Future<ApiResult<AppResponse>> getMyOrderOffers(String orderBy) async {
     try {
       final response = await _apiService.getMyOrderOffers(

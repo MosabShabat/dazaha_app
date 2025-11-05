@@ -48,7 +48,7 @@ Widget DownContWidget(
             toLat: toLat,
             toLng: toLng,
           ),
-          if (isShow)
+          if (isShow) //0599681024
             Obx(() {
               switch (controller.selectedCase.value) {
                 case 0: // started
@@ -63,13 +63,6 @@ Widget DownContWidget(
                     isLoading: controller.isButtonPressed.value,
                     isWhiteProgress: true,
                   );
-                // GeneralBottomAppWidget(
-                //   context,
-                //   text: context.startTheJourney,
-                //   onTap: () async {
-                //     await controller.openGoogleMaps();
-                //   },
-                // );
 
                 case 1: // delivered
                   return AppLoadingButton(
@@ -83,11 +76,6 @@ Widget DownContWidget(
                     isWhiteProgress: true,
                   );
 
-                //  GeneralBottomAppWidget(
-                //   context,
-                //   text: context.iArrivedHome,
-                //   onTap: () => controller.putState('completed'),
-                // );
                 case 2: // completed
                 default:
                   return AppLoadingButton(
@@ -102,14 +90,6 @@ Widget DownContWidget(
                     isLoading: controller.isButtonPressed.value,
                     isWhiteProgress: true,
                   );
-                // GeneralBottomAppWidget(
-                //   context,
-                //   text: context.endTheTrip,
-                //   backgroundColorB: context.colorsCustom.surfacePrimaryBlack,
-                //   textColorB: context.colorsCustom.surfacePrimaryWhite,
-                //   fontWeight: FontWeight.w500,
-                //   onTap: () => EndTheTripWidget(context),
-                // );
               }
             }),
         ],

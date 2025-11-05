@@ -60,6 +60,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
       orderDataController.setToLng(offerDetails.order!.toLng ?? '');
       orderDataController.setUserImage(offerDetails.order!.user!.image ?? '');
       orderDataController.setUserName(offerDetails.order!.user!.fullName ?? '');
+      orderDataController.setStateCase(offerDetails.state ?? '');
       orderDataController.setUserMobile(
         '${offerDetails.order!.user!.mobile ?? ''}',
       );
@@ -79,6 +80,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
         backgroundColor: context.colorsCustom.surfacePrimaryWhite,
         appBar: MyOfferAppBarWidget(
           context,
+          offerOrOrder: 'offer',
           status: offerDetails.status ?? '',
           price: offerDetails.price,
           curr: offerDetails.currency,
@@ -201,6 +203,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
             // معلن الإعلان
             AdvertiserRowWidget(
               context,
+              uuid:  offerDetails.order!.user!.uuid ?? '',
               image: offerDetails.order!.user!.image ?? '',
               name: offerDetails.order!.user!.fullName ?? '',
               orderCount: offerDetails.order!.user!.ordersCount ?? '',
