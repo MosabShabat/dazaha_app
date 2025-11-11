@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 
@@ -17,15 +15,6 @@ Widget DelInfoWidget(
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      // Text(
-      //   title,
-      //   textAlign: TextAlign.start,
-      //   maxLines: 5,
-      //   style: context.textStyles.labelMedium.regular.copyWith(
-      //     color: context.colorsCustom.TextSecondary,
-      //     fontSize: 12.sp,
-      //   ),
-      // ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -48,9 +37,21 @@ Widget DelInfoWidget(
         ],
       ).box.height(20.h).make().onTap(() async {
         if (lat != null && lng != null) {
-          log('${lat} ');
-          log('${lng} ');
+          // التحقق من صلاحية الموقع
+          PermissionStatus status = await Permission.location.status;
 
+          if (status.isDenied || status.isRestricted) {
+            // طلب الصلاحية
+            status = await Permission.location.request();
+            if (!status.isGranted) {
+              // إذا رفض المستخدم، أرسل إلى إعدادات التطبيق
+              Get.snackbar('ملاحظة', 'يجب تفعيل الموقع للوصول إلى الخرائط');
+              openAppSettings(); // يفتح إعدادات التطبيق
+              return;
+            }
+          }
+
+          // إذا الصلاحية متاحة
           final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
           final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
 

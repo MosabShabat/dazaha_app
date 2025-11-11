@@ -19,8 +19,7 @@ import 'web_socket_response.dart';
 
 class ChatTechnicalSupportController extends GetxController
     with WidgetsBindingObserver {
-  final ChatTechnicalSupportRepo _chatRepo =
-      Get.find<ChatTechnicalSupportRepo>();
+  final ChatTechnicalSupportRepo _chatRepo = Get.find();
 
   late SimpleFlutterReverb reverb;
 

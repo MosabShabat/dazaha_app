@@ -65,6 +65,7 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
                       context,
                       title: context.myAds,
                       size: 20.sp,
+                      isWallet: false,
                       style: context.textStyles.titleLarge.bold.fontFamily,
                       GridList: [
                         context.transportationAndDelivery,

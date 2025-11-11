@@ -34,11 +34,13 @@ class PriceDetailsScreen extends StatelessWidget {
         indexColor4: 3,
         indexColor5: 4,
       ),
-      bottomNavigationBar: _saveButton(
-        context,
-        priceController,
-        page,
-      ).paddingSymmetric(horizontal: 16.w, vertical: 20.h),
+      bottomNavigationBar: SafeArea(
+        child: _saveButton(
+          context,
+          priceController,
+          page,
+        ).paddingSymmetric(horizontal: 16.w, vertical: 20.h),
+      ),
       body: GeneralScreenWidget(
         context,
         wid: [

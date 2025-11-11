@@ -1,5 +1,5 @@
-import 'package:dazaha_app/features/captain_joins/controller/captain_joins_repo.dart';
-import 'package:dazaha_app/features/captain_membership_request/controller/captain_membership_request_controller.dart';
+import '../../../../features/captain_joins/controller/captain_joins_repo.dart';
+import '../../../../features/captain_membership_request/controller/captain_membership_request_controller.dart';
 
 import '../../../../features/document/controller/document_controller.dart';
 import 'package:get/get.dart';

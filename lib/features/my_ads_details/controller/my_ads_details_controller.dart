@@ -1,4 +1,4 @@
-import 'package:dazaha_app/core/constant/exports_widgets.dart';
+import '../../../core/constant/exports_widgets.dart';
 
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/utils/api_result.dart';

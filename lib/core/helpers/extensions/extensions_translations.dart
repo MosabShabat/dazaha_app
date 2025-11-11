@@ -22,8 +22,9 @@ extension TranslationsExtension on BuildContext {
   String get withdrawalSuccessfully => tr('withdrawal_successfully');
   String get enterFirstName => tr('enter_first_name');
   String get enterTheFullCode => tr('enter_the_full_code');
+  String get enterTheExpectedPrice => tr('enter_the_expected_price');
 
-  //'Enter The Full Code'
+  //enter_the_expected_price
   String get lastName => tr('last_name');
   String get enterLastName => tr('enter_last_name');
   String get email => tr('email');
@@ -101,6 +102,12 @@ extension TranslationsExtension on BuildContext {
       tr('for_example_a_cook_a_stove_a_broken_pot_a_bag_of_flour');
   String get aSimpleExplanationOfTheItems =>
       tr('a_simple_explanation_of_the_items');
+  String get fromText => tr('from_text');
+  String get toText => tr('to_text');
+  String get chooseStartDate => tr('choose_start_date');
+  String get chooseEndDate => tr('choose_end_date');
+  String get selectDatesError => tr('select_dates_error');
+  String get dateRangeError => tr('date_range_error');
   String get joinAsCap => tr('join_as_cap');
   String get offerDevSer => tr('offer_dev_ser');
   String get whatGiftWouldYouLikeToGive =>
@@ -248,7 +255,7 @@ extension TranslationsExtension on BuildContext {
   String get english => tr('english');
   String get deliveryAddresses => tr('delivery_addresses');
   String get help => tr('help');
-  String get helpersText => tr('helpers');
+  // String get helpersText => tr('helpers');
   String get aboutTheApp => tr('about_the_app');
   String get settings => tr('settings');
   String get logOut => tr('log_out');
@@ -334,8 +341,9 @@ extension TranslationsExtension on BuildContext {
   String get setYourPriceAndBe => tr('set_your_price_and_be');
   String get askingPrice => tr('asking_price');
   String get expectedPrice => tr('expected_price');
+  String get joinAsAnAssistant => tr('join_as_an_assistant');
 
-  //advertising_management
+  //join_as_an_assistant
   String get yourPriceForDisplay => tr('your_price_for_display');
   String get yourPriceHere => tr('your_price_here');
   String get yourOfferHasReachedTheCustomer =>
@@ -343,6 +351,7 @@ extension TranslationsExtension on BuildContext {
   String get myOffers => tr('my_offers');
   String get displayManagement => tr('display_management');
   String get advertisingManagement => tr('advertising_management');
+  String get onHold => tr('on_hold');
 
   String get offerDetails => tr('offer_details');
   String get published => tr('published');

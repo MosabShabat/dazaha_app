@@ -9,9 +9,8 @@ Widget ReqInfoWidget(
   required bool isOrder,
 }) {
   final currentOrder = isOrder
-      ? controller.homeModel.value?.currentOrder
-      : controller.homeModel.value?.currentOffer;
-  // final currentOrder = controller.homeModel.value?.currentOrder;
+      ? controller.homeModel.value?.currentOrder!
+      : controller.homeModel.value?.currentOffer!;
 
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -20,7 +19,7 @@ Widget ReqInfoWidget(
       CircleAvatar(
             radius: 22.5.w,
             backgroundImage:
-                (currentOrder?.image != null && currentOrder!.image!.isNotEmpty)
+                (currentOrder!.image != null && currentOrder.image!.isNotEmpty)
                 ? CachedNetworkImageProvider(currentOrder.image!)
                 : null,
           ).box
@@ -36,7 +35,7 @@ Widget ReqInfoWidget(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            currentOrder?.title ?? '',
+            currentOrder.title ?? '',
             maxLines: 2,
             style: context.textStyles.bodyLarge.medium.copyWith(
               color: context.colorsCustom.TextPrimary,
@@ -45,7 +44,7 @@ Widget ReqInfoWidget(
           ),
           verticalSpace(2.h),
           Text(
-            '${context.orderID} ${currentOrder?.orderId ?? ''}',
+            '${context.orderID} ${currentOrder.orderId ?? ''}',
             maxLines: 1,
             style: context.textStyles.labelMedium.regular.copyWith(
               color: context.colorsCustom.TextSecondary,

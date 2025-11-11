@@ -18,49 +18,51 @@ Future<dynamic> LangBottomSheetWidget(
     builder: (context) {
       return Obx(() {
         final isArabic = controller.radioValue.value;
-        return Container(
-          width: Width.w,
-          height: 270.h,
-          color: context.colorsCustom.surfacePrimaryWhite,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TopConBotShWidget(context),
-              Text(
-                context.chooseLanguage,
-                style: context.textStyles.titleMedium.medium.copyWith(
-                  color: context.colorsCustom.TextPrimary,
+        return SafeArea(
+          child: Container(
+            width: Width.w,
+            height: 270.h,
+            color: context.colorsCustom.surfacePrimaryWhite,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TopConBotShWidget(context),
+                Text(
+                  context.chooseLanguage,
+                  style: context.textStyles.titleMedium.medium.copyWith(
+                    color: context.colorsCustom.TextPrimary,
+                  ),
                 ),
-              ),
-              LanListTailWidget(
-                context,
-                img: SvgPicture.asset(AppAssets.svgs.mask_group_icon),
-                value: true,
-                isArabic: isArabic,
-                text: context.arabic,
-                changeLang: (value) {
-                  controller.setLanguage(true);
-                },
-              ),
-              Divider(
-                color: context.colorsCustom.CardBorder,
-                thickness: 1,
-                height: 1,
-              ),
-              //maskGroupAmericaFlag
-              LanListTailWidget(
-                context,
-                img: SvgPicture.asset(AppAssets.svgs.maskGroupAmericaFlag),
-                isArabic: isArabic,
-                text: context.english,
-                value: false,
-                changeLang: (value) {
-                  controller.setLanguage(false);
-                },
-              ),
-              verticalSpace(20.h),
-            ],
+                LanListTailWidget(
+                  context,
+                  img: SvgPicture.asset(AppAssets.svgs.mask_group_icon),
+                  value: true,
+                  isArabic: isArabic,
+                  text: context.arabic,
+                  changeLang: (value) {
+                    controller.setLanguage(true);
+                  },
+                ),
+                Divider(
+                  color: context.colorsCustom.CardBorder,
+                  thickness: 1,
+                  height: 1,
+                ),
+                //maskGroupAmericaFlag
+                LanListTailWidget(
+                  context,
+                  img: SvgPicture.asset(AppAssets.svgs.maskGroupAmericaFlag),
+                  isArabic: isArabic,
+                  text: context.english,
+                  value: false,
+                  changeLang: (value) {
+                    controller.setLanguage(false);
+                  },
+                ),
+                verticalSpace(20.h),
+              ],
+            ),
           ),
         );
       });

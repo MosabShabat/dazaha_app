@@ -78,18 +78,28 @@ Widget DownContWidget(
 
                 case 2: // completed
                 default:
-                  return AppLoadingButton(
+                  return GeneralBottomAppWidget(
+                    context,
                     text: context.endTheTrip,
-                    isEnabled: !controller.isButtonPressed.value,
-                    buttonColor: context.colorsCustom.surfacePrimaryBlack,
-
-                    onPressed: () async {
-                      controller.putState('completed');
-                      EndTheTripWidget(context);
+                    onTap: () async {
+                      await EndTheTripWidget(context, controller: controller);
                     },
-                    isLoading: controller.isButtonPressed.value,
-                    isWhiteProgress: true,
+                    backgroundColorB: context.colorsCustom.surfacePrimaryBlack,
+                    fontWeight: FontWeight.w500,
+                    textColorB: context.colorsCustom.surfacePrimaryWhite,
                   );
+
+                // AppLoadingButton(
+                //   text: context.endTheTrip,
+                //   isEnabled: !controller.isButtonPressed.value,
+                //   buttonColor: context.colorsCustom.surfacePrimaryBlack,
+                //   onPressed: () async {
+                //     // controller.putState('completed');
+                //     EndTheTripWidget(context, controller: controller);
+                //   },
+                //   isLoading: controller.isButtonPressed.value,
+                //   isWhiteProgress: true,
+                // );
               }
             }),
         ],

@@ -17,19 +17,21 @@ Widget JoinCapWidget(BuildContext context) {
 
   return Scaffold(
     backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-    bottomNavigationBar: BottomNavigationBarWidget(
-      text: context.startNow,
-      context,
-      GetScreen: () {
-        if (AppConstants.userToken.isNotEmpty &&
-            AppConstants.userToken != '' &&
-            AppConstants.userUUid.isNotEmpty &&
-            AppConstants.userUUid != '') {
-          Get.toNamed(Routes.personalDataScreen);
-        } else {
-          showLoginRequiredBottomSheet(Get.context!);
-        }
-      },
+    bottomNavigationBar: SafeArea(
+      child: BottomNavigationBarWidget(
+        text: context.startNow,
+        context,
+        GetScreen: () {
+          if (AppConstants.userToken.isNotEmpty &&
+              AppConstants.userToken != '' &&
+              AppConstants.userUUid.isNotEmpty &&
+              AppConstants.userUUid != '') {
+            Get.toNamed(Routes.personalDataScreen);
+          } else {
+            showLoginRequiredBottomSheet(Get.context!);
+          }
+        },
+      ),
     ),
     body: SafeArea(
       child: GeneralScreenWidget(

@@ -19,21 +19,23 @@ class AppDeleteBottomSheetContent extends StatelessWidget {
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            verticalSpace(10.h),
-            TopConBotShWidget(context).box.alignCenter.make(),
-            verticalSpace(16.h),
-            _buildHeader(context),
-            verticalSpace(24.h),
-            _buildCenterText(context),
-            verticalSpace(24.h),
-            _buildActionButtons(context),
-            verticalSpace(16.h),
-          ],
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              verticalSpace(10.h),
+              TopConBotShWidget(context).box.alignCenter.make(),
+              verticalSpace(16.h),
+              _buildHeader(context),
+              verticalSpace(24.h),
+              _buildCenterText(context),
+              verticalSpace(24.h),
+              _buildActionButtons(context),
+              verticalSpace(16.h),
+            ],
+          ),
         ),
       ),
     );

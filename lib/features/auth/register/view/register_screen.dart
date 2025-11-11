@@ -51,25 +51,27 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget _buildCreateAccountButton(BuildContext context) {
-    return Obx(() {
-      return Padding(
-        padding: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 24),
-        child: AppLoadingButton(
-          text: context.registerAnAccount,
-          onPressed: () async {
-            _registerController.validationInputData(
-              context,
-              phoneNumber,
-              code,
-              await AppSharedData.getSecuredString(AppSharedKeys.fcmTokenKey),
-              Platform.isAndroid ? "android" : "ios",
-            );
-          },
-          isLoading: _registerController.isButtonPressed.value,
-          isEnabled: !_registerController.isButtonPressed.value,
-          isWhiteProgress: true,
-        ),
-      );
-    });
+    return SafeArea(
+      child: Obx(() {
+        return Padding(
+          padding: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 24),
+          child: AppLoadingButton(
+            text: context.registerAnAccount,
+            onPressed: () async {
+              _registerController.validationInputData(
+                context,
+                phoneNumber,
+                code,
+                await AppSharedData.getSecuredString(AppSharedKeys.fcmTokenKey),
+                Platform.isAndroid ? "android" : "ios",
+              );
+            },
+            isLoading: _registerController.isButtonPressed.value,
+            isEnabled: !_registerController.isButtonPressed.value,
+            isWhiteProgress: true,
+          ),
+        );
+      }),
+    );
   }
 }

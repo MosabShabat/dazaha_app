@@ -104,6 +104,7 @@ class AppConstants {
   static String paymentType = 'paymentType';
   static const String description = 'description';
   static const String merchantId = 'merchantId';
+  static String typeItemSelected = '';
 
   static int timerLastRequest = 0;
   static Timer? _timer;
@@ -170,12 +171,14 @@ class NotificationTypes {
   static const String orderCanceled = 'order_canceled';
   static const String orderInProgress = 'order_in_progress';
   static const String orderCompleted = 'order_completed';
+  static const String orderDelivered = 'order_delivered';
+  static const String orderStarted = 'order_started';
 
   // Offers
   static const String newOffer = 'new_offer';
   static const String offerExcluded = 'offer_excluded';
 
-//order_completed
+  //order_completed
   // Wallet
   static const String withdrawAccepted = 'wallet_withdrawal_accepted';
   static const String withdrawRejected = 'wallet_withdrawal_rejected';
@@ -183,6 +186,10 @@ class NotificationTypes {
   static const String walletDeposit = 'wallet_deposit';
   static const String depositOrder = 'deposit_order';
   static const String depositCanceledOrder = 'deposit_canceled_order';
+
+  //chats  new_technical_support_message
+  static const String newTechnicalSupportMessage =
+      'new_technical_support_message';
 }
 
 class MessageTypes {

@@ -31,15 +31,6 @@ class RemoveAndRecycleServiceFeaturesScreen extends StatelessWidget {
             arguments: {'page': Routes.pickUpMethodUpOnDeliveryScreen},
           ),
         );
-        // CustomCameraScreen(
-        //   page: Routes.bookingDateScreen,
-        //   arguments: {'page': Routes.pickUpMethodUpOnDeliveryScreen},
-        // );
-        // controller.openCameraWithPermission(
-        //   context,
-        //   page: Routes.bookingDateScreen,
-        //   arguments: {'page': Routes.pickUpMethodUpOnDeliveryScreen},
-        // );
       } else if (uuid == '9cc543c0-793c-43d9-88a6-6e3db6082ef5') {
         Get.toNamed(
           Routes.bookingDateScreen,
@@ -58,38 +49,19 @@ class RemoveAndRecycleServiceFeaturesScreen extends StatelessWidget {
             },
           ),
         );
-        // CustomCameraScreen(
-        //   page: Routes.bookingDateScreen,
-        //   arguments: {
-        //     'page': Routes.adDetailsScreen,
-        //     'pageArgs': {
-        //       'page': Routes.advertisementSummaryScreen,
-        //       'isSwitchShow': true,
-        //     },
-        //   },
-        // );
-        // controller.openCameraWithPermission(
-        //   context,
-        //   page: Routes.bookingDateScreen,
-        //   arguments: {
-        //     'page': Routes.adDetailsScreen,
-        //     'pageArgs': {
-        //       'page': Routes.advertisementSummaryScreen,
-        //       'isSwitchShow': true,
-        //     },
-        //   },
-        // );
       }
     }
 
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-        child: GeneralBottomAppWidget(
-          context,
-          text: buttonText,
-          onTap: handleButtonTap,
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+          child: GeneralBottomAppWidget(
+            context,
+            text: buttonText,
+            onTap: handleButtonTap,
+          ),
         ),
       ),
       body: SafeArea(

@@ -36,7 +36,12 @@ class HomePageScreen extends StatelessWidget {
               return Container(
                 height: 60.h,
                 color: context.colorsCustom.surfacePrimaryWhite,
-                child: AppSharedMethods.buildProgressViewWhite(context, false),
+                child: AppSharedMethods.buildProgressViewWhite(
+                  context,
+                  false,
+                  height: 25.w,
+                  width: 25.w,
+                ),
               );
             },
           ),

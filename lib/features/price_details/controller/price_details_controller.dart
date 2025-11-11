@@ -21,7 +21,11 @@ class PriceDetailsController extends GetxController {
 
     // ✅ إذا لم يكن السعر اختياري وتارك الحقل فارغ → أظهر رسالة خطأ
     if (!isOptionalService && priceController.text.isEmpty) {
-      showErrorSnackbar(context, context.enterAmount, FirstColor: Colors.amber);
+      showErrorSnackbar(
+        context,
+        context.enterTheExpectedPrice,
+        FirstColor: Colors.amber,
+      );
       return;
     }
 

@@ -44,16 +44,17 @@ class SimpleFlutterReverb {
   }
 
   String _constructWebSocketUrl() {
+    final protocol = options.scheme == 'wss' ? 'wss' : 'ws';
+    // إذا كان 443 أو 80 لا نضيف رقم المنفذ
     final portPart = (options.port == 443 || options.port == 80)
         ? ''
         : ':${options.port}';
-    return '${options.scheme}://${options.host}$portPart/app/${options.appKey}';
+    return '$protocol://${options.host}$portPart/app/${options.appKey}';
   }
 
   void listen(void Function(WebsocketResponse) onData, String channelName) {
     _logger.i('👂 Listening to channel: $channelName (public)');
 
-    // ✅ لا تنتظر "pusher:connection_established" — اشترك مباشرة بعد فتح الاتصال
     _channel.stream.listen(
       (message) async {
         _logger.i('📥 Raw socket message: $message');
@@ -61,15 +62,17 @@ class SimpleFlutterReverb {
           final Map<String, dynamic> jsonMessage = jsonDecode(message);
           final response = WebsocketResponse.fromJson(jsonMessage);
 
-          // استمع لأي رسائل قادمة
-          if (response.event.contains('message')) {
-            onData(response);
-          } else if (response.event == 'pusher:ping' ||
-              response.event == 'reverb:ping') {
+          if (response.event == 'pusher:connection_established') {
+            final socketId = response.data?['socket_id'];
+            _logger.i('✅ Connection established! Socket ID: $socketId');
+            _subscribe(channelName);
+          } else if (response.event == 'pusher:ping') {
             _logger.i('📶 Ping received — sending pong');
             _channel.sink.add(jsonEncode({'event': 'pusher:pong'}));
+          } else if (response.event.contains('subscription_succeeded')) {
+            _logger.i('🎉 Subscribed successfully to $channelName');
           } else {
-            _logger.i('ℹ️ Other event: ${response.event}');
+            onData(response);
           }
         } catch (e, s) {
           _logger.e('❌ Error processing socket message: $e');
@@ -79,9 +82,6 @@ class SimpleFlutterReverb {
       onError: (error) => _logger.e('❌ WebSocket error: $error'),
       onDone: () => _logger.i('🔚 WebSocket connection closed'),
     );
-
-    // ✅ اشترك مباشرة بعد الاتصال
-    _subscribe(channelName);
   }
 
   void _subscribe(String channelName) {

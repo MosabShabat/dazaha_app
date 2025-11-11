@@ -5,6 +5,7 @@ import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/widgets/bottom_navigation_bar_widget.dart';
 import '../../../core/widgets/driver_condition_helper.dart';
+import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
 import '../../advertisement_summary/widgets/address_widget.dart';
 import '../../advertisement_summary/widgets/map_widget.dart';
 import '../../advertisement_summary/widgets/time_date_widget.dart';
@@ -38,12 +39,18 @@ class ItemAdDetailsScreen extends StatelessWidget {
 
       return Scaffold(
         backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-        bottomNavigationBar: // الزر السفلي (BottomNavigationBarWidget)
-            isShow &&
-                controller.orderDetailsItem!.value.myOfferAdded == false &&
-                controller.orderDetailsItem!.value.isMe == false
-            ? _buildBottomNav(context, controller)
-            : const SizedBox.shrink(),
+        bottomNavigationBar:
+            (AppConstants.userToken.isNotEmpty &&
+                AppConstants.userToken != '' &&
+                AppConstants.userUUid.isNotEmpty &&
+                AppConstants.userUUid != '')
+            ? isShow &&
+                      controller.orderDetailsItem!.value.myOfferAdded ==
+                          false &&
+                      controller.orderDetailsItem!.value.isMe == false
+                  ? SafeArea(child: _buildBottomNav(context, controller))
+                  : const SizedBox.shrink()
+            : _buildBottomNavVisitor(context),
         body: CustomScrollView(
           slivers: [
             // SliverAppBar للصور
@@ -254,5 +261,15 @@ class ItemAdDetailsScreen extends StatelessWidget {
             },
           )
         : SizedBox.shrink();
+  }
+
+  Widget _buildBottomNavVisitor(BuildContext context) {
+    return BottomNavigationBarWidget(
+      text: context.joinAsAnAssistant,
+      context,
+      GetScreen: () {
+        showLoginRequiredBottomSheet(Get.context!, typeSelected: 'homeScreen3');
+      },
+    );
   }
 }

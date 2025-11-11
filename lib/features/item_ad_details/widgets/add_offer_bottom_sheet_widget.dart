@@ -44,81 +44,83 @@ Future<dynamic> AddOfferBottomSheetWidget(
           bottom:
               MediaQuery.of(context).viewInsets.bottom + 10, // <-- هذا هو الحل
         ),
-        child: Container(
-          width: Width,
-          color: context.colorsCustom.surfacePrimaryWhite,
-          // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              // شريط أعلى BottomSheet
-              TopConBotShWidget(context),
-              verticalSpace(10.h),
+        child: SafeArea(
+          child: Container(
+            width: Width,
+            color: context.colorsCustom.surfacePrimaryWhite,
+            // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // شريط أعلى BottomSheet
+                TopConBotShWidget(context),
+                verticalSpace(10.h),
 
-              // عنوان BottomSheet
-              Text(
-                    context.addAnOffer,
-                    style: context.textStyles.titleSmall.medium.copyWith(
-                      color: context.colorsCustom.TextPrimary,
-                    ),
-                  ).box
-                  .alignment(
-                    Localizations.localeOf(context).languageCode == "ar"
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                  )
-                  .make(),
-              verticalSpace(15.h),
+                // عنوان BottomSheet
+                Text(
+                      context.addAnOffer,
+                      style: context.textStyles.titleSmall.medium.copyWith(
+                        color: context.colorsCustom.TextPrimary,
+                      ),
+                    ).box
+                    .alignment(
+                      Localizations.localeOf(context).languageCode == "ar"
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                    )
+                    .make(),
+                verticalSpace(15.h),
 
-              // حقل السعر المطلوب
-              AskingPriceWidget(context, price: price, curr: curr),
+                // حقل السعر المطلوب
+                AskingPriceWidget(context, price: price, curr: curr),
 
-              // حقل السعر الخاص بالمستخدم
-              MyPriceWidget(
-                context,
-                initialValue: "${price}",
-                isUpdate
-                    ? (controller as MyOfferAdDetailsController).priceController
-                    : (controller as ItemAdDetailsController).priceController,
-              ),
-              verticalSpace(20.h),
-
-              // عنوان الوقت حسب نوع الخدمة
-              Text(
-                orderDataController.serviceNumber.value == '0' ||
-                        orderDataController.serviceNumber.value == '1'
-                    ? context.convenientTimeForMoving
-                    : orderDataController.serviceNumber.value == '2'
-                    ? context.whenIsItAppropriate
-                    : context.theAppropriateTimeForGifting,
-                textAlign: TextAlign.start,
-                maxLines: 1,
-                style: context.textStyles.bodyLarge.medium.copyWith(
-                  color: context.colorsCustom.TextPrimary,
+                // حقل السعر الخاص بالمستخدم
+                MyPriceWidget(
+                  context,
+                  initialValue: "${price}",
+                  isUpdate
+                      ? (controller as MyOfferAdDetailsController)
+                            .priceController
+                      : (controller as ItemAdDetailsController).priceController,
                 ),
-              ),
-              verticalSpace(10.h),
+                verticalSpace(20.h),
 
-              // اختيار الوقت
-              ListTimeWidget(
-                context,
-                img: AppAssets.svgs.clock_icon,
-                imgText: context.time,
-                timeLen: timeLen,
-                timeItem: timeItem,
-                isUpdate: isUpdate,
-              ),
-              verticalSpace(50.h),
+                // عنوان الوقت حسب نوع الخدمة
+                Text(
+                  orderDataController.serviceNumber.value == '0' ||
+                          orderDataController.serviceNumber.value == '1'
+                      ? context.convenientTimeForMoving
+                      : orderDataController.serviceNumber.value == '2'
+                      ? context.whenIsItAppropriate
+                      : context.theAppropriateTimeForGifting,
+                  textAlign: TextAlign.start,
+                  maxLines: 1,
+                  style: context.textStyles.bodyLarge.medium.copyWith(
+                    color: context.colorsCustom.TextPrimary,
+                  ),
+                ),
+                verticalSpace(10.h),
 
-              // زر الإرسال (موحد سواء تحديث أو إضافة)
-              _buildSaveButton(
-                context,
-                controller: controller,
+                // اختيار الوقت
+                ListTimeWidget(
+                  context,
+                  img: AppAssets.svgs.clock_icon,
+                  imgText: context.time,
+                  timeLen: timeLen,
+                  timeItem: timeItem,
+                  isUpdate: isUpdate,
+                ),
+                verticalSpace(50.h),
 
-                isUpdate: isUpdate,
-              ),
-              verticalSpace(20.h),
-            ],
+                // زر الإرسال (موحد سواء تحديث أو إضافة)
+                _buildSaveButton(
+                  context,
+                  controller: controller,
+                  isUpdate: isUpdate,
+                ),
+                verticalSpace(20.h),
+              ],
+            ),
           ),
         ),
       );
@@ -138,10 +140,13 @@ Widget _buildSaveButton(
       text: context.send,
       onPressed: () async {
         if (isUpdate) {
+          print('MyOfferAdDetailsController : ');
           (controller as MyOfferAdDetailsController).validationInputData(
             context,
           );
         } else {
+          print('ItemAdDetailsController : ');
+
           (controller as ItemAdDetailsController).validationInputData(context);
         }
       },

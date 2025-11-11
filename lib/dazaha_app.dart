@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'core/controllers/theme_controller.dart';
 import 'core/di/app_bindings.dart';
 import 'core/routes/app_routes.dart';
+import 'core/services/notification_service.dart';
 
 class DazahaApp extends StatelessWidget {
   final AppRouter appRouter;
@@ -24,6 +25,11 @@ class DazahaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // استدعاء handleInitialMessage مرة واحدة بعد أول Frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationService().handleInitialMessage();
+    });
+
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       minTextAdapt: true,
@@ -32,8 +38,9 @@ class DazahaApp extends StatelessWidget {
           data: MediaQuery.of(
             context,
           ).copyWith(textScaler: const TextScaler.linear(0.973)),
-          child: Obx(
-            () => GetMaterialApp(
+          child: Obx(() {
+            // لا تستدعي handleInitialMessage هنا
+            return GetMaterialApp(
               debugShowCheckedModeBanner: false,
               title: context.appName,
               theme: lightTheme,
@@ -48,8 +55,8 @@ class DazahaApp extends StatelessWidget {
               supportedLocales: context.supportedLocales,
               locale: context.locale,
               navigatorObservers: navigatorObservers,
-            ),
-          ),
+            );
+          }),
         );
       },
     );

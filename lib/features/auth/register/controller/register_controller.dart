@@ -8,9 +8,12 @@ import '../../../../core/network/utils/api_result.dart';
 import '../../../../core/network/utils/dio_factory.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../features/auth/register/controller/register_repo.dart';
+import '../../../choose_the_service/controller/order_data_controller.dart';
 
 class RegisterController extends GetxController {
   final RegisterRepo _createAccountRepo = Get.find<RegisterRepo>();
+  final OrderDataController _orderDataController = Get.find();
+
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -114,11 +117,23 @@ class RegisterController extends GetxController {
           await AppSharedData.setUserLogin(true);
           await AppSharedData.setUserInfo(userData);
           await saveUserToken(userData.token ?? '');
-          Get.offAllNamed(Routes.homeScreen); //
+          Get.offAllNamed(
+            Routes.homeScreen,
+            arguments: {
+              'selectedIndex':
+                  _orderDataController.typeItemSelected.value == 'homeScreen3'
+                  ? 3
+                  : 0,
+            },
+          ); //
 
           // Get.offAllNamed(Routes.navigationBarScreen);
         } else {
-          showErrorSnackbar(context, response.message ?? '',FirstColor: Colors.red);
+          showErrorSnackbar(
+            context,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

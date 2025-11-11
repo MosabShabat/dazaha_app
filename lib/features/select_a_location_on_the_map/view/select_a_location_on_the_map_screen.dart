@@ -16,10 +16,12 @@ class SelectALocationOnTheMapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-        () => mapController.currentLocation == null
-            ? _buildLoadingView(context)
-            : _buildMapView(context),
+      body: SafeArea(
+        child: Obx(
+          () => mapController.currentLocation == null
+              ? _buildLoadingView(context)
+              : _buildMapView(context),
+        ),
       ),
     );
   }

@@ -29,24 +29,26 @@ class PickUpMethodUpOnDeliveryScreen extends StatelessWidget {
         indexColor4: 0,
         indexColor5: 0,
       ),
-      bottomNavigationBar: _buildBottomNav(context),
-      body: GeneralScreenWidget(
-        context,
-        wid: [
-          TopTextWidget(
-            context,
-            Title: context.receiptMethod,
-            SubTitle: context.location,
-            isShow: true,
-          ),
-          verticalSpace(10.h),
-          ListViewPickUpMethodUpOnDeliveryWidget(
-            context: context,
-            orderDataController: _orderCtrl,
-          ),
-          verticalSpace(20.h),
-          SwitchWidget(context, orderDataController: _orderCtrl),
-        ],
+      bottomNavigationBar: SafeArea(child: _buildBottomNav(context)),
+      body: SafeArea(
+        child: GeneralScreenWidget(
+          context,
+          wid: [
+            TopTextWidget(
+              context,
+              Title: context.receiptMethod,
+              SubTitle: context.location,
+              isShow: true,
+            ),
+            verticalSpace(10.h),
+            ListViewPickUpMethodUpOnDeliveryWidget(
+              context: context,
+              orderDataController: _orderCtrl,
+            ),
+            verticalSpace(20.h),
+            SwitchWidget(context, orderDataController: _orderCtrl),
+          ],
+        ),
       ),
     );
   }

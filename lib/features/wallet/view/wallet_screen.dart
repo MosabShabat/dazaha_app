@@ -48,7 +48,7 @@ class WalletScreen extends StatelessWidget {
                   log(
                     '_walletController.recordTransactionsModel.length : ${_walletController.recordTransactionsModel.length}',
                   );
-                },//46
+                }, //46
                 //0592510942
                 physics: ClampingScrollPhysics(),
                 header: CustomHeader(
@@ -97,50 +97,45 @@ class WalletScreen extends StatelessWidget {
                           ],
                         ),
                       )
-                    : Column(
-                        children: [
-                          verticalSpace(10.h),
-                          TopRowWidget(
-                            context,
-                            title: context.recordMovements,
-                            size: 20.sp,
-                            style:
-                                context.textStyles.titleLarge.bold.fontFamily,
-                            GridList: [
-                              context.income,
-                              context.withdrawABalance,
-                              context.successful,
-                              context.failed,
-                            ],
-                            subTitle: context.ViewYourRequestsByServiceType,
-                            selectedIndex: _walletController.selectedIndex,
-                            onTapSel: (index) =>
-                                _walletController.changeSelect(index),
-                            onPress: () =>
-                                _walletController.selectedIndex.value = 0,
-                            onTep: () {
-                              final status = switch (_walletController
-                                  .selectedIndex
-                                  .value) {
-                                0 => 'wallet_deposit',
-                                1 => 'wallet_withdrawal',
-                                2 => 'paid',
-                                _ => 'failed',
-                              };
-                              orderDataController.setFilterType('${status}');
-                              orderDataController.setFilterNum(
-                                '${_walletController.selectedIndex.value}',
-                              );
-                              _walletController.refreshWallet();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          WalletMoveMentListWidget(
-                            context,
-                            controller: _walletController,
-                          ),
-                        ],
-                      ).paddingSymmetric(horizontal: 16.w),
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            verticalSpace(10.h),
+                            TopRowWidget(
+                              context,
+                              isWallet: true,
+                              title: context.recordMovements,
+                              size: 20.sp,
+                              style:
+                                  context.textStyles.titleLarge.bold.fontFamily,
+                              GridList: [],
+                              subTitle: context.ViewYourRequestsByServiceType,
+                              selectedIndex: 0.obs,
+                              onTapSel: (index) {},
+                              onPress: () =>
+                                  _walletController.selectedIndex.value = 0,
+                              onTep: () {
+                                // final status = switch (_walletController
+                                //     .selectedIndex
+                                //     .value) {
+                                //   0 => 'wallet_deposit',
+                                //   1 => 'wallet_withdrawal',
+                                //   2 => 'paid',
+                                //   _ => 'failed',
+                                // };
+                                orderDataController.setFromDate('');
+                                orderDataController.setToDate('');
+                                _walletController.refreshWallet();
+                                Navigator.pop(context);
+                              },
+                            ),
+                            WalletMoveMentListWidget(
+                              context,
+                              controller: _walletController,
+                            ),
+                          ],
+                        ).paddingSymmetric(horizontal: 16.w),
+                      ),
               ),
             ),
           ],

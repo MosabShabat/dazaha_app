@@ -29,29 +29,31 @@ class AdvertisementSummaryScreen extends StatelessWidget {
       bottomNavigationBar: _buildSaveButton(
         context,
       ).paddingSymmetric(horizontal: 16.w, vertical: 20.h),
-      body: Obx(() {
-        final data = priceController.summaryData.value;
-        if (data == null) {
-          return const Center(child: Text('لا توجد بيانات'));
-        }
+      body: SafeArea(
+        child: Obx(() {
+          final data = priceController.summaryData.value;
+          if (data == null) {
+            return Center(child: Text(context.dataEmpty));
+          }
 
-        return GeneralScreenWidget(
-          context,
-          wid: [
-            _buildTitle(context),
-            verticalSpace(10.h),
-            _buildImages(context, data),
-            verticalSpace(10.h),
-            _buildTimeDate(context, data),
-            verticalSpace(10.h),
-            _buildAddress(context, data),
-            verticalSpace(10.h),
-            _buildMap(data),
-            verticalSpace(10.h),
-            _buildDetails(context, data),
-          ],
-        );
-      }),
+          return GeneralScreenWidget(
+            context,
+            wid: [
+              _buildTitle(context),
+              verticalSpace(10.h),
+              _buildImages(context, data),
+              verticalSpace(10.h),
+              _buildTimeDate(context, data),
+              verticalSpace(10.h),
+              _buildAddress(context, data),
+              verticalSpace(10.h),
+              _buildMap(data),
+              verticalSpace(10.h),
+              _buildDetails(context, data),
+            ],
+          );
+        }),
+      ),
     );
   }
 

@@ -23,7 +23,7 @@ Widget DetColumnWidget(
     },
     {
       'title': context.doYouNeedHelpers,
-      'value': '${controller.helpers ?? ''} ${context.helpersText}',
+      'value': '${controller.helpers ?? ''} ${context.assistants}',
     },
     {
       'title': context.howMuchWouldYouLikeToPay,

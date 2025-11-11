@@ -28,6 +28,9 @@ class OrderDataController extends GetxController {
   RxString orderStatus = ''.obs;
   RxString isListen = ''.obs;
   RxString stateCase = ''.obs;
+  RxString fromDate = ''.obs;
+  RxString toDate = ''.obs;
+  RxString typeItemSelected = ''.obs;
 
   RxList<String> itemNames = <String>[].obs;
   RxList<int> itemQuantities = <int>[].obs;
@@ -90,8 +93,9 @@ class OrderDataController extends GetxController {
   void setOrderStatus(String value) => orderStatus.value = value;
   void setIsListen(String value) => isListen.value = value;
   void setStateCase(String value) => stateCase.value = value;
+  void setTypeItemSelected(String value) => typeItemSelected.value = value;
 
-  //stateCase
+  //typeItemSelected
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -100,6 +104,8 @@ class OrderDataController extends GetxController {
   void setOfferStatus(String value) => offerStatus.value = value;
   void setReviewType(String value) => reviewType.value = value;
   void setTripState(String value) => tripState.value = value;
+  void setFromDate(String value) => fromDate.value = value;
+  void setToDate(String value) => toDate.value = value;
 
   //RxString tripState = ''.obs;
 
@@ -182,6 +188,7 @@ class OrderDataController extends GetxController {
     timeUuid.value = '';
     data.value = '';
     userUuid.value = '';
+    typeItemSelected.value = '';
     from.value = '';
     isListen.value = '';
     tripState.value = '';
@@ -191,6 +198,8 @@ class OrderDataController extends GetxController {
     filterNum.value = '';
     itemStatus.value = '';
     stateCase.value = '';
+    fromDate.value = '';
+    toDate.value = '';
     userName.value = '';
     userImage.value = '';
     userRate.value = '';

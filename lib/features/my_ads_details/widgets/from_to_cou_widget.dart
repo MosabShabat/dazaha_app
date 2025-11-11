@@ -42,18 +42,7 @@ Widget FromToCouWidget(
             lng: fromLng,
             conWidth: conWidth,
           ),
-          // DelText2 != null &&
-          //         DelText2 != '' &&
-          //         DetText2 != null &&
-          //         DetText2 != '' &&
-          //         toLat != null &&
-          //         toLat != '' &&
-          //         toLng != null &&
-          //         toLng != ''
-          // ?
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
+
           verticalSpace(verticalSpaceItems),
           DelInfoWidget(
             context,
@@ -64,11 +53,14 @@ Widget FromToCouWidget(
             lng: toLng,
             conWidth: conWidth,
           ),
-          //   ],
-          // ),
-          // : SizedBox.shrink(),
         ],
       ),
     ],
   );
+  //dac4973f-8dbd-4fad-9d92-d05e57b4ca90
+  //ccab053c-4cf9-47bf-8c57-e5f171bcc141
+  //100e3df4-f0d4-421c-a1d0-1c9e725d9c2a
+  //"type": "order_in_progress",
+  // "type": "new_order",
+  //"type": "new_order",
 }

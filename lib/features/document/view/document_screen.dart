@@ -70,6 +70,7 @@ class DocumentScreen extends StatelessWidget {
                     children: [
                       TopRowWidget(
                         context,
+                        isWallet: false,
                         title: context.myOffers,
                         size: 20.sp,
                         style: context.textStyles.titleLarge.bold.fontFamily,
@@ -99,7 +100,7 @@ class DocumentScreen extends StatelessWidget {
                         },
                       ),
                       verticalSpace(10),
-                      TabBarTitleWidget(context, secTap: context.myOffers),
+                      TabBarTitleWidget(context, secTap: context.onHold),
                       Expanded(
                         child: TabBarView(
                           children: List.generate(_statuses.length, (index) {

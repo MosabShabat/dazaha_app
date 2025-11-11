@@ -1,3 +1,5 @@
+import 'package:dazaha_app/core/helpers/constants.dart';
+
 import '../../../../../../core/constant/exports_widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,16 +8,20 @@ import '../../../../../../core/widgets/app_text_button.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../../core/theming/app_text_styles.dart';
 import '../../../../../../core/widgets/app_drag_indicator_bottom_sheet.dart';
+import '../../../../../features/choose_the_service/controller/order_data_controller.dart';
 import '../../controller/login_required_bottom_sheet_controller.dart';
 
 class LoginRequiredBottomSheetContent extends StatelessWidget {
-  LoginRequiredBottomSheetContent({super.key});
+  final typeSelected;
+
+  LoginRequiredBottomSheetContent({super.key, this.typeSelected});
 
   late final LoginRequiredBottomSheetController _controller;
 
   @override
   Widget build(BuildContext context) {
     _controller = Get.put(LoginRequiredBottomSheetController());
+    final orderDataController = Get.find<OrderDataController>();
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
@@ -42,6 +48,18 @@ class LoginRequiredBottomSheetContent extends StatelessWidget {
             context,
             buttonText: context.login,
             onPressed: () {
+              AppConstants.typeItemSelected = '${typeSelected}';
+              orderDataController.setTypeItemSelected('${typeSelected}');
+              print(
+                '====================111111111111111111111111==========================',
+              );
+              print(
+                'AppConstants.typeItemSelected : ${AppConstants.typeItemSelected}',
+              );
+              print(
+                '=====================111111111111111111111111=========================',
+              );
+
               _controller.login();
             },
           ),

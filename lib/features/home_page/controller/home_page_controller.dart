@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../core/constant/exports_widgets.dart';
-import '../../../core/network/models/home/current_order.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../features/home_page/controller/home_repo.dart';
 import 'package:geocoding/geocoding.dart';
@@ -38,7 +37,6 @@ class HomePageController extends GetxController {
   RxBool isLoading = true.obs;
   Rxn<HomeDataModel> homeModel = Rxn<HomeDataModel>();
   Rxn<UserData> userData = Rxn<UserData>();
-  Rxn<CurrentOrder> currentOrder = Rxn<CurrentOrder>();
 
   RxList<ServiceItemModel> serviceItem = <ServiceItemModel>[].obs;
   RxList<LatestOrderItemModel> latestOrder = <LatestOrderItemModel>[].obs;
@@ -78,16 +76,22 @@ class HomePageController extends GetxController {
 
   Future<void> getLocation() async {
     try {
-      // bool serviceEnabled = await _checkLocationService();
-      // if (!serviceEnabled) return;
       LocationPermission permission = await _requestLocationPermission();
+
       if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever)
+          permission == LocationPermission.deniedForever) {
+        // المستخدم رفض الإذن، استدعِ الـ API بدون موقع
+        log('Location permission denied — loading home data without location');
+        await getHome(); // ✅ أضف هذا السطر
         return;
+      }
+
       Position position = await _getCurrentPosition();
       await _updateLocationData(position);
     } catch (e) {
       log('Error getting location: $e');
+      // في حالة أي خطأ، أيضًا استدعِ الـ API بدون موقع
+      await getHome(); // ✅ أضف هذا السطر أيضًا
     }
   }
 
@@ -175,12 +179,17 @@ class HomePageController extends GetxController {
     latConstant = '${latitude.value}';
     lngConstant = '${longitude.value}';
 
-    getHome('${latitude.value}', '${longitude.value}');
+    (latConstant.isEmpty ||
+            latConstant == '' ||
+            lngConstant.isEmpty ||
+            lngConstant == '')
+        ? getHome()
+        : getHome(lat: '${latitude.value}', lng: '${longitude.value}');
   }
 
-  Future<void> getHome(String lat, String lng) async {
+  Future<void> getHome({String? lat, String? lng}) async {
     isLoading.value = true;
-    final result = await _homeRepo.getHome(lat, lng);
+    final result = await _homeRepo.getHome(lat: lat, lng: lng);
     result.when(
       success: (response) {
         isLoading.value = false;
@@ -249,7 +258,13 @@ class HomePageController extends GetxController {
     isRefreshing.value = false;
     latConstant = lat;
     lngConstant = lng;
-    getHome(lat, lng);
+    (latConstant.isEmpty ||
+            latConstant == '' ||
+            lngConstant.isEmpty ||
+            lngConstant == '')
+        ? getHome()
+        : getHome(lat: '${latitude.value}', lng: '${longitude.value}');
+    // getHome(lat, lng);
   }
 
   @override

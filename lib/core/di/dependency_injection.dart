@@ -42,7 +42,6 @@ import '../../features/we_are_here_to_help/controller/faq_repo.dart';
 // import '../../features/we_are_here_to_help/controller/faq_repo.dart';
 
 Future<void> setupGetX() async {
-
   Get.put(AppSharedMethods());
   Dio dio = await DioFactory.getDio();
   Get.put(ApiService(dio));

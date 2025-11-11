@@ -146,10 +146,10 @@ abstract class ApiService {
   Future<AppResponse> deleteAccountSend();
 
   @GET(ApiConstants.home)
-  Future<AppResponse> getHome(
-    @Query('lat') String lat,
-    @Query('lng') String lng,
-  );
+  Future<AppResponse> getHome({
+    @Query('lat') String? lat,
+    @Query('lng') String? lng,
+  });
 
   @GET(ApiConstants.timesApi)
   Future<AppResponse> getTime(@Query('date') String date);
@@ -182,11 +182,11 @@ abstract class ApiService {
   });
 
   @GET('${ApiConstants.ordersUrl}/{uuid}')
-  Future<AppResponse> getOrderDetails(
-    @Path('uuid') String orderUuid,
+  Future<AppResponse> getOrderDetails({
+    @Path('uuid') String? orderUuid,
     @Query('lat') String? lat,
     @Query('lng') String? lng,
-  );
+  });
 
   @GET('${ApiConstants.offers}/{uuid}')
   Future<AppResponse> getOfferDetails(@Path('uuid') String orderUuid);
@@ -274,8 +274,8 @@ abstract class ApiService {
   @GET('${ApiConstants.wallet}')
   Future<AppResponse> getWallet({
     @Query('page') int page = 1,
-    @Query('type') String? type,
-    @Query('status') String? status,
+    @Query('from_date') String? fromDate,
+    @Query('to_date') String? toDate,
   });
 
   //introUrl

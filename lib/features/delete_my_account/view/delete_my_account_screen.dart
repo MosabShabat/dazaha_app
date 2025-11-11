@@ -28,32 +28,41 @@ class DeleteMyAccountScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Obx(() => _controller.isLoading.isTrue
-                  ? CustomShimmer(width: double.infinity, height: 360.h)
-                  : SingleChildScrollView(
-                      child: Html(
-                        data: _controller.appInfo?.value.description ?? '',
-                        style: {"*": Style(fontFamily: 'sans', fontSize: FontSize(14))},
-                      ),
-                    )),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Obx(
+                  () => _controller.isLoading.isTrue
+                      ? CustomShimmer(width: double.infinity, height: 360.h)
+                      : SingleChildScrollView(
+                          child: Html(
+                            data: _controller.appInfo?.value.description ?? '',
+                            style: {
+                              "*": Style(
+                                fontFamily: 'sans',
+                                fontSize: FontSize(14),
+                              ),
+                            },
+                          ),
+                        ),
+                ),
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 46.h),
-            child: AppTextButton(
-              context,
-              buttonText: context.DeleteMyAccount,
-              onPressed: () => showAppDeleteBottomSheet(context),
-              backgroundColor: context.colorsCustom.surfacePrimaryBlack,
-              textStyle: AppTextStyles.font16White500Medium(context),
+            Padding(
+              padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 46.h),
+              child: AppTextButton(
+                context,
+                buttonText: context.DeleteMyAccount,
+                onPressed: () => showAppDeleteBottomSheet(context),
+                backgroundColor: context.colorsCustom.surfacePrimaryBlack,
+                textStyle: AppTextStyles.font16White500Medium(context),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -87,166 +87,175 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
           timeLen: offerDetails.order!.times!.length,
           timeItem: offerDetails.order!.times!,
         ),
-        body: GeneralScreenWidget(
-          context,
-          verH: 0.0,
-          wid: [
-            TopDetRowWidget(
-              context,
-              isShow: false,
-              title: offerDetails.status == 'pending'
-                  ? context.offerDetails
-                  : context.adDetails,
-              status: offerDetails.status,
-              statusText: offerDetails.statusText,
-              subTitle:
-                  '${offerDetails.order!.orderId} , ${context.published} ${offerDetails.addedAt}',
-            ),
-            verticalSpace(10.h),
-
-            // الصور
-            orderDataController.isItemsService
-                ? CachedNetworkImage(
-                    imageUrl: offerDetails.order!.image!,
-                    width: 360.w,
-                    height: 175.h,
-                    fit: BoxFit.fill,
-                  )
-                : ImageListViewBuilderWidget(
-                    context,
-                    imagesLen: offerDetails.order!.images!.length,
-                    imagesItem: offerDetails.order!.images!,
-                  ),
-            verticalSpace(15.h),
-
-            // حالة العرض
-            offerDetails.status == 'pending'
-                ? PresentedOfferBoxWidget(
-                    context,
-                    price:
-                        '${offerDetails.price} ${offerDetails.order!.currency}',
-                  )
-                : TrackYourFlightWidget(
-                    context,
-                    isShow: offerDetails.status,
-                    BottomText: context.startTheJourney,
-                    isShowBo: true,
-                    rating: offerDetails.rating,
-                    page: () => Get.toNamed(
-                      Routes.myOfferAdDetailsScreen,
-                      arguments: {'isShow': false},
-                    ),
-                  ),
-            verticalSpace(20.h),
-
-            // معلومات النقل
-            TransportInfoWidget(
-              context,
-              title: offerDetails.order!.title ?? '',
-              serviceName: offerDetails.order!.serviceTitle ?? '',
-              description: offerDetails.order!.description ?? '',
-            ),
-            verticalSpace(20.h),
-
-            // وقت التسليم
-            TDDelWidget(
-              context,
-              title: orderDataController.getTimeTitle(context),
-              Fz: 16.sp,
-              date: '${offerDetails.order!.date ?? ''}',
-              time: '${offerDetails.time ?? ''}',
-            ),
-            verticalSpace(15.h),
-
-            // قائمة العناصر
-            if (orderDataController.isItemsService)
-              SummaryListWidget(
+        body: SafeArea(
+          child: GeneralScreenWidget(
+            context,
+            verH: 0.0,
+            wid: [
+              TopDetRowWidget(
                 context,
-                itemsLen: offerDetails.order!.items!.length,
-                itemsDet: offerDetails.order!.items!,
+                isShow: false,
+                title: offerDetails.status == 'pending'
+                    ? context.offerDetails
+                    : context.adDetails,
+                status: offerDetails.status,
+                statusText: offerDetails.statusText,
+                subTitle:
+                    '${offerDetails.order!.orderId} , ${context.published} ${offerDetails.addedAt}',
               ),
-            verticalSpace(10.h),
+              verticalSpace(10.h),
 
-            // العنوان
-            AddressWidget(
-              isShow: false,
-              fromLat: offerDetails.order!.fromLat ?? '',
-              fromLng: offerDetails.order!.fromLng ?? '',
-              toLat: offerDetails.order!.toLat ?? '',
-              toLng: offerDetails.order!.toLng ?? '',
-              isShowMet: offerDetails.order!.receiptMethod != null,
-              from: offerDetails.order!.from ?? '',
-              fromAddress: offerDetails.order!.fromAddress ?? '',
-              helpers: '${offerDetails.order!.helpers ?? ''}',
-              receiptMethodDec: offerDetails.order!.receiptMethod?.description,
-              receiptMethodImage: offerDetails.order!.receiptMethod?.image,
-              receiptMethodTitle: offerDetails.order!.receiptMethod?.title,
-              sizeTitle: offerDetails.order!.size!.title ?? '',
-              sizeImg: offerDetails.order!.size!.image ?? '',
-              to: offerDetails.order!.to ?? '',
-              toAddress: offerDetails.order!.toAddress ?? '',
-              orderDataController: orderDataController,
-            ),
-            verticalSpace(10.h),
+              // الصور
+              orderDataController.isItemsService
+                  ? CachedNetworkImage(
+                      imageUrl: offerDetails.order!.image!,
+                      width: 360.w,
+                      height: 175.h,
+                      fit: BoxFit.fill,
+                    )
+                  : ImageListViewBuilderWidget(
+                      context,
+                      imagesLen: offerDetails.order!.images!.length,
+                      imagesItem: offerDetails.order!.images!,
+                    ),
+              verticalSpace(15.h),
 
-            // الخريطة
-            MapWidget(
-              fromAddress: offerDetails.order!.fromAddress ?? '',
-              fromLat: offerDetails.order!.fromLat ?? '',
-              fromLng: offerDetails.order!.fromLng ?? '',
-              toAddress: offerDetails.order!.toAddress ?? '',
-              toLat: offerDetails.order!.toLat ?? '',
-              toLng: offerDetails.order!.toLng ?? '',
-            ),
-            verticalSpace(10.h),
+              // حالة العرض
+              offerDetails.status == 'pending'
+                  ? PresentedOfferBoxWidget(
+                      context,
+                      price:
+                          '${offerDetails.price} ${offerDetails.order!.currency}',
+                    )
+                  : TrackYourFlightWidget(
+                      context,
+                      isShow: offerDetails.status,
+                      BottomText: offerDetails.state == 'pending'
+                          ? context.startTheJourney
+                          : offerDetails.state == 'started'
+                          ? context.iArrivedHome
+                          : offerDetails.state == 'delivered'
+                          ? context.endTheTrip
+                          : '',
+                      isShowBo: true,
+                      rating: offerDetails.rating,
+                      page: () => Get.toNamed(
+                        Routes.myOfferAdDetailsScreen,
+                        arguments: {'isShow': false},
+                      ),
+                    ),
+              verticalSpace(20.h),
 
-            // معلن الإعلان
-            AdvertiserRowWidget(
-              context,
-              uuid:  offerDetails.order!.user!.uuid ?? '',
-              image: offerDetails.order!.user!.image ?? '',
-              name: offerDetails.order!.user!.fullName ?? '',
-              orderCount: offerDetails.order!.user!.ordersCount ?? '',
-              rating: offerDetails.order!.user!.ratingPercentage ?? '',
-            ),
-            verticalSpace(20.h),
-
-            // الدفع والفواتير
-            if (offerDetails.status != 'pending') ...[
-              PayMthWidget(
+              // معلومات النقل
+              TransportInfoWidget(
                 context,
-                cardNumber:
-                    offerDetails.order!.payment!.paymentCardNumber ?? '',
-                cardType: offerDetails.order!.payment!.paymentWayText ?? '',
+                title: offerDetails.order!.title ?? '',
+                serviceName: offerDetails.order!.serviceTitle ?? '',
+                description: offerDetails.order!.description ?? '',
               ),
               verticalSpace(20.h),
-              InvoiceBoxWidget(context, offerDetails.order!.payment!),
-              verticalSpace(30.h),
-            ],
 
-            // تقرير مشكلة
-            GeneralBottomAppWidget(
-              context,
-              text: context.reportAProblem,
-              onTap: () {
-                if (AppConstants.userToken.isNotEmpty &&
-                    AppConstants.userToken != '' &&
-                    AppConstants.userUUid.isNotEmpty &&
-                    AppConstants.userUUid != '') {
-                  Get.toNamed(
-                    Routes.reportAProblemScreen,
-                    arguments: {'referenceType': '', 'referenceUuid': ''},
-                  );
-                } else {
-                  showLoginRequiredBottomSheet(Get.context!);
-                }
-              },
-              backgroundColorB: context.colorsCustom.CardBackgroundLightGray,
-              fontWeight: FontWeight.w500,
-              textColorB: context.colorsCustom.TextPrimary,
-            ),
-            verticalSpace(20.h),
-          ],
+              // وقت التسليم
+              TDDelWidget(
+                context,
+                title: orderDataController.getTimeTitle(context),
+                Fz: 16.sp,
+                date: '${offerDetails.order!.date ?? ''}',
+                time: '${offerDetails.time ?? ''}',
+              ),
+              verticalSpace(15.h),
+
+              // قائمة العناصر
+              if (orderDataController.isItemsService)
+                SummaryListWidget(
+                  context,
+                  itemsLen: offerDetails.order!.items!.length,
+                  itemsDet: offerDetails.order!.items!,
+                ),
+              verticalSpace(10.h),
+
+              // العنوان
+              AddressWidget(
+                isShow: false,
+                fromLat: offerDetails.order!.fromLat ?? '',
+                fromLng: offerDetails.order!.fromLng ?? '',
+                toLat: offerDetails.order!.toLat ?? '',
+                toLng: offerDetails.order!.toLng ?? '',
+                isShowMet: offerDetails.order!.receiptMethod != null,
+                from: offerDetails.order!.from ?? '',
+                fromAddress: offerDetails.order!.fromAddress ?? '',
+                helpers: '${offerDetails.order!.helpers ?? ''}',
+                receiptMethodDec:
+                    offerDetails.order!.receiptMethod?.description,
+                receiptMethodImage: offerDetails.order!.receiptMethod?.image,
+                receiptMethodTitle: offerDetails.order!.receiptMethod?.title,
+                sizeTitle: offerDetails.order!.size!.title ?? '',
+                sizeImg: offerDetails.order!.size!.image ?? '',
+                to: offerDetails.order!.to ?? '',
+                toAddress: offerDetails.order!.toAddress ?? '',
+                orderDataController: orderDataController,
+              ),
+              verticalSpace(10.h),
+
+              // الخريطة
+              MapWidget(
+                fromAddress: offerDetails.order!.fromAddress ?? '',
+                fromLat: offerDetails.order!.fromLat ?? '',
+                fromLng: offerDetails.order!.fromLng ?? '',
+                toAddress: offerDetails.order!.toAddress ?? '',
+                toLat: offerDetails.order!.toLat ?? '',
+                toLng: offerDetails.order!.toLng ?? '',
+              ),
+              verticalSpace(10.h),
+
+              // معلن الإعلان
+              AdvertiserRowWidget(
+                context,
+                uuid: offerDetails.order!.user!.uuid ?? '',
+                image: offerDetails.order!.user!.image ?? '',
+                name: offerDetails.order!.user!.fullName ?? '',
+                orderCount: offerDetails.order!.user!.ordersCount ?? '',
+                rating: offerDetails.order!.user!.ratingPercentage ?? '',
+              ),
+              verticalSpace(20.h),
+
+              // الدفع والفواتير
+              if (offerDetails.status != 'pending') ...[
+                PayMthWidget(
+                  context,
+                  cardNumber:
+                      offerDetails.order!.payment!.paymentCardNumber ?? '',
+                  cardType: offerDetails.order!.payment!.paymentWayText ?? '',
+                ),
+                verticalSpace(20.h),
+                InvoiceBoxWidget(context, offerDetails.order!.payment!),
+                verticalSpace(30.h),
+              ],
+
+              // تقرير مشكلة
+              GeneralBottomAppWidget(
+                context,
+                text: context.reportAProblem,
+                onTap: () {
+                  if (AppConstants.userToken.isNotEmpty &&
+                      AppConstants.userToken != '' &&
+                      AppConstants.userUUid.isNotEmpty &&
+                      AppConstants.userUUid != '') {
+                    Get.toNamed(
+                      Routes.reportAProblemScreen,
+                      arguments: {'referenceType': '', 'referenceUuid': ''},
+                    );
+                  } else {
+                    showLoginRequiredBottomSheet(Get.context!);
+                  }
+                },
+                backgroundColorB: context.colorsCustom.CardBackgroundLightGray,
+                fontWeight: FontWeight.w500,
+                textColorB: context.colorsCustom.TextPrimary,
+              ),
+              verticalSpace(20.h),
+            ],
+          ),
         ),
       );
     });

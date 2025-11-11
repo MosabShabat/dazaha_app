@@ -9,14 +9,14 @@ class WalletRepo {
 
   Future<ApiResult<AppResponse>> getWallet({
     int page = 1,
-    String? type,
-    String? status,
+    String? fromDate,
+    String? toDate,
   }) async {
     try {
       final response = await _apiService.getWallet(
         page: page,
-        status: status,
-        type: type,
+        fromDate: fromDate,
+        toDate: toDate,
       );
       print('getOrdersAll response: $response');
       return ApiResult.success(response);

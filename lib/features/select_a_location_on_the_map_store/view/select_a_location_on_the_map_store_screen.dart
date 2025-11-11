@@ -11,35 +11,37 @@ class SelectALocationOnTheMapStoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            width: Width,
-            height: Height,
-            decoration: BoxDecoration(color: context.colorsCustom.BlueBlue),
-          ),
-          SafeArea(
-            child:
-                Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        verticalSpace(10.h),
-                        AppButtonBack(context: context),
-                        verticalSpace(10.h),
-                        EnterStoreNameWidget(context),
-                        Spacer(),
-                        BottomNavigationBarWidget(
-                          text: context.choice,
-                          context,
-                          horizontalPadding: 0.0,
-                          GetScreen: () {},
-                        ),
-                      ],
-                    ).box
-                    .padding(EdgeInsetsGeometry.symmetric(horizontal: 16.w))
-                    .make(),
-          ),
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              width: Width,
+              height: Height,
+              decoration: BoxDecoration(color: context.colorsCustom.BlueBlue),
+            ),
+            SafeArea(
+              child:
+                  Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          verticalSpace(10.h),
+                          AppButtonBack(context: context),
+                          verticalSpace(10.h),
+                          EnterStoreNameWidget(context),
+                          Spacer(),
+                          BottomNavigationBarWidget(
+                            text: context.choice,
+                            context,
+                            horizontalPadding: 0.0,
+                            GetScreen: () {},
+                          ),
+                        ],
+                      ).box
+                      .padding(EdgeInsetsGeometry.symmetric(horizontal: 16.w))
+                      .make(),
+            ),
+          ],
+        ),
       ),
     );
   }

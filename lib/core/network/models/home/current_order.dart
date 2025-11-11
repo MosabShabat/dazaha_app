@@ -4,34 +4,41 @@ part 'current_order.g.dart';
 
 @JsonSerializable()
 class CurrentOrder {
+  final String? uuid;
+  final String? title;
+  @JsonKey(name: 'service_uuid')
+  final String? serviceUuid;
+  final String? image;
+
+  @JsonKey(name: 'order_id')
+  final String? orderId;
+
+  final String? date;
+  final String? time;
+  final String? from;
+  final String? to;
+  final String? status;
+
+  @JsonKey(name: 'status_text')
+  final String? statusText;
+
+  @JsonKey(name: 'time_ago')
+  final String? timeAgo;
+
   CurrentOrder({
     this.uuid,
-    this.serviceUuid,
     this.title,
+    this.serviceUuid,
     this.image,
     this.orderId,
     this.date,
     this.time,
-    this.timeAgo,
     this.from,
     this.to,
     this.status,
     this.statusText,
+    this.timeAgo,
   });
-
-  final String? uuid;
-  final String? serviceUuid;
-  final String? title;
-  final String? image;
-  final String? orderId;
-  final String? date;
-  final String? time; // الوقت الحقيقي قد يكون null
-  @JsonKey(name: 'time_ago')
-  final String? timeAgo; // الوقت بشكل نسبي مثل "2 months ago"
-  final String? from;
-  final String? to;
-  final String? status;
-  final String? statusText;
 
   factory CurrentOrder.fromJson(Map<String, dynamic> json) =>
       _$CurrentOrderFromJson(json);

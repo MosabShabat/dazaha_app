@@ -8,9 +8,9 @@ class HomeRepo {
 
   HomeRepo(this._apiService);
 
-  Future<ApiResult<AppResponse>> getHome(String lat, String lng) async {
+  Future<ApiResult<AppResponse>> getHome({String? lat, String? lng}) async {
     try {
-      final response = await _apiService.getHome(lat, lng);
+      final response = await _apiService.getHome(lat: lat, lng: lng);
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));

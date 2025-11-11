@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../../core/constant/exports_widgets.dart';
 
 import '../../../core/helpers/constants.dart';
@@ -31,6 +33,10 @@ class MyOfferAdDetailsController extends GetxController {
     super.onInit();
     AppConstants.orderUuid = _orderDataController.itemUuid.value;
     getOfferDetails();
+
+    ever(_orderDataController.itemUuid, (_) {
+      getOfferDetails();
+    });
   }
 
   //delete_the_ad  do_you_want_to_delete_the_ad
@@ -48,15 +54,21 @@ class MyOfferAdDetailsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(
-            Get.context!,
-            response.message ?? '',
-            FirstColor: Colors.red,
-          );
+          if (response.message!.contains('No query results for model')) {
+            log('Error: ${response.message}');
+          } else {
+            showErrorSnackbar(
+              Get.context!,
+              response.message ?? '',
+              FirstColor: Colors.red,
+            );
+          }
         }
       },
       failure: (error) {
         isLoading.value = false;
+        log('Error fetching order details: $error');
+
         showSnackbarErrorApi(Get.context!, [error], null);
       },
     );
@@ -115,7 +127,8 @@ class MyOfferAdDetailsController extends GetxController {
           // 3️⃣ إغلاق الـ BottomSheet والشاشة
           Get.back(); // إغلاق الـ BottomSheet
           Get.back(); // العودة إلى الشاشة السابقة
-
+          print('MyOfferToCustomerWidget : ');
+          //0597542400
           MyOfferToCustomerWidget(
             Get.context!,
             IsShowRow: false,

@@ -23,48 +23,50 @@ class DirectSupportMapScreen extends StatelessWidget {
     print(orderDataController.toLng.value);
     print('++++++++++ $page ++++++++++++');
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            width: Width.w,
-            height: Height.h,
-            decoration: BoxDecoration(color: context.colorsCustom.BlueBlue),
-            child: MapWidget(
-              fromAddress: orderDataController.fromAddress.value,
-              fromLat: orderDataController.fromLat.value,
-              fromLng: orderDataController.fromLng.value,
-              toAddress: orderDataController.toAddress.value,
-              toLat: orderDataController.toLat.value,
-              toLng: orderDataController.toLng.value,
-              Height: Height.h,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              width: Width.w,
+              height: Height.h,
+              decoration: BoxDecoration(color: context.colorsCustom.BlueBlue),
+              child: MapWidget(
+                fromAddress: orderDataController.fromAddress.value,
+                fromLat: orderDataController.fromLat.value,
+                fromLng: orderDataController.fromLng.value,
+                toAddress: orderDataController.toAddress.value,
+                toLat: orderDataController.toLat.value,
+                toLng: orderDataController.toLng.value,
+                Height: Height.h,
+              ),
             ),
-          ),
-          SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                verticalSpace(10.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: AppButtonBack(context: context),
-                ),
-                verticalSpace(10.h),
-                Spacer(),
-                DownContWidget(
-                  context,
-                  isShow: isShow,
-                  page: page,
-                  controller: _directSupportMapController,
-                  orderDataController: orderDataController,
-                  fromLat: orderDataController.fromLat.value,
-                  fromLng: orderDataController.fromLng.value,
-                  toLat: orderDataController.toLat.value,
-                  toLng: orderDataController.toLng.value,
-                ),
-              ],
+            SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  verticalSpace(10.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: AppButtonBack(context: context),
+                  ),
+                  verticalSpace(10.h),
+                  Spacer(),
+                  DownContWidget(
+                    context,
+                    isShow: isShow,
+                    page: page,
+                    controller: _directSupportMapController,
+                    orderDataController: orderDataController,
+                    fromLat: orderDataController.fromLat.value,
+                    fromLng: orderDataController.fromLng.value,
+                    toLat: orderDataController.toLat.value,
+                    toLng: orderDataController.toLng.value,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

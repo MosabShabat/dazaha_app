@@ -1,4 +1,3 @@
-import 'package:geolocator/geolocator.dart';
 
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/helpers/constants.dart';
@@ -14,15 +13,12 @@ class ItemAdDetailsRepo {
 
   ItemAdDetailsRepo(this._apiService);
   //getOrderDetails
-  Future<ApiResult<AppResponse>> getOrderDetails() async {
+  Future<ApiResult<AppResponse>> getOrderDetails({lat, lng}) async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
       final response = await _apiService.getOrderDetails(
-        AppConstants.orderUuid,
-        '${position.latitude}', // استخدم اللاتيتود الحالي
-        '${position.longitude}', // استخدم اللونغيتود الحالي
+        orderUuid: AppConstants.orderUuid,
+        lat: lat,
+        lng: lng,
       );
       print('getOrdersAll response: $response');
       print('orderUuid response: ${AppConstants.orderUuid}');

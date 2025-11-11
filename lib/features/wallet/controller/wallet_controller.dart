@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../../../core/network/models/wallet/wallet_model.dart';
 import '../../../../../../core/widgets/app_snackbar.dart';
+import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/network/models/wallet/execute_order_model.dart';
 import '../../../core/network/models/wallet/record_transactions_model.dart';
@@ -165,31 +166,19 @@ class WalletController extends GetxController {
 
     ApiResult<AppResponse> result;
 
-    // تحقق إذا كان هناك فلتر
-    if (orderDataController.filterNum.isNotEmpty &&
-        orderDataController.filterNum.value != '') {
-      if (orderDataController.filterNum.value == '2' ||
-          orderDataController.filterNum.value == '3') {
-        // فلترة حسب status
-        result = await _walletRepo.getWallet(
-          page: currentPage.value,
-          status: '${orderDataController.filterType.value}',
-        );
-      } else if (orderDataController.filterNum.value == '0' ||
-          orderDataController.filterNum.value == '1') {
-        // فلترة حسب type
-        result = await _walletRepo.getWallet(
-          page: currentPage.value,
-          type: '${orderDataController.filterType.value}',
-        );
-      } else {
-        // لو فلتر غير معروف، نجيب كل البيانات
-        result = await _walletRepo.getWallet(page: currentPage.value);
-      }
-    } else {
-      // إذا ما في أي فلتر، نجيب كل البيانات
-      result = await _walletRepo.getWallet(page: currentPage.value);
-    }
+    result = await _walletRepo.getWallet(
+      page: currentPage.value,
+      fromDate: orderDataController.fromDate.isNotEmpty
+          ? AppSharedMethods().normalizeDate(
+              '${orderDataController.fromDate.value}',
+            )
+          : '',
+      toDate: orderDataController.toDate.isNotEmpty
+          ? AppSharedMethods().normalizeDate(
+              '${orderDataController.toDate.value}',
+            )
+          : '',
+    );
 
     // معالجة النتائج كما هي
     if (result is Success<AppResponse>) {
@@ -212,31 +201,19 @@ class WalletController extends GetxController {
 
     ApiResult<AppResponse> result;
 
-    // تحقق من الفلترة
-    if (orderDataController.filterNum.isNotEmpty &&
-        orderDataController.filterNum.value != '') {
-      if (orderDataController.filterNum.value == '2' ||
-          orderDataController.filterNum.value == '3') {
-        // فلترة حسب status
-        result = await _walletRepo.getWallet(
-          page: currentPage.value,
-          status: '${orderDataController.filterType.value}',
-        );
-      } else if (orderDataController.filterNum.value == '0' ||
-          orderDataController.filterNum.value == '1') {
-        // فلترة حسب type
-        result = await _walletRepo.getWallet(
-          page: currentPage.value,
-          type: '${orderDataController.filterType.value}',
-        );
-      } else {
-        // إذا فلتر غير معروف، نرجع البيانات بدون فلترة
-        result = await _walletRepo.getWallet(page: currentPage.value);
-      }
-    } else {
-      // لا فلتر، نحمل البيانات كما هي
-      result = await _walletRepo.getWallet(page: currentPage.value);
-    }
+    result = await _walletRepo.getWallet(
+      page: currentPage.value,
+      fromDate: orderDataController.fromDate.isNotEmpty
+          ? AppSharedMethods().normalizeDate(
+              '${orderDataController.fromDate.value}',
+            )
+          : '',
+      toDate: orderDataController.toDate.isNotEmpty
+          ? AppSharedMethods().normalizeDate(
+              '${orderDataController.toDate.value}',
+            )
+          : '',
+    );
 
     // معالجة النتائج
     if (result is Success<AppResponse>) {

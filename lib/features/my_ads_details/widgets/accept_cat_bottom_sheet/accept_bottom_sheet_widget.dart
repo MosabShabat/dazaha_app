@@ -27,71 +27,73 @@ Future<dynamic> AcceptBottomSheetWidget(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     builder: (context) {
       return SingleChildScrollView(
-        child:
-            Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TopConBotShWidget(context).box.alignCenter.make(),
-                    verticalSpace(10.h),
-                    LatestAnnouncementsRowWidget(
-                      context,
-                      text: context.acceptTheOffer,
-                      size: 12.sp,
-                      fontFamily:
-                          context.textStyles.bodySmall.medium.fontFamily,
-                      onPressed: () {},
-                      Widget: Container(),
-                    ),
-                    Text(
-                      '${context.doYouWantToAcceptTheOffer}',
-                      style: context.textStyles.titleMedium.bold.copyWith(
-                        color: context.colorsCustom.TextPrimary,
-                        fontSize: 18.sp,
+        child: SafeArea(
+          child:
+              Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TopConBotShWidget(context).box.alignCenter.make(),
+                      verticalSpace(10.h),
+                      LatestAnnouncementsRowWidget(
+                        context,
+                        text: context.acceptTheOffer,
+                        size: 12.sp,
+                        fontFamily:
+                            context.textStyles.bodySmall.medium.fontFamily,
+                        onPressed: () {},
+                        Widget: Container(),
                       ),
-                    ).box.alignCenter.make(),
-                    verticalSpace(10.h),
-                    CustomPriceBoxWidget(context, priceCurr: priceCurr),
-                    verticalSpace(10.h),
-                    MidInfoColWidget(
-                      context,
-                      name: name,
-                      rate: rate,
-                      image : image,
-                      addedAt: addedAt,
-                      uuid: uuid,
-                    ),
-                    Text(
-                      context.ifYouAcceptTheOfferTheOrder,
-                      style: context.textStyles.bodySmall.regular.copyWith(
-                        color: context.colorsCustom.TextPrimary,
+                      Text(
+                        '${context.doYouWantToAcceptTheOffer}',
+                        style: context.textStyles.titleMedium.bold.copyWith(
+                          color: context.colorsCustom.TextPrimary,
+                          fontSize: 18.sp,
+                        ),
+                      ).box.alignCenter.make(),
+                      verticalSpace(10.h),
+                      CustomPriceBoxWidget(context, priceCurr: priceCurr),
+                      verticalSpace(10.h),
+                      MidInfoColWidget(
+                        context,
+                        name: name,
+                        rate: rate,
+                        image: image,
+                        addedAt: addedAt,
+                        uuid: uuid,
                       ),
-                    ),
-                    verticalSpace(Width * 0.1),
-                    GeneralBottomAppWidget(
-                      context,
-                      text: context.acceptTheOffer,
-                      onTap: () {
-                        orderDataController.setItemUuid(uuid);
-                        Get.toNamed(Routes.myAdPayMentScreen);
-                      },
-                    ),
-                    verticalSpace(10.h),
-                    GeneralBottomAppWidget(
-                      context,
-                      text: context.no,
-                      backgroundColorB:
-                          context.colorsCustom.CardBackgroundLightGray,
-                      textColorB: context.colorsCustom.TextPrimary,
-                      onTap: () {
-                        Get.back();
-                      },
-                    ),
-                  ],
-                ).box
-                .color(context.colorsCustom.surfacePrimaryWhite)
-                .padding(EdgeInsets.symmetric(horizontal: 20.w, vertical: 20))
-                .width(Width)
-                .make(),
+                      Text(
+                        context.ifYouAcceptTheOfferTheOrder,
+                        style: context.textStyles.bodySmall.regular.copyWith(
+                          color: context.colorsCustom.TextPrimary,
+                        ),
+                      ),
+                      verticalSpace(Width * 0.1),
+                      GeneralBottomAppWidget(
+                        context,
+                        text: context.acceptTheOffer,
+                        onTap: () {
+                          orderDataController.setItemUuid(uuid);
+                          Get.toNamed(Routes.myAdPayMentScreen);
+                        },
+                      ),
+                      verticalSpace(10.h),
+                      GeneralBottomAppWidget(
+                        context,
+                        text: context.no,
+                        backgroundColorB:
+                            context.colorsCustom.CardBackgroundLightGray,
+                        textColorB: context.colorsCustom.TextPrimary,
+                        onTap: () {
+                          Get.back();
+                        },
+                      ),
+                    ],
+                  ).box
+                  .color(context.colorsCustom.surfacePrimaryWhite)
+                  .padding(EdgeInsets.symmetric(horizontal: 20.w, vertical: 20))
+                  .width(Width)
+                  .make(),
+        ),
       );
     },
   );

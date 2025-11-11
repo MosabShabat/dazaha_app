@@ -41,52 +41,54 @@ class BookingDateScreen extends StatelessWidget {
           indexColor4: 0,
           indexColor5: 0,
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _orderDataController.serviceName.value,
-                      style: context.textStyles.titleLarge.bold.copyWith(
-                        color: context.colorsCustom.TextPrimary,
-                        fontSize: 20.sp,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _orderDataController.serviceName.value,
+                        style: context.textStyles.titleLarge.bold.copyWith(
+                          color: context.colorsCustom.TextPrimary,
+                          fontSize: 20.sp,
+                        ),
                       ),
-                    ),
-                    verticalSpace(10.h),
-                    _bookingDateController.isLoadingDays.isTrue
-                        ? _buildDaysShimmer()
-                        : ListViewDayBookingDateWidget(
-                            context: context,
-                            controller: _bookingDateController,
-                            orderController: _orderDataController,
-                          ),
-                    verticalSpace(20.h),
-                    SelectTimeTextWidget(context),
-                    _bookingDateController.isLoadingTimes.isTrue
-                        ? CustomShimmer(
-                            width: Width.w,
-                            height: 250.h,
-                            borderRadius: 12.r,
-                          )
-                        : GridViewDayBookingDateWidget(
-                            context,
-                            controller: _bookingDateController,
-                          ),
-                  ],
+                      verticalSpace(10.h),
+                      _bookingDateController.isLoadingDays.isTrue
+                          ? _buildDaysShimmer()
+                          : ListViewDayBookingDateWidget(
+                              context: context,
+                              controller: _bookingDateController,
+                              orderController: _orderDataController,
+                            ),
+                      verticalSpace(20.h),
+                      SelectTimeTextWidget(context),
+                      _bookingDateController.isLoadingTimes.isTrue
+                          ? CustomShimmer(
+                              width: Width.w,
+                              height: 250.h,
+                              borderRadius: 12.r,
+                            )
+                          : GridViewDayBookingDateWidget(
+                              context,
+                              controller: _bookingDateController,
+                            ),
+                    ],
+                  ),
                 ),
-              ),
-              BottomNavigationBarWidget(
-                horizontalPadding: 0.0,
-                text: context.continuation,
-                context,
-                GetScreen: _onContinuePressed,
-              ),
-            ],
+                BottomNavigationBarWidget(
+                  horizontalPadding: 0.0,
+                  text: context.continuation,
+                  context,
+                  GetScreen: _onContinuePressed,
+                ),
+              ],
+            ),
           ),
         ),
       );

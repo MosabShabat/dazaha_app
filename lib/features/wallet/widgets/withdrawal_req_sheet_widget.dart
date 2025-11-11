@@ -28,54 +28,56 @@ Future<dynamic> WithdrawalReqSheetWidget(
           bottom:
               MediaQuery.of(context).viewInsets.bottom + 10, // <-- هذا هو الحل
         ),
-        child: Container(
-          width: Width,
-          color: context.colorsCustom.surfacePrimaryWhite,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TopConBotShWidget(context),
-              verticalSpace(10.h),
-              Text(
-                    typeIs == '0'
-                        ? context.withdrawABalance
-                        : context.rechargeBalance,
-                    style: context.textStyles.titleSmall.medium.copyWith(
-                      color: context.colorsCustom.TextPrimary,
-                    ),
-                  ).box
-                  .alignment(
-                    Localizations.localeOf(context).languageCode == "ar"
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                  )
-                  .make(),
-              verticalSpace(20.h),
-              Text(
-                typeIs == '0'
-                    ? context.howMuchDoYouWantToWithdraw
-                    : context.howMuchDoYouWantToDis,
-                style: context.textStyles.bodyLarge.bold.copyWith(
-                  color: context.colorsCustom.TextPrimary,
-                  fontSize: 18.sp,
+        child: SafeArea(
+          child: Container(
+            width: Width,
+            color: context.colorsCustom.surfacePrimaryWhite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TopConBotShWidget(context),
+                verticalSpace(10.h),
+                Text(
+                      typeIs == '0'
+                          ? context.withdrawABalance
+                          : context.rechargeBalance,
+                      style: context.textStyles.titleSmall.medium.copyWith(
+                        color: context.colorsCustom.TextPrimary,
+                      ),
+                    ).box
+                    .alignment(
+                      Localizations.localeOf(context).languageCode == "ar"
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                    )
+                    .make(),
+                verticalSpace(20.h),
+                Text(
+                  typeIs == '0'
+                      ? context.howMuchDoYouWantToWithdraw
+                      : context.howMuchDoYouWantToDis,
+                  style: context.textStyles.bodyLarge.bold.copyWith(
+                    color: context.colorsCustom.TextPrimary,
+                    fontSize: 18.sp,
+                  ),
                 ),
-              ),
-              verticalSpace(15.h),
-              Text(
-                typeIs == '0' ? context.weWillPrepareTheAmount : '',
-                style: context.textStyles.bodySmall.medium.copyWith(
-                  color: context.colorsCustom.TextSecondary,
+                verticalSpace(15.h),
+                Text(
+                  typeIs == '0' ? context.weWillPrepareTheAmount : '',
+                  style: context.textStyles.bodySmall.medium.copyWith(
+                    color: context.colorsCustom.TextSecondary,
+                  ),
                 ),
-              ),
-              verticalSpace(20.h),
-              InPutPriceWidget(
-                context,
-                isShow: false,
-                controller: walletController.amountController,
-              ),
-              verticalSpace(100.h),
-              _sendAmount(context, walletController, type),
-            ],
+                verticalSpace(20.h),
+                InPutPriceWidget(
+                  context,
+                  isShow: false,
+                  controller: walletController.amountController,
+                ),
+                verticalSpace(100.h),
+                _sendAmount(context, walletController, type),
+              ],
+            ),
           ),
         ),
       );

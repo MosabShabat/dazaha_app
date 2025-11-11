@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import '../controller/login_required_bottom_sheet_controller.dart';
 import 'widgets/login_required_bottom_sheet_content.dart';
 
-void showLoginRequiredBottomSheet(BuildContext context) {
-  
+void showLoginRequiredBottomSheet(BuildContext context, {typeSelected}) {
   if (Get.isRegistered<LoginRequiredBottomSheetController>()) {
     Get.delete<LoginRequiredBottomSheetController>();
   }
@@ -26,7 +25,11 @@ void showLoginRequiredBottomSheet(BuildContext context) {
                 topRight: Radius.circular(12.0),
               ),
             ),
-            child: LoginRequiredBottomSheetContent(),
+            child: SafeArea(
+              child: LoginRequiredBottomSheetContent(
+                typeSelected: typeSelected,
+              ),
+            ),
           ),
         ],
       );

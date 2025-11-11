@@ -46,10 +46,33 @@ class AppSharedMethods extends GetxService {
   static Widget buildProgressViewWhite(
     BuildContext context,
     bool isWhite, {
-    double width = 35.0,
-    double height = 35.0,
+    double width = 20.0,
+    double height = 20.0,
   }) {
     return ProgressViewWhite(context, isWhite, width: width, height: height);
+  }
+
+  String normalizeDate(String date) {
+    if (date.isEmpty) return date;
+
+    const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    bool hasArabicDigits = date.contains(RegExp(r'[٠-٩]'));
+
+    if (hasArabicDigits) {
+      for (int i = 0; i < arabicNumbers.length; i++) {
+        date = date.replaceAll(arabicNumbers[i], i.toString());
+      }
+    }
+
+    // تحويل التاريخ إلى شكل YYYY-MM-DD فقط
+    try {
+      final parsedDate = DateTime.parse(date);
+      return '${parsedDate.year.toString().padLeft(4, '0')}-'
+          '${parsedDate.month.toString().padLeft(2, '0')}-'
+          '${parsedDate.day.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return date; // إذا لم يكن التاريخ صالحاً، ارجعه كما هو
+    }
   }
 
   // اختيار وقت

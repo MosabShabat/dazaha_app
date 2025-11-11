@@ -8,12 +8,14 @@ import '../../../core/network/utils/api_result.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
+import '../../my_offer_ad_details/controller/my_offer_ad_details_controller.dart';
 import 'direct_support_map_repo.dart';
 
 class DirectSupportMapController extends GetxController {
   final DirectSupportMapRepo _directSupportMapRepo =
       Get.find<DirectSupportMapRepo>();
   final OrderDataController _orderDataController = Get.find();
+  final MyOfferAdDetailsController controller = Get.find();
 
   final selectedCase = 0.obs; // 0: started, 1: delivered, 2: completed
   RxBool isButtonPressed = false.obs;
@@ -52,6 +54,8 @@ class DirectSupportMapController extends GetxController {
               selectedCase.value = 3; // أو أي رقم مناسب
               break;
           }
+          controller.getOfferDetails();
+
           isButtonPressed.value = false;
         } else {
           isButtonPressed.value = false;

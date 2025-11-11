@@ -17,7 +17,10 @@ Widget CenterNotDriverWidget(BuildContext context) {
             AppConstants.userUUid != '') {
           Get.toNamed(Routes.personalDataScreen);
         } else {
-          showLoginRequiredBottomSheet(Get.context!);
+          showLoginRequiredBottomSheet(
+            Get.context!,
+            typeSelected: 'homeScreen3',
+          );
         }
       },
     ),

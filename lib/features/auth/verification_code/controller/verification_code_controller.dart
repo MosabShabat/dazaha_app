@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/helpers/app_shared_data.dart';
@@ -11,6 +13,7 @@ import '../../../../core/network/utils/dio_factory.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../features/auth/verification_code/controller/verification_code_repo.dart';
+import '../../../document/controller/document_controller.dart';
 import '../../../home_page/controller/home_page_controller.dart';
 
 class VerificationCodeController extends GetxController {
@@ -96,6 +99,7 @@ class VerificationCodeController extends GetxController {
     bool resetAll,
   ) async {
     isButtonPressed.value = true;
+
     final result = await _verificationCodeRepo.verifyCode(
       phoneNumber.value,
       code,
@@ -108,13 +112,15 @@ class VerificationCodeController extends GetxController {
         log(
           '${await AppSharedData.getSecuredString(AppSharedKeys.fcmTokenKey)}',
         );
+
         if (response.status == true) {
           isButtonPressed.value = false;
 
-          VerificationModel verificationModel = VerificationModel.fromJson(
+          final verificationModel = VerificationModel.fromJson(
             response.data as Map<String, dynamic>,
           );
 
+          // 🔹 المستخدم غير موجود → انتقل لتسجيل جديد
           if (verificationModel.userExists == false) {
             Get.offAllNamed(
               Routes.registerScreen,
@@ -123,70 +129,68 @@ class VerificationCodeController extends GetxController {
                 AppConstants.code: verificationModel.code,
               },
             );
-          } else {
+            return;
+          }
+
+          // 🔹 المستخدم موجود → حفظ بيانات الدخول أولًا
+          try {
             isUserLogin.value = true;
+            // حفظ البيانات في التخزين الآمن بالتوازي
+            await Future.wait([
+              AppSharedData.setUserLogin(true),
+              AppSharedData.setUserInfo(verificationModel.user!),
+              saveUserToken(verificationModel.user?.token ?? ''),
+            ]);
 
-            // تنفيذ هذه العمليات بشكل غير متزامن
-            unawaited(AppSharedData.setUserLogin(true));
-            unawaited(AppSharedData.setUserInfo(verificationModel.user!));
-            unawaited(saveUserToken(verificationModel.user?.token ?? ''));
+            // تحديث الكنترولر الخاص بالصفحة الرئيسية
+            if (Get.isRegistered<HomePageController>()) {
+              final RefreshController _localRefreshController =
+                  RefreshController();
 
-            // انتقل أولًا، ثم قم بالتحديث في الخلفية
+              final homeController = Get.find<HomePageController>();
+              await homeController.refreshAfterLogin();
+              await homeController.refreshData(
+                '${homeController.latitude.value}',
+                '${homeController.longitude.value}',
+              );
+              _localRefreshController.refreshCompleted();
+              AppConstants.isDriver =
+                  '${homeController.userData.value!.isDriver}';
+            }
+
+            // 🔹 الانتقال بعد اكتمال كل شيء
             if (resetAll) {
               Get.offAllNamed(
                 Routes.homeScreen,
                 arguments: {'selectedIndex': 0},
               );
-              Future.microtask(() async {
-                if (Get.isRegistered<HomePageController>()) {
-                  final homeController = Get.find<HomePageController>();
-                  await homeController.refreshAfterLogin();
-                }
-              });
             } else {
-              Get.close(2);
+              if (AppConstants.typeItemSelected == 'homeScreen3') {
+                final documentController = Get.find<DocumentController>();
+                documentController.onInit();
+                Get.offAllNamed(
+                  Routes.homeScreen,
+                  arguments: {'selectedIndex': 3},
+                );
+              } else {
+                Get.close(2);
+              }
             }
+          } catch (e) {
+            log('Error while saving user data: $e');
+            showErrorSnackbar(
+              context,
+              '${e}',
+              FirstColor: context.colorsCustom.redColor,
+            );
           }
-        }
-        // if (response.status == true) {
-        //   isButtonPressed.value = false;
-        //   VerificationModel verificationModel = VerificationModel.fromJson(
-        //     response.data as Map<String, dynamic>,
-        //   );
-        //   if (verificationModel.userExists == false) {
-        //     Get.offAllNamed(
-        //       Routes.registerScreen,
-        //       arguments: {
-        //         AppConstants.phoneNumber: phoneNumber.value,
-        //         AppConstants.code: verificationModel.code,
-        //       },
-        //     );
-        //   } else {
-        //     // حفظ حالة تسجيل الدخول
-        //     isUserLogin.value = true;
-        //     await AppSharedData.setUserLogin(true);
-        //     await AppSharedData.setUserInfo(verificationModel.user!);
-        //     // حفظ التوكن
-        //     await saveUserToken(verificationModel.user?.token ?? '');
-        //     // تحديث HomePageController بعد تسجيل الدخول
-        //     if (Get.isRegistered<HomePageController>()) {
-        //       final homeController = Get.find<HomePageController>();
-        //       await homeController.refreshAfterLogin();
-        //     }
-        //     //
-        //     if (resetAll) {
-        //       Get.offAllNamed(
-        //         Routes.homeScreen,
-        //         arguments: {'selectedIndex': 0},
-        //       );
-        //     } else {
-        //       Get.close(2);
-        //     }
-        //   }
-        // }
-        else {
+        } else {
           isButtonPressed.value = false;
-          showErrorSnackbar(context, response.message ?? '');
+          showErrorSnackbar(
+            context,
+            response.message ?? '',
+            FirstColor: context.colorsCustom.redColor,
+          );
         }
       },
       failure: (error) {

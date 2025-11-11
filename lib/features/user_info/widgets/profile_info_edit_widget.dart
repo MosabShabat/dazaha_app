@@ -64,10 +64,15 @@ Widget ProfileInfoEditWidget(
               ],
             ),
             verticalSpace(15.h),
-            LoginTextFieldWidget(
-              context,
-              hintText: mobileNumber,
-              readOnly: true,
+            Directionality(
+              textDirection:
+                  TextDirection.ltr, // يجبر عرض الأرقام بالشكل الصحيح
+              child: LoginTextFieldWidget(
+                context,
+                hintText:
+                    '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t${mobileNumber}',
+                readOnly: true,
+              ),
             ),
           ],
         ),

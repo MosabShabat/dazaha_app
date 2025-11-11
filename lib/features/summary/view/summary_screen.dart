@@ -28,9 +28,11 @@ class SummaryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: DefAppBarWidget(context),
-      bottomNavigationBar: _buildSaveButton(
-        context,
-      ).paddingSymmetric(horizontal: 16.w, vertical: 20.h),
+      bottomNavigationBar: SafeArea(
+        child: _buildSaveButton(
+          context,
+        ).paddingSymmetric(horizontal: 16.w, vertical: 20.h),
+      ),
       body: Obx(() {
         final data = priceController.summaryData.value;
         if (data == null) return Center(child: Text(context.historyEmpty));

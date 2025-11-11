@@ -1,39 +1,45 @@
-// import 'dart:convert';
-import 'dart:convert';
-import 'dart:developer';
-import '../../../../features/document/controller/document_controller.dart';
-import '../../../../features/my_ads/controller/transportation_and_delivery_controller.dart';
-import '../../../../features/notifications/controller/notifications_controller.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:get/get.dart';
-import '../../features/choose_the_service/controller/order_data_controller.dart';
-import '../../features/wallet/controller/wallet_controller.dart';
+// 🧩 CORE IMPORTS
 import '../constant/exports_libraries.dart';
 import '../helpers/app_shared_data.dart';
 import '../helpers/constants.dart';
 import '../routes/routes.dart';
 
-class NotificationService {
-  //new changes
-  static final NotificationService _instance = NotificationService._internal();
-  OrderDataController _orderDataController = Get.find();
-  factory NotificationService() {
-    return _instance;
-  }
+// 📦 FEATURES CONTROLLERS
+import '../../features/choose_the_service/controller/order_data_controller.dart';
+import '../../features/item_ad_details/controller/item_ad_details_controller.dart';
+import '../../features/my_ads_details/controller/my_ads_details_controller.dart';
+import '../../features/my_offer_ad_details/controller/my_offer_ad_details_controller.dart';
+import '../../features/notifications/controller/notifications_controller.dart';
+import '../../features/report_a_problem_chat_support/controller/chat_technical_support_controller.dart';
+import '../../features/wallet/controller/wallet_controller.dart';
 
+// 🧰 FIREBASE & NOTIFICATION PACKAGES
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+// ⚙️ DART PACKAGES
+import 'dart:convert';
+import 'dart:developer';
+
+// 🔔 NOTIFICATION SERVICE IMPLEMENTATION
+class NotificationService {
+  static final NotificationService _instance = NotificationService._internal();
+  final OrderDataController _orderDataController = Get.find();
+
+  factory NotificationService() => _instance;
   NotificationService._internal();
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  RemoteMessage? _initialMessage;
 
   Future<void> init() async {
     await _requestPermission();
     await _initializeLocalNotifications();
     await fetchAndStoreFCMToken();
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
+    // 🔹 Foreground Notifications
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       log('Foreground Notification: ${message.notification?.title}');
       unreadNotificationLocal.value = 1;
@@ -45,64 +51,76 @@ class NotificationService {
         message.data,
       );
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      log('Notification opened from background: ${message.data}');
-      String? type = message.data[NotificationTypes.type];
-      String? referenceUuid = message.data[NotificationTypes.referenceUuid];
-      _onNotificationClicked(type ?? '', referenceUuid ?? '');
-    });
 
-    await _checkInitialMessage();
+    // 🔹 Background Notifications
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    // 🔹 Initial Notification (when app launched by tapping)
+    _initialMessage = await _firebaseMessaging.getInitialMessage();
   }
 
+  // ⚙️ Handle notification after first build
+  void handleInitialMessage() {
+    if (_initialMessage != null && _initialMessage!.data.isNotEmpty) {
+      String? type = _initialMessage!.data[NotificationTypes.type];
+      String? referenceUuid =
+          _initialMessage!.data[NotificationTypes.referenceUuid];
+      if (type != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _onNotificationClicked(type, referenceUuid ?? '');
+        });
+      }
+      _initialMessage = null;
+    }
+  }
+
+  // 🪪 Request permissions
   Future<void> _requestPermission() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      log('User granted permission.');
-    } else {
-      log('User denied or has not granted permission.');
-    }
+    log(
+      settings.authorizationStatus == AuthorizationStatus.authorized
+          ? 'User granted permission.'
+          : 'User denied or has not granted permission.',
+    );
   }
 
+  // ⚙️ Local notifications initialization
   Future<void> _initializeLocalNotifications() async {
-    const AndroidInitializationSettings androidInitializationSettings =
+    const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final DarwinInitializationSettings iosInitializationSettings =
+    final DarwinInitializationSettings iosSettings =
         DarwinInitializationSettings(
           requestAlertPermission: true,
           requestSoundPermission: true,
           requestBadgePermission: true,
         );
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-          android: androidInitializationSettings,
-          iOS: iosInitializationSettings,
-        );
+    final InitializationSettings initSettings = InitializationSettings(
+      android: androidSettings,
+      iOS: iosSettings,
+    );
 
     await _localNotificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse:
-          (NotificationResponse notificationResponse) async {
-            if (notificationResponse.payload != null) {
-              try {
-                final data = jsonDecode(notificationResponse.payload!);
-                String? type = data[NotificationTypes.type];
-                String? referenceUuid = data[NotificationTypes.referenceUuid];
-                _onNotificationClicked(type ?? '', referenceUuid ?? '');
-              } catch (e) {
-                log('Error parsing notification payload: $e');
-              }
-            }
-          },
+      initSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        if (response.payload != null) {
+          final data = jsonDecode(response.payload!);
+          String? type = data[NotificationTypes.type];
+          String? referenceUuid = data[NotificationTypes.referenceUuid];
+          if (type != null) {
+            _onNotificationClicked(type, referenceUuid ?? '');
+          }
+        }
+      },
     );
   }
 
+  // 🔔 Show notification (foreground)
   Future<void> showNotification(
     String title,
     String body,
@@ -138,14 +156,14 @@ class NotificationService {
     );
   }
 
+  // 🧠 Handle foreground notifications
   void _handleForegroundNotification(Map<String, dynamic> data) {
     String? type = data[NotificationTypes.type];
     String referenceUuid = data[NotificationTypes.referenceUuid];
-
-    // General / Notifications
     log('type : $type');
-    log('type : $referenceUuid');
+    log('referenceUuid : $referenceUuid');
 
+    // Notifications
     if ((type == NotificationTypes.general ||
             type == NotificationTypes.requestToJoinDriverAccepted ||
             type == NotificationTypes.requestToJoinDriverRejected ||
@@ -153,78 +171,72 @@ class NotificationService {
             type == NotificationTypes.reportedProblemInProgress ||
             type == NotificationTypes.reportedProblemResolved) &&
         Get.isRegistered<NotificationsController>()) {
-      NotificationsController controller = Get.find();
-      controller.resetControllerState();
-      controller.getNotifications();
+      Get.find<NotificationsController>()
+        ..resetControllerState()
+        ..getNotifications();
     }
+
+    // Technical Support
+    if (type == NotificationTypes.newTechnicalSupportMessage &&
+        Get.isRegistered<ChatTechnicalSupportController>()) {
+      Get.find<ChatTechnicalSupportController>().getMessages(
+        'technical_support',
+      );
+    }
+
     // Offers
-    if ((type == NotificationTypes.offerExcluded) &&
-        Get.isRegistered<DocumentController>()) {
-      DocumentController controller = Get.find();
-      controller.resetControllerState();
-      controller.getOffers();
-      if (referenceUuid != '' && referenceUuid.isNotEmpty) {
-        _orderDataController.setItemUuid('${referenceUuid}');
-        Get.toNamed(Routes.myOfferAdDetailsScreen);
-      } else {
-        Get.offAllNamed(
-          Routes.homeScreen,
-          arguments: {'selectedIndex': 3}, // Order screen
-        );
+    if (type == NotificationTypes.offerExcluded &&
+        Get.isRegistered<MyOfferAdDetailsController>()) {
+      Get.find<MyOfferAdDetailsController>().getOfferDetails();
+      if (referenceUuid.isNotEmpty) {
+        _orderDataController.setItemUuid(referenceUuid);
       }
     }
+
     // Orders
-    if ((type == NotificationTypes.newOffer ||
-            type == NotificationTypes.newOrder ||
-            type == NotificationTypes.orderCanceled ||
-            type == NotificationTypes.orderInProgress ||
-            type == NotificationTypes.orderCompleted) &&
-        Get.isRegistered<TransportationAndDeliveryController>()) {
-      TransportationAndDeliveryController controller = Get.find();
-      controller.resetControllerState();
-      controller.getMyOrders();
-      if (referenceUuid != '' && referenceUuid.isNotEmpty) {
-        if (type == NotificationTypes.newOffer) {
-          _orderDataController.setItemUuid('${referenceUuid}');
-          Get.toNamed(Routes.myAdsDetailsScreen);
-        } else if (type == NotificationTypes.newOrder) {
-          _orderDataController.setItemUuid('${referenceUuid}');
-          Get.toNamed(Routes.itemAdDetailsScreen, arguments: {"isShow": true});
-        } else if (type == NotificationTypes.orderInProgress ||
-            type == NotificationTypes.orderCompleted) {
-          print('Here tap');
-          int tabIndex = 0;
-
-          // تحديد أي تبويب نريد فتحه داخل DocumentScreen
-          if (type == NotificationTypes.orderInProgress) {
-            tabIndex = 1; // التبويب الثاني
-
-            Get.offAllNamed(
-              Routes.homeScreen,
-              arguments: {
-                'selectedIndex': 3, // صفحة DocumentScreen
-                'tabIndex': tabIndex, // أي تبويب نريد فتحه
-              },
-            );
-          } else if (type == NotificationTypes.orderCompleted) {
-            tabIndex = 2; // التبويب الثالث
-            Get.offAllNamed(
-              Routes.homeScreen,
-              arguments: {
-                'selectedIndex': 1, // صفحة DocumentScreen
-                'tabIndex': tabIndex, // أي تبويب نريد فتحه
-              },
-            );
-          }
-        }
-      } else {
-        Get.offAllNamed(
-          Routes.homeScreen,
-          arguments: {'selectedIndex': 1}, // Order screen
-        );
+    if ((type == NotificationTypes.orderInProgress) &&
+        Get.isRegistered<MyOfferAdDetailsController>()) {
+      MyOfferAdDetailsController offerController = Get.find();
+      offerController.getOfferDetails();
+      if (referenceUuid.isNotEmpty) {
+        _orderDataController.setItemUuid(referenceUuid);
       }
+
+      // if (referenceUuid.isNotEmpty) {
+      //   _orderDataController.setItemUuid(referenceUuid);
+      //   if (type == NotificationTypes.orderInProgress) {
+      //     _orderDataController.setItemStatus('in_progress');
+      //   } else if (type == NotificationTypes.orderCompleted ||
+      //       type == NotificationTypes.orderDelivered ||
+      //       type == NotificationTypes.orderStarted) {
+      //     _orderDataController.setItemStatus(
+      //       type == NotificationTypes.orderStarted
+      //           ? 'in_progress'
+      //           : type == NotificationTypes.orderDelivered
+      //           ? 'in_progress'
+      //           : 'completed',
+      //     );
+      //   }
+      // }
     }
 
+    if (type == NotificationTypes.newOrder &&
+        Get.isRegistered<ItemAdDetailsController>()) {
+      Get.find<ItemAdDetailsController>().getOrderDetails();
+    }
+
+    if (type == NotificationTypes.newOffer ||
+        type == NotificationTypes.orderCompleted ||
+        type == NotificationTypes.orderDelivered ||
+        type == NotificationTypes.orderStarted ||
+        type == NotificationTypes.orderCanceled &&
+            Get.isRegistered<MyAdsDetailsController>()) {
+      MyAdsDetailsController controller = Get.find();
+      controller.getMyOrderDetails();
+      controller.getMyOrderOffers("created_at");
+    }
+
+    // Wallet
     if ((type == NotificationTypes.depositOrder ||
             type == NotificationTypes.depositCanceledOrder ||
             type == NotificationTypes.withdrawAccepted ||
@@ -232,18 +244,18 @@ class NotificationService {
             type == NotificationTypes.walletWithdrawal ||
             type == NotificationTypes.walletDeposit) &&
         Get.isRegistered<WalletController>()) {
-      WalletController controller = Get.find();
-      controller.resetControllerState();
-      controller.getWallet();
+      Get.find<WalletController>()
+        ..resetControllerState()
+        ..getWallet();
     }
   }
 
+  // 🧭 When user clicks notification
   void _onNotificationClicked(String type, String referenceUuid) {
     log('Notification clicked: $type');
-    log("Notification clicked: $referenceUuid");
+    log('referenceUuid: $referenceUuid');
 
     switch (type) {
-      // General / Notifications
       case NotificationTypes.general:
       case NotificationTypes.requestToJoinDriverAccepted:
       case NotificationTypes.requestToJoinDriverRejected:
@@ -252,50 +264,61 @@ class NotificationService {
       case NotificationTypes.reportedProblemResolved:
         Get.toNamed(Routes.notificationsScreen);
         break;
-      // Orders
+
       case NotificationTypes.newOrder:
+        _orderDataController.setItemUuid(referenceUuid);
+        Get.toNamed(Routes.itemAdDetailsScreen, arguments: {"isShow": true});
+        break;
+
       case NotificationTypes.newOffer:
       case NotificationTypes.orderCanceled:
-      case NotificationTypes.orderInProgress:
       case NotificationTypes.orderCompleted:
-        if (referenceUuid != '' && referenceUuid.isNotEmpty) {
-          if (type == NotificationTypes.newOffer) {
-            _orderDataController.setItemUuid('${referenceUuid}');
-            Get.toNamed(Routes.myAdsDetailsScreen);
-          } else {
-            _orderDataController.setItemUuid('${referenceUuid}');
-            Get.toNamed(
-              Routes.itemAdDetailsScreen,
-              arguments: {"isShow": true},
-            );
-          }
+      case NotificationTypes.orderDelivered:
+      case NotificationTypes.orderStarted:
+        _orderDataController.setItemUuid(referenceUuid);
+        Get.toNamed(Routes.myAdsDetailsScreen);
+        break;
+
+      case NotificationTypes.orderInProgress:
+        if (referenceUuid.isNotEmpty) {
+          _orderDataController.setItemUuid(referenceUuid);
+          // _orderDataController.setItemStatus(
+          //   type == NotificationTypes.orderInProgress ||
+          //           type == NotificationTypes.orderStarted ||
+          //           type == NotificationTypes.orderDelivered
+          //       ? 'in_progress'
+          //       : 'completed',
+          // );
+          Get.toNamed(Routes.myOfferAdDetailsScreen);
         } else {
-          Get.offAllNamed(
-            Routes.homeScreen,
-            arguments: {'selectedIndex': 1}, // Order screen
-          );
+          Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 1});
         }
-        // Get.offAllNamed(
-        //   Routes.homeScreen,
-        //   arguments: {'selectedIndex': 1}, // Order screen
-        // );
         break;
-      // عروض Offer
-      // Offers
+
       case NotificationTypes.offerExcluded:
-        Get.offAllNamed(
-          Routes.homeScreen,
-          arguments: {'selectedIndex': 3}, // Offer screen
-        );
+        Get.toNamed(Routes.myOfferAdDetailsScreen);
         break;
-      // Wallet
+
+      case NotificationTypes.depositOrder:
+      case NotificationTypes.depositCanceledOrder:
       case NotificationTypes.withdrawAccepted:
       case NotificationTypes.withdrawRejected:
       case NotificationTypes.walletWithdrawal:
       case NotificationTypes.walletDeposit:
-      case NotificationTypes.depositOrder:
-      case NotificationTypes.depositCanceledOrder:
         Get.toNamed(Routes.walletScreen);
+        break;
+
+      case NotificationTypes.newTechnicalSupportMessage:
+        Get.toNamed(
+          Routes.reportAProblemChatSupportScreen,
+          arguments: {
+            AppConstants.liveSupport: true,
+            AppConstants.uuid: 'technical_support',
+            AppConstants.receiverImage: 'image_url',
+            AppConstants.receiverName: 'Support Bot',
+            AppConstants.receiverVerify: true,
+          },
+        );
         break;
 
       default:
@@ -303,31 +326,21 @@ class NotificationService {
     }
   }
 
+  // 🔑 FCM Token
   Future<void> fetchAndStoreFCMToken() async {
     try {
       String? token = await _firebaseMessaging.getToken();
-      await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token!);
-      log('FCM Token: $token');
+      if (token != null) {
+        await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token);
+        log('FCM Token: $token');
+      }
     } catch (e) {
       log('Error fetching FCM Token: $e');
     }
   }
-
-  Future<void> _checkInitialMessage() async {
-    RemoteMessage? initialMessage = await _firebaseMessaging
-        .getInitialMessage();
-    if (initialMessage != null && initialMessage.data.isNotEmpty) {
-      log('App opened from terminated state with notification');
-      String? type = initialMessage.data[NotificationTypes.type];
-      String? referenceUuid =
-          initialMessage.data[NotificationTypes.referenceUuid];
-
-      _onNotificationClicked(type!, referenceUuid ?? '');
-    }
-  }
 }
 
-@pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  log('Background Message: ${message.data}');
+// 🧩 Background handler
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Background Message: ${message.data}');
 }

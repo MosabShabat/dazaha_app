@@ -94,9 +94,17 @@ class UserInfoScreen extends StatelessWidget {
   }
 
   String _formatPhoneNumber(String phone) {
-    return phone
-        .replaceAll(' ', '')
-        .replaceAllMapped(RegExp(r".{1,3}"), (match) => "${match.group(0)} ")
-        .trim();
+    phone = phone.replaceAll(' ', '').trim();
+    if (phone.isEmpty) return '';
+
+    final buffer = StringBuffer();
+    for (int i = 0; i < phone.length; i++) {
+      buffer.write(phone[i]);
+      // أول رقم مفصول ثم بعد كل 3 أرقام نضيف مسافة
+      if (i == 0 || (i > 0 && (i - 0) % 3 == 0 && i + 1 != phone.length)) {
+        buffer.write(' ');
+      }
+    }
+    return buffer.toString().trim();
   }
 }

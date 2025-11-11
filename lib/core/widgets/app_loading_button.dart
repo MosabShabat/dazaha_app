@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
+import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/app_shared_methods.dart';
-import 'package:flutter/material.dart';
 import '../theming/app_text_styles.dart';
 
 class AppLoadingButton extends StatelessWidget {
@@ -52,7 +52,10 @@ class AppLoadingButton extends StatelessWidget {
         height: height,
         alignment: Alignment.center,
         child: isLoading
-            ? AppSharedMethods.buildProgressViewWhite(context, isWhiteProgress)
+            ? AppSharedMethods.buildProgressViewWhite(
+                context,
+                isWhiteProgress,
+              ).box.size(18.w, 18.w).make()
             : Text(
                 text,
                 style: isEnabled

@@ -6,7 +6,7 @@ Widget OrderDetailsShimmerWidget(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      CustomShimmer(width: Width, height: 400.h),
+      CustomShimmer(width: 500.w, height: 400.h),
       verticalSpace(20.h),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,

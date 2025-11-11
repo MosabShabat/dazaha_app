@@ -33,10 +33,12 @@ class SelectStoreNameScreen extends StatelessWidget {
         indexColor4: 0,
         indexColor5: 0,
       ),
-      bottomNavigationBar: _buildSaveButton(
-        context,
-        controller: selectStoreNameController,
-      ).paddingSymmetric(horizontal: 16.w, vertical: 20.h),
+      bottomNavigationBar: SafeArea(
+        child: _buildSaveButton(
+          context,
+          controller: selectStoreNameController,
+        ).paddingSymmetric(horizontal: 16.w, vertical: 20.h),
+      ),
 
       body: GeneralScreenWidget(
         context,

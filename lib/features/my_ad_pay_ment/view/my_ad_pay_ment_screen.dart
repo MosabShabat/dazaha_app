@@ -44,10 +44,12 @@ class MyAdPayMentScreen extends StatelessWidget {
         text: context.payment,
         h: 100.h,
       ),
-      bottomNavigationBar: PayButtonWidget(
-        context,
-        controller: controller,
-      ).paddingOnly(bottom: 15.h, right: 16.w, left: 16.w),
+      bottomNavigationBar: SafeArea(
+        child: PayButtonWidget(
+          context,
+          controller: controller,
+        ).paddingOnly(bottom: 15.h, right: 16.w, left: 16.w),
+      ),
       body: GeneralScreenWidget(
         context,
         wid: [PaymentContentWidget(controller: controller)],

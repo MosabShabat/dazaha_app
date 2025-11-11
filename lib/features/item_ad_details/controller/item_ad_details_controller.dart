@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:geolocator/geolocator.dart';
+
 import '../../../core/constant/exports_widgets.dart';
 
 import '../../../../core/helpers/constants.dart';
@@ -38,29 +40,58 @@ class ItemAdDetailsController extends GetxController {
     });
     // _orderDataController.setItemUuid(_orderDataController.itemUuid.value);
     AppConstants.orderUuid = _orderDataController.itemUuid.value;
+    print("AppConstants.orderUuid : ${AppConstants.orderUuid}");
+
     getOrderDetails();
   }
 
   void getOrderDetails() async {
     isLoading.value = true;
-    final result = await _itemAdDetailsRepo.getOrderDetails();
+
+    String? lat;
+    String? lng;
+
+    try {
+      // تحقق من الصلاحية
+      LocationPermission permission = await Geolocator.checkPermission();
+
+      // إذا كانت الصلاحية مرفوضة، حاول طلبها مرة ثانية
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      // إذا تمت الموافقة، احصل على الإحداثيات
+      if (permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse) {
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+        lat = '${position.latitude}';
+        lng = '${position.longitude}';
+      } else {
+        // المستخدم رفض، أكمل بدون موقع
+        log('⚠️ تم رفض صلاحية الموقع — سيتم متابعة الطلب بدون موقع');
+      }
+    } catch (e) {
+      // في حال حدوث أي خطأ أثناء قراءة الموقع
+      log('❌ خطأ في الحصول على الموقع: $e');
+    }
+
+    // الآن أرسل الطلب سواء وُجد موقع أم لا
+    final result = await _itemAdDetailsRepo.getOrderDetails(lat: lat, lng: lng);
+
     result.when(
       success: (response) {
         isLoading.value = false;
         if (response.status == true) {
           if (response.data != null && response.data is Map<String, dynamic>) {
             orderDetailsItem = OrdersDetailsItem.fromJson(response.data).obs;
-          }
-          // if (response.data != null) {
-          //   orderDetailsItem = OrdersDetailsItem.fromJson(
-          //     response.data as Map<String, dynamic>,
-          //   ).obs;
-          // }
-          else {
+          } else {
             showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
           }
         } else {
-          isLoading.value = false;
+          log('Error: ${response.message}');
+
           showErrorSnackbar(
             Get.context!,
             response.message ?? '',
@@ -70,6 +101,7 @@ class ItemAdDetailsController extends GetxController {
       },
       failure: (error) {
         isLoading.value = false;
+        log('Error fetching order details: $error');
         showSnackbarErrorApi(Get.context!, [error], null);
       },
     );
@@ -110,6 +142,8 @@ class ItemAdDetailsController extends GetxController {
       success: (response) {
         _setButtonPressed(false);
         if (response.status == true) {
+          getOrderDetails();
+
           Get.back();
           MyOfferToCustomerWidget(
             Get.context!,

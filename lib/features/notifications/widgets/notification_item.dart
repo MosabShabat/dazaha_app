@@ -12,16 +12,21 @@ Widget buildNotificationItem(
   required int index,
   required int totalItems,
 }) {
-  OrderDataController _orderDataController = Get.find();
+  final OrderDataController _orderDataController = Get.find();
+
   return GestureDetector(
     behavior: HitTestBehavior.opaque,
     onTap: () async {
-      // if (notification == null) return;
+      _orderDataController.itemUuid.value = '';
+      AppConstants.orderUuid = '';
+      if (notification == null) return;
 
       String type = notification.type ?? '';
-      String? referenceUuid = notification.referenceUuid;
+      String referenceUuid = notification.referenceUuid ?? '';
 
-      // General / Notifications
+      print('Notification Type: $type');
+
+      /// 🟢 إشعارات عامة
       if (type == NotificationTypes.general ||
           type == NotificationTypes.requestToJoinDriverAccepted ||
           type == NotificationTypes.requestToJoinDriverRejected ||
@@ -29,86 +34,92 @@ Widget buildNotificationItem(
           type == NotificationTypes.reportedProblemInProgress ||
           type == NotificationTypes.reportedProblemResolved) {
         Get.toNamed(Routes.notificationsScreen);
+        return;
       }
 
-      // Orders
-      if (type == NotificationTypes.newOffer ||
-          type == NotificationTypes.newOrder ||
-          type == NotificationTypes.orderCanceled ||
-          type == NotificationTypes.orderCompleted ||
-          type == NotificationTypes.orderInProgress) {
-        if (referenceUuid != null && referenceUuid.isNotEmpty) {
-          if (type == NotificationTypes.newOffer) {
-            _orderDataController.setItemUuid('${referenceUuid}');
-            Get.toNamed(Routes.myAdsDetailsScreen);
-          } else if (type == NotificationTypes.newOrder) {
-            _orderDataController.setItemUuid('${referenceUuid}');
-            Get.toNamed(
-              Routes.itemAdDetailsScreen,
-              arguments: {"isShow": true},
-            );
-          } else if (type == NotificationTypes.orderInProgress ||
-              type == NotificationTypes.orderCompleted) {
-            print('Here tap');
-            int tabIndex = 0;
-
-            // تحديد أي تبويب نريد فتحه داخل DocumentScreen
-            if (type == NotificationTypes.orderInProgress) {
-              tabIndex = 1; // التبويب الثاني
-
-              Get.offAllNamed(
-                Routes.homeScreen,
-                arguments: {
-                  'selectedIndex': 3, // صفحة DocumentScreen
-                  'tabIndex': tabIndex, // أي تبويب نريد فتحه
-                },
-              );
-            } else if (type == NotificationTypes.orderCompleted) {
-              tabIndex = 2; // التبويب الثالث
-              Get.offAllNamed(
-                Routes.homeScreen,
-                arguments: {
-                  'selectedIndex': 1, // صفحة DocumentScreen
-                  'tabIndex': tabIndex, // أي تبويب نريد فتحه
-                },
-              );
-            }
-          }
-        } else {
-          Get.offAllNamed(
-            Routes.homeScreen,
-            arguments: {'selectedIndex': 1}, // Order screen
-          );
-        }
-      }
-
-      // Offers
-      if (type == NotificationTypes.offerExcluded) {
-        Get.offAllNamed(
-          Routes.homeScreen,
-          arguments: {'selectedIndex': 3}, // Offer screen
+      /// 🟣 الدعم الفني
+      if (type == NotificationTypes.newTechnicalSupportMessage) {
+        Get.toNamed(
+          Routes.reportAProblemChatSupportScreen,
+          arguments: {
+            AppConstants.liveSupport: true,
+            AppConstants.uuid: 'technical_support',
+            AppConstants.receiverImage: 'image_url',
+            AppConstants.receiverName: 'Support Bot',
+            AppConstants.receiverVerify: true,
+          },
         );
-        // if (referenceUuid != null && referenceUuid.isNotEmpty) {
-        //   _orderDataController.setItemUuid('${referenceUuid}');
-        //   Get.toNamed(Routes.myOfferAdDetailsScreen);
-        // } else {
-        //   Get.offAllNamed(
-        //     Routes.homeScreen,
-        //     arguments: {'selectedIndex': 3}, // Offer screen
-        //   );
-        // }
+        return;
       }
 
-      // Wallet
-      if (type == NotificationTypes.withdrawAccepted ||
+      /// 🟠 طلب جديد
+      if (type == NotificationTypes.newOrder) {
+        _orderDataController.setItemUuid(referenceUuid);
+        print(
+          '_orderDataController.setItemUuid(referenceUuid) : ${_orderDataController.itemUuid.value}',
+        );
+        Get.toNamed(Routes.itemAdDetailsScreen, arguments: {"isShow": true});
+        return;
+      }
+
+      /// 🟡 عرض جديد
+      if (type == NotificationTypes.newOffer ||
+          type == NotificationTypes.orderCompleted ||
+          type == NotificationTypes.orderDelivered ||
+          type == NotificationTypes.orderStarted ||
+          type == NotificationTypes.orderCanceled) {
+        _orderDataController.setItemUuid(referenceUuid);
+        print(
+          '_orderDataController.setItemUuid(referenceUuid) : ${_orderDataController.itemUuid.value}',
+        );
+        Get.toNamed(Routes.myAdsDetailsScreen);
+        return;
+      }
+
+      /// 🔵 الطلبات (قيد التنفيذ، مكتملة، تم البدء، ... إلخ)
+      if (type == NotificationTypes.orderInProgress) {
+        if (referenceUuid.isNotEmpty) {
+          _orderDataController.setItemUuid(referenceUuid);
+          Get.toNamed(Routes.myOfferAdDetailsScreen);
+
+          // if (type == NotificationTypes.orderInProgress) {
+          //   _orderDataController.setItemStatus('in_progress');
+          //   Get.toNamed(Routes.myOfferAdDetailsScreen);
+          // } else if (type == NotificationTypes.orderStarted) {
+          //   _orderDataController.setItemStatus('in_progress');
+          //   Get.toNamed(Routes.myOfferAdDetailsScreen);
+          // } else if (type == NotificationTypes.orderDelivered ||
+          //     type == NotificationTypes.orderCompleted) {
+          //   _orderDataController.setItemStatus('completed');
+          //   Get.toNamed(Routes.myOfferAdDetailsScreen);
+          // } else {
+          //   Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 1});
+          // }
+        } else {
+          Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 1});
+        }
+        return;
+      }
+
+      /// 🟤 العروض (تم استبعاده)
+      if (type == NotificationTypes.offerExcluded) {
+        Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 3});
+        return;
+      }
+
+      /// 🟢 المحفظة
+      if (type == NotificationTypes.depositOrder ||
+          type == NotificationTypes.depositCanceledOrder ||
+          type == NotificationTypes.withdrawAccepted ||
           type == NotificationTypes.withdrawRejected ||
           type == NotificationTypes.walletWithdrawal ||
-          type == NotificationTypes.walletDeposit ||
-          type == NotificationTypes.depositOrder ||
-          type == NotificationTypes.depositCanceledOrder) {
+          type == NotificationTypes.walletDeposit) {
         Get.toNamed(Routes.walletScreen);
+        return;
       }
     },
+
+    /// 🎨 تصميم العنصر
     child: Container(
       margin: EdgeInsets.only(
         top: index == 0 ? 24 : 16,
@@ -139,8 +150,8 @@ Widget buildNotificationItem(
                       notification?.title ?? '',
                       style: AppTextStyles.font12Grey400Regular(context),
                     ),
-                    notification!.isSeen!
-                        ? Container()
+                    notification?.isSeen == true
+                        ? const SizedBox()
                         : CircleAvatar(
                             radius: 3.r,
                             backgroundColor:
@@ -153,13 +164,13 @@ Widget buildNotificationItem(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      notification.body ?? '',
+                      notification?.body ?? '',
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.font12Black500Medium(context),
                     ).box.width(200.w).make(),
                     Text(
-                      notification.timeAgo ?? '',
+                      notification?.timeAgo ?? '',
                       style: AppTextStyles.font12Grey400Regular(context),
                     ),
                   ],

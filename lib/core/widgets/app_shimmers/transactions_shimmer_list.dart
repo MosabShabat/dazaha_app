@@ -6,7 +6,7 @@ import 'custom_shimmer.dart';
 
 Widget shimmerTransactionsList() {
   return Padding(
-    padding: const EdgeInsets.only(top: 24),
+    padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
     child: Container(
       color: Colors.transparent,
       width: double.infinity,

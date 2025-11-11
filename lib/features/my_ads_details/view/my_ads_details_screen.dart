@@ -52,30 +52,33 @@ class MyAdsDetailsScreen extends StatelessWidget {
               ],
             ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              TobColumnWidget(
-                context,
-                horizontalPadding: 16.w,
-                orderIdCreatedAt:
-                    '${order.orderId ?? ''}, ${context.published} ${order.addedAt ?? ''}',
-                status: order.status ?? '',
-                statusText: order.statusText ?? '',
-                image: order.image ?? '',
-                priceCurr: '${order.likedPrice ?? ''} ${order.currency ?? ''}',
-                serviceTitle: order.serviceTitle ?? '',
-                title: order.title ?? '',
-                uuid: order.uuid ?? '',
-              ),
-              Divider(color: context.colorsCustom.CardBorder, thickness: 1),
-              verticalSpace(20.h),
-              StatusTypeWidget(
-                context,
-                order,
-                orderDataController,
-                myAdsDetailsController,
-              ),
-            ],
+          child: SafeArea(
+            child: Column(
+              children: [
+                TobColumnWidget(
+                  context,
+                  horizontalPadding: 16.w,
+                  orderIdCreatedAt:
+                      '${order.orderId ?? ''}, ${context.published} ${order.addedAt ?? ''}',
+                  status: order.status ?? '',
+                  statusText: order.statusText ?? '',
+                  image: order.image ?? '',
+                  priceCurr:
+                      '${order.likedPrice ?? ''} ${order.currency ?? ''}',
+                  serviceTitle: order.serviceTitle ?? '',
+                  title: order.title ?? '',
+                  uuid: order.uuid ?? '',
+                ),
+                Divider(color: context.colorsCustom.CardBorder, thickness: 1),
+                verticalSpace(20.h),
+                StatusTypeWidget(
+                  context,
+                  order,
+                  orderDataController,
+                  myAdsDetailsController,
+                ),
+              ],
+            ),
           ),
         ),
       );

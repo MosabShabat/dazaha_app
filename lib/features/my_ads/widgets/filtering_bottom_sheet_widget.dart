@@ -21,52 +21,56 @@ Future<dynamic> FilteringBottomSheetWidget(
     ),
     clipBehavior: Clip.antiAliasWithSaveLayer,
     builder: (_) => SingleChildScrollView(
-      child:
-          Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TopConBotShWidget(context).box.alignCenter.make(),
-                  verticalSpace(10.h),
-                  LatestAnnouncementsRowWidget(
-                    context,
-                    text: context.filter,
-                    size: 16.sp,
-                    fontFamily: context.textStyles.bodyLarge.medium.fontFamily,
-                    onPressed: onPress,
-                    Widget: Text(
-                      context.reset,
-                      style: context.textStyles.headlineSmall.regular.copyWith(
-                        color: context.colorsCustom.TextSecondary,
-                        fontSize: 12.sp,
+      child: SafeArea(
+        child:
+            Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TopConBotShWidget(context).box.alignCenter.make(),
+                    verticalSpace(10.h),
+                    LatestAnnouncementsRowWidget(
+                      context,
+                      text: context.filter,
+                      size: 16.sp,
+                      fontFamily:
+                          context.textStyles.bodyLarge.medium.fontFamily,
+                      onPressed: onPress,
+                      Widget: Text(
+                        context.reset,
+                        style: context.textStyles.headlineSmall.regular
+                            .copyWith(
+                              color: context.colorsCustom.TextSecondary,
+                              fontSize: 12.sp,
+                            ),
                       ),
                     ),
-                  ),
-                  Text(
-                    subTitle,
-                    style: context.textStyles.headlineSmall.regular.copyWith(
-                      color: context.colorsCustom.TextSecondary,
-                      fontSize: 14.sp,
+                    Text(
+                      subTitle,
+                      style: context.textStyles.headlineSmall.regular.copyWith(
+                        color: context.colorsCustom.TextSecondary,
+                        fontSize: 14.sp,
+                      ),
                     ),
-                  ),
-                  verticalSpace(35.h),
-                  FilterGrideViewWidget(
-                    context,
-                    ListText: gridList,
-                    selectedIndex: selectedIndex,
-                    onTapSel: onTapSel,
-                  ),
-                  verticalSpace(Width * 0.15),
-                  GeneralBottomAppWidget(
-                    context,
-                    text: context.filter,
-                    onTap: onTep,
-                  ),
-                ],
-              ).box
-              .color(context.colorsCustom.surfacePrimaryWhite)
-              .padding(EdgeInsets.symmetric(horizontal: 20.w, vertical: 20))
-              .width(Width)
-              .make(),
+                    verticalSpace(35.h),
+                    FilterGrideViewWidget(
+                      context,
+                      ListText: gridList,
+                      selectedIndex: selectedIndex,
+                      onTapSel: onTapSel,
+                    ),
+                    verticalSpace(Width * 0.15),
+                    GeneralBottomAppWidget(
+                      context,
+                      text: context.filter,
+                      onTap: onTep,
+                    ),
+                  ],
+                ).box
+                .color(context.colorsCustom.surfacePrimaryWhite)
+                .padding(EdgeInsets.symmetric(horizontal: 20.w, vertical: 20))
+                .width(Width)
+                .make(),
+      ),
     ),
   );
 }

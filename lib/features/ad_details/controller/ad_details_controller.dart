@@ -216,7 +216,7 @@ class AdDetailsController extends GetxController {
             // );
             if (_orderDataController.serviceUuid.value ==
                 '153a7042-eb9e-42b8-9d5c-498623adb5da') {
-              priceDetailsController.priceController.text = '2';
+              priceDetailsController.priceController.text = '0';
               priceDetailsController.submitPrice(context, page);
             } else {
               Get.toNamed(Routes.priceDetailsScreen, arguments: {'page': page});
