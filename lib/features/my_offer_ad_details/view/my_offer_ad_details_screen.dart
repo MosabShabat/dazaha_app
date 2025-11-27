@@ -81,6 +81,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
         appBar: MyOfferAppBarWidget(
           context,
           offerOrOrder: 'offer',
+          uuid: offerDetails.uuid ?? '',
           status: offerDetails.status ?? '',
           price: offerDetails.price,
           curr: offerDetails.currency,
@@ -216,6 +217,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
                 name: offerDetails.order!.user!.fullName ?? '',
                 orderCount: offerDetails.order!.user!.ordersCount ?? '',
                 rating: offerDetails.order!.user!.ratingPercentage ?? '',
+                isMe: false,
               ),
               verticalSpace(20.h),
 

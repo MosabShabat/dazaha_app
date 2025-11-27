@@ -85,7 +85,11 @@ class AddressInfoWidget extends StatelessWidget {
           ),
         ),
         verticalSpace(15.h),
-        LoginTextFieldWidget(context, controller: controller.phoneController),
+        LoginTextFieldWidget(
+          context,
+          controller: controller.phoneController,
+          textAlign: 'null',
+        ),
         verticalSpace(15.h),
         Text(
           context.locationOnMap,

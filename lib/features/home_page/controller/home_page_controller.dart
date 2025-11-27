@@ -42,9 +42,17 @@ class HomePageController extends GetxController {
   RxList<LatestOrderItemModel> latestOrder = <LatestOrderItemModel>[].obs;
   final RefreshController homeRefreshController = RefreshController();
 
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   listenConnection();
+  //   getLocation();
+  // }
+
   @override
   void onInit() {
     super.onInit();
+    loadCurrentUser();
     listenConnection();
     getLocation();
   }

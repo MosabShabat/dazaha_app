@@ -72,7 +72,8 @@ Future<dynamic> AcceptBottomSheetWidget(
                         context,
                         text: context.acceptTheOffer,
                         onTap: () {
-                          orderDataController.setItemUuid(uuid);
+                          
+                          orderDataController.setOfferItemUuid(uuid);
                           Get.toNamed(Routes.myAdPayMentScreen);
                         },
                       ),

@@ -51,6 +51,23 @@ Widget buildNotificationItem(
         );
         return;
       }
+      //723461a2-9852-423d-b167-430c7e292572
+      //057c1eae-2d38-4a5e-ad7e-d1c6d367c7a2
+
+      /// 🟣  التواصل بين الأشخاص
+      if (type == NotificationTypes.newMessage) {
+        Get.toNamed(
+          Routes.reportAProblemChatSupportScreen,
+          arguments: {
+            AppConstants.liveSupport: false,
+            AppConstants.uuid: '${referenceUuid}',
+            AppConstants.receiverImage: '${notification.user!.image ?? ''}',
+            AppConstants.receiverName: '${notification.user!.name ?? ''}',
+            AppConstants.receiverVerify: true,
+          },
+        );
+        return;
+      }
 
       /// 🟠 طلب جديد
       if (type == NotificationTypes.newOrder) {

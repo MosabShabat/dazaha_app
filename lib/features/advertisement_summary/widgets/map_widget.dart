@@ -96,7 +96,7 @@ class _MapWidgetState extends State<MapWidget> {
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(12.r),
         ),
-        child: const Center(child: Text("يرجى تحديد العناوين أولاً")),
+        child: const Center(child: Text("")),
       );
     }
 
@@ -114,7 +114,6 @@ class _MapWidgetState extends State<MapWidget> {
       infoWindow: InfoWindow(title: widget.toAddress),
     );
 
-    // إضافة Marker B فقط إذا الإحداثيات ليست صفرية
     final allMarkers = <Marker>[fromMarker];
     if (toLat != 0.0 || toLng != 0.0) {
       allMarkers.add(toMarker);

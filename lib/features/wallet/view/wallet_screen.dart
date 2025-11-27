@@ -35,7 +35,6 @@ class WalletScreen extends StatelessWidget {
           children: [
             TopBoxWidget(context, controller: _walletController),
             Expanded(
-              //0592510942
               child: SmartRefresher(
                 scrollController: _walletController.scrollController,
                 controller: _walletController.refreshController,
@@ -69,36 +68,9 @@ class WalletScreen extends StatelessWidget {
                         color: context.colorsCustom.surfacePrimaryWhite,
                         child: Center(child: ProgressViewWhite(context, false)),
                       )
-                    : _walletController
-                          .walletModel!
-                          .value
-                          .recordTransactionsModel!
-                          .isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Lottie.asset(
-                              AppAssets.json.the_financial_empty_json,
-                              width: 300.w,
-                              height: 300.w,
-                            ),
-                            verticalSpace(20.h),
-                            Text(
-                              context.dataEmpty,
-                              textAlign: TextAlign.center,
-                              style: context.textStyles.titleLarge.bold
-                                  .copyWith(
-                                    color: context
-                                        .colorsCustom
-                                        .surfacePrimaryBlack,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      )
                     : SingleChildScrollView(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             verticalSpace(10.h),
                             TopRowWidget(
@@ -115,26 +87,52 @@ class WalletScreen extends StatelessWidget {
                               onPress: () =>
                                   _walletController.selectedIndex.value = 0,
                               onTep: () {
-                                // final status = switch (_walletController
-                                //     .selectedIndex
-                                //     .value) {
-                                //   0 => 'wallet_deposit',
-                                //   1 => 'wallet_withdrawal',
-                                //   2 => 'paid',
-                                //   _ => 'failed',
-                                // };
                                 orderDataController.setFromDate('');
                                 orderDataController.setToDate('');
                                 _walletController.refreshWallet();
                                 Navigator.pop(context);
                               },
-                            ),
-                            WalletMoveMentListWidget(
-                              context,
-                              controller: _walletController,
-                            ),
+                            ).paddingOnly(right: 16.w, left: 0.w),
+                            _walletController
+                                    .walletModel!
+                                    .value
+                                    .recordTransactionsModel!
+                                    .isEmpty
+                                ? Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Lottie.asset(
+                                          AppAssets
+                                              .json
+                                              .the_financial_empty_json,
+                                          width: 300.w,
+                                          height: 300.w,
+                                        ),
+                                        verticalSpace(20.h),
+                                        Text(
+                                          context.dataEmpty,
+                                          textAlign: TextAlign.center,
+                                          style: context
+                                              .textStyles
+                                              .titleLarge
+                                              .bold
+                                              .copyWith(
+                                                color: context
+                                                    .colorsCustom
+                                                    .surfacePrimaryBlack,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : WalletMoveMentListWidget(
+                                    context,
+                                    controller: _walletController,
+                                  ).paddingSymmetric(horizontal: 16.w),
                           ],
-                        ).paddingSymmetric(horizontal: 16.w),
+                        ),
                       ),
               ),
             ),

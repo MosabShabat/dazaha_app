@@ -54,7 +54,7 @@ Widget deleteConfirmationBottomSheet(
                         .onTap(onTap),
                   ],
                 )
-              : Container(),
+              : SizedBox.shrink(),
         ],
       ).box
       .width(Width)

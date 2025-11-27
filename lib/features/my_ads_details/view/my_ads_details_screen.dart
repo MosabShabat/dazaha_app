@@ -29,6 +29,7 @@ class MyAdsDetailsScreen extends StatelessWidget {
             // DefAppBarWidget(context),
             MyOfferAppBarWidget(
               context,
+              uuid: order.uuid,
               offerOrOrder: 'order',
               status: order.status == 'receiving_offers'
                   ? 'pending'

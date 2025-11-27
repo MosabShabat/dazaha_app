@@ -184,6 +184,15 @@ class NotificationService {
       );
     }
 
+    if (type == NotificationTypes.newMessage &&
+        Get.isRegistered<ChatTechnicalSupportController>()) {
+      Get.find<ChatTechnicalSupportController>().getMessages(
+        '${referenceUuid}',
+      );
+    }
+
+    //newMessage
+
     // Offers
     if (type == NotificationTypes.offerExcluded &&
         Get.isRegistered<MyOfferAdDetailsController>()) {
@@ -314,6 +323,19 @@ class NotificationService {
           arguments: {
             AppConstants.liveSupport: true,
             AppConstants.uuid: 'technical_support',
+            AppConstants.receiverImage: 'image_url',
+            AppConstants.receiverName: 'Support Bot',
+            AppConstants.receiverVerify: true,
+          },
+        );
+        break;
+
+      case NotificationTypes.newMessage:
+        Get.toNamed(
+          Routes.reportAProblemChatSupportScreen,
+          arguments: {
+            AppConstants.liveSupport: false,
+            AppConstants.uuid: '${referenceUuid}',
             AppConstants.receiverImage: 'image_url',
             AppConstants.receiverName: 'Support Bot',
             AppConstants.receiverVerify: true,

@@ -147,16 +147,13 @@ class ItemAdDetailsController extends GetxController {
           Get.back();
           MyOfferToCustomerWidget(
             Get.context!,
-            IsShowRow: true,
+            IsShowRow: false,
             title: '1',
-            onTap: () {
-              // orderDataController.clearAll();
-              Get.offAllNamed(
-                Routes.homeScreen,
-                arguments: {'selectedIndex': 3},
-              );
-            },
+            onTap: () {},
           );
+          _orderDataController.setItemUuid(AppConstants.addOfferUuid);
+          // _orderDataController.setItemStatus(offer.status!);
+          Get.toNamed(Routes.myOfferAdDetailsScreen);
         } else {
           showErrorSnackbar(
             Get.context!,

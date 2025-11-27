@@ -6,6 +6,7 @@ AppBar MyOfferAppBarWidget(
   BuildContext context, {
   required offerOrOrder,
   required status,
+  required uuid,
   required timeLen,
   required timeItem,
   required price,
@@ -45,6 +46,7 @@ AppBar MyOfferAppBarWidget(
                     .onTap(() {
                       AppBarBottomSheetWidget(
                         context,
+                        uuid: uuid,
                         offerOrOrder: offerOrOrder,
                         curr: curr,
                         price: price,

@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 class OrderDataController extends GetxController {
   RxString serviceUuid = ''.obs;
   RxString itemUuid = ''.obs;
+  RxString offerItemUuid = ''.obs;
   RxString timeUuid = ''.obs;
   RxString data = ''.obs;
   RxString SrvType = ''.obs;
@@ -44,6 +45,7 @@ class OrderDataController extends GetxController {
   RxString fromAddress = ''.obs;
   RxString serviceName = ''.obs;
   RxString serviceNumber = ''.obs;
+
 
   RxString toDeliveryAddressUuid = ''.obs;
   RxString to = ''.obs;
@@ -94,8 +96,9 @@ class OrderDataController extends GetxController {
   void setIsListen(String value) => isListen.value = value;
   void setStateCase(String value) => stateCase.value = value;
   void setTypeItemSelected(String value) => typeItemSelected.value = value;
+  void setOfferItemUuid(String value) => offerItemUuid.value = value;
 
-  //typeItemSelected
+  //offerItemUuid
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -187,6 +190,7 @@ class OrderDataController extends GetxController {
     itemUuid.value = '';
     timeUuid.value = '';
     data.value = '';
+    offerItemUuid.value = '';
     userUuid.value = '';
     typeItemSelected.value = '';
     from.value = '';

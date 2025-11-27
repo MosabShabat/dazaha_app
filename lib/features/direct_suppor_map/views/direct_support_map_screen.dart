@@ -27,7 +27,7 @@ class DirectSupportMapScreen extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              width: Width.w,
+              width: 500.w,
               height: Height.h,
               decoration: BoxDecoration(color: context.colorsCustom.BlueBlue),
               child: MapWidget(

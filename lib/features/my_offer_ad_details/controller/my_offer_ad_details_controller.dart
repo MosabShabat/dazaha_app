@@ -128,7 +128,6 @@ class MyOfferAdDetailsController extends GetxController {
           Get.back(); // إغلاق الـ BottomSheet
           Get.back(); // العودة إلى الشاشة السابقة
           print('MyOfferToCustomerWidget : ');
-          //0597542400
           MyOfferToCustomerWidget(
             Get.context!,
             IsShowRow: false,

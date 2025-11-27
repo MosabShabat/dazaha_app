@@ -43,6 +43,7 @@ class LoginScreen extends StatelessWidget {
                   LoginTextFieldWidget(
                     context,
                     controller: _loginController.phoneController,
+                    textAlign: 'null',
                   ),
                   verticalSpace(20.h),
                   Obx(() {

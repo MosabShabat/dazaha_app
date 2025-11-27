@@ -11,6 +11,7 @@ Widget AdvertiserRowWidget(
   required name,
   required orderCount,
   required rating,
+  required isMe,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,32 +57,35 @@ Widget AdvertiserRowWidget(
             ],
           ),
 
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: context.colorsCustom.CardBackgroundLightGray,
-                radius: 20.w,
-                child: SvgPicture.asset(
-                  AppAssets.svgs.message_icon,
-                  color: context.colorsCustom.surfacePrimaryBlack,
+          isMe
+              ? SizedBox.shrink()
+              : Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor:
+                          context.colorsCustom.CardBackgroundLightGray,
+                      radius: 20.w,
+                      child: SvgPicture.asset(
+                        AppAssets.svgs.message_icon,
+                        color: context.colorsCustom.surfacePrimaryBlack,
+                      ),
+                    ).onTap(() {
+                      Get.toNamed(
+                        Routes.reportAProblemChatSupportScreen,
+                        arguments: {
+                          AppConstants.liveSupport: false,
+                          AppConstants.uuid: '${uuid}',
+                          AppConstants.receiverImage: '${image}',
+                          AppConstants.receiverName: '${name}',
+                          AppConstants.receiverVerify: true,
+                        },
+                      );
+                      // Get.toNamed(Routes.reportAProblemChatSupportScreen);
+                    }),
+                    horizontalSpace(5.w),
+                    RatingCircle(rating: rating),
+                  ],
                 ),
-              ).onTap(() {
-                Get.toNamed(
-                  Routes.reportAProblemChatSupportScreen,
-                  arguments: {
-                    AppConstants.liveSupport: false,
-                    AppConstants.uuid: '${uuid}',
-                    AppConstants.receiverImage: '${image}',
-                    AppConstants.receiverName: '${name}',
-                    AppConstants.receiverVerify: true,
-                  },
-                );
-                // Get.toNamed(Routes.reportAProblemChatSupportScreen);
-              }),
-              horizontalSpace(5.w),
-              RatingCircle(rating: rating),
-            ],
-          ),
         ],
       ),
       verticalSpace(20.h),

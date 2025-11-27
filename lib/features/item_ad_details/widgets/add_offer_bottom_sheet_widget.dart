@@ -1,3 +1,5 @@
+import 'package:dazaha_app/core/helpers/constants.dart';
+
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/widgets/app_loading_button.dart';
@@ -13,6 +15,7 @@ import 'list_time_widget.dart';
 Future<dynamic> AddOfferBottomSheetWidget(
   BuildContext context, {
   required int timeLen,
+  required uuid,
   required List<dynamic> timeItem,
   required dynamic price,
   required String curr,
@@ -116,6 +119,7 @@ Future<dynamic> AddOfferBottomSheetWidget(
                 _buildSaveButton(
                   context,
                   controller: controller,
+                  uuid: uuid,
                   isUpdate: isUpdate,
                 ),
                 verticalSpace(20.h),
@@ -132,7 +136,7 @@ Future<dynamic> AddOfferBottomSheetWidget(
 Widget _buildSaveButton(
   BuildContext context, {
   required dynamic controller,
-
+  required uuid,
   required bool isUpdate,
 }) {
   return Obx(() {
@@ -146,7 +150,7 @@ Widget _buildSaveButton(
           );
         } else {
           print('ItemAdDetailsController : ');
-
+          AppConstants.addOfferUuid = '${uuid}';
           (controller as ItemAdDetailsController).validationInputData(context);
         }
       },

@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dazaha_app/core/helpers/constants.dart';
+import '../../../core/helpers/constants.dart';
 import '../../../features/choose_the_service/controller/order_data_controller.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
@@ -19,6 +19,10 @@ class CatRowPayWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         orderController.itemUuid.value = '${AppConstants.orderUuid}';
+        orderController.offerItemUuid.value = '${AppConstants.offerUuid}';
+
+        // AppConstants.offerUuid = AppConstants.offerUuid;
+        //
         Get.toNamed(Routes.itemAdDetailsScreen);
       },
       child: Row(

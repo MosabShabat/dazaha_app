@@ -8,6 +8,7 @@ import '../../../features/my_offer_ad_details/widgets/delete_bottom_sheet_widget
 Future<dynamic> AppBarBottomSheetWidget(
   BuildContext context, {
   required int timeLen,
+  required uuid,
   required offerOrOrder,
   required List<dynamic> timeItem,
   required dynamic price,
@@ -52,6 +53,7 @@ Future<dynamic> AppBarBottomSheetWidget(
                     onTap: () {
                       AddOfferBottomSheetWidget(
                         context,
+                        uuid: uuid,
                         price: price,
                         curr: curr,
                         timeLen: timeLen,

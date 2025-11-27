@@ -87,6 +87,7 @@ class AppConstants {
   static String userName = 'userName';
   static String orderId = '';
   static String userImage = '';
+  static String offerUuid = '';
   static String orderTitle = 'orderTitle';
   static String liveSupport = 'liveSupport';
   static String uuid = 'uuid';
@@ -94,6 +95,7 @@ class AppConstants {
   static String receiverName = 'receiverName';
   static String receiverVerify = 'receiverVerify';
   static String isDriver = '';
+  static String addOfferUuid = '';
   static String orderUuid = '';
   static String typeReq = '';
   static const String paymentId = 'paymentId';
@@ -190,6 +192,8 @@ class NotificationTypes {
   //chats  new_technical_support_message
   static const String newTechnicalSupportMessage =
       'new_technical_support_message';
+
+  static const String newMessage = 'new_message';
 }
 
 class MessageTypes {

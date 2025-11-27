@@ -12,6 +12,7 @@ Widget TextServiceWidget(
   double? size2,
   required String fontFamily1,
   String? fontFamily2,
+  height,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,7 +20,7 @@ Widget TextServiceWidget(
     children: [
       SizedBox(
         width: 250.w,
-        height: 20.h,
+        height: height ?? 20.h,
         child: Text(
           text1,
           textAlign: TextAlign.start,

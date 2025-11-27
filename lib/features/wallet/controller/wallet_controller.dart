@@ -43,6 +43,8 @@ class WalletController extends GetxController {
 
   ExecuteOrderModel? executeOrderModel;
 
+ 
+
   void validateInput(String transactionType) {
     if (amountController.text.isEmpty) {
       showErrorSnackbar(
@@ -272,5 +274,11 @@ class WalletController extends GetxController {
     hasMorePages.value = true;
     recordTransactionsModel.clear();
     getWallet();
+  }
+
+  @override
+  void onClose() {
+    resetControllerState();
+    super.onClose();
   }
 }

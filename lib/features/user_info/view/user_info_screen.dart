@@ -7,6 +7,7 @@ import '../../../../features/user_info/controller/user_info_controller.dart';
 import '../../../../features/user_info/widgets/profile_image_widget.dart';
 import '../../../../features/user_info/widgets/profile_info_edit_widget.dart';
 import '../../../../features/user_info/widgets/user_info_app_bar_widget.dart';
+import '../../../core/widgets/progress_view_white.dart';
 
 class UserInfoScreen extends StatelessWidget {
   UserInfoScreen({super.key});
@@ -34,7 +35,7 @@ class UserInfoScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (_profileController.isUserDataLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: ProgressViewWhite(context, false));
         }
 
         final user = _profileController.userData.value;

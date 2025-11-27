@@ -14,7 +14,8 @@ Widget MyTextField({
   Widget? prefixIcon,
   Function(String)? onSubmitted,
   double Radius = 12.0,
-  String? initialValue, // ملاحظة: TextFormField لا يدعم initialValue مع controller
+  String?
+  initialValue, // ملاحظة: TextFormField لا يدعم initialValue مع controller
   Color? fillColor,
   Color? hintStyleColor,
   Color? enabledBorderColor,
@@ -31,6 +32,7 @@ Widget MyTextField({
 }) {
   return AppTextFormField(
     hintText: hintText ?? '',
+    textAlign: 'null',
     keyboardType: keyboardType ?? TextInputType.text,
     controller: controller,
     isObscureText: obscureText,
@@ -49,9 +51,7 @@ Widget MyTextField({
       fontFamily: HintTextFontFamily,
       decoration: hintTextDirection,
     ),
-    inputTextStyle: TextStyle(
-      fontWeight: fontWeight,
-    ),
+    inputTextStyle: TextStyle(fontWeight: fontWeight),
     hasBorder: true,
     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     textInputAction: TextInputAction.done,

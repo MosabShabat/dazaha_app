@@ -1,6 +1,7 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../features/home_page/widgets/case_container_widget.dart';
+import '../../../core/helpers/constants.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import 'accept_cat_bottom_sheet/accept_bottom_sheet_widget.dart';
 
@@ -63,28 +64,54 @@ Widget PresenterInfoWidget(
             fontSize: 12.sp,
             color: textSecondary,
           ),
-          CaseContainerWidget(
-            context,
-            BackGroundColor: context.colorsCustom.TealGreenSecondary,
-            height: 31.h,
-            text: context.acceptance,
-            textColor: context.colorsCustom.ButtonLabelPrimary,
-            textSize: 12.sp,
-            horizontalPadding: 25.w,
-            borderRadius: 8.r,
-            colorBorder: context.colorsCustom.TealGreenSecondary,
-            onTap: () {
-              orderDataController.setItemUuid('${uuid}');
-              AcceptBottomSheetWidget(
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: context.colorsCustom.CardBackgroundLightGray,
+                radius: 20.w,
+                child: SvgPicture.asset(
+                  AppAssets.svgs.message_icon,
+                  color: context.colorsCustom.surfacePrimaryBlack,
+                ),
+              ).onTap(() {
+                Get.toNamed(
+                  Routes.reportAProblemChatSupportScreen,
+                  arguments: {
+                    AppConstants.liveSupport: false,
+                    AppConstants.uuid: '${uuid}',
+                    AppConstants.receiverImage: '${image}',
+                    AppConstants.receiverName: '${name}',
+                    AppConstants.receiverVerify: true,
+                  },
+                );
+                // Get.toNamed(Routes.reportAProblemChatSupportScreen);
+              }),
+              horizontalSpace(5.w),
+
+              CaseContainerWidget(
                 context,
-                name: name,
-                rate: rate,
-                addedAt: addedTime,
-                priceCurr: priceCurr,
-                uuid: uuid,
-                image: image,
-              );
-            },
+                BackGroundColor: context.colorsCustom.TealGreenSecondary,
+                height: 31.h,
+                text: context.acceptance,
+                textColor: context.colorsCustom.ButtonLabelPrimary,
+                textSize: 12.sp,
+                horizontalPadding: 25.w,
+                borderRadius: 8.r,
+                colorBorder: context.colorsCustom.TealGreenSecondary,
+                onTap: () {
+                  orderDataController.setItemUuid('${uuid}');
+                  AcceptBottomSheetWidget(
+                    context,
+                    name: name,
+                    rate: rate,
+                    addedAt: addedTime,
+                    priceCurr: priceCurr,
+                    uuid: uuid,
+                    image: image,
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ).box.width(250.w).make(),

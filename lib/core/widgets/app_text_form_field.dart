@@ -8,6 +8,7 @@ class AppTextFormField extends StatelessWidget {
   final InputBorder? focusedBorder;
   final InputBorder? enabledBorder;
   final TextStyle? inputTextStyle;
+  final textAlign;
   final TextStyle? hintStyle;
   final String hintText;
   final bool? isObscureText;
@@ -39,6 +40,7 @@ class AppTextFormField extends StatelessWidget {
     this.focusedBorder,
     this.enabledBorder,
     this.inputTextStyle,
+    required this.textAlign,
     this.hintStyle,
     required this.hintText,
     this.isObscureText,
@@ -81,9 +83,11 @@ class AppTextFormField extends StatelessWidget {
       selectionControls: materialTextSelectionControls,
       controller: controller,
       enabled: enabled,
+
       readOnly: readOnly,
       decoration: InputDecoration(
         isDense: true,
+
         contentPadding:
             contentPadding ??
             EdgeInsets.symmetric(horizontal: 20.h, vertical: 14.w),
@@ -133,7 +137,12 @@ class AppTextFormField extends StatelessWidget {
       validator: (value) {
         return validator(value);
       },
-      textAlign: hintCenter == true ? TextAlign.center : TextAlign.start,
+      textAlign: textAlign == 'null'
+          ? hintCenter == true
+                ? TextAlign.center
+                : TextAlign.start
+          : textAlign,
+      // textAlign: hintCenter == true ? TextAlign.center : TextAlign.start,
       textDirection: textDirection,
       minLines: (height != null) ? (height! ~/ 24).toInt() : 1,
       maxLines: (height != null) ? (height! ~/ 24).toInt() : null,

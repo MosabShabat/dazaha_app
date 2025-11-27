@@ -32,9 +32,12 @@ class MyAdPayMentController extends GetxController {
 
   OrderPaymentModel? orderPaymentModel;
 
+  RxString totalText = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
+    AppConstants.offerUuid = _orderDataController.offerItemUuid.value;
     _orderDataController.likedPrice.value = couponCodeController.text;
     _fetchPayment(couponCodeController.text, 'false');
   }
@@ -42,10 +45,23 @@ class MyAdPayMentController extends GetxController {
   // Validate coupon input
   void validateInput(BuildContext context) {
     if (couponCodeController.text.trim().isEmpty) {
-      showErrorSnackbar(context, context.enterCouponHere,FirstColor: Colors.amber);
+      showErrorSnackbar(
+        context,
+        context.enterCouponHere,
+        FirstColor: Colors.amber,
+      );
       return;
     }
     _fetchPayment(couponCodeController.text, AppConstants.coupon);
+  }
+
+  void deleteCoupon(BuildContext context) {
+    final coupon = ''; // أو أي قيمة يحتاجها السيرفر للحذف
+    _fetchPayment(coupon, AppConstants.coupon);
+
+    // بعد نجاح الطلب سيتم تحديث الحقل تلقائيًا
+    couponCodeController.clear();
+    isDisabledCoupon.value = true;
   }
 
   Future<void> _fetchPayment(String? couponCode, String type) async {
@@ -59,7 +75,11 @@ class MyAdPayMentController extends GetxController {
         if (response.status == true && response.data != null) {
           _updatePaymentModel(response, couponCode);
         } else {
-          showErrorSnackbar(Get.context!, response.message ?? '',FirstColor: Colors.red);
+          showErrorSnackbar(
+            Get.context!,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {
@@ -77,7 +97,18 @@ class MyAdPayMentController extends GetxController {
     totalPrice.value = orderPaymentModel!.total;
     currency.value = orderPaymentModel!.currency;
 
-    isDisabledCoupon.value = couponCode == null || couponCode.isEmpty;
+    // تحديث النص للزر
+    totalText.value =
+        "${Get.context!.payNow}  ${orderPaymentModel!.total} ${orderPaymentModel!.currency}";
+    if (couponCode != null && couponCode.isNotEmpty) {
+      // كوبون موجود → اقفل الحقل
+      isDisabledCoupon.value = false;
+    } else {
+      // لا يوجد كوبون → افتح الحقل
+      isDisabledCoupon.value = true;
+    }
+
+    // isDisabledCoupon.value = couponCode == null || couponCode.isEmpty;
   }
 
   void _setLoading(String type, bool value) {
@@ -109,7 +140,11 @@ class MyAdPayMentController extends GetxController {
           AppConstants.typeReq == 'order';
           Get.toNamed(Routes.reviewPayMentScreen);
         } else {
-          showErrorSnackbar(context, response.message ?? '',FirstColor: Colors.red);
+          showErrorSnackbar(
+            context,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

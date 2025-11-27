@@ -44,6 +44,7 @@ Widget DisCouponWidget(
                     () => AppTextFormField(
                       controller: controller.couponCodeController,
                       hasBorder: false,
+                      textAlign: 'null',
                       enabled: controller.isDisabledCoupon.value,
                       contentPadding: EdgeInsets.zero,
                       keyboardType: TextInputType.text,
@@ -71,13 +72,22 @@ Widget DisCouponWidget(
                     context,
                     buttonWidth: 80,
                     backgroundColor: context.colorsCustom.surfacePrimaryBlack,
-                    buttonText: context.implementation,
-                    textStyle: controller.isDisabledCoupon.isTrue
-                        ? AppTextStyles.font14Primary500Medium(context)
-                        : AppTextStyles.font14Grey500Medium(context),
+                    buttonText: controller.isDisabledCoupon.isTrue
+                        ? context
+                              .implementation // Apply
+                        : context.delete, // Delete
+                    textStyle: AppTextStyles.font14Primary500Medium(context),
                     onPressed: () {
-                      if (controller.isDisabledCoupon.isTrue)
+                      if (controller.isDisabledCoupon.isTrue) {
+                        // تطبيق القسيمة
                         controller.validateInput(context);
+                        // بعد نجاح الاستجابة من السيرفر، اجعل الحقل معطل
+                        //  controller.isDisabledCoupon.value = false;
+                      } else {
+                        // حذف القسيمة
+                        controller.couponCodeController.clear();
+                        controller.deleteCoupon(context);
+                      }
                     },
                   ),
           ),

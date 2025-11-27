@@ -7,6 +7,8 @@ Widget LoginTextFieldWidget(
   controller,
   hintText,
   readOnly,
+  hintCenter,
+  textAlign,
 }) {
   return Container(
     height: 52.h,
@@ -46,6 +48,8 @@ Widget LoginTextFieldWidget(
             controller: controller,
             textDirection: TextDirection.ltr,
             maxLength: 10,
+            hintCenter: hintCenter,
+            textAlign: textAlign,
             readOnly: readOnly ?? false,
             hasBorder: false,
             keyboardType: TextInputType.phone,

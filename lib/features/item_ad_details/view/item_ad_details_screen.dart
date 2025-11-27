@@ -195,6 +195,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
             name: item.user?.fullName ?? '',
             orderCount: item.user?.ordersCount ?? '',
             rating: item.user?.ratingPercentage ?? '',
+            isMe: controller.orderDetailsItem!.value.isMe,
           ),
       ],
     ).box.padding(EdgeInsets.symmetric(horizontal: 16.w)).make();
@@ -250,6 +251,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
                 onDriverActive: () {
                   AddOfferBottomSheetWidget(
                     context,
+                    uuid: item.uuid,
                     price: item.likedPrice,
                     curr: item.currency!,
                     timeLen: item.times?.length ?? 0,

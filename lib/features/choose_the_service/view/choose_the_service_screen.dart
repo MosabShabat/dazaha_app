@@ -52,6 +52,7 @@ class ChooseTheServiceScreen extends StatelessWidget {
       color1: context.colorsCustom.TextPrimary,
       text1: context.needSomethingDontWorry,
       size1: 18.sp,
+      height: 30.h,
       fontFamily1: context.textStyles.titleLarge.bold.fontFamily!,
       color2: context.colorsCustom.TextSecondary,
       text2: context.weDeliverBuyAndHandleEverythingForYou,
