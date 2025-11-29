@@ -26,7 +26,7 @@ AppBar MyOfferAppBarWidget(
             ),
             child: Center(child: Icon(Icons.arrow_back_ios)),
           ).onTap(() {
-            Get.back();
+            Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 3});
           }),
     ),
     actions: [

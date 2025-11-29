@@ -44,10 +44,10 @@ class ChatTechnicalSupportController extends GetxController
     scrollController.addListener(scrollListener);
     WidgetsBinding.instance.addObserver(this);
 
-    final receiver = Get.arguments?['receiverUuid'] ?? 'technical_support';
-
-    initReverb(receiver); // ✅ اشترك أولاً
-    getMessages(receiver); // ثم جلب الرسائل السابقة
+    // final receiver = receiverUuid ?? 'technical_support';
+    // print("Receiver UUID: $receiver");
+    // initReverb(receiver); // ✅ اشترك أولاً
+    // getMessages(receiver); // ثم جلب الرسائل السابقة
   }
 
   @override

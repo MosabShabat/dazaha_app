@@ -6,6 +6,7 @@ class OrderDataController extends GetxController {
   RxString itemUuid = ''.obs;
   RxString offerItemUuid = ''.obs;
   RxString timeUuid = ''.obs;
+  RxString offerItemDetUuid = ''.obs;
   RxString data = ''.obs;
   RxString SrvType = ''.obs;
   RxString OrderUuid = ''.obs;
@@ -45,7 +46,6 @@ class OrderDataController extends GetxController {
   RxString fromAddress = ''.obs;
   RxString serviceName = ''.obs;
   RxString serviceNumber = ''.obs;
-
 
   RxString toDeliveryAddressUuid = ''.obs;
   RxString to = ''.obs;
@@ -97,8 +97,9 @@ class OrderDataController extends GetxController {
   void setStateCase(String value) => stateCase.value = value;
   void setTypeItemSelected(String value) => typeItemSelected.value = value;
   void setOfferItemUuid(String value) => offerItemUuid.value = value;
+  void setOfferItemDetUuid(String value) => offerItemDetUuid.value = value;
 
-  //offerItemUuid
+  //offerItemDetUuid
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -194,6 +195,7 @@ class OrderDataController extends GetxController {
     userUuid.value = '';
     typeItemSelected.value = '';
     from.value = '';
+    offerItemDetUuid.value = '';
     isListen.value = '';
     tripState.value = '';
     userMobile.value = '';

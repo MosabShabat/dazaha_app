@@ -70,6 +70,7 @@ Widget AdvertiserRowWidget(
                         color: context.colorsCustom.surfacePrimaryBlack,
                       ),
                     ).onTap(() {
+                      print("UUID: ${uuid}, Name: ${name}, Image: ${image}");
                       Get.toNamed(
                         Routes.reportAProblemChatSupportScreen,
                         arguments: {

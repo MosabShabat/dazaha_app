@@ -9,6 +9,7 @@ import '../../../../core/network/utils/dio_factory.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../features/auth/register/controller/register_repo.dart';
 import '../../../choose_the_service/controller/order_data_controller.dart';
+import '../../../home_page/controller/home_page_controller.dart';
 
 class RegisterController extends GetxController {
   final RegisterRepo _createAccountRepo = Get.find<RegisterRepo>();
@@ -114,9 +115,22 @@ class RegisterController extends GetxController {
           );
           userName = userData.firstName ?? '';
           isUserLogin.value = true;
-          await AppSharedData.setUserLogin(true);
-          await AppSharedData.setUserInfo(userData);
-          await saveUserToken(userData.token ?? '');
+          // حفظ بيانات المستخدم
+          await Future.wait([
+            AppSharedData.setUserLogin(true),
+            AppSharedData.setUserInfo(userData),
+            saveUserToken(userData.token ?? ''),
+          ]);
+          // تحديث بيانات الصفحة الرئيسية
+          if (Get.isRegistered<HomePageController>()) {
+            final homeController = Get.find<HomePageController>();
+
+            homeController.loadCurrentUser();
+            await homeController.getHome();
+
+            AppConstants.isDriver =
+                '${homeController.userData.value?.isDriver}';
+          }
           Get.offAllNamed(
             Routes.homeScreen,
             arguments: {

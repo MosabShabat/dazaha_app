@@ -20,6 +20,9 @@ class WalletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    orderDataController.setFromDate('');
+    orderDataController.setToDate('');
+    _walletController.resetControllerState();
     _walletController.getWallet();
     _walletController.scrollController.addListener(() {
       if (_walletController.scrollController.position.extentAfter < 300) {

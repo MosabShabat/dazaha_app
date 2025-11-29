@@ -31,10 +31,10 @@ class MyOfferAdDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    AppConstants.orderUuid = _orderDataController.itemUuid.value;
+    AppConstants.orderUuid = _orderDataController.offerItemDetUuid.value;
     getOfferDetails();
 
-    ever(_orderDataController.itemUuid, (_) {
+    ever(_orderDataController.offerItemDetUuid, (_) {
       getOfferDetails();
     });
   }

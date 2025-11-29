@@ -42,7 +42,9 @@ class ItemAdDetailsController extends GetxController {
     AppConstants.orderUuid = _orderDataController.itemUuid.value;
     print("AppConstants.orderUuid : ${AppConstants.orderUuid}");
 
-    getOrderDetails();
+    if (orderDetailsItem == null) {
+      getOrderDetails();
+    }
   }
 
   void getOrderDetails() async {
@@ -91,12 +93,17 @@ class ItemAdDetailsController extends GetxController {
           }
         } else {
           log('Error: ${response.message}');
-
-          showErrorSnackbar(
-            Get.context!,
-            response.message ?? '',
-            FirstColor: Colors.red,
-          );
+          print('GGGGGGGGGGGGGGGG');
+          print('Error: ${response.message}');
+          if (response.message!.contains('No query results for model')) {
+            log('Error: ${response.message}');
+          } else {
+            showErrorSnackbar(
+              Get.context!,
+              response.message ?? '',
+              FirstColor: Colors.red,
+            );
+          }
         }
       },
       failure: (error) {
@@ -142,24 +149,49 @@ class ItemAdDetailsController extends GetxController {
       success: (response) {
         _setButtonPressed(false);
         if (response.status == true) {
-          getOrderDetails();
+          // 1️⃣ الحصول على offer_uuid من البيانات المرتجعة
+          String? offerUuid;
+          if (response.data != null && response.data is Map<String, dynamic>) {
+            final dataMap = response.data as Map<String, dynamic>;
+            offerUuid = dataMap['offer_uuid']?.toString();
+          }
 
-          Get.back();
+          // 2️⃣ تحديث الـ controller بالـ offer_uuid الجديد
+          if (offerUuid != null) {
+            _orderDataController.setOfferItemDetUuid(offerUuid);
+          }
+
+          // تحديث تفاصيل الطلب
+          getOrderDetails();
+          if (Get.isBottomSheetOpen ?? false) {
+            Get.back(); // إغلاق BottomSheet فقط
+          }
+          // عرض الـ widget الخاص بالعرض
           MyOfferToCustomerWidget(
             Get.context!,
             IsShowRow: false,
             title: '1',
             onTap: () {},
           );
-          _orderDataController.setItemUuid(AppConstants.addOfferUuid);
-          // _orderDataController.setItemStatus(offer.status!);
-          Get.toNamed(Routes.myOfferAdDetailsScreen);
+
+          // التنقل إلى شاشة تفاصيل العرض
+          Get.offAllNamed(Routes.myOfferAdDetailsScreen);
         } else {
-          showErrorSnackbar(
-            Get.context!,
-            response.message ?? '',
-            FirstColor: Colors.red,
-          );
+          print('Error: ${response.message}');
+          if (response.message!.contains('No query results for model')) {
+            log('Error: ${response.message}');
+          } else {
+            showErrorSnackbar(
+              Get.context!,
+              response.message ?? '',
+              FirstColor: Colors.red,
+            );
+          }
+          // showErrorSnackbar(
+          //   Get.context!,
+          //   response.message ?? '',
+          //   FirstColor: Colors.red,
+          // );
         }
       },
       failure: (error) {

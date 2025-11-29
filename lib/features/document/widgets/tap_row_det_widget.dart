@@ -129,7 +129,7 @@ Widget TapRowDetWidget(
         ],
       ).paddingOnly(bottom: index == controller.lastIndex ? 15.h : 0.h).onTap(
         () {
-          orderDataController.setItemUuid(offer.uuid ?? '');
+          orderDataController.setOfferItemDetUuid(offer.uuid ?? '');
           orderDataController.setItemStatus(offer.status!);
           Get.toNamed(Routes.myOfferAdDetailsScreen);
         },

@@ -99,3 +99,21 @@ Future<dynamic> AcceptBottomSheetWidget(
     },
   );
 }
+
+      //  // حفظ بيانات المستخدم
+      //       await Future.wait([
+      //         AppSharedData.setUserLogin(true),
+      //         AppSharedData.setUserInfo(verificationModel.user!),
+      //         saveUserToken(verificationModel.user?.token ?? ''),
+      //       ]);
+
+      //       // تحديث بيانات الصفحة الرئيسية
+      //       if (Get.isRegistered<HomePageController>()) {
+      //         final homeController = Get.find<HomePageController>();
+
+      //         homeController.loadCurrentUser();
+      //         await homeController.getHome();
+
+      //         AppConstants.isDriver =
+      //             '${homeController.userData.value?.isDriver}';
+      //       }
