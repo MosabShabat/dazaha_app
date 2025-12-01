@@ -65,9 +65,13 @@ class NotificationService {
       String? type = _initialMessage!.data[NotificationTypes.type];
       String? referenceUuid =
           _initialMessage!.data[NotificationTypes.referenceUuid];
+      String? uuid = _initialMessage!.data['sender_uuid'];
+      String? name = _initialMessage!.data['title'];
+      String? image = _initialMessage!.data['image'];
+
       if (type != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _onNotificationClicked(type, referenceUuid ?? '');
+          _onNotificationClicked(type, referenceUuid ?? '', uuid, image, name);
         });
       }
       _initialMessage = null;
@@ -112,8 +116,17 @@ class NotificationService {
           final data = jsonDecode(response.payload!);
           String? type = data[NotificationTypes.type];
           String? referenceUuid = data[NotificationTypes.referenceUuid];
+          String? uuid = data['sender_uuid'];
+          String? name = data['title'];
+          String? image = data['image'];
           if (type != null) {
-            _onNotificationClicked(type, referenceUuid ?? '');
+            _onNotificationClicked(
+              type,
+              referenceUuid ?? '',
+              uuid,
+              name,
+              image,
+            );
           }
         }
       },
@@ -160,8 +173,14 @@ class NotificationService {
   void _handleForegroundNotification(Map<String, dynamic> data) {
     String? type = data[NotificationTypes.type];
     String referenceUuid = data[NotificationTypes.referenceUuid];
+    String? uuid = data['sender_uuid'];
+    String? name = data['title'];
+    String? image = data['image'];
     log('type : $type');
     log('referenceUuid : $referenceUuid');
+    log('sender_uuid : $uuid');
+    log('name : $name');
+    log('image : $image');
 
     // Notifications
     if ((type == NotificationTypes.general ||
@@ -186,9 +205,7 @@ class NotificationService {
 
     if (type == NotificationTypes.newMessage &&
         Get.isRegistered<ChatTechnicalSupportController>()) {
-      Get.find<ChatTechnicalSupportController>().getMessages(
-        '${referenceUuid}',
-      );
+      Get.find<ChatTechnicalSupportController>().getMessages('${uuid}');
     }
 
     //newMessage
@@ -260,7 +277,13 @@ class NotificationService {
   }
 
   // 🧭 When user clicks notification
-  void _onNotificationClicked(String type, String referenceUuid) {
+  void _onNotificationClicked(
+    String type,
+    String referenceUuid,
+    String? uuid,
+    String? name,
+    String? image,
+  ) {
     log('Notification clicked: $type');
     log('referenceUuid: $referenceUuid');
 
@@ -290,7 +313,7 @@ class NotificationService {
 
       case NotificationTypes.orderInProgress:
         if (referenceUuid.isNotEmpty) {
-          _orderDataController.setItemUuid(referenceUuid);
+          _orderDataController.setOfferItemDetUuid(referenceUuid);
           // _orderDataController.setItemStatus(
           //   type == NotificationTypes.orderInProgress ||
           //           type == NotificationTypes.orderStarted ||
@@ -335,9 +358,9 @@ class NotificationService {
           Routes.reportAProblemChatSupportScreen,
           arguments: {
             AppConstants.liveSupport: false,
-            AppConstants.uuid: '${referenceUuid}',
-            AppConstants.receiverImage: 'image_url',
-            AppConstants.receiverName: 'Support Bot',
+            AppConstants.uuid: '${uuid}',
+            AppConstants.receiverImage: '${image}',
+            AppConstants.receiverName: '${name}',
             AppConstants.receiverVerify: true,
           },
         );

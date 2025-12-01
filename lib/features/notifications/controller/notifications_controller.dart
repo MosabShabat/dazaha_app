@@ -19,7 +19,9 @@ class NotificationsController extends GetxController {
   Rx<Notifications>? notificationsModel;
   var notificationsList = <NotificationItem>[].obs;
 
-  final ScrollController scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController(
+    keepScrollOffset: true,
+  );
 
   @override
   void onInit() {

@@ -23,16 +23,7 @@ import 'core/services/notification_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Shared preferences
   await initializeAppPreferences();
-
-  // try {
-  //   await dotenv.load(fileName: "assets/.env");
-  //   print('REVERB_HOST = ${dotenv.env['REVERB_HOST']}');
-  //   print('✅ Loaded .env file successfully');
-  // } catch (e) {
-  //   print('⚠️ .env file not found! Make sure it exists in the project root.');
-  // }
 
   // Determine initial route
   final bool isUserLogged = await AppSharedData.isUserLogin();

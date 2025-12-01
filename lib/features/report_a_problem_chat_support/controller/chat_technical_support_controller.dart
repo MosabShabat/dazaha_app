@@ -19,6 +19,8 @@ import 'web_socket_response.dart';
 
 class ChatTechnicalSupportController extends GetxController
     with WidgetsBindingObserver {
+  final String receiverUuid;
+  ChatTechnicalSupportController(this.receiverUuid);
   final ChatTechnicalSupportRepo _chatRepo = Get.find();
 
   late SimpleFlutterReverb reverb;
@@ -44,10 +46,10 @@ class ChatTechnicalSupportController extends GetxController
     scrollController.addListener(scrollListener);
     WidgetsBinding.instance.addObserver(this);
 
-    // final receiver = receiverUuid ?? 'technical_support';
-    // print("Receiver UUID: $receiver");
-    // initReverb(receiver); // ✅ اشترك أولاً
-    // getMessages(receiver); // ثم جلب الرسائل السابقة
+    final receiver = receiverUuid;
+    print("Receiver UUID: $receiver");
+    initReverb(receiver); // ✅ اشترك أولاً
+    getMessages(receiver); // ثم جلب الرسائل السابقة
   }
 
   @override
@@ -59,7 +61,9 @@ class ChatTechnicalSupportController extends GetxController
       isKeyboardVisible.value = keyboardIsVisible;
       if (keyboardIsVisible) {
         print("Keyboard opened");
-        Future.delayed(Duration(milliseconds: 100), scrollToBottom);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          scrollToBottom();
+        });
       } else {
         print("Keyboard closed");
       }
@@ -80,6 +84,8 @@ class ChatTechnicalSupportController extends GetxController
 
     reverb.listen((event) {
       print("📩 WebSocket Event received: ${event.event}");
+      print("Received event: ${event.event}, data: ${event.data}");
+
       if (event.event == 'specialist-chat.message') {
         try {
           final message = Message.fromJson(event.data!);
@@ -90,6 +96,7 @@ class ChatTechnicalSupportController extends GetxController
         } catch (e) {
           print('❌ Failed to parse incoming message: $e');
         }
+        //c585c34f-9e82-4dbc-b935-83559f0bacb6
       }
     }, channel);
   }
@@ -111,17 +118,30 @@ class ChatTechnicalSupportController extends GetxController
               messages.addAll(generalMessage!.value.message!);
               messages.refresh();
               Future.delayed(Duration(milliseconds: 100), scrollToBottom);
+              scrollToBottom(); // تمرير تلقائي بعد إضافة الرسالة
             }
           } else {
             showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
           }
         } else {
           isLoading.value = false;
-          showErrorSnackbar(Get.context!, response.message ?? '');
+          if (response.message!.contains('No query results for model')) {
+            log('Error: ${response.message}');
+          } else {
+            showErrorSnackbar(
+              Get.context!,
+              response.message ?? '',
+              FirstColor: Colors.red,
+            );
+          }
         }
       },
       failure: (error) {
         isLoading.value = false;
+        log('❌ Error fetching messages: $error');
+        // if (error) {
+
+        // }
         showSnackbarErrorApi(Get.context!, [error], null);
       },
     );
@@ -147,6 +167,7 @@ class ChatTechnicalSupportController extends GetxController
     messages.add(newMessage);
     messages.refresh();
     Future.delayed(Duration(milliseconds: 100), scrollToBottom);
+    scrollToBottom(); // تمرير تلقائي بعد إضافة الرسالة
 
     if (contentType == MessageTypes.messageText) {
       sendMessageRequest(receiverUuid, contentType, content, null);
@@ -203,6 +224,9 @@ class ChatTechnicalSupportController extends GetxController
         }
       },
       failure: (error) {
+        log('kkkkkkkkkkkkkkkkkkkkkk');
+        log('❌ Error fetching messages: $error');
+
         _showApiErrors([error]);
       },
     );
@@ -223,17 +247,15 @@ class ChatTechnicalSupportController extends GetxController
   }
 
   void scrollToBottom() {
-    if (scrollController.hasClients) {
-      try {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
           duration: Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
-      } catch (e) {
-        // قد يحصل خطأ عند عدم وجود clients أو أثناء الاغلاق
       }
-    }
+    });
   }
 
   @override

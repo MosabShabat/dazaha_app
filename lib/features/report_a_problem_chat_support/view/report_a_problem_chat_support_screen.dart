@@ -8,10 +8,7 @@ import '../widgets/message_action_bar.dart';
 import '../widgets/messages_list_view.dart';
 
 class ReportAProblemChatSupportScreen extends StatelessWidget {
-  final ChatTechnicalSupportController controller = Get.put(
-    ChatTechnicalSupportController(),
-    tag: 'chatSupport',
-  );
+  late final ChatTechnicalSupportController controller;
 
   final String? receiverUuid, receiverImage, receiverName;
   final bool? receiverVerify;
@@ -23,12 +20,16 @@ class ReportAProblemChatSupportScreen extends StatelessWidget {
     this.receiverImage,
     this.receiverName,
     this.receiverVerify,
-  });
+  }) {
+    controller = Get.put(
+      ChatTechnicalSupportController(receiverUuid ?? 'technical_support'),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller.initReverb(receiverUuid ?? 'technical_support');
-    controller.getMessages(receiverUuid ?? 'technical_support');
+    // controller.initReverb(receiverUuid ?? 'technical_support');
+    // controller.getMessages(receiverUuid ?? 'technical_support');
 
     return Scaffold(
       body: SafeArea(

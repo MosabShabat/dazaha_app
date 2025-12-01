@@ -7,7 +7,7 @@ import '../../../core/widgets/app_empty_data/empty_notifications.dart';
 import '../../../core/widgets/app_shimmers/transactions_shimmer_list.dart';
 import '../../user_info/widgets/user_info_app_bar_widget.dart';
 import '../controller/notifications_controller.dart';
-import '../widgets/not_list_widget.dart';
+import '../widgets/notification_item.dart';
 
 class NotificationsScreen extends StatelessWidget {
   final NotificationsController _notificationsController = Get.find();
@@ -38,38 +38,62 @@ class NotificationsScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: SmartRefresher(
-          controller: _refreshController,
-          onRefresh: () async {
-            print('here : ++++++++++++++++');
-            _notificationsController.resetControllerState();
-            await _notificationsController.refreshNotifications();
-            _refreshController.refreshCompleted();
-          },
-          header: CustomHeader(
-            builder: (BuildContext context, RefreshStatus? status) {
-              return Container(
-                height: 60.h,
-                color: context.colorsCustom.surfacePrimaryWhite,
-                child: AppSharedMethods.buildProgressViewWhite(context, false),
-              );
-            },
-          ),
-          physics: ClampingScrollPhysics(),
-          child: Obx(() => _buildBody(context)),
-        ),
+        child: Obx(() {
+          if (_notificationsController.isLoading.isTrue &&
+              _notificationsController.notificationsList.isEmpty) {
+            return transactionsListShimmer(context, true);
+          } else if (_notificationsController.notificationsList.isEmpty) {
+            return EmptyNotifications(context);
+          } else {
+            return SmartRefresher(
+              controller: _refreshController,
+              enablePullUp: true,
+              onRefresh: () async {
+                _notificationsController.resetControllerState();
+                await _notificationsController.refreshNotifications();
+                _refreshController.refreshCompleted();
+              },
+              onLoading: () async {
+                await _notificationsController.loadMoreNotificationsModel();
+                _refreshController.loadComplete();
+              },
+              child: ListView.builder(
+                key: PageStorageKey('notifications_list'),
+                controller: _notificationsController.scrollController,
+                physics: const BouncingScrollPhysics(),
+                itemCount:
+                    _notificationsController.notificationsList.length + 1,
+                itemBuilder: (context, index) {
+                  if (index ==
+                      _notificationsController.notificationsList.length) {
+                    return _notificationsController.isLoadingMore.value
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20.h),
+                            child: Center(
+                              child: AppSharedMethods.buildProgressViewWhite(
+                                context,
+                                false,
+                              ),
+                            ),
+                          )
+                        : const SizedBox();
+                  }
+
+                  final notification =
+                      _notificationsController.notificationsList[index];
+                  return buildNotificationItem(
+                    context,
+                    notification: notification,
+                    index: index,
+                    totalItems:
+                        _notificationsController.notificationsList.length,
+                  );
+                },
+              ),
+            );
+          }
+        }),
       ),
     );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    // return Obx(() {
-    return (_notificationsController.isLoading.isTrue &&
-            _notificationsController.notificationsList.isEmpty)
-        ? transactionsListShimmer(context, true)
-        : (_notificationsController.notificationsList.isEmpty)
-        ? EmptyNotifications(context)
-        : NotListWidget(context, controller: _notificationsController);
-    // });
   }
 }

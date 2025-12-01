@@ -56,6 +56,8 @@ Widget DetailsContainerWidget(
     ),
   ).onTap(() {
     orderDataController.setItemUuid(currentReq?.uuid ?? '');
+    orderDataController.setOfferItemDetUuid(currentReq?.uuid ?? '');
+
     if (isOrder) {
       Get.toNamed(Routes.myAdsDetailsScreen);
     } else {

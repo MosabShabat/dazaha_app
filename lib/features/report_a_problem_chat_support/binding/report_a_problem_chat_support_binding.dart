@@ -1,4 +1,4 @@
-import '../../../../features/report_a_problem_chat_support/controller/chat_technical_support_controller.dart';
+// import '../../../../features/report_a_problem_chat_support/controller/chat_technical_support_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../core/network/utils/api_service.dart';
@@ -10,6 +10,6 @@ class ReportAProblemChatSupportBinding extends Bindings {
     Get.lazyPut<ChatTechnicalSupportRepo>(
       () => ChatTechnicalSupportRepo(Get.find<ApiService>()),
     );
-    Get.lazyPut(() => ChatTechnicalSupportController());
+    // Get.lazyPut(() => ChatTechnicalSupportController());
   }
 }

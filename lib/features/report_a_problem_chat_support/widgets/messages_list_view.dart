@@ -19,79 +19,71 @@ Widget MessageListView(
   bool? receiverVerify,
 ) {
   return Expanded(
+    flex: 1,
     child: Obx(() {
-      return controller.isLoading.isTrue
-          ? Center(
-              child: AppSharedMethods.buildProgressViewWhite(context, false),
-            )
-          : ListView.builder(
-              controller: controller.scrollController,
-              itemCount: controller.messages.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  if (isLiveSupport) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: Text(
-                          context.liveSupport,
-                          style: context.textStyles.bodyLarge.bold.copyWith(
-                            color: context.colorsCustom.TextPrimary,
-                            fontSize: 14.sp,
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        // if (controller.generalMessage!.value. == 1) {
-                        //   Get.toNamed(Routes.chefDetailsScreen, arguments: {
-                        //     AppConstants.uuid: receiverUuid,
-                        //     AppConstants.lat: AppConstants.lat,
-                        //     AppConstants.lng: AppConstants.lng,
-                        //   });
-                        // }
-                      },
-                      child: ReceiverData(
-                        context,
-                        receiverImage: receiverImage!,
-                        receiverName: receiverName!,
-                        receiverVerify: receiverVerify!,
-                      ),
-                    );
-                  }
-                }
-                final message = controller.messages[index - 1];
-                final isText = message.contentType == MessageTypes.messageText;
-                final isImage =
-                    message.contentType == MessageTypes.messageImage;
+      // لا نعرض Loader إلا أثناء getMessages
+      if (controller.isLoading.value && controller.messages.isEmpty) {
+        return Center(
+          child: AppSharedMethods.buildProgressViewWhite(context, false),
+        );
+      }
 
-                if (isText) {
-                  return TextMessage(
-                    context,
-                    message: message.content ?? "",
-                    time: message.timeAge ?? "",
-                    isMine: message.isMe!,
-                  );
-                } else if (isImage) {
-                  return ImageMessage(
-                    context,
-                    message: message.content ?? "",
-                    time: message.timeAge ?? "",
-                    isMine: message.isMe!,
-                  );
-                } else {
-                  return TextMessage(
-                    context,
-                    message: "voice",
-                    time: message.timeAge ?? "",
-                    isMine: message.isMe!,
-                  );
-                }
-              },
+      // حتى لو كانت الرسائل فارغة، نعرض ListView (لتتمكن من إرسال واستقبال الرسائل)
+      return ListView.builder(
+        controller: controller.scrollController,
+        itemCount: controller.messages.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            if (isLiveSupport) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Text(
+                    context.liveSupport,
+                    style: context.textStyles.bodyLarge.bold.copyWith(
+                      color: context.colorsCustom.TextPrimary,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return ReceiverData(
+                context,
+                receiverImage: receiverImage!,
+                receiverName: receiverName!,
+                receiverVerify: receiverVerify!,
+              );
+            }
+          }
+
+          if (controller.messages.isEmpty) return SizedBox.shrink();
+
+          final message = controller.messages[index - 1];
+          if (message.contentType == MessageTypes.messageText) {
+            return TextMessage(
+              context,
+              message: message.content ?? "",
+              time: message.timeAge ?? "",
+              isMine: message.isMe!,
             );
+          } else if (message.contentType == MessageTypes.messageImage) {
+            return ImageMessage(
+              context,
+              message: message.content ?? "",
+              time: message.timeAge ?? "",
+              isMine: message.isMe!,
+            );
+          } else {
+            return TextMessage(
+              context,
+              message: "voice",
+              time: message.timeAge ?? "",
+              isMine: message.isMe!,
+            );
+          }
+        },
+      );
     }),
   );
 }

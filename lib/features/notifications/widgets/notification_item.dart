@@ -60,7 +60,7 @@ Widget buildNotificationItem(
           Routes.reportAProblemChatSupportScreen,
           arguments: {
             AppConstants.liveSupport: false,
-            AppConstants.uuid: '${referenceUuid}',
+            AppConstants.uuid: '${notification.user!.uuid ?? ''}',
             AppConstants.receiverImage: '${notification.user!.image ?? ''}',
             AppConstants.receiverName: '${notification.user!.name ?? ''}',
             AppConstants.receiverVerify: true,
@@ -96,7 +96,7 @@ Widget buildNotificationItem(
       /// 🔵 الطلبات (قيد التنفيذ، مكتملة، تم البدء، ... إلخ)
       if (type == NotificationTypes.orderInProgress) {
         if (referenceUuid.isNotEmpty) {
-          _orderDataController.setItemUuid(referenceUuid);
+          _orderDataController.setOfferItemDetUuid(referenceUuid);
           Get.toNamed(Routes.myOfferAdDetailsScreen);
 
           // if (type == NotificationTypes.orderInProgress) {
