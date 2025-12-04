@@ -6,16 +6,19 @@ import '../../../../features/price_details_review/widgets/cap_in_det_widget.dart
 import '../../../../features/price_details_review/widgets/star_rating_widget%20.dart';
 import '../../../../features/price_details_review/widgets/top_enm_widget.dart';
 import '../../../core/widgets/app_loading_button.dart';
+import '../../home/controller/home_controller.dart';
 import '../controller/price_details_review_controller.dart';
 
 class PriceDetailsReviewScreen extends StatelessWidget {
   PriceDetailsReviewScreen({super.key});
   final PriceDetailsReviewController _priceDetailsReviewController = Get.find();
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        homeController.extraTabIndex.value = 2;
         // ✅ عند الضغط على زر الرجوع من النظام
         Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 3});
         return false;

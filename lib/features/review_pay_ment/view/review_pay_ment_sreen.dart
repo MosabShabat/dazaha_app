@@ -9,48 +9,56 @@ class ReviewPayMentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      body: SafeArea(
-        child: GeneralScreenWidget(
-          context,
-          wid: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Lottie.asset(AppAssets.json.done_json),
-                InfoColumnWidget(
-                  context,
-                  isShow: false,
-                  title: context.paymentCompletedSuccessfully,
-                  subTitle: context.trackYourOrderStatusAndSee,
-                ),
-                // GeneralBottomAppWidget(
-                //   context,
-                //   text: context.orderTracking,
-                //   onTap: () {
-                //     Get.toNamed(
-                //       Routes.myAdsDetailsScreen,
-                //       arguments: {'isShow': true},
-                //     );
-                //   },
-                // ),
-                verticalSpace(40.h),
-                Text(
-                  context.home,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  style: context.textStyles.bodyLarge.medium.copyWith(
-                    color: context.colorsCustom.TextPrimary,
+    return WillPopScope(
+      // اعتراض زر الرجوع في النظام
+      onWillPop: () async {
+        // الانتقال إلى الصفحة الرئيسية بدل الرجوع الافتراضي
+        Get.offAllNamed(Routes.homeScreen);
+        return false; // منع الرجوع الافتراضي
+      },
+      child: Scaffold(
+        backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+        body: SafeArea(
+          child: GeneralScreenWidget(
+            context,
+            wid: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset(AppAssets.json.done_json),
+                  InfoColumnWidget(
+                    context,
+                    isShow: false,
+                    title: context.paymentCompletedSuccessfully,
+                    subTitle: context.trackYourOrderStatusAndSee,
                   ),
-                ).onTap(() {
-                  Get.offAllNamed(Routes.homeScreen); //
-                }),
-                verticalSpace(Height / 12),
-              ],
-            ),
-          ],
+                  // GeneralBottomAppWidget(
+                  //   context,
+                  //   text: context.orderTracking,
+                  //   onTap: () {
+                  //     Get.toNamed(
+                  //       Routes.myAdsDetailsScreen,
+                  //       arguments: {'isShow': true},
+                  //     );
+                  //   },
+                  // ),
+                  verticalSpace(40.h),
+                  Text(
+                    context.home,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: context.textStyles.bodyLarge.medium.copyWith(
+                      color: context.colorsCustom.TextPrimary,
+                    ),
+                  ).onTap(() {
+                    Get.offAllNamed(Routes.homeScreen); //
+                  }),
+                  verticalSpace(Height / 12),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

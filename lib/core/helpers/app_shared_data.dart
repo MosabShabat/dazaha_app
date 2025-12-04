@@ -27,40 +27,77 @@ class AppSharedData {
 
   static Future<bool> isUserLogin() async {
     try {
-      final prefs = await _getSharedPreferences();
-      return prefs.getBool(AppSharedKeys.isUserLoggedInKey) ?? false;
+      final token = await _flutterSecureStorage.read(
+        key: AppSharedKeys.userToken,
+      );
+      return token != null && token.isNotEmpty;
     } catch (e) {
       debugPrint('Error checking user login status: $e');
       return false;
     }
   }
+
+  // static Future<bool> isUserLogin() async {
+  //   try {
+  //     final prefs = await _getSharedPreferences();
+  //     return prefs.getBool(AppSharedKeys.isUserLoggedInKey) ?? false;
+  //   } catch (e) {
+  //     debugPrint('Error checking user login status: $e');
+  //     return false;
+  //   }
+  // }
 
   static Future<bool> isOpenBefore() async {
     try {
-      final prefs = await _getSharedPreferences();
-      return prefs.getBool(AppSharedKeys.isOpenBeforeKey) ?? false;
+      final value = await _flutterSecureStorage.read(
+        key: AppSharedKeys.isOpenBeforeKey,
+      );
+      return value == "true";
     } catch (e) {
-      debugPrint('Error checking user login status: $e');
+      debugPrint('Error checking openBefore: $e');
       return false;
     }
   }
 
+  // static Future<bool> isOpenBefore() async {
+  //   try {
+  //     final prefs = await _getSharedPreferences();
+  //     return prefs.getBool(AppSharedKeys.isOpenBeforeKey) ?? false;
+  //   } catch (e) {
+  //     debugPrint('Error checking user login status: $e');
+  //     return false;
+  //   }
+  // }
+
   static getSecuredString(String key) async {
-    const flutterSecureStorage = FlutterSecureStorage();
+    //  const flutterSecureStorage = FlutterSecureStorage();
     debugPrint('FlutterSecureStorage : getSecuredString with key :');
-    return await flutterSecureStorage.read(key: key) ?? '';
+    return await _flutterSecureStorage.read(key: key) ?? '';
   }
 
   // Save user login status
+
   static Future<void> setUserLogin(bool isLoggedIn) async {
     try {
-      final prefs = await _getSharedPreferences();
-      await prefs.setBool(AppSharedKeys.isUserLoggedInKey, isLoggedIn);
+      await _flutterSecureStorage.write(
+        key: AppSharedKeys.isUserLoggedInKey,
+        value: isLoggedIn.toString(),
+      );
       debugPrint('User login status saved: $isLoggedIn');
     } catch (e) {
       debugPrint('Error saving user login status: $e');
     }
   }
+
+  // static Future<void> setUserLogin(bool isLoggedIn) async {
+  //   try {
+  //     final prefs = await _getSharedPreferences();
+  //     await prefs.setBool(AppSharedKeys.isUserLoggedInKey, isLoggedIn);
+  //     debugPrint('User login status saved: $isLoggedIn');
+  //   } catch (e) {
+  //     debugPrint('Error saving user login status: $e');
+  //   }
+  // }
 
   static UserData? currentUserInfo;
 
@@ -101,15 +138,27 @@ class AppSharedData {
   }
 
   // Save user openBefore status
+
   static Future<void> setOpenBefore(bool isOpenBefore) async {
     try {
-      final prefs = await _getSharedPreferences();
-      await prefs.setBool(AppSharedKeys.isOpenBeforeKey, isOpenBefore);
-      debugPrint('User login status saved: $isOpenBefore');
+      await _flutterSecureStorage.write(
+        key: AppSharedKeys.isOpenBeforeKey,
+        value: isOpenBefore.toString(),
+      );
     } catch (e) {
-      debugPrint('Error saving user login status: $e');
+      debugPrint('Error saving openBefore status: $e');
     }
   }
+
+  // static Future<void> setOpenBefore(bool isOpenBefore) async {
+  //   try {
+  //     final prefs = await _getSharedPreferences();
+  //     await prefs.setBool(AppSharedKeys.isOpenBeforeKey, isOpenBefore);
+  //     debugPrint('User login status saved: $isOpenBefore');
+  //   } catch (e) {
+  //     debugPrint('Error saving user login status: $e');
+  //   }
+  // }
 
   // Retrieve UserData from cache or FlutterSecureStorage
   static Future<UserData?> getUserInfo() async {

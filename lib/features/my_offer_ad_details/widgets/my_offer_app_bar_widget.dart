@@ -1,6 +1,7 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../features/my_offer_ad_details/widgets/app_bar_bottom_sheet_widget.dart';
+import '../../home/controller/home_controller.dart';
 
 AppBar MyOfferAppBarWidget(
   BuildContext context, {
@@ -11,6 +12,7 @@ AppBar MyOfferAppBarWidget(
   required timeItem,
   required price,
   required curr,
+  required backStatus,
 }) {
   return AppBar(
     surfaceTintColor: context.colorsCustom.surfacePrimaryWhite,
@@ -26,7 +28,28 @@ AppBar MyOfferAppBarWidget(
             ),
             child: Center(child: Icon(Icons.arrow_back_ios)),
           ).onTap(() {
-            Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 3});
+            if (backStatus == 'completed') {
+              HomeController homeController = Get.find<HomeController>();
+              homeController.extraTabIndex.value = 2;
+              Get.offAllNamed(
+                Routes.homeScreen,
+                arguments: {'selectedIndex': 3, 'tabIndex': 2},
+              );
+            } else if (backStatus == 'home2') {
+              {
+                Get.offAllNamed(
+                  Routes.homeScreen,
+                  arguments: {'selectedIndex': 1},
+                );
+              }
+            } else {
+              {
+                Get.offAllNamed(
+                  Routes.homeScreen,
+                  arguments: {'selectedIndex': 3},
+                );
+              }
+            }
           }),
     ),
     actions: [

@@ -70,6 +70,12 @@ class ChatTechnicalSupportController extends GetxController
     }
   }
 
+  void addIncomingMessage(Message newMessage) {
+    messages.add(newMessage);
+    // Scroll to bottom بعد التأكد من إضافة الرسالة
+    WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
+  }
+
   /// ====== Reverb init and listen (replace Pusher) ======
   void initReverb(String channel) async {
     print("🟢 Initializing Reverb connection to channel: $channel");
@@ -81,24 +87,36 @@ class ChatTechnicalSupportController extends GetxController
         appKey: 'kdgjxo6cgzq8ldqdqjhn',
       ),
     );
-
     reverb.listen((event) {
-      print("📩 WebSocket Event received: ${event.event}");
-      print("Received event: ${event.event}, data: ${event.data}");
-
       if (event.event == 'specialist-chat.message') {
         try {
-          final message = Message.fromJson(event.data!);
-          log('message: ${message.content}');
-          messages.add(message);
-          messages.refresh(); // ✅ refresh لضمان تحديث Obx
-          scrollToBottom();
+          if (event.data != null) {
+            final message = Message.fromJson(event.data!);
+            addIncomingMessage(message); // استخدم الطريقة الجديدة
+          }
         } catch (e) {
           print('❌ Failed to parse incoming message: $e');
         }
-        //c585c34f-9e82-4dbc-b935-83559f0bacb6
       }
     }, channel);
+
+    // reverb.listen((event) {
+    //   print("📩 WebSocket Event received: ${event.event}");
+    //   print("Received event: ${event.event}, data: ${event.data}");
+
+    //   if (event.event == 'specialist-chat.message') {
+    //     try {
+    //       final message = Message.fromJson(event.data!);
+    //       log('message: ${message.content}');
+    //       messages.add(message);
+    //       messages.refresh(); // ✅ refresh لضمان تحديث Obx
+    //       scrollToBottom();
+    //     } catch (e) {
+    //       print('❌ Failed to parse incoming message: $e');
+    //     }
+    //     //c585c34f-9e82-4dbc-b935-83559f0bacb6
+    //   }
+    // }, channel);
   }
 
   /// ====== Fetch messages using your repo (كما كان في الأصل) ======
@@ -250,7 +268,8 @@ class ChatTechnicalSupportController extends GetxController
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
         scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
+          scrollController.position.maxScrollExtent +
+              50, // إضافة بعض المسافة لضمان ظهور آخر رسالة
           duration: Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );

@@ -35,6 +35,7 @@ Widget TobColumnWidget(
           serviceTitle: serviceTitle,
           title: title,
           uuid: uuid,
+          status: status,
         ),
         verticalSpace(20.h),
       ],

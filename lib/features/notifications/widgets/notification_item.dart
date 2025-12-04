@@ -45,7 +45,7 @@ Widget buildNotificationItem(
             AppConstants.liveSupport: true,
             AppConstants.uuid: 'technical_support',
             AppConstants.receiverImage: 'image_url',
-            AppConstants.receiverName: 'Support Bot',
+            AppConstants.receiverName: '${context.liveSupport}',
             AppConstants.receiverVerify: true,
           },
         );
@@ -83,8 +83,7 @@ Widget buildNotificationItem(
       if (type == NotificationTypes.newOffer ||
           type == NotificationTypes.orderCompleted ||
           type == NotificationTypes.orderDelivered ||
-          type == NotificationTypes.orderStarted ||
-          type == NotificationTypes.orderCanceled) {
+          type == NotificationTypes.orderStarted) {
         _orderDataController.setItemUuid(referenceUuid);
         print(
           '_orderDataController.setItemUuid(referenceUuid) : ${_orderDataController.itemUuid.value}',
@@ -94,7 +93,8 @@ Widget buildNotificationItem(
       }
 
       /// 🔵 الطلبات (قيد التنفيذ، مكتملة، تم البدء، ... إلخ)
-      if (type == NotificationTypes.orderInProgress) {
+      if (type == NotificationTypes.orderInProgress ||
+          type == NotificationTypes.orderCanceled) {
         if (referenceUuid.isNotEmpty) {
           _orderDataController.setOfferItemDetUuid(referenceUuid);
           Get.toNamed(Routes.myOfferAdDetailsScreen);

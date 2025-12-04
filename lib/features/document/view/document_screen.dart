@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/constants.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
+import '../../home/controller/home_controller.dart';
 import '../../my_ads/widgets/tab_bar_title_widget.dart';
 import '../../my_ads/widgets/top_row_widget.dart';
 import '../controller/document_controller.dart';
@@ -25,11 +26,18 @@ class DocumentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController navigationController = Get.find<HomeController>();
+
     if (AppConstants.isDriver != '0' && AppConstants.isDriver != '2') {
       // فقط إذا المستخدم سائق حقيقي
       // تحديث البيانات عند العودة من أي شاشة
       WidgetsBinding.instance.addPostFrameCallback((_) {
         documentController.refreshOrders();
+        final tabController = DefaultTabController.of(context);
+        if (navigationController.extraTabIndex.value >= 0 &&
+            navigationController.extraTabIndex.value < tabController.length) {
+          tabController.animateTo(navigationController.extraTabIndex.value);
+        }
       });
     }
 

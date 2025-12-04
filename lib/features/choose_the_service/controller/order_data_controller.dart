@@ -33,6 +33,7 @@ class OrderDataController extends GetxController {
   RxString fromDate = ''.obs;
   RxString toDate = ''.obs;
   RxString typeItemSelected = ''.obs;
+  RxString backStatus = ''.obs;
 
   RxList<String> itemNames = <String>[].obs;
   RxList<int> itemQuantities = <int>[].obs;
@@ -98,8 +99,9 @@ class OrderDataController extends GetxController {
   void setTypeItemSelected(String value) => typeItemSelected.value = value;
   void setOfferItemUuid(String value) => offerItemUuid.value = value;
   void setOfferItemDetUuid(String value) => offerItemDetUuid.value = value;
+  void setBackStatus(String value) => backStatus.value = value;
 
-  //offerItemDetUuid
+  //backStatus
   void setData(String value) => data.value = value;
   void setOrderUuid(String value) => OrderUuid.value = value;
   void setExceptPrice(String value) => exceptPrice.value = value;
@@ -210,6 +212,7 @@ class OrderDataController extends GetxController {
     userImage.value = '';
     userRate.value = '';
     orderId.value = '';
+    backStatus.value = '';
     placeName.value = '';
     orderStatus.value = '';
     orderTitle.value = '';

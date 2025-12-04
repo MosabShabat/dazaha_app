@@ -94,6 +94,7 @@ class _TabBodyWidgetState extends State<TabBodyWidget> {
               addedTime: itemDet.dateTime ?? '',
               priceCurr: '${itemDet.price ?? ''} ${itemDet.currency ?? ''}',
               uuid: itemDet.uuid ?? '',
+              userUuid: itemDet.driver?.uuid ?? '',
             ),
           ],
         ).onTap(() {

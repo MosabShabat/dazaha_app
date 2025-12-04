@@ -34,6 +34,7 @@ class MyAdsDetailsScreen extends StatelessWidget {
               status: order.status == 'receiving_offers'
                   ? 'pending'
                   : 'in_progress',
+              backStatus: 'home2',
               price: order.likedPrice,
               curr: order.currency,
               timeLen: 3,

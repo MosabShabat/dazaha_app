@@ -34,6 +34,8 @@ class MyAdPayMentScreen extends StatelessWidget {
       child: Center(child: ProgressViewWhite(context, false)),
     );
   }
+  //71cb3c36-8cc5-447d-aea2-6f0374ec806b
+  //c3ef5909-7093-4c4e-96fc-aea71b2fb061
 
   /// الشاشة الرئيسية
   Widget _buildMainScreen(BuildContext context) {

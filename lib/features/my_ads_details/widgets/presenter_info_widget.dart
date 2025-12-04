@@ -14,6 +14,7 @@ Widget PresenterInfoWidget(
   required String priceCurr,
   required String uuid,
   required String image,
+  required String userUuid,
 }) {
   final textPrimary = context.colorsCustom.TextPrimary;
   final textSecondary = context.colorsCustom.TextSecondary;
@@ -78,7 +79,7 @@ Widget PresenterInfoWidget(
                   Routes.reportAProblemChatSupportScreen,
                   arguments: {
                     AppConstants.liveSupport: false,
-                    AppConstants.uuid: '${uuid}',
+                    AppConstants.uuid: '${userUuid}',
                     AppConstants.receiverImage: '${image}',
                     AppConstants.receiverName: '${name}',
                     AppConstants.receiverVerify: true,

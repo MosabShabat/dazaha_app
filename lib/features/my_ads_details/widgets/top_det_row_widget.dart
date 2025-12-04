@@ -56,6 +56,8 @@ Widget TopDetRowWidget(
             ? context.colorsCustom.BluePrimary
             : status == 'in_progress'
             ? Colors.orange
+            : status == 'canceled'
+            ? context.colorsCustom.redColor
             : Colors.green,
         height: 34.h,
         text: statusText,

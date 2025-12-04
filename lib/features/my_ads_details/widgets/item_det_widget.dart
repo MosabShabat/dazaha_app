@@ -11,10 +11,12 @@ Widget ItemDetWidget(
   required String serviceTitle,
   required String priceCurr,
   required String uuid,
+  status,
 }) {
   final OrderDataController orderDataController = Get.find();
 
   void goToDetails() {
+    if (status == 'canceled') return;
     orderDataController.setItemUuid(uuid);
     Get.toNamed(Routes.itemAdDetailsScreen);
   }
@@ -69,23 +71,25 @@ Widget ItemDetWidget(
           ],
         ),
         // زر التفاصيل
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            CaseContainerWidget(
-              context,
-              BackGroundColor: context.colorsCustom.surfacePrimaryWhite,
-              height: 30.h,
-              text: context.details,
-              textColor: context.colorsCustom.TextSecondary,
-              textSize: 12.sp,
-              horizontalPadding: 15.w,
-              borderRadius: 8.r,
-              colorBorder: context.colorsCustom.SecondaryElement,
-              onTap: goToDetails,
-            ),
-          ],
-        ).box.height(100.w).make(),
+        status == 'canceled'
+            ? SizedBox.shrink()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CaseContainerWidget(
+                    context,
+                    BackGroundColor: context.colorsCustom.surfacePrimaryWhite,
+                    height: 30.h,
+                    text: context.details,
+                    textColor: context.colorsCustom.TextSecondary,
+                    textSize: 12.sp,
+                    horizontalPadding: 15.w,
+                    borderRadius: 8.r,
+                    colorBorder: context.colorsCustom.SecondaryElement,
+                    onTap: goToDetails,
+                  ),
+                ],
+              ).box.height(100.w).make(),
       ],
     ),
   );

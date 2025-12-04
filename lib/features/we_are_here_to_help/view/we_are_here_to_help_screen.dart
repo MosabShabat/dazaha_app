@@ -29,7 +29,7 @@ class WeAreHereToHelpScreen extends StatelessWidget {
                 AppConstants.liveSupport: true,
                 AppConstants.uuid: 'technical_support',
                 AppConstants.receiverImage: 'image_url',
-                AppConstants.receiverName: 'Support Bot',
+                AppConstants.receiverName: '${context.liveSupport}',
                 AppConstants.receiverVerify: true,
               },
             );
