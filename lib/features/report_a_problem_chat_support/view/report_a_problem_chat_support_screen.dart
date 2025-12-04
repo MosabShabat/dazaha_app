@@ -73,8 +73,7 @@ class ReportAProblemChatSupportScreen extends StatelessWidget {
               receiverUuid,
               receiverImage,
               receiverName,
-              receiverVerify,
-            ),
+              receiverVerify,            ),
             MessageActionBar(
               context,
               receiverUuid ?? 'technical_support',

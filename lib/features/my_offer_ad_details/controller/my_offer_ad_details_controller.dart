@@ -93,14 +93,17 @@ class MyOfferAdDetailsController extends GetxController {
     _setButtonPressed(true);
     try {
       final result = await _offerDetailsRepo.updateOffer();
-      _handleOfferResponse(result);
+      _handleOfferResponse(result, context);
     } catch (e) {
       _setButtonPressed(false);
       showErrorSnackbar(context, context.error, FirstColor: Colors.red);
     }
   }
 
-  void _handleOfferResponse(ApiResult<AppResponse> result) {
+  void _handleOfferResponse(
+    ApiResult<AppResponse> result,
+    BuildContext context,
+  ) {
     result.when(
       success: (response) async {
         _setButtonPressed(false);
@@ -124,19 +127,22 @@ class MyOfferAdDetailsController extends GetxController {
           final documentController = Get.find<DocumentController>();
           documentController.refreshOrders();
 
-          // 3️⃣ إغلاق الـ BottomSheet والشاشة
-          Get.back(); // إغلاق الـ BottomSheet
-          Get.back(); // العودة إلى الشاشة السابقة
-          print('MyOfferToCustomerWidget : ');
+          // 3️⃣ إغلاق الـ BottomSheet والشاشة السابقة
+          if (Navigator.of(context).canPop())
+            Navigator.of(context).pop(); // إغلاق الـ BottomSheet
+          if (Navigator.of(context).canPop())
+            Navigator.of(context).pop(); // العودة للشاشة السابقة
+
+          // 4️⃣ عرض رسالة نجاح
           MyOfferToCustomerWidget(
-            Get.context!,
+            context,
             IsShowRow: false,
-            title: '${Get.context!.displaySuccessfullyUpdated}',
+            title: '${context.displaySuccessfullyUpdated}',
             onTap: () {},
           );
         } else {
           showErrorSnackbar(
-            Get.context!,
+            context,
             response.message ?? '',
             FirstColor: Colors.red,
           );
@@ -144,10 +150,74 @@ class MyOfferAdDetailsController extends GetxController {
       },
       failure: (error) {
         _setButtonPressed(false);
-        _showApiErrors([error]);
+        _showApiErrors([error], context);
       },
     );
   }
+
+  void _showApiErrors(List<ApiErrorModel> errors, BuildContext context) {
+    showSnackbarErrorApi(context, errors, null);
+  }
+
+  // void updateOffer(BuildContext context) async {
+  //   _setButtonPressed(true);
+  //   try {
+  //     final result = await _offerDetailsRepo.updateOffer();
+  //     _handleOfferResponse(result);
+  //   } catch (e) {
+  //     _setButtonPressed(false);
+  //     showErrorSnackbar(context, context.error, FirstColor: Colors.red);
+  //   }
+  // }
+
+  // void _handleOfferResponse(ApiResult<AppResponse> result) {
+  //   result.when(
+  //     success: (response) async {
+  //       _setButtonPressed(false);
+
+  //       if (response.status == true) {
+  //         // 1️⃣ جلب بيانات العرض الجديدة من السيرفر بعد التحديث
+  //         final updatedResult = await _offerDetailsRepo.getOfferDetails();
+  //         updatedResult.when(
+  //           success: (updatedResponse) {
+  //             if (updatedResponse.status == true &&
+  //                 updatedResponse.data != null) {
+  //               offerDetailsItem?.value = OfferDetail.fromJson(
+  //                 updatedResponse.data,
+  //               );
+  //             }
+  //           },
+  //           failure: (_) {},
+  //         );
+
+  //         // 2️⃣ تحديث قائمة العروض في الشاشة الرئيسية
+  //         final documentController = Get.find<DocumentController>();
+  //         documentController.refreshOrders();
+
+  //         // 3️⃣ إغلاق الـ BottomSheet والشاشة
+  //         Get.back(); // إغلاق الـ BottomSheet
+  //         Get.back(); // العودة إلى الشاشة السابقة
+  //         print('MyOfferToCustomerWidget : ');
+  //         MyOfferToCustomerWidget(
+  //           Get.context!,
+  //           IsShowRow: false,
+  //           title: '${Get.context!.displaySuccessfullyUpdated}',
+  //           onTap: () {},
+  //         );
+  //       } else {
+  //         showErrorSnackbar(
+  //           Get.context!,
+  //           response.message ?? '',
+  //           FirstColor: Colors.red,
+  //         );
+  //       }
+  //     },
+  //     failure: (error) {
+  //       _setButtonPressed(false);
+  //       _showApiErrors([error]);
+  //     },
+  //   );
+  // }
 
   void deleteOffer() async {
     _setLoadingDelete(true);
@@ -191,10 +261,6 @@ class MyOfferAdDetailsController extends GetxController {
 
   void _setLoading(bool value) {
     isLoading.value = value;
-  }
-
-  void _showApiErrors(List<ApiErrorModel> errors) {
-    showSnackbarErrorApi(Get.context!, errors, null);
   }
 
   _setLoadingDelete(bool value) {

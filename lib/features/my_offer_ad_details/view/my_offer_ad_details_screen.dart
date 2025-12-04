@@ -113,6 +113,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
                       uuid: offerDetails.order!.uuid ?? '',
                     )
                   : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         TopDetRowWidget(
                           context,
