@@ -296,12 +296,23 @@ class VerificationCodeController extends GetxController {
   //     },
   //   );
   // }
-
   Future<void> saveUserToken(String userToken) async {
     log('saveUserToken: $userToken');
+    if (userToken.isEmpty) {
+      debugPrint('User token is empty, not saving.');
+      return;
+    }
+
     await AppSharedData.setSecuredString(AppSharedKeys.userToken, userToken);
     DioFactory.setTokenIntoHeaderAfterLogin(userToken);
+    debugPrint('User token saved: $userToken');
   }
+
+  // Future<void> saveUserToken(String userToken) async {
+  //   log('saveUserToken: $userToken');
+  //   await AppSharedData.setSecuredString(AppSharedKeys.userToken, userToken);
+  //   DioFactory.setTokenIntoHeaderAfterLogin(userToken);
+  // }
 
   @override
   void onClose() {

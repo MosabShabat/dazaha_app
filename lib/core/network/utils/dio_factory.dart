@@ -34,7 +34,7 @@ class DioFactory {
         await AppSharedData.getSecuredString(AppSharedKeys.userToken);
     dio?.options.headers = {
       'Accept': 'application/json',
-      'Authorization': token != null ? 'Bearer $token' : null,
+      'Authorization': token.isNotEmpty ? 'Bearer $token' : null,
       'Accept-Language': Get.locale?.languageCode ?? 'ar',
     };
   }

@@ -8,7 +8,7 @@ class AppTextStyles {
     double fontSize, {
     FontWeight fontWeight = FontWeight.w400,
     Color? color,
-    String fontFamily = 'sans',
+    String fontFamily = 'Tajawal',
     double? height,
   }) => TextStyle(
     fontSize: fontSize.sp,
@@ -99,7 +99,7 @@ class AppTextStyles {
     fontSize: 14.sp,
     fontWeight: FontWeight.w500,
     color: color ?? context.colorsCustom.surfacePrimaryWhite,
-    fontFamily: 'sans',
+    fontFamily: 'Tajawal',
   );
   static TextStyle font14OrderNumberColor400Regular(BuildContext context) =>
       _style(
@@ -161,9 +161,9 @@ class AppTextStyles {
     ),
     inputLabel: _style(
       14,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w700,
       color: primary,
-      fontFamily: 'sans_bold',
+      fontFamily: 'Tajawal',
     ),
   );
 

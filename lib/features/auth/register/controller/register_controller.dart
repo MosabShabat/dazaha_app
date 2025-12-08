@@ -159,6 +159,12 @@ class RegisterController extends GetxController {
 }
 
 Future<void> saveUserToken(String userToken) async {
+  if (userToken.isEmpty) {
+    debugPrint('User token is empty, not saving.');
+    return;
+  }
+
   await AppSharedData.setSecuredString(AppSharedKeys.userToken, userToken);
   DioFactory.setTokenIntoHeaderAfterLogin(userToken);
+  debugPrint('User token saved: $userToken');
 }

@@ -163,7 +163,7 @@ class AppTextButton extends StatelessWidget {
       fontSize: 12.sp,
       fontWeight: FontWeight.w300,
       color: context.colorsCustom.TextSecondary,
-      fontFamily: 'sans'),
+      fontFamily: 'Tajawal'),
       ));
       content.add(horizontalSpace(12));
     }

@@ -103,7 +103,7 @@ class AppSharedMethods extends GetxService {
         secondary: context.colorsCustom.TealGreenSecondary,
         surface: context.colorsCustom.TealGreenSecondary,
       ),
-      textTheme: ThemeData.light().textTheme.apply(fontFamily: 'sans'),
+      textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Tajawal'),
       // dialogTheme: const DialogTheme(backgroundColor: Colors.white),
     );
   }
@@ -177,7 +177,7 @@ class AppSharedMethods extends GetxService {
             fontSize: 12.sp,
             fontWeight: FontWeight.w300,
             color: context.colorsCustom.TextSecondary,
-            fontFamily: 'sans',
+            fontFamily: 'Tajawal',
           ),
         ),
       ),
@@ -190,7 +190,7 @@ class AppSharedMethods extends GetxService {
           fontSize: 12.sp,
           fontWeight: FontWeight.w300,
           color: context.colorsCustom.TextSecondary,
-          fontFamily: 'sans',
+          fontFamily: 'Tajawal',
         ),
         buttonText: context.enable,
         onPressed: onConfirm,

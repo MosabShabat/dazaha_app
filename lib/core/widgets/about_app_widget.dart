@@ -43,7 +43,7 @@ Widget buildDescription(
           )
         : Html(
             data: DescriptionController.appInfo?.value.description ?? '',
-            style: {"*": Style(fontFamily: 'sans', fontSize: FontSize(14))},
+            style: {"*": Style(fontFamily: 'Tajawal', fontSize: FontSize(14))},
           );
   });
 }

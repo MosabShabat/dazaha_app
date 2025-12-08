@@ -23,6 +23,11 @@ class AppSharedData {
       "FlutterSecureStorage : setSecuredString with key : $key and value : $value",
     );
     await flutterSecureStorage.write(key: key, value: value);
+    // ✅ إنشاء نسخة احتياطية في SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    if (key == AppSharedKeys.userToken) {
+      await prefs.setString(AppSharedKeys.userTokenBackup, value);
+    }
   }
 
   static Future<bool> isUserLogin() async {
@@ -69,10 +74,25 @@ class AppSharedData {
   //   }
   // }
 
-  static getSecuredString(String key) async {
-    //  const flutterSecureStorage = FlutterSecureStorage();
-    debugPrint('FlutterSecureStorage : getSecuredString with key :');
-    return await _flutterSecureStorage.read(key: key) ?? '';
+  // static getSecuredString(String key) async {
+  //   //  const flutterSecureStorage = FlutterSecureStorage();
+  //   debugPrint('FlutterSecureStorage : getSecuredString with key :');
+  //   return await _flutterSecureStorage.read(key: key) ?? '';
+  // }
+
+  /// قراءة قيمة مؤمنة
+  static Future<String> getSecuredString(String key) async {
+    String? value = await _flutterSecureStorage.read(key: key);
+    if (value == null || value.isEmpty) {
+      // إذا اختفت القيمة المؤمنة، استرجع من النسخة الاحتياطية
+      final prefs = await SharedPreferences.getInstance();
+      value = prefs.getString(AppSharedKeys.userTokenBackup) ?? '';
+      if (value.isNotEmpty && key == AppSharedKeys.userToken) {
+        // إعادة حفظها في التخزين الآمن
+        await _flutterSecureStorage.write(key: key, value: value);
+      }
+    }
+    return value;
   }
 
   // Save user login status

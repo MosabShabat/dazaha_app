@@ -2,6 +2,7 @@ import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
 import '../../../core/widgets/app_shimmers/custom_shimmer.dart';
+import '../../home/controller/home_controller.dart';
 import '../controller/profile_controller.dart';
 import '../widgets/profile_app_bar_widget.dart';
 import '../widgets/profile_list_view_items_widget.dart';
@@ -15,47 +16,58 @@ class ProfileScreen extends StatelessWidget {
     final ProfileController profileController = Get.find();
     profileController.fetchUserData(); // استخدم الدالة المحسّنة
 
-    return Scaffold(
-      backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      appBar: ProfileAppBarWidget(context),
-      body: Obx(() {
-        if (profileController.isUserDataLoading.value) {
-          // عرض shimmer أثناء التحميل
+    return WillPopScope(
+      onWillPop: () async {
+        final navigationController = Get.find<HomeController>();
+
+        // رجوع للتبويب الرئيسي (Home = index 0)
+        navigationController.selectedIndex.value = 0;
+
+        return false; // منع النظام من الخروج من الشاشة
+      },
+
+      child: Scaffold(
+        backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+        appBar: ProfileAppBarWidget(context),
+        body: Obx(() {
+          if (profileController.isUserDataLoading.value) {
+            // عرض shimmer أثناء التحميل
+            return SingleChildScrollView(
+              child: Column(
+                children: List.generate(
+                  7,
+                  (index) => CustomShimmer(
+                    width: double.infinity,
+                    height: index == 0 ? 100.h : 60.h,
+                  ).paddingSymmetric(vertical: 15.h, horizontal: 16.w),
+                ),
+              ),
+            );
+          }
+
+          if (profileController.isOffline.value) {
+            // عرض NoConnectionTextWidget عند انقطاع الانترنت
+            return NoConnectionTextWidget(context);
+          }
+
+          final user = profileController.userData.value;
           return SingleChildScrollView(
             child: Column(
-              children: List.generate(
-                7,
-                (index) => CustomShimmer(
-                  width: double.infinity,
-                  height: index == 0 ? 100.h : 60.h,
-                ).paddingSymmetric(vertical: 15.h, horizontal: 16.w),
-              ),
+              children: [
+                if (user?.isDriver == 0) ...[
+                  verticalSpace(10.h),
+                  TopContainerWidget(context),
+                  verticalSpace(10.h),
+                ],
+                ProfileListViewItemsWidget(
+                  context,
+                  profileController: profileController,
+                ),
+              ],
             ),
           );
-        }
-
-        if (profileController.isOffline.value) {
-          // عرض NoConnectionTextWidget عند انقطاع الانترنت
-          return NoConnectionTextWidget(context);
-        }
-
-        final user = profileController.userData.value;
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              if (user?.isDriver == 0) ...[
-                verticalSpace(10.h),
-                TopContainerWidget(context),
-                verticalSpace(10.h),
-              ],
-              ProfileListViewItemsWidget(
-                context,
-                profileController: profileController,
-              ),
-            ],
-          ),
-        );
-      }),
+        }),
+      ),
     );
   }
 }

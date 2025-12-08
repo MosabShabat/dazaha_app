@@ -12,11 +12,11 @@ class DirectSupportMapRepo {
   Future<ApiResult<AppResponse>> putState(String state) async {
     try {
       final response = await _apiService.putState(
-        AppConstants.orderUuid,
+        AppConstants.PutStatUuid,
         state,
       );
       print('getOrdersAll response: $response');
-      print('orderUuid response: ${AppConstants.orderUuid}');
+      print('PutStatUuid response: ${AppConstants.PutStatUuid}');
 
       return ApiResult.success(response);
     } catch (e) {

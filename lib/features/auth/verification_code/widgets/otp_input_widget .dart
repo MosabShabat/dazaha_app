@@ -38,7 +38,7 @@ Widget OtpInputWidget(BuildContext context, bool resatAll,{required controller})
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
           color: context.colorsCustom.TextPrimary,
-          fontFamily: 'sans',
+          fontFamily: 'Tajawal',
         ),
       ),
     ),

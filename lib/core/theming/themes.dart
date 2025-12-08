@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 final lightTheme = ThemeData(
   brightness: Brightness.light,
   useMaterial3: true,
-  fontFamily: 'sans',
+  fontFamily: 'Tajawal',
   scaffoldBackgroundColor: AppColors.light.surfacePrimaryWhite,
   primaryColor: AppColors.light.TealGreenSecondary,
   textTheme: const TextTheme(), // عدل لاحقاً حسب الحاجة
@@ -32,7 +32,7 @@ final lightTheme = ThemeData(
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
   useMaterial3: true,
-  fontFamily: 'sans',
+  fontFamily: 'Tajawal',
   scaffoldBackgroundColor: AppColors.dark.surfacePrimaryBlack,
   primaryColor: AppColors.dark.TealGreenSecondary,
   textTheme: const TextTheme(),

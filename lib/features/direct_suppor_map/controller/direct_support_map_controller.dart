@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../core/constant/exports_libraries.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -5,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 
 import '../../../core/network/utils/api_result.dart';
-import '../../../core/helpers/constants.dart';
+// import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/app_snackbar.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../../my_offer_ad_details/controller/my_offer_ad_details_controller.dart';
@@ -31,7 +33,7 @@ class DirectSupportMapController extends GetxController {
         : _orderDataController.stateCase.value == 'started'
         ? selectedCase.value = 1
         : selectedCase.value = 2;
-    AppConstants.orderUuid = _orderDataController.itemUuid.value;
+    // AppConstants.orderUuid = _orderDataController.itemUuid.value;
   }
 
   //delivered
@@ -59,11 +61,14 @@ class DirectSupportMapController extends GetxController {
           isButtonPressed.value = false;
         } else {
           isButtonPressed.value = false;
+          log('showErrorSnackbar: ${response.message}');
           showErrorSnackbar(Get.context!, response.message ?? '');
         }
       },
       failure: (error) {
         isButtonPressed.value = false;
+        log('showSnackbarErrorApi: ${error}');
+
         showSnackbarErrorApi(Get.context!, [error], null);
       },
     );

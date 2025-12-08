@@ -54,7 +54,12 @@ class MyOfferAdDetailsController extends GetxController {
           }
         } else {
           isLoading.value = false;
-          if (response.message!.contains('No query results for model')) {
+          log('Error: ${response.message}');
+
+          if (response.message!.contains('No query results for model') ||
+              response.message!.contains(
+                'foreach() argument must be of type array|object, int given',
+              )) {
             log('Error: ${response.message}');
           } else {
             showErrorSnackbar(

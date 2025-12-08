@@ -343,7 +343,8 @@ extension TranslationsExtension on BuildContext {
   String get expectedPrice => tr('expected_price');
   String get joinAsAnAssistant => tr('join_as_an_assistant');
 
-  //join_as_an_assistant
+  //There are no ads
+  String get thereAreNoAds => tr('there_are_no_ads');
   String get yourPriceForDisplay => tr('your_price_for_display');
   String get yourPriceHere => tr('your_price_here');
   String get yourOfferHasReachedTheCustomer =>
@@ -358,6 +359,7 @@ extension TranslationsExtension on BuildContext {
   String get viewPrice => tr('view_price');
   String get presentedOffer => tr('presented_offer');
   String get startTheJourney => tr('start_the_journey');
+  
   String get iArrivedHome => tr('i_arrived_home');
   String get endTheTrip => tr('end_the_trip');
   String get doYouWantToEndTheTrip => tr('do_you_want_to_end_the_trip');

@@ -90,7 +90,24 @@ class HomePageScreen extends StatelessWidget {
               ],
             ),
             verticalSpace(10.h),
-            CustomHomePageWidget(context, controller: _homePageController),
+
+            _homePageController.homeModel.value!.latestOrders!.isEmpty
+                ? Text(
+                        context.thereAreNoAds,
+                        textAlign: TextAlign.center,
+                        style: context.textStyles.titleMedium.medium.copyWith(
+                          color: context.colorsCustom.TextSecondary,
+                          fontSize: 15.0.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ).box
+                      .padding(EdgeInsetsGeometry.symmetric(vertical: 80.h))
+                      .alignCenter
+                      .make()
+                : CustomHomePageWidget(
+                    context,
+                    controller: _homePageController,
+                  ),
             if (currentOrder != null)
               BottomCustomWidget(
                 context,

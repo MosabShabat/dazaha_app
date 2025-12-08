@@ -26,6 +26,7 @@ Future<void> initializeAppPreferences() async {
 
 class AppSharedKeys {
   static const String userToken = 'userToken';
+  static const String userTokenBackup = 'userTokenBackup'; // ← أضف هذا السطر
   static const String userData = 'userData';
   static const String isUserLoggedInKey = 'isUserLoggedIn';
   static const String isOpenBeforeKey = 'isOpenBeforeKey';
@@ -91,6 +92,7 @@ class AppConstants {
   static String orderTitle = 'orderTitle';
   static String liveSupport = 'liveSupport';
   static String uuid = 'uuid';
+  static String PutStatUuid = '';
   static String receiverImage = 'receiverImage';
   static String receiverName = 'receiverName';
   static String receiverVerify = 'receiverVerify';

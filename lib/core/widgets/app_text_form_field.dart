@@ -102,7 +102,7 @@ class AppTextFormField extends StatelessWidget {
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
               color: context.colorsCustom.TextPrimary,
-              fontFamily: 'sans',
+              fontFamily: 'Tajawal',
             ),
         hintText: hintText,
         suffixIcon: suffixIcon,
@@ -113,7 +113,7 @@ class AppTextFormField extends StatelessWidget {
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
               color: context.colorsCustom.TextPrimary,
-              fontFamily: 'sans',
+              fontFamily: 'Tajawal',
             ),
         prefixIcon: prefixSvgIcon != null
             ? Padding(
@@ -130,7 +130,7 @@ class AppTextFormField extends StatelessWidget {
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
         color: context.colorsCustom.TextPrimary,
-        fontFamily: 'sans',
+        fontFamily: 'Tajawal',
       ),
       keyboardType: keyboardType,
       maxLength: maxLength,

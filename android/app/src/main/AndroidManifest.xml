@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.avocode.dezha">
+    package="com.avocode.dizzha">
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -23,7 +23,10 @@
     android:label="دزها"
     android:name="${applicationName}"
     android:icon="@mipmap/ic_launcher"
-    android:usesCleartextTraffic="true">
+    android:usesCleartextTraffic="true"
+    android:allowBackup="true"
+    android:fullBackupContent="true"
+    android:requestLegacyExternalStorage="true">
 
 
         <!-- Google Maps API Key -->

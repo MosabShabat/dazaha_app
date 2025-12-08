@@ -95,7 +95,7 @@ Widget buildDescription(
         : Html(
             data:
                 captainJoinsController.joinAsDriverVar?.value.description ?? '',
-            style: {"*": Style(fontFamily: 'sans', fontSize: FontSize(14))},
+            style: {"*": Style(fontFamily: 'Tajawal', fontSize: FontSize(14))},
           );
   });
 }

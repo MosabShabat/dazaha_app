@@ -33,7 +33,7 @@ Widget TapBarWidget(BuildContext context, {required int index}) {
         ),
         labelStyle: context.textStyles.labelSmall.medium.copyWith(
           color: context.colorsCustom.TextPrimary,
-          fontFamily: 'sans',
+          fontFamily: 'Tajawal',
           fontWeight: FontWeight.w500,
           fontSize: 12.sp,
         ),

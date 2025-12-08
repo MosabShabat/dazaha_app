@@ -26,7 +26,7 @@ Widget TabBarTitleWidget(BuildContext context, {required secTap}) {
       labelStyle: TextStyle(
         color: context.colorsCustom.TextPrimary,
         fontWeight: FontWeight.w500,
-        fontFamily: 'sans',
+        fontFamily: 'Tajawal',
         fontSize: 12.sp,
       ),
       // context.textStyles.labelSmall.medium.copyWith(

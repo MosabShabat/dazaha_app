@@ -30,7 +30,7 @@ void showSnackbarWithButton(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w700,
                 color: context.colorsCustom.TextPrimary,
-                fontFamily: 'sans',
+                fontFamily: 'Tajawal',
               ),
               overflow: TextOverflow.visible,
             ),

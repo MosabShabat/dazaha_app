@@ -6,6 +6,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/di/dependency_injection.dart';
 import '../../../core/helpers/app_shared_data.dart';
@@ -24,6 +25,17 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeAppPreferences();
+
+  // ✅ استرجاع التوكن من النسخة الاحتياطية إذا اختفى
+  String token = await AppSharedData.getSecuredString(AppSharedKeys.userToken);
+  if (token.isEmpty) {
+    final prefs = await SharedPreferences.getInstance();
+    token = prefs.getString(AppSharedKeys.userTokenBackup) ?? '';
+    if (token.isNotEmpty) {
+      await AppSharedData.setSecuredString(AppSharedKeys.userToken, token);
+      await DioFactory.addDioHeaders(); // ✅ هذا مهم
+    }
+  }
 
   // Determine initial route
   final bool isUserLogged = await AppSharedData.isUserLogin();

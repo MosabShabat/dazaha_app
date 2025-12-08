@@ -1,4 +1,4 @@
-package com.avocode.dezha
+package com.avocode.dizzha
 
 import io.flutter.embedding.android.FlutterActivity
 

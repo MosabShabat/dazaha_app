@@ -42,7 +42,7 @@ class DeleteMyAccountScreen extends StatelessWidget {
                             data: _controller.appInfo?.value.description ?? '',
                             style: {
                               "*": Style(
-                                fontFamily: 'sans',
+                                fontFamily: 'Tajawal',
                                 fontSize: FontSize(14),
                               ),
                             },

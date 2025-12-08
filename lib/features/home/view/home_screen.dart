@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    navigationController.updateStatusBar(0);
     final args = Get.arguments;
     int? tabIndex;
 

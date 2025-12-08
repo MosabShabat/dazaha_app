@@ -24,7 +24,7 @@ Widget CheckBoxListTailWidget(BuildContext context) {
             text: TextSpan(
               style: context.textStyles.bodySmall.medium.copyWith(
                 color: context.colorsCustom.TextSecondary,
-                fontFamily: 'sans',
+                fontFamily: 'Tajawal',
               ),
               children: [
                 TextSpan(text: context.iAgreeTo + ' '),

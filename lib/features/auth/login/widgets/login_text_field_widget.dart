@@ -36,7 +36,7 @@ Widget LoginTextFieldWidget(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
                   color: context.colorsCustom.TextPrimary,
-                  fontFamily: 'sans',
+                  fontFamily: 'Tajawal',
                 ),
                 textDirection: TextDirection.ltr,
               ),

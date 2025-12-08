@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../core/helpers/app_shared_methods.dart';
 import '../../../../core/helpers/constants.dart';
 import '../../../../features/my_offer_ad_details/controller/my_offer_ad_details_controller.dart';
 import '../../../../core/constant/exports_libraries.dart';
@@ -77,6 +78,8 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
       AppConstants.orderTitle = '${offerDetails.order!.title ?? ''}';
       AppConstants.userImage = '${offerDetails.order!.user!.image ?? ''}';
       AppConstants.uuid = '${offerDetails.order!.user!.uuid ?? ''}';
+      AppConstants.PutStatUuid = '${offerDetails.uuid ?? ''}';
+
       //83595a2a-5556-4bef-9f18-f8caca2964f2
       //706852ce-20ed-4ef1-a76d-bdde6a1abe07
       return Scaffold(
@@ -113,7 +116,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
                       uuid: offerDetails.order!.uuid ?? '',
                     )
                   : Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         TopDetRowWidget(
                           context,
@@ -171,11 +174,19 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
 
                         // معلومات النقل
                         TransportInfoWidget(
-                          context,
-                          title: offerDetails.order!.title ?? '',
-                          serviceName: offerDetails.order!.serviceTitle ?? '',
-                          description: offerDetails.order!.description ?? '',
-                        ),
+                              context,
+                              title: offerDetails.order!.title ?? '',
+                              serviceName:
+                                  offerDetails.order!.serviceTitle ?? '',
+                              description:
+                                  offerDetails.order!.description ?? '',
+                            ).box
+                            .alignment(
+                              AppSharedMethods.isAppLanguageArabic()
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                            )
+                            .make(),
                         verticalSpace(20.h),
 
                         // وقت التسليم

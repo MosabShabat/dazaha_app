@@ -24,7 +24,7 @@ Widget AdsTabBarWidget(BuildContext context) {
     labelStyle: TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 12.sp,
-      fontFamily: 'sans',
+      fontFamily: 'Tajawal',
     ),
     tabs: tabs.map((text) => Tab(text: text)).toList(),
   );

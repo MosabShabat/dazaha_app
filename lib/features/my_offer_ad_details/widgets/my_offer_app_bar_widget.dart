@@ -28,12 +28,15 @@ AppBar MyOfferAppBarWidget(
             ),
             child: Center(child: Icon(Icons.arrow_back_ios)),
           ).onTap(() {
-            if (backStatus == 'completed') {
+            if (backStatus == 'completed' || backStatus == 'in_progress') {
               HomeController homeController = Get.find<HomeController>();
               homeController.extraTabIndex.value = 2;
               Get.offAllNamed(
                 Routes.homeScreen,
-                arguments: {'selectedIndex': 3, 'tabIndex': 2},
+                arguments: {
+                  'selectedIndex': 3,
+                  'tabIndex': backStatus == 'completed' ? 2 : 1,
+                },
               );
             } else if (backStatus == 'home2') {
               {

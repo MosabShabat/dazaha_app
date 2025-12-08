@@ -11,6 +11,8 @@ class HomeController extends GetxController {
   RxBool isLoading = false.obs; // ← للتحكم في عرض Progress
   RxInt extraTabIndex = 0.obs;
 
+  final navigators = List.generate(5, (_) => GlobalKey<NavigatorState>());
+
   Connectivity _connectivity = Connectivity();
   int lastIndexBeforeChooseService = 0;
   HomeController({required int initialTabIndex})
