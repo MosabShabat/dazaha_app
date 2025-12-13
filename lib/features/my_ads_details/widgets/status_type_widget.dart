@@ -31,10 +31,7 @@ Widget StatusTypeWidget(
     orderDataController.setFrom(orderData.from ?? '');
     orderDataController.setFromAddress(orderData.fromAddress ?? '');
     orderDataController.setFromLat(orderData.fromLat ?? '');
-    orderDataController.setFromLng(orderData.fromLng ?? '');
-    orderDataController.setTo(orderData.to ?? '');
-    orderDataController.setToAddress(orderData.toAddress ?? '');
-    orderDataController.setToLat(orderData.toLat ?? '');
+    orderDataController.setFromLng(orderData.fromLng ?? ''); 
     orderDataController.setToLng(orderData.toLng ?? '');
     orderDataController.setUserImage(orderData.driver!.image ?? '');
     orderDataController.setUserName(orderData.driver!.name ?? '');
@@ -113,7 +110,7 @@ Widget StatusTypeWidget(
                     context,
                     title: context.transferDate,
                     date: order.date ?? '',
-                    time: order.times ?? '',
+                    time: order.time ?? '',
                   ),
                   verticalSpace(20.h),
                   PayMthWidget(

@@ -1,4 +1,8 @@
 // 🧩 CORE IMPORTS
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../constant/exports_libraries.dart';
 import '../helpers/app_shared_data.dart';
 import '../helpers/constants.dart';
@@ -24,7 +28,6 @@ import 'dart:developer';
 // 🔔 NOTIFICATION SERVICE IMPLEMENTATION
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
-  final OrderDataController _orderDataController = Get.find();
 
   factory NotificationService() => _instance;
   NotificationService._internal();
@@ -32,108 +35,139 @@ class NotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  RemoteMessage? _initialMessage;
 
+  final OrderDataController _orderDataController = Get.find();
+
+  // ================= INIT =================
   Future<void> init() async {
     await _requestPermission();
     await _initializeLocalNotifications();
     await fetchAndStoreFCMToken();
 
-    // 🔹 Foreground Notifications
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    // Foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       log('Foreground Notification: ${message.notification?.title}');
+
+      final messageId =
+          message.data['id']?.toString() ?? DateTime.now().toIso8601String();
+      // ✅ استخدم await لأن isDuplicate الآن async
+      if (await LocalNotificationDeduplicator.isDuplicate(messageId)) {
+        log('⛔ Duplicate ignored: $messageId');
+        return;
+      }
+
+      // فقط إذا التطبيق في foreground
       unreadNotificationLocal.value = 1;
-      log('Foreground Data: ${message.data}');
       _handleForegroundNotification(message.data);
-      showNotification(
+
+      await showNotification(
         message.notification?.title ?? 'No Title',
         message.notification?.body ?? 'No Body',
         message.data,
       );
     });
 
-    // 🔹 Background Notifications
+    // Background
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    // 🔹 Initial Notification (when app launched by tapping)
-    _initialMessage = await _firebaseMessaging.getInitialMessage();
+    // Terminated
+    _checkInitialMessage();
   }
 
-  // ⚙️ Handle notification after first build
-  void handleInitialMessage() {
-    if (_initialMessage != null && _initialMessage!.data.isNotEmpty) {
-      String? type = _initialMessage!.data[NotificationTypes.type];
-      String? referenceUuid =
-          _initialMessage!.data[NotificationTypes.referenceUuid];
-      String? uuid = _initialMessage!.data['sender_uuid'];
-      String? name = _initialMessage!.data['title'];
-      String? image = _initialMessage!.data['image'];
+  // Background handler: لا تعرض إشعار محلي، فقط log
+  // Background handler: يتحقق من التكرار قبل التعامل
+  @pragma('vm:entry-point')
+  Future<void> _firebaseMessagingBackgroundHandler(
+    RemoteMessage message,
+  ) async {
+    await Firebase.initializeApp();
+    final messageId = message.data['id'];
+    if (messageId == null ||
+        await LocalNotificationDeduplicator.isDuplicate(messageId)) {
+      log('⛔ Duplicate ignored in background or no ID: $messageId');
+      return;
+    }
+    log('Background Message received: ${message.data}');
 
-      if (type != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _onNotificationClicked(type, referenceUuid ?? '', uuid, image, name);
-        });
+    // ⚠️ لا تعرض إشعار هنا إذا كان التطبيق مغلقًا (terminated)
+    // await showNotification(...);
+  }
+
+  // Terminated check: نفس المنطق
+  Future<void> _checkInitialMessage() async {
+    RemoteMessage? initialMessage = await _firebaseMessaging
+        .getInitialMessage();
+    if (initialMessage != null && initialMessage.data.isNotEmpty) {
+      final messageId = initialMessage.data['id'];
+      if (messageId != null &&
+          await LocalNotificationDeduplicator.isDuplicate(messageId)) {
+        log('⛔ Duplicate ignored in terminated: $messageId');
+        return;
       }
-      _initialMessage = null;
+
+      log('App opened from terminated state with notification');
+      String? type = initialMessage.data[NotificationTypes.type];
+      String? referenceUuid =
+          initialMessage.data[NotificationTypes.referenceUuid];
+      String? uuid = initialMessage.data['sender_uuid'];
+      String? name = initialMessage.data['title'];
+      String? image = initialMessage.data['image'];
+      _onNotificationClicked(type!, referenceUuid ?? '', uuid, name, image);
     }
   }
 
-  // 🪪 Request permissions
+  // ================= PERMISSIONS =================
   Future<void> _requestPermission() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
-    log(
-      settings.authorizationStatus == AuthorizationStatus.authorized
-          ? 'User granted permission.'
-          : 'User denied or has not granted permission.',
-    );
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      log('User granted permission.');
+    } else {
+      log('User denied or has not granted permission.');
+    }
   }
 
-  // ⚙️ Local notifications initialization
+  // ================= LOCAL NOTIFICATIONS =================
   Future<void> _initializeLocalNotifications() async {
-    const AndroidInitializationSettings androidSettings =
+    const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final DarwinInitializationSettings iosSettings =
+    final DarwinInitializationSettings iosInitializationSettings =
         DarwinInitializationSettings(
           requestAlertPermission: true,
           requestSoundPermission: true,
           requestBadgePermission: true,
+          notificationCategories: [],
         );
 
-    final InitializationSettings initSettings = InitializationSettings(
-      android: androidSettings,
-      iOS: iosSettings,
-    );
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+          android: androidInitializationSettings,
+          iOS: iosInitializationSettings,
+        );
 
     await _localNotificationsPlugin.initialize(
-      initSettings,
+      initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
         if (response.payload != null) {
-          final data = jsonDecode(response.payload!);
-          String? type = data[NotificationTypes.type];
-          String? referenceUuid = data[NotificationTypes.referenceUuid];
+          Map<String, dynamic> data = jsonDecode(response.payload!);
+          String type = data[NotificationTypes.type];
+          String referenceUuid = data[NotificationTypes.referenceUuid] ?? '';
           String? uuid = data['sender_uuid'];
           String? name = data['title'];
           String? image = data['image'];
-          if (type != null) {
-            _onNotificationClicked(
-              type,
-              referenceUuid ?? '',
-              uuid,
-              name,
-              image,
-            );
-          }
+
+          // استدعاء دالة الضغط
+          _onNotificationClicked(type, referenceUuid, uuid, name, image);
         }
       },
     );
   }
 
-  // 🔔 Show notification (foreground)
+  // ================= SHOW NOTIFICATION =================
   Future<void> showNotification(
     String title,
     String body,
@@ -169,13 +203,14 @@ class NotificationService {
     );
   }
 
-  // 🧠 Handle foreground notifications
+  // ================= FOREGROUND HANDLER =================
   void _handleForegroundNotification(Map<String, dynamic> data) {
     String? type = data[NotificationTypes.type];
     String referenceUuid = data[NotificationTypes.referenceUuid];
     String? uuid = data['sender_uuid'];
     String? name = data['title'];
     String? image = data['image'];
+
     log('type : $type');
     log('referenceUuid : $referenceUuid');
     log('sender_uuid : $uuid');
@@ -227,23 +262,6 @@ class NotificationService {
       if (referenceUuid.isNotEmpty) {
         _orderDataController.setItemUuid(referenceUuid);
       }
-
-      // if (referenceUuid.isNotEmpty) {
-      //   _orderDataController.setItemUuid(referenceUuid);
-      //   if (type == NotificationTypes.orderInProgress) {
-      //     _orderDataController.setItemStatus('in_progress');
-      //   } else if (type == NotificationTypes.orderCompleted ||
-      //       type == NotificationTypes.orderDelivered ||
-      //       type == NotificationTypes.orderStarted) {
-      //     _orderDataController.setItemStatus(
-      //       type == NotificationTypes.orderStarted
-      //           ? 'in_progress'
-      //           : type == NotificationTypes.orderDelivered
-      //           ? 'in_progress'
-      //           : 'completed',
-      //     );
-      //   }
-      // }
     }
 
     if (type == NotificationTypes.newOrder &&
@@ -251,13 +269,13 @@ class NotificationService {
       Get.find<ItemAdDetailsController>().getOrderDetails();
     }
 
-    if (type == NotificationTypes.newOffer ||
-        type == NotificationTypes.orderCompleted ||
-        type == NotificationTypes.orderDelivered ||
-        type == NotificationTypes.orderStarted ||
-        type == NotificationTypes.orderCanceled &&
-            Get.isRegistered<MyAdsDetailsController>()) {
-      MyAdsDetailsController controller = Get.find();
+    if ((type == NotificationTypes.newOffer ||
+            type == NotificationTypes.orderCompleted ||
+            type == NotificationTypes.orderDelivered ||
+            type == NotificationTypes.orderStarted ||
+            type == NotificationTypes.orderCanceled) &&
+        Get.isRegistered<MyAdsDetailsController>()) {
+      MyAdsDetailsController controller = Get.find<MyAdsDetailsController>();
       controller.getMyOrderDetails();
       controller.getMyOrderOffers("created_at");
     }
@@ -371,21 +389,47 @@ class NotificationService {
     }
   }
 
-  // 🔑 FCM Token
+  // ================= TOKEN =================
   Future<void> fetchAndStoreFCMToken() async {
     try {
       String? token = await _firebaseMessaging.getToken();
-      if (token != null) {
-        await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token);
-        log('FCM Token: $token');
-      }
+      await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token!);
+      log('FCM Token: $token');
     } catch (e) {
       log('Error fetching FCM Token: $e');
     }
   }
+
+  // Future<void> _checkInitialMessage() async {
+  //   RemoteMessage? initialMessage = await _firebaseMessaging
+  //       .getInitialMessage();
+  //   if (initialMessage != null && initialMessage.data.isNotEmpty) {
+  //     log('App opened from terminated state with notification');
+  //     String? type = initialMessage.data[NotificationTypes.type];
+  //     String? referenceUuid =
+  //         initialMessage.data[NotificationTypes.referenceUuid];
+  //     String? uuid = initialMessage.data['sender_uuid'];
+  //     String? name = initialMessage.data['title'];
+  //     String? image = initialMessage.data['image'];
+  //     _onNotificationClicked(type!, referenceUuid ?? '', uuid, name, image);
+  //   }
+  // }
+
+  // Future<void> _firebaseMessagingBackgroundHandler(
+  //   RemoteMessage message,
+  // ) async {
+  //   print('Background Message: ${message.data}');
+  // }
 }
 
-// 🧩 Background handler
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Background Message: ${message.data}');
+class LocalNotificationDeduplicator {
+  static Future<bool> isDuplicate(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final shownIds = prefs.getStringList('shown_notification_ids') ?? [];
+    if (shownIds.contains(id)) return true;
+    shownIds.add(id);
+    if (shownIds.length > 100) shownIds.removeAt(0);
+    await prefs.setStringList('shown_notification_ids', shownIds);
+    return false;
+  }
 }

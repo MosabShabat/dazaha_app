@@ -6,6 +6,7 @@ import '../../../core/network/models/notifications/notification_item.dart';
 import '../../../core/network/models/notifications/notifications.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
+import '../../home/controller/home_controller.dart';
 import 'notifications_repo.dart';
 
 class NotificationsController extends GetxController {
@@ -115,6 +116,8 @@ class NotificationsController extends GetxController {
   @override
   void onClose() {
     scrollController.dispose();
+    final home = Get.find<HomeController>();
+    home.updateStatusBar(home.selectedIndex.value);
     super.onClose();
   }
 }

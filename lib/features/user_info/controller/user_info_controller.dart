@@ -11,6 +11,7 @@ import '../../../core/helpers/app_shared_data.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../auth/register/controller/register_controller.dart';
+import '../../home/controller/home_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 import '../controller/user_info_repo.dart';
 
@@ -99,6 +100,13 @@ class UserInfoController extends GetxController {
         FirstColor: Colors.red,
       );
     }
+  }
+
+  @override
+  void onClose() {
+    final home = Get.find<HomeController>();
+    home.updateStatusBar(home.selectedIndex.value);
+    super.onClose();
   }
 
   void _handleResponse(ApiResult<AppResponse> result) {

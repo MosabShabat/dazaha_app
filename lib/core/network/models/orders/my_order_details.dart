@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../cart/bill_item.dart';
-import 'times_order.dart';
 
 part 'my_order_details.g.dart';
 
@@ -29,7 +28,7 @@ class MyOrderDetails {
     required this.toLng,
     required this.driver,
     required this.date,
-    required this.times,
+    required this.time,
     required this.rating,
     required this.payment,
   });
@@ -79,7 +78,7 @@ class MyOrderDetails {
   //List<Offer>?
   final Driver? driver;
   final String? date;
-  final List<TimesOrder>? times;
+  final String? time;
   final String? rating;
   final Payment? payment;
 

@@ -1,5 +1,6 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
+import '../../home/controller/home_controller.dart';
 
 AppBar UserInfoAppBarWidget(
   BuildContext context, {
@@ -23,7 +24,13 @@ AppBar UserInfoAppBarWidget(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           IconButton(
-            onPressed: () => Get.back(),
+            onPressed: () {
+              Get.back();
+              Future.delayed(const Duration(milliseconds: 50), () {
+                final home = Get.find<HomeController>();
+                home.updateStatusBar(home.selectedIndex.value);
+              });
+            },
             icon: Icon(Icons.arrow_back_ios, size: 16.sp),
           ).box.width(45.w).make(),
           verticalSpace(10.h),

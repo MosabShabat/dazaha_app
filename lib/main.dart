@@ -94,8 +94,9 @@ Future<void> main() async {
       ),
     ),
   );
-  // Handle initial notification after first frame
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    NotificationService().handleInitialMessage();
-  });
 }
+  // // Handle initial notification after first frame
+  // WidgetsBinding.instance.addPostFrameCallback((_) {
+  //   NotificationService().handleInitialMessage();
+  // });
+

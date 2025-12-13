@@ -210,4 +210,38 @@ class AppSharedData {
       debugPrint('Error removing secure storage data for key $key: $e');
     }
   }
+
+  // =======================
+  // 🔐 Secure String List
+  // =======================
+
+  static Future<void> setSecuredStringList(
+    String key,
+    List<String> value,
+  ) async {
+    try {
+      final encoded = jsonEncode(value);
+      await _flutterSecureStorage.write(key: key, value: encoded);
+      debugPrint('Secure list saved for key: $key => $value');
+    } catch (e) {
+      debugPrint('Error saving secured string list: $e');
+    }
+  }
+
+  static Future<List<String>?> getSecuredStringList(String key) async {
+    try {
+      final encoded = await _flutterSecureStorage.read(key: key);
+
+      if (encoded == null || encoded.isEmpty) {
+        return null;
+      }
+
+      final List<dynamic> decoded = jsonDecode(encoded);
+
+      return decoded.cast<String>();
+    } catch (e) {
+      debugPrint('Error reading secured string list: $e');
+      return null;
+    }
+  }
 }
