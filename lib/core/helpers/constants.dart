@@ -158,6 +158,9 @@ class AppConstants {
 class NotificationTypes {
   static const String type = 'type';
   static const String referenceUuid = 'reference_uuid';
+  static const String uuid = 'sender_uuid';
+  static const String receiverImage = 'image';
+  static const String receiverName = 'title';
 
   // General
   static const String general = 'general';

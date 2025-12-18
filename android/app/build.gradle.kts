@@ -13,8 +13,8 @@ val localProperties = Properties().apply {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) load(FileInputStream(localPropertiesFile))
 }
-val flutterVersionCode = localProperties.getProperty("flutter.versionCode")?.toInt() ?: 28
-val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.28"
+val flutterVersionCode = localProperties.getProperty("flutter.versionCode")?.toInt() ?: 29
+val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.29"
 
 // قراءة keystore
 val keystoreProperties = Properties()
@@ -22,7 +22,7 @@ val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
-    namespace = "com.avocode.dizzha"
+    namespace = "com.avocode.dezha"
     compileSdk = 36
 
     ndkVersion = "29.0.14206865"
@@ -40,7 +40,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.avocode.dizzha"
+        applicationId = "com.avocode.dezha"
         minSdk = 24
         targetSdk = 36
         versionCode = flutterVersionCode

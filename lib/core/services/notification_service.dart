@@ -1,8 +1,5 @@
 // 🧩 CORE IMPORTS
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constant/exports_libraries.dart';
 import '../helpers/app_shared_data.dart';
 import '../helpers/constants.dart';
@@ -26,146 +23,127 @@ import 'dart:convert';
 import 'dart:developer';
 
 // 🔔 NOTIFICATION SERVICE IMPLEMENTATION
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  log('📩 [BG] FCM data: ${message.data}');
+}
+
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
 
   factory NotificationService() => _instance;
   NotificationService._internal();
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+  final FirebaseMessaging _fm = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _fln =
       FlutterLocalNotificationsPlugin();
+
+  bool _initialHandled = false;
+
+  String? _asString(dynamic v) => v == null ? null : v.toString().trim();
+
+  String? _extractType(Map<String, dynamic> data) =>
+      _asString(data[NotificationTypes.type] ?? data['type']);
+
+  String? _extractReferenceUuid(Map<String, dynamic> data) => _asString(
+    data[NotificationTypes.referenceUuid] ?? data['reference_uuid'],
+  );
+
+  String? _extractSenderUuid(Map<String, dynamic> data) =>
+      _asString(data[NotificationTypes.uuid] ?? data['sender_uuid']);
+
+  String? _extractReceiverImage(Map<String, dynamic> data) =>
+      _asString(data[NotificationTypes.receiverImage] ?? data['image']);
+
+  String? _extractReceiverName(Map<String, dynamic> data) =>
+      _asString(data[NotificationTypes.receiverName] ?? data['title']);
+
+  bool? _extractReceiverVerify(Map<String, dynamic> data) {
+    final raw = data['is_verified'];
+    if (raw == null) return null;
+    final str = raw.toString().trim().toLowerCase();
+    if (str == '1' || str == 'true') return true;
+    if (str == '0' || str == 'false') return false;
+    return null;
+  }
 
   final OrderDataController _orderDataController = Get.find();
 
   // ================= INIT =================
   Future<void> init() async {
-    await _requestPermission();
-    await _initializeLocalNotifications();
-    await fetchAndStoreFCMToken();
-
-    // Foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      log('Foreground Notification: ${message.notification?.title}');
-
-      final messageId =
-          message.data['id']?.toString() ?? DateTime.now().toIso8601String();
-      // ✅ استخدم await لأن isDuplicate الآن async
-      if (await LocalNotificationDeduplicator.isDuplicate(messageId)) {
-        log('⛔ Duplicate ignored: $messageId');
-        return;
-      }
-
-      // فقط إذا التطبيق في foreground
-      unreadNotificationLocal.value = 1;
-      _handleForegroundNotification(message.data);
-
-      await showNotification(
-        message.notification?.title ?? 'No Title',
-        message.notification?.body ?? 'No Body',
-        message.data,
-      );
-    });
-
-    // Background
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    // Terminated
-    _checkInitialMessage();
-  }
-
-  // Background handler: لا تعرض إشعار محلي، فقط log
-  // Background handler: يتحقق من التكرار قبل التعامل
-  @pragma('vm:entry-point')
-  Future<void> _firebaseMessagingBackgroundHandler(
-    RemoteMessage message,
-  ) async {
-    await Firebase.initializeApp();
-    final messageId = message.data['id'];
-    if (messageId == null ||
-        await LocalNotificationDeduplicator.isDuplicate(messageId)) {
-      log('⛔ Duplicate ignored in background or no ID: $messageId');
-      return;
-    }
-    log('Background Message received: ${message.data}');
-
-    // ⚠️ لا تعرض إشعار هنا إذا كان التطبيق مغلقًا (terminated)
-    // await showNotification(...);
-  }
-
-  // Terminated check: نفس المنطق
-  Future<void> _checkInitialMessage() async {
-    RemoteMessage? initialMessage = await _firebaseMessaging
-        .getInitialMessage();
-    if (initialMessage != null && initialMessage.data.isNotEmpty) {
-      final messageId = initialMessage.data['id'];
-      if (messageId != null &&
-          await LocalNotificationDeduplicator.isDuplicate(messageId)) {
-        log('⛔ Duplicate ignored in terminated: $messageId');
-        return;
-      }
-
-      log('App opened from terminated state with notification');
-      String? type = initialMessage.data[NotificationTypes.type];
-      String? referenceUuid =
-          initialMessage.data[NotificationTypes.referenceUuid];
-      String? uuid = initialMessage.data['sender_uuid'];
-      String? name = initialMessage.data['title'];
-      String? image = initialMessage.data['image'];
-      _onNotificationClicked(type!, referenceUuid ?? '', uuid, name, image);
-    }
-  }
-
-  // ================= PERMISSIONS =================
-  Future<void> _requestPermission() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+    final settings = await _fm.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      log('User granted permission.');
-    } else {
-      log('User denied or has not granted permission.');
-    }
+    log('🔔 FCM permission: ${settings.authorizationStatus}');
+    await _initializeLocalNotifications();
+    await _handleLocalLaunchIfAny();
+    await fetchAndStoreFCMToken();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      final data = message.data;
+      unreadNotificationLocal.value = 1;
+      final prettyData = const JsonEncoder.withIndent('  ').convert(data);
+      log('🟡 [FG] FCM from: ${message.from}');
+      log('🟡 [FG] reference_uuid: ${message.data['reference_uuid']}');
+      log('🟡 [FG] Notification Data:\n$prettyData');
+
+      _handleForegroundNotification(data);
+      showNotification(
+        message.notification?.title ?? 'Notification',
+        message.notification?.body ?? '',
+        data,
+      );
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      log('🟡 [BG→OPEN] data: ${message.data}');
+      _handleClickFromMap(message.data);
+    });
+
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+    // هذا خاص بإشعار FCM لما التطبيق كان مغلق
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _checkInitialMessage();
+    });
   }
 
   // ================= LOCAL NOTIFICATIONS =================
+
   Future<void> _initializeLocalNotifications() async {
-    const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    final iosInit = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+    );
 
-    final DarwinInitializationSettings iosInitializationSettings =
-        DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestSoundPermission: true,
-          requestBadgePermission: true,
-          notificationCategories: [],
-        );
+    final initSettings = InitializationSettings(
+      android: androidInit,
+      iOS: iosInit,
+    );
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-          android: androidInitializationSettings,
-          iOS: iosInitializationSettings,
-        );
-
-    await _localNotificationsPlugin.initialize(
-      initializationSettings,
+    await _fln.initialize(
+      initSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
-        if (response.payload != null) {
-          Map<String, dynamic> data = jsonDecode(response.payload!);
-          String type = data[NotificationTypes.type];
-          String referenceUuid = data[NotificationTypes.referenceUuid] ?? '';
-          String? uuid = data['sender_uuid'];
-          String? name = data['title'];
-          String? image = data['image'];
-
-          // استدعاء دالة الضغط
-          _onNotificationClicked(type, referenceUuid, uuid, name, image);
+        final payload = response.payload;
+        if (payload == null || payload.isEmpty) return;
+        try {
+          final Map<String, dynamic> data = jsonDecode(payload);
+          _handleClickFromMap(data);
+        } catch (e) {
+          log('❌ Local click payload parse error: $e');
         }
       },
+      onDidReceiveBackgroundNotificationResponse: _notificationTapBackground,
     );
   }
+
+  @pragma('vm:entry-point')
+  static void _notificationTapBackground(NotificationResponse response) {}
 
   // ================= SHOW NOTIFICATION =================
   Future<void> showNotification(
@@ -173,43 +151,39 @@ class NotificationService {
     String body,
     Map<String, dynamic> data,
   ) async {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-          'channel_id',
-          'channel_name',
-          importance: Importance.high,
-          priority: Priority.high,
-          sound: RawResourceAndroidNotificationSound('notification_sound'),
-        );
-
-    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+    const android = AndroidNotificationDetails(
+      'default_channel',
+      'Default Notifications',
+      importance: Importance.high,
+      priority: Priority.high,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('notification_sound'),
+    );
+    const ios = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
       sound: 'notification_sound.mp3',
     );
+    const details = NotificationDetails(android: android, iOS: ios);
 
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
-
-    await _localNotificationsPlugin.show(
-      0,
-      title,
-      body,
-      notificationDetails,
-      payload: jsonEncode(data),
-    );
+    await _fln.show(0, title, body, details, payload: jsonEncode(data));
   }
 
   // ================= FOREGROUND HANDLER =================
   void _handleForegroundNotification(Map<String, dynamic> data) {
-    String? type = data[NotificationTypes.type];
-    String referenceUuid = data[NotificationTypes.referenceUuid];
-    String? uuid = data['sender_uuid'];
-    String? name = data['title'];
-    String? image = data['image'];
+    final type = data[NotificationTypes.type]?.toString() ?? '';
+    final referenceUuid =
+        data[NotificationTypes.referenceUuid]?.toString() ?? '';
+    final uuid = data[NotificationTypes.uuid]?.toString() ?? '';
+    final name =
+        data[NotificationTypes.receiverName]?.toString() ??
+        data['title']?.toString() ??
+        '';
+    final image =
+        data[NotificationTypes.receiverImage]?.toString() ??
+        data['image']?.toString() ??
+        '';
 
     log('type : $type');
     log('referenceUuid : $referenceUuid');
@@ -294,16 +268,42 @@ class NotificationService {
     }
   }
 
+  void _handleClickFromMap(Map<String, dynamic> data) {
+    final type = _extractType(data) ?? '';
+    if (type.isEmpty) {
+      log('🔶 Click data without type');
+      return;
+    }
+    final referenceUuid = _extractReferenceUuid(data) ?? '';
+
+    final uuid = _extractSenderUuid(data) ?? '';
+    final receiverImage = _extractReceiverImage(data) ?? '';
+    final receiverName = _extractReceiverName(data) ?? '';
+    final receiverVerify = _extractReceiverVerify(data) ?? false;
+
+    Future.microtask(() {
+      _onNotificationClicked(
+        type,
+        referenceUuid,
+        uuid,
+        receiverImage,
+        receiverName,
+        receiverVerify,
+      );
+    });
+  }
+
   // 🧭 When user clicks notification
   void _onNotificationClicked(
     String type,
     String referenceUuid,
-    String? uuid,
-    String? name,
-    String? image,
+    String uuid,
+    String receiverImage,
+    String receiverName,
+    bool receiverVerify,
   ) {
-    log('Notification clicked: $type');
-    log('referenceUuid: $referenceUuid');
+    log('👉 Notification clicked: type=$type');
+    log('👉 referenceUuid=$referenceUuid');
 
     switch (type) {
       case NotificationTypes.general:
@@ -332,13 +332,7 @@ class NotificationService {
       case NotificationTypes.orderInProgress:
         if (referenceUuid.isNotEmpty) {
           _orderDataController.setOfferItemDetUuid(referenceUuid);
-          // _orderDataController.setItemStatus(
-          //   type == NotificationTypes.orderInProgress ||
-          //           type == NotificationTypes.orderStarted ||
-          //           type == NotificationTypes.orderDelivered
-          //       ? 'in_progress'
-          //       : 'completed',
-          // );
+
           Get.toNamed(Routes.myOfferAdDetailsScreen);
         } else {
           Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 1});
@@ -377,9 +371,9 @@ class NotificationService {
           arguments: {
             AppConstants.liveSupport: false,
             AppConstants.uuid: '${uuid}',
-            AppConstants.receiverImage: '${image}',
-            AppConstants.receiverName: '${name}',
-            AppConstants.receiverVerify: true,
+            AppConstants.receiverImage: '${receiverImage}',
+            AppConstants.receiverName: '${receiverName}',
+            AppConstants.receiverVerify: receiverVerify,
           },
         );
         break;
@@ -392,7 +386,7 @@ class NotificationService {
   // ================= TOKEN =================
   Future<void> fetchAndStoreFCMToken() async {
     try {
-      String? token = await _firebaseMessaging.getToken();
+      String? token = await _fm.getToken();
       await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token!);
       log('FCM Token: $token');
     } catch (e) {
@@ -400,36 +394,33 @@ class NotificationService {
     }
   }
 
-  // Future<void> _checkInitialMessage() async {
-  //   RemoteMessage? initialMessage = await _firebaseMessaging
-  //       .getInitialMessage();
-  //   if (initialMessage != null && initialMessage.data.isNotEmpty) {
-  //     log('App opened from terminated state with notification');
-  //     String? type = initialMessage.data[NotificationTypes.type];
-  //     String? referenceUuid =
-  //         initialMessage.data[NotificationTypes.referenceUuid];
-  //     String? uuid = initialMessage.data['sender_uuid'];
-  //     String? name = initialMessage.data['title'];
-  //     String? image = initialMessage.data['image'];
-  //     _onNotificationClicked(type!, referenceUuid ?? '', uuid, name, image);
-  //   }
-  // }
+  Future<void> _checkInitialMessage() async {
+    if (_initialHandled) return;
+    final RemoteMessage? msg = await _fm.getInitialMessage();
+    if (msg == null || msg.data.isEmpty) return;
+    _initialHandled = true;
+    log('🚀 Launched from FCM (terminated) → data: ${msg.data}');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleClickFromMap(msg.data);
+    });
+  }
 
-  // Future<void> _firebaseMessagingBackgroundHandler(
-  //   RemoteMessage message,
-  // ) async {
-  //   print('Background Message: ${message.data}');
-  // }
-}
-
-class LocalNotificationDeduplicator {
-  static Future<bool> isDuplicate(String id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final shownIds = prefs.getStringList('shown_notification_ids') ?? [];
-    if (shownIds.contains(id)) return true;
-    shownIds.add(id);
-    if (shownIds.length > 100) shownIds.removeAt(0);
-    await prefs.setStringList('shown_notification_ids', shownIds);
-    return false;
+  Future<void> _handleLocalLaunchIfAny() async {
+    final details = await _fln.getNotificationAppLaunchDetails();
+    log('🟣 Local launch details: ${details?.didNotificationLaunchApp}');
+    if (details?.didNotificationLaunchApp ?? false) {
+      final payload = details!.notificationResponse?.payload;
+      log('🟣 Local launch payload: $payload');
+      if (payload != null && payload.isNotEmpty) {
+        try {
+          final Map<String, dynamic> data = jsonDecode(payload);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _handleClickFromMap(data);
+          });
+        } catch (e) {
+          log('❌ Local launch payload parse error: $e');
+        }
+      }
+    }
   }
 }

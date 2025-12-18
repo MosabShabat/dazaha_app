@@ -262,7 +262,13 @@ class ItemAdDetailsScreen extends StatelessWidget {
               );
             },
           )
-        : SizedBox.shrink();
+        : BottomNavigationBarWidget(
+            text: context.joinAsAnAssistant,
+            context,
+            GetScreen: () {
+              Get.toNamed(Routes.captainJoinsScreen);
+            },
+          );
   }
 
   Widget _buildBottomNavVisitor(BuildContext context) {
@@ -275,3 +281,9 @@ class ItemAdDetailsScreen extends StatelessWidget {
     );
   }
 }
+//      _handleForegroundNotification(message.data);
+//      _handleNotificationClick(message.data);
+//      _handleNotificationClick(initialMessage.data);
+
+
+
