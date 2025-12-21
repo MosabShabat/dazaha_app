@@ -90,16 +90,18 @@ class ReportProblemForm extends StatelessWidget {
     return Obx(() {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            AddImageButton(
-              onImageSelected: (ImageSource source) {
-                _reportProblemController.pickImages(source);
-              },
-            ),
-            horizontalSpace(8),
-            ..._buildImageThumbnails(),
-          ],
+        child: SafeArea(
+          child: Row(
+            children: [
+              AddImageButton(
+                onImageSelected: (ImageSource source) {
+                  _reportProblemController.pickImages(source);
+                },
+              ),
+              horizontalSpace(8),
+              ..._buildImageThumbnails(),
+            ],
+          ),
         ),
       );
     });

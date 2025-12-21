@@ -28,6 +28,7 @@ class AppSharedKeys {
   static const String userToken = 'userToken';
   static const String userTokenBackup = 'userTokenBackup'; // ← أضف هذا السطر
   static const String userData = 'userData';
+  static const locationDialogShown = 'location_dialog_shown';
   static const String isUserLoggedInKey = 'isUserLoggedIn';
   static const String isOpenBeforeKey = 'isOpenBeforeKey';
   static const String fcmTokenKey = 'fcm_token';

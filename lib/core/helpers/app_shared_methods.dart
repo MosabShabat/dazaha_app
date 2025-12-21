@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import '../network/utils/dio_factory.dart';
 import '../theming/app_text_styles.dart';
 import '../widgets/app_drag_indicator_bottom_sheet.dart';
-import '../widgets/app_text_button.dart';
 import '../widgets/progress_view_white.dart';
 
 class AppSharedMethods extends GetxService {
@@ -41,6 +40,73 @@ class AppSharedMethods extends GetxService {
   // فحص إذا الـ TextField فاضي
   static bool isTextFieldEmpty(TextEditingController controller) {
     return controller.text.isEmpty;
+  }
+
+  static Future<void> showLocationGrantedDialog({
+    required BuildContext context,
+  }) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: Text(
+            context.locationPermissionTitle,
+            style: AppTextStyles.font16Black500Medium(context),
+          ),
+          content: Text(
+            context.backgroundLocationDisclosure,
+            style: TextStyle(
+              fontSize: 13.sp,
+              height: 1.5,
+              color: context.colorsCustom.TextSecondary,
+              fontFamily: 'Tajawal',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(context.ok),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future<bool> showAppLocationDialog({
+    required BuildContext context,
+  }) async {
+    return await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => AlertDialog(
+            title: Text(
+              context.locationPermissionTitle,
+              style: AppTextStyles.font16Black500Medium(context),
+            ),
+            content: Text(
+              context.backgroundLocationDisclosure,
+              style: TextStyle(
+                fontSize: 13.sp,
+                height: 1.5,
+                color: context.colorsCustom.TextSecondary,
+                fontFamily: 'Tajawal',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(context.reject),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(context.ok),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 
   static Widget buildProgressViewWhite(
@@ -116,45 +182,50 @@ class AppSharedMethods extends GetxService {
   static void showImageSourceOptions({
     required BuildContext context,
     required Function(ImageSource source) onImageSelected,
+    required isCamera,
   }) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            verticalSpace(15),
-            AppBuildDragIndicatorBottomSheet(context),
-            ListTile(
-              leading: Icon(
-                Icons.camera,
-                color: context.colorsCustom.surfacePrimaryBlack,
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              verticalSpace(15),
+              AppBuildDragIndicatorBottomSheet(context),
+              ListTile(
+                leading: Icon(
+                  Icons.camera,
+                  color: context.colorsCustom.surfacePrimaryBlack,
+                ),
+                title: Text(
+                  context.camera,
+                  style: AppTextStyles.font12Black500Medium(context),
+                ),
+                onTap: () {
+                  onImageSelected(ImageSource.camera);
+                  Navigator.pop(context);
+                },
               ),
-              title: Text(
-                context.camera,
-                style: AppTextStyles.font12Black500Medium(context),
-              ),
-              onTap: () {
-                onImageSelected(ImageSource.camera);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.photo_library,
-                color: context.colorsCustom.surfacePrimaryBlack,
-              ),
-              title: Text(
-                context.photoGallery,
-                style: AppTextStyles.font12Black500Medium(context),
-              ),
-              onTap: () {
-                onImageSelected(ImageSource.gallery);
-                Navigator.pop(context);
-              },
-            ),
-          ],
+              isCamera
+                  ? SizedBox.shrink()
+                  : ListTile(
+                      leading: Icon(
+                        Icons.photo_library,
+                        color: context.colorsCustom.surfacePrimaryBlack,
+                      ),
+                      title: Text(
+                        context.photoGallery,
+                        style: AppTextStyles.font12Black500Medium(context),
+                      ),
+                      onTap: () {
+                        onImageSelected(ImageSource.gallery);
+                        Navigator.pop(context);
+                      },
+                    ),
+            ],
+          ),
         );
       },
     );
@@ -164,38 +235,97 @@ class AppSharedMethods extends GetxService {
     required BuildContext context,
     required VoidCallback onConfirm,
   }) {
-    Get.defaultDialog(
-      titlePadding: EdgeInsets.only(top: 16.h),
-      backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      title: context.locationDisabled,
-      titleStyle: AppTextStyles.font16Black500Medium(context),
-      content: WillPopScope(
-        onWillPop: () async => false,
-        child: Text(
-          context.enableLocation,
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        title: Text(
+          context.locationPermissionTitle,
+          style: AppTextStyles.font16Black500Medium(context),
+        ),
+        content: Text(
+          context.backgroundLocationDisclosure,
           style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w300,
+            fontSize: 13.sp,
+            height: 1.5,
             color: context.colorsCustom.TextSecondary,
             fontFamily: 'Tajawal',
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              context.reject,
+              style: AppTextStyles.font12Black500Medium(context),
+            ),
+          ),
+          TextButton(
+            onPressed: onConfirm,
+            child: Text(
+              context.accept,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: context.colorsCustom.TealGreenSecondary,
+              ),
+            ),
+          ),
+          // ElevatedButton(
+          //   onPressed: () => Navigator.pop(context, true),
+          //   child: Text(context.accept),
+          // ),
+        ],
       ),
-      confirm: AppTextButton(
-        context,
-        buttonWidth: 100.w,
-        buttonHeight: 46.h,
-        backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-        textStyle: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w300,
-          color: context.colorsCustom.TextSecondary,
-          fontFamily: 'Tajawal',
-        ),
-        buttonText: context.enable,
-        onPressed: onConfirm,
-      ),
-      barrierDismissible: false,
     );
+    // Get.defaultDialog(
+    //   titlePadding: EdgeInsets.only(top: 16.h),
+    //   backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+    //   title: context.locationPermissionTitle,
+    //   titleStyle: AppTextStyles.font16Black500Medium(context),
+    //   content: WillPopScope(
+    //     onWillPop: () async => false,
+    //     child: Text(
+    //       context.backgroundLocationDisclosure,
+    //       style: TextStyle(
+    //         fontSize: 12.sp,
+    //         fontWeight: FontWeight.w300,
+    //         color: context.colorsCustom.TextSecondary,
+    //         fontFamily: 'Tajawal',
+    //       ),
+    //     ),
+    //   ),
+    //   confirm: AppTextButton(
+    //     context,
+    //     buttonWidth: 100.w,
+    //     buttonHeight: 46.h,
+    //     backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+    //     textStyle: TextStyle(
+    //       fontSize: 12.sp,
+    //       fontWeight: FontWeight.w300,
+    //       color: context.colorsCustom.TextSecondary,
+    //       fontFamily: 'Tajawal',
+    //     ),
+    //     buttonText: context.enable,
+    //     onPressed: onConfirm,
+    //   ),
+    //   cancel: AppTextButton(
+    //     context,
+    //     buttonWidth: 100.w,
+    //     buttonHeight: 46.h,
+    //     backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+    //     textStyle: TextStyle(
+    //       fontSize: 12.sp,
+    //       fontWeight: FontWeight.w300,
+    //       color: context.colorsCustom.TextSecondary,
+    //       fontFamily: 'Tajawal',
+    //     ),
+    //     buttonText: context.delete,
+    //     onPressed: () {
+    //       Navigator.of(context).pop();
+    //     },
+    //   ),
+    //   barrierDismissible: false,
+    // );
   }
 }

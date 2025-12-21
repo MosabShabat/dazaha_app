@@ -29,6 +29,7 @@ Widget MessageActionBar(
             onTap: () {
               AppSharedMethods.showImageSourceOptions(
                 context: context,
+                isCamera: false,
                 onImageSelected: (ImageSource source) async {
                   final ImagePicker _picker = ImagePicker();
                   final XFile? pickedImage = await _picker.pickImage(

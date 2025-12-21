@@ -349,6 +349,10 @@
   "positive_evaluation": "Positive Evaluation",
   "distance": "Distance",
   "km": "Km",
+  "reject": "Reject",
+  "accept": "Accept",
+  "location_permission_title": "Allow location access",
+  "background_location_disclosure": "This application uses geolocation to track the movement of the representative while performing tasks. Location access is maintained even when the application is running in the background to ensure accurate tracking and improve service quality. Location is not shared with any third party. The user can disable permission at any time through the phone's settings.",
   "data_empty":"Data Empty",
   "you_must_register_as_a_driver":"You must register as a driver.",
   "the_driver_application_is_under": "The driver application is under review. You cannot submit bids until it is completed."

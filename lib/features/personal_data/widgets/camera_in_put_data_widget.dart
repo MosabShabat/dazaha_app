@@ -16,6 +16,7 @@ Widget _buildCameraInputWidget(
   void _pickImage() {
     AppSharedMethods.showImageSourceOptions(
       context: context,
+      isCamera: true,
       onImageSelected: (ImageSource source) async {
         final picked = await ImagePicker().pickImage(source: source);
         if (picked != null) onImageSelected(File(picked.path));

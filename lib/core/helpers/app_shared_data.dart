@@ -17,6 +17,15 @@ class AppSharedData {
     return SharedPreferences.getInstance();
   }
 
+  static Future<void> setSecuredBool(String key, bool value) async {
+    await _flutterSecureStorage.write(key: key, value: value.toString());
+  }
+
+  static Future<bool> getSecuredBool(String key) async {
+    final value = await _flutterSecureStorage.read(key: key);
+    return value?.toLowerCase() == 'true';
+  }
+
   static setSecuredString(String key, String value) async {
     const flutterSecureStorage = FlutterSecureStorage();
     debugPrint(

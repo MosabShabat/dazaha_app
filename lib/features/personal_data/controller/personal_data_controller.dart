@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:image/image.dart' as img;
 import 'package:dio/dio.dart' as dio;
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
@@ -11,6 +12,7 @@ import '../../../core/widgets/app_snackbar.dart';
 import '../../auth/register/controller/register_controller.dart';
 import '../../profile/controller/profile_controller.dart';
 import 'personal_data_repo.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PersonalDataController extends GetxController {
   final PersonalDataRepo _personalDataRepo = Get.find<PersonalDataRepo>();
@@ -135,12 +137,35 @@ class PersonalDataController extends GetxController {
   Future<dio.MultipartFile?> _prepareImage(dynamic image) async {
     if (image == null || image is String) return null;
     if (image is File) {
+      File fileToUpload = image;
+
+      // ضغط الصورة دائمًا قبل الرفع
+      fileToUpload = await compressImage(image);
+
       return await dio.MultipartFile.fromFile(
-        image.path,
-        filename: image.path.split('/').last,
+        fileToUpload.path,
+        filename: fileToUpload.path.split('/').last,
       );
     }
     return null;
+  }
+
+  Future<File> compressImage(File file) async {
+    final imageBytes = await file.readAsBytes();
+    img.Image? image = img.decodeImage(imageBytes);
+    if (image == null) return file;
+
+    // تصغير الأبعاد
+    img.Image resized = img.copyResize(image, width: 1080);
+
+    // ضغط الصورة
+    final compressed = img.encodeJpg(resized, quality: 40);
+
+    final tempDir = await getTemporaryDirectory();
+    final tempPath =
+        '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final compressedFile = await File(tempPath).writeAsBytes(compressed);
+    return compressedFile;
   }
 
   /// Set selected user image

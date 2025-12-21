@@ -11,22 +11,12 @@ Widget CaseReqWidget(
   final currentReq = isOrder
       ? controller.homeModel.value?.currentOrder!
       : controller.homeModel.value?.currentOffer!;
-  print('currentReq statusText : ${currentReq!.statusText}');
-  print('currentReq uuid : ${currentReq.uuid ?? ''}');
-  print('currentReq title : ${currentReq.title ?? ''}');
-  print('currentReq serviceUuid : ${currentReq.serviceUuid ?? ''}');
-  print('currentReq image : ${currentReq.image ?? ''}');
-  print('currentReq status : ${currentReq.status ?? ''}');
-  print('currentReq time : ${currentReq.time ?? ''}');
-  print('currentReq orderId : ${currentReq.orderId ?? ''}');
-  print('currentReq date : ${currentReq.date ?? ''}');
-  print('currentReq timeAgo : ${currentReq.timeAgo ?? ''}');
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
-        '${currentReq.timeAgo ?? ''} ',
+        '${currentReq!.timeAgo ?? ''} ',
         textAlign: TextAlign.start,
         style: context.textStyles.bodySmall.regular.copyWith(
           color: context.colorsCustom.TextSecondary,

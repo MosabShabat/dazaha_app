@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../features/home_page/controller/home_repo.dart';
 import 'package:geocoding/geocoding.dart';
@@ -33,6 +34,7 @@ class HomePageController extends GetxController {
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
   var isOffline = false.obs;
+  RxBool hasShownLocationDialog = false.obs;
 
   RxBool isLoading = true.obs;
   Rxn<HomeDataModel> homeModel = Rxn<HomeDataModel>();
@@ -84,22 +86,62 @@ class HomePageController extends GetxController {
 
   Future<void> getLocation() async {
     try {
-      LocationPermission permission = await _requestLocationPermission();
+      // تحقق من خدمة الموقع
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        // المستخدم رفض الإذن، استدعِ الـ API بدون موقع
-        log('Location permission denied — loading home data without location');
-        await getHome(); // ✅ أضف هذا السطر
+      // تحقق من إذن الموقع
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      // إذا الإذن مرفوض نهائيًا
+      if (permission == LocationPermission.deniedForever) {
+        log('Location permission denied forever');
+        await getHome();
         return;
       }
 
+      // إذا الإذن مرفوض مؤقتًا أو الخدمة مغلقة
+      if (permission == LocationPermission.denied || !serviceEnabled) {
+        log('Location denied or service disabled');
+
+        // عرض dialog لتمكين الخدمة فقط إذا الخدمة مغلقة
+        if (!serviceEnabled && Get.context != null) {
+          AppSharedMethods.showLocationServicesDialog(
+            context: Get.context!,
+            onConfirm: () async {
+              Get.back();
+              await Geolocator.openLocationSettings();
+              await Future.delayed(const Duration(seconds: 2));
+              getLocation();
+            },
+          );
+        }
+        await getHome();
+        return;
+      }
+
+      // إذا تم منح الإذن والخدمة مفعلة، عرض dialog مرة واحدة فقط
+      // if (!hasShownLocationDialog.value && Get.context != null) {
+      //   hasShownLocationDialog.value = true;
+      //   AppSharedMethods.showLocationServicesDialog(
+      //     context: Get.context!,
+      //     onConfirm: () async {
+      //       Get.back();
+      //       await Geolocator.openLocationSettings();
+      //       await Future.delayed(const Duration(seconds: 2));
+      //       getLocation();
+      //     },
+      //   );
+      // }
+
+      // الحصول على الموقع فعليًا
       Position position = await _getCurrentPosition();
       await _updateLocationData(position);
     } catch (e) {
       log('Error getting location: $e');
-      // في حالة أي خطأ، أيضًا استدعِ الـ API بدون موقع
-      await getHome(); // ✅ أضف هذا السطر أيضًا
+      await getHome();
     }
   }
 
@@ -119,13 +161,13 @@ class HomePageController extends GetxController {
   //   return serviceEnabled;
   // }
 
-  Future<LocationPermission> _requestLocationPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-    return permission;
-  }
+  // Future<LocationPermission> _requestLocationPermission() async {
+  //   LocationPermission permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //   }
+  //   return permission;
+  // }
 
   Future<Position> _getCurrentPosition() async {
     return await Geolocator.getCurrentPosition(

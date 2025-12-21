@@ -20,6 +20,7 @@ Widget ProfileImageWidget(
     AppSharedMethods.showImageSourceOptions(
       context: context,
       onImageSelected: _pickImage,
+      isCamera: false,
     );
   }
 

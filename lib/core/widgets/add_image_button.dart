@@ -12,20 +12,25 @@ class AddImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => AppSharedMethods.showImageSourceOptions(
-        context: context,
-        onImageSelected: onImageSelected,
-      ),
-      child: Container(
-        width: 100.w,
-        height: 100.w,
-        decoration: DottedDecoration(
-          borderRadius: BorderRadius.circular(8.r),
-          color: context.colorsCustom.CardBorder,
-          shape: Shape.box,
+    return SafeArea(
+      child: GestureDetector(
+        onTap: () => AppSharedMethods.showImageSourceOptions(
+          context: context,
+          onImageSelected: onImageSelected,
+          isCamera: false,
         ),
-        child: Center(child: SvgPicture.asset(AppAssets.svgs.gallery_add_icon)),
+        child: Container(
+          width: 100.w,
+          height: 100.w,
+          decoration: DottedDecoration(
+            borderRadius: BorderRadius.circular(8.r),
+            color: context.colorsCustom.CardBorder,
+            shape: Shape.box,
+          ),
+          child: Center(
+            child: SvgPicture.asset(AppAssets.svgs.gallery_add_icon),
+          ),
+        ),
       ),
     );
   }

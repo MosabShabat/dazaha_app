@@ -359,7 +359,7 @@ extension TranslationsExtension on BuildContext {
   String get viewPrice => tr('view_price');
   String get presentedOffer => tr('presented_offer');
   String get startTheJourney => tr('start_the_journey');
-  
+
   String get iArrivedHome => tr('i_arrived_home');
   String get endTheTrip => tr('end_the_trip');
   String get doYouWantToEndTheTrip => tr('do_you_want_to_end_the_trip');
@@ -391,7 +391,12 @@ extension TranslationsExtension on BuildContext {
   String get locationDisabled => tr('location_disabled');
   String get enableLocation => tr('enable_location');
   String get enable => tr('enable');
+  String get reject => tr('reject');
+  String get accept => tr('accept');
   String get unknownPlace => tr('unknown_place');
+  String get locationPermissionTitle => tr('location_permission_title');
+  String get backgroundLocationDisclosure =>
+      tr('background_location_disclosure');
   String get currentLocation => tr('current_location');
   String get enterValidPhoneNumber => tr('enter_valid_phone_number');
   String get addressUpdatedSuccessfully => tr('address_updated_successfully');

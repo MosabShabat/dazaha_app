@@ -41,6 +41,9 @@ class NotificationService {
 
   bool _initialHandled = false;
 
+  // ✅ GUARD: يمنع init من التكرار
+  bool _isInitialized = false;
+
   String? _asString(dynamic v) => v == null ? null : v.toString().trim();
 
   String? _extractType(Map<String, dynamic> data) =>
@@ -72,12 +75,20 @@ class NotificationService {
 
   // ================= INIT =================
   Future<void> init() async {
+    // ✅ GUARD
+    if (_isInitialized) {
+      log('🟣 NotificationService.init skipped (already initialized)');
+      return;
+    }
+    _isInitialized = true;
+
     final settings = await _fm.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
     log('🔔 FCM permission: ${settings.authorizationStatus}');
+
     await _initializeLocalNotifications();
     await _handleLocalLaunchIfAny();
     await fetchAndStoreFCMToken();
@@ -85,17 +96,23 @@ class NotificationService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       final data = message.data;
       unreadNotificationLocal.value = 1;
+
       final prettyData = const JsonEncoder.withIndent('  ').convert(data);
       log('🟡 [FG] FCM from: ${message.from}');
       log('🟡 [FG] reference_uuid: ${message.data['reference_uuid']}');
       log('🟡 [FG] Notification Data:\n$prettyData');
 
       _handleForegroundNotification(data);
-      showNotification(
-        message.notification?.title ?? 'Notification',
-        message.notification?.body ?? '',
-        data,
-      );
+
+      // ✅ لا تعرض Local إذا الرسالة فيها notification (title/body)
+      final hasNotification = message.notification != null;
+      if (!hasNotification) {
+        showNotification('Notification', '', data);
+      } else {
+        log(
+          '🟠 [FG] Skipped Local notification (FCM has notification payload)',
+        );
+      }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -167,6 +184,10 @@ class NotificationService {
     );
     const details = NotificationDetails(android: android, iOS: ios);
 
+    // (اختياري) لو تحب تمنع استبدال نفس الاشعار دايمًا،
+    // استخدم id ديناميكي بدل 0
+    // final id = ('${_extractType(data)}_${_extractReferenceUuid(data)}').hashCode;
+
     await _fln.show(0, title, body, details, payload: jsonEncode(data));
   }
 
@@ -214,10 +235,8 @@ class NotificationService {
 
     if (type == NotificationTypes.newMessage &&
         Get.isRegistered<ChatTechnicalSupportController>()) {
-      Get.find<ChatTechnicalSupportController>().getMessages('${uuid}');
+      Get.find<ChatTechnicalSupportController>().getMessages('$uuid');
     }
-
-    //newMessage
 
     // Offers
     if (type == NotificationTypes.offerExcluded &&
@@ -231,7 +250,7 @@ class NotificationService {
     // Orders
     if ((type == NotificationTypes.orderInProgress) &&
         Get.isRegistered<MyOfferAdDetailsController>()) {
-      MyOfferAdDetailsController offerController = Get.find();
+      final MyOfferAdDetailsController offerController = Get.find();
       offerController.getOfferDetails();
       if (referenceUuid.isNotEmpty) {
         _orderDataController.setItemUuid(referenceUuid);
@@ -249,7 +268,8 @@ class NotificationService {
             type == NotificationTypes.orderStarted ||
             type == NotificationTypes.orderCanceled) &&
         Get.isRegistered<MyAdsDetailsController>()) {
-      MyAdsDetailsController controller = Get.find<MyAdsDetailsController>();
+      final MyAdsDetailsController controller =
+          Get.find<MyAdsDetailsController>();
       controller.getMyOrderDetails();
       controller.getMyOrderOffers("created_at");
     }
@@ -274,8 +294,8 @@ class NotificationService {
       log('🔶 Click data without type');
       return;
     }
-    final referenceUuid = _extractReferenceUuid(data) ?? '';
 
+    final referenceUuid = _extractReferenceUuid(data) ?? '';
     final uuid = _extractSenderUuid(data) ?? '';
     final receiverImage = _extractReceiverImage(data) ?? '';
     final receiverName = _extractReceiverName(data) ?? '';
@@ -332,7 +352,6 @@ class NotificationService {
       case NotificationTypes.orderInProgress:
         if (referenceUuid.isNotEmpty) {
           _orderDataController.setOfferItemDetUuid(referenceUuid);
-
           Get.toNamed(Routes.myOfferAdDetailsScreen);
         } else {
           Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 1});
@@ -370,9 +389,9 @@ class NotificationService {
           Routes.reportAProblemChatSupportScreen,
           arguments: {
             AppConstants.liveSupport: false,
-            AppConstants.uuid: '${uuid}',
-            AppConstants.receiverImage: '${receiverImage}',
-            AppConstants.receiverName: '${receiverName}',
+            AppConstants.uuid: '$uuid',
+            AppConstants.receiverImage: receiverImage,
+            AppConstants.receiverName: receiverName,
             AppConstants.receiverVerify: receiverVerify,
           },
         );
@@ -386,8 +405,12 @@ class NotificationService {
   // ================= TOKEN =================
   Future<void> fetchAndStoreFCMToken() async {
     try {
-      String? token = await _fm.getToken();
-      await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token!);
+      final String? token = await _fm.getToken();
+      if (token == null || token.isEmpty) {
+        log('❌ FCM Token is null/empty');
+        return;
+      }
+      await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token);
       log('FCM Token: $token');
     } catch (e) {
       log('Error fetching FCM Token: $e');
@@ -396,8 +419,10 @@ class NotificationService {
 
   Future<void> _checkInitialMessage() async {
     if (_initialHandled) return;
+
     final RemoteMessage? msg = await _fm.getInitialMessage();
     if (msg == null || msg.data.isEmpty) return;
+
     _initialHandled = true;
     log('🚀 Launched from FCM (terminated) → data: ${msg.data}');
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -424,3 +449,5 @@ class NotificationService {
     }
   }
 }
+
+
