@@ -3,6 +3,7 @@ import '../../../../features/choose_the_service/controller/order_data_controller
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../features/home_page/widgets/case_container_widget.dart';
+import '../../../core/widgets/handle_ads_tap.dart';
 
 Widget ItemDetWidget(
   BuildContext context, {
@@ -17,8 +18,15 @@ Widget ItemDetWidget(
 
   void goToDetails() {
     if (status == 'canceled') return;
-    orderDataController.setItemUuid(uuid);
-    Get.toNamed(Routes.itemAdDetailsScreen);
+
+    handleAdsTap(
+      context,
+      isHomePage: false,
+      onNavigate: () {
+        orderDataController.setItemUuid(uuid);
+        Get.toNamed(Routes.itemAdDetailsScreen);
+      },
+    );
   }
 
   return GestureDetector(

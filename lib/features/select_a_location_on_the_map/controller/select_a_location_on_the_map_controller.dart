@@ -53,6 +53,7 @@ class SelectALocationOnTheMapController extends GetxController
     if (!serviceEnabled) {
       AppSharedMethods.showLocationServicesDialog(
         context: Get.context!,
+        isHome: false,
         onConfirm: () async {
           Get.back();
           await Geolocator.openLocationSettings();

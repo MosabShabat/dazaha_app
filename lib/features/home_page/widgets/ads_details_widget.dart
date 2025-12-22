@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/widgets/app_shimmers/custom_shimmer.dart';
+import '../../../core/widgets/handle_ads_tap.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../controller/home_page_controller.dart';
 
@@ -79,12 +80,24 @@ Widget AdsDetailsWidget(
                 ),
               ),
             ],
-          ).onTap(() {
-            orderDataController.setItemUuid(serData.uuid ?? '');
-            Get.toNamed(
-              Routes.itemAdDetailsScreen,
-              arguments: {'isShow': true},
+          ).onTap(() async {
+            handleAdsTap(
+              context,
+              isHomePage: false,
+              onNavigate: () {
+                orderDataController.setItemUuid(serData.uuid ?? '');
+                Get.toNamed(
+                  Routes.itemAdDetailsScreen,
+                  arguments: {'isShow': true},
+                );
+              },
             );
+            // ✅ إذن متاح → انتقل للشاشة
+            // orderDataController.setItemUuid(serData.uuid ?? '');
+            // Get.toNamed(
+            //   Routes.itemAdDetailsScreen,
+            //   arguments: {'isShow': true},
+            // );
           });
         },
       ),

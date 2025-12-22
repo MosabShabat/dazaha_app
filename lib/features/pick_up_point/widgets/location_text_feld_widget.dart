@@ -1,5 +1,6 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
+import '../../../core/widgets/handle_ads_tap.dart';
 
 Widget LocationTextFieldWidget(
   BuildContext context, {
@@ -23,7 +24,13 @@ Widget LocationTextFieldWidget(
     textAlign: TextAlign.start,
     HintTextFontSize: textSize,
     onTap: () {
-      Get.toNamed(Routes.selectALocationOnTheMapScreen);
+      handleAdsTap(
+        context,
+        isHomePage: false,
+        onNavigate: () {
+          Get.toNamed(Routes.selectALocationOnTheMapScreen);
+        },
+      );
     },
     fillColor: context.colorsCustom.surfacePrimaryWhite,
     suffixIcon: SvgPicture.asset(

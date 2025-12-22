@@ -22,6 +22,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'dart:developer';
 
+import '../widgets/handle_ads_tap.dart';
+
 // 🔔 NOTIFICATION SERVICE IMPLEMENTATION
 
 @pragma('vm:entry-point')
@@ -40,9 +42,6 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   bool _initialHandled = false;
-
-  // ✅ GUARD: يمنع init من التكرار
-  bool _isInitialized = false;
 
   String? _asString(dynamic v) => v == null ? null : v.toString().trim();
 
@@ -75,44 +74,36 @@ class NotificationService {
 
   // ================= INIT =================
   Future<void> init() async {
-    // ✅ GUARD
-    if (_isInitialized) {
-      log('🟣 NotificationService.init skipped (already initialized)');
-      return;
-    }
-    _isInitialized = true;
-
     final settings = await _fm.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
     log('🔔 FCM permission: ${settings.authorizationStatus}');
-
     await _initializeLocalNotifications();
     await _handleLocalLaunchIfAny();
     await fetchAndStoreFCMToken();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       final data = message.data;
-      unreadNotificationLocal.value = 1;
+      // ❌ تجاهل الإشعار غير الصحيح
+      if (!_isValidMessageNotification(data)) {
+        log('🚫 Ignored duplicate/invalid notification');
+        return;
+      }
 
+      unreadNotificationLocal.value = 1;
       final prettyData = const JsonEncoder.withIndent('  ').convert(data);
       log('🟡 [FG] FCM from: ${message.from}');
       log('🟡 [FG] reference_uuid: ${message.data['reference_uuid']}');
       log('🟡 [FG] Notification Data:\n$prettyData');
 
       _handleForegroundNotification(data);
-
-      // ✅ لا تعرض Local إذا الرسالة فيها notification (title/body)
-      final hasNotification = message.notification != null;
-      if (!hasNotification) {
-        showNotification('Notification', '', data);
-      } else {
-        log(
-          '🟠 [FG] Skipped Local notification (FCM has notification payload)',
-        );
-      }
+      showNotification(
+        message.notification?.title ?? 'Notification',
+        message.notification?.body ?? '',
+        data,
+      );
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -162,6 +153,22 @@ class NotificationService {
   @pragma('vm:entry-point')
   static void _notificationTapBackground(NotificationResponse response) {}
 
+  bool _isValidMessageNotification(Map<String, dynamic> data) {
+    final senderUuid = data['sender_uuid'];
+    final link = data['link'];
+
+    if (senderUuid == null || senderUuid.toString().isEmpty) {
+      return false;
+    }
+
+    if (link == null ||
+        !link.toString().startsWith('https://panel.dizzha.com')) {
+      return false;
+    }
+
+    return true;
+  }
+
   // ================= SHOW NOTIFICATION =================
   Future<void> showNotification(
     String title,
@@ -183,10 +190,6 @@ class NotificationService {
       sound: 'notification_sound.mp3',
     );
     const details = NotificationDetails(android: android, iOS: ios);
-
-    // (اختياري) لو تحب تمنع استبدال نفس الاشعار دايمًا،
-    // استخدم id ديناميكي بدل 0
-    // final id = ('${_extractType(data)}_${_extractReferenceUuid(data)}').hashCode;
 
     await _fln.show(0, title, body, details, payload: jsonEncode(data));
   }
@@ -226,17 +229,47 @@ class NotificationService {
     }
 
     // Technical Support
+
     if (type == NotificationTypes.newTechnicalSupportMessage &&
         Get.isRegistered<ChatTechnicalSupportController>()) {
-      Get.find<ChatTechnicalSupportController>().getMessages(
-        'technical_support',
-      );
+      if (AppConstants.chatReceiverUuid == 'technical_support') {
+        log('🟢 Technical support chat open → ignore');
+        Get.find<ChatTechnicalSupportController>().getMessages(
+          'technical_support',
+        );
+
+        return;
+      }
     }
 
+    // if (type == NotificationTypes.newTechnicalSupportMessage &&
+    //     Get.isRegistered<ChatTechnicalSupportController>()) {
+    //   Get.find<ChatTechnicalSupportController>().getMessages(
+    //     'technical_support',
+    //   );
+    // }
+
+    // if (type == NotificationTypes.newMessage &&
+    //     Get.isRegistered<ChatTechnicalSupportController>()) {
+    //   Get.find<ChatTechnicalSupportController>().getMessages('${uuid}');
+    // }
     if (type == NotificationTypes.newMessage &&
         Get.isRegistered<ChatTechnicalSupportController>()) {
-      Get.find<ChatTechnicalSupportController>().getMessages('$uuid');
+      final currentChat = AppConstants.chatReceiverUuid;
+
+      // إذا المستخدم داخل نفس المحادثة
+      if (currentChat == uuid) {
+        log('🟢 Chat open → ignore API call');
+        Get.find<ChatTechnicalSupportController>().getMessages('${uuid}');
+        return;
+      }
+
+      // إذا لم يكن داخل المحادثة
+      // ❗ لا تستدعِ getMessages هنا
+      // فقط حدث badge أو notification
     }
+
+    //newMessage
 
     // Offers
     if (type == NotificationTypes.offerExcluded &&
@@ -250,7 +283,7 @@ class NotificationService {
     // Orders
     if ((type == NotificationTypes.orderInProgress) &&
         Get.isRegistered<MyOfferAdDetailsController>()) {
-      final MyOfferAdDetailsController offerController = Get.find();
+      MyOfferAdDetailsController offerController = Get.find();
       offerController.getOfferDetails();
       if (referenceUuid.isNotEmpty) {
         _orderDataController.setItemUuid(referenceUuid);
@@ -268,8 +301,7 @@ class NotificationService {
             type == NotificationTypes.orderStarted ||
             type == NotificationTypes.orderCanceled) &&
         Get.isRegistered<MyAdsDetailsController>()) {
-      final MyAdsDetailsController controller =
-          Get.find<MyAdsDetailsController>();
+      MyAdsDetailsController controller = Get.find<MyAdsDetailsController>();
       controller.getMyOrderDetails();
       controller.getMyOrderOffers("created_at");
     }
@@ -289,13 +321,17 @@ class NotificationService {
   }
 
   void _handleClickFromMap(Map<String, dynamic> data) {
+    if (!_isValidMessageNotification(data)) {
+      log('🚫 Ignored click from invalid notification');
+      return;
+    }
     final type = _extractType(data) ?? '';
     if (type.isEmpty) {
       log('🔶 Click data without type');
       return;
     }
-
     final referenceUuid = _extractReferenceUuid(data) ?? '';
+
     final uuid = _extractSenderUuid(data) ?? '';
     final receiverImage = _extractReceiverImage(data) ?? '';
     final receiverName = _extractReceiverName(data) ?? '';
@@ -336,8 +372,18 @@ class NotificationService {
         break;
 
       case NotificationTypes.newOrder:
-        _orderDataController.setItemUuid(referenceUuid);
-        Get.toNamed(Routes.itemAdDetailsScreen, arguments: {"isShow": true});
+        handleAdsTap(
+          Get.context!,
+          isHomePage: true,
+          onNavigate: () {
+            // 👈 هنا يمكنك تغيير ماذا يحدث عند الضغط
+            _orderDataController.setItemUuid(referenceUuid);
+            Get.toNamed(
+              Routes.itemAdDetailsScreen,
+              arguments: {'isShow': true},
+            );
+          },
+        );
         break;
 
       case NotificationTypes.newOffer:
@@ -352,6 +398,7 @@ class NotificationService {
       case NotificationTypes.orderInProgress:
         if (referenceUuid.isNotEmpty) {
           _orderDataController.setOfferItemDetUuid(referenceUuid);
+
           Get.toNamed(Routes.myOfferAdDetailsScreen);
         } else {
           Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 1});
@@ -389,9 +436,9 @@ class NotificationService {
           Routes.reportAProblemChatSupportScreen,
           arguments: {
             AppConstants.liveSupport: false,
-            AppConstants.uuid: '$uuid',
-            AppConstants.receiverImage: receiverImage,
-            AppConstants.receiverName: receiverName,
+            AppConstants.uuid: '${uuid}',
+            AppConstants.receiverImage: '${receiverImage}',
+            AppConstants.receiverName: '${receiverName}',
             AppConstants.receiverVerify: receiverVerify,
           },
         );
@@ -405,12 +452,8 @@ class NotificationService {
   // ================= TOKEN =================
   Future<void> fetchAndStoreFCMToken() async {
     try {
-      final String? token = await _fm.getToken();
-      if (token == null || token.isEmpty) {
-        log('❌ FCM Token is null/empty');
-        return;
-      }
-      await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token);
+      String? token = await _fm.getToken();
+      await AppSharedData.setSecuredString(AppSharedKeys.fcmTokenKey, token!);
       log('FCM Token: $token');
     } catch (e) {
       log('Error fetching FCM Token: $e');
@@ -419,10 +462,8 @@ class NotificationService {
 
   Future<void> _checkInitialMessage() async {
     if (_initialHandled) return;
-
     final RemoteMessage? msg = await _fm.getInitialMessage();
     if (msg == null || msg.data.isEmpty) return;
-
     _initialHandled = true;
     log('🚀 Launched from FCM (terminated) → data: ${msg.data}');
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -449,5 +490,3 @@ class NotificationService {
     }
   }
 }
-
-

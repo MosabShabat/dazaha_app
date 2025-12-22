@@ -4,6 +4,7 @@ part 'message.g.dart';
 
 @JsonSerializable()
 class Message {
+  @JsonKey(name: 'content')
   final String? content;
 
   @JsonKey(name: 'content_type')
@@ -13,12 +14,7 @@ class Message {
   @JsonKey(name: 'is_me')
   final bool? isMe;
 
-  Message({
-    this.content,
-    this.contentType,
-    this.timeAge,
-    this.isMe,
-  });
+  Message({this.content, this.contentType, this.timeAge, this.isMe});
 
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);

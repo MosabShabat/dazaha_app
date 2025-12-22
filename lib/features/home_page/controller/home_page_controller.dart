@@ -57,6 +57,7 @@ class HomePageController extends GetxController {
     loadCurrentUser();
     listenConnection();
     getLocation();
+    AppConstants.startTimer();
   }
 
   /// تحميل بيانات المستخدم من AppSharedData عند بدء التطبيق
@@ -110,6 +111,7 @@ class HomePageController extends GetxController {
         if (!serviceEnabled && Get.context != null) {
           AppSharedMethods.showLocationServicesDialog(
             context: Get.context!,
+            isHome: true,
             onConfirm: () async {
               Get.back();
               await Geolocator.openLocationSettings();
@@ -122,20 +124,6 @@ class HomePageController extends GetxController {
         return;
       }
 
-      // إذا تم منح الإذن والخدمة مفعلة، عرض dialog مرة واحدة فقط
-      // if (!hasShownLocationDialog.value && Get.context != null) {
-      //   hasShownLocationDialog.value = true;
-      //   AppSharedMethods.showLocationServicesDialog(
-      //     context: Get.context!,
-      //     onConfirm: () async {
-      //       Get.back();
-      //       await Geolocator.openLocationSettings();
-      //       await Future.delayed(const Duration(seconds: 2));
-      //       getLocation();
-      //     },
-      //   );
-      // }
-
       // الحصول على الموقع فعليًا
       Position position = await _getCurrentPosition();
       await _updateLocationData(position);
@@ -144,30 +132,6 @@ class HomePageController extends GetxController {
       await getHome();
     }
   }
-
-  // Future<bool> _checkLocationService() async {
-  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     AppSharedMethods.showLocationServicesDialog(
-  //       context: Get.context!,
-  //       onConfirm: () async {
-  //         Get.back();
-  //         await Geolocator.openLocationSettings();
-  //         await Future.delayed(Duration(seconds: 2));
-  //         getLocation();
-  //       },
-  //     );
-  //   }
-  //   return serviceEnabled;
-  // }
-
-  // Future<LocationPermission> _requestLocationPermission() async {
-  //   LocationPermission permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //   }
-  //   return permission;
-  // }
 
   Future<Position> _getCurrentPosition() async {
     return await Geolocator.getCurrentPosition(

@@ -21,7 +21,6 @@ Widget MessageListView(
   return Expanded(
     flex: 1,
     child: Obx(() {
-      // لا نعرض Loader إلا أثناء getMessages
       if (controller.isLoading.value && controller.messages.isEmpty) {
         return Center(
           child: AppSharedMethods.buildProgressViewWhite(context, false),
@@ -57,7 +56,9 @@ Widget MessageListView(
             }
           }
 
-          if (controller.messages.isEmpty) return SizedBox.shrink();
+          if (controller.messages.isEmpty ||
+              controller.messages[index - 1].contentType == null)
+            return SizedBox.shrink();
 
           final message = controller.messages[index - 1];
           if (message.contentType == MessageTypes.messageText) {

@@ -4,6 +4,7 @@ import '../../../../../core/theming/app_text_styles.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/custom_cached_image.dart';
+import '../../../core/widgets/handle_ads_tap.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 
 Widget buildNotificationItem(
@@ -71,11 +72,20 @@ Widget buildNotificationItem(
 
       /// 🟠 طلب جديد
       if (type == NotificationTypes.newOrder) {
-        _orderDataController.setItemUuid(referenceUuid);
-        print(
-          '_orderDataController.setItemUuid(referenceUuid) : ${_orderDataController.itemUuid.value}',
+        handleAdsTap(
+          context,
+          isHomePage: false,
+          onNavigate: () {
+            _orderDataController.setItemUuid(referenceUuid);
+            print(
+              '_orderDataController.setItemUuid(referenceUuid) : ${_orderDataController.itemUuid.value}',
+            );
+            Get.toNamed(
+              Routes.itemAdDetailsScreen,
+              arguments: {"isShow": true},
+            );
+          },
         );
-        Get.toNamed(Routes.itemAdDetailsScreen, arguments: {"isShow": true});
         return;
       }
 

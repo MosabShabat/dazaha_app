@@ -28,9 +28,6 @@ class ReportAProblemChatSupportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // controller.initReverb(receiverUuid ?? 'technical_support');
-    // controller.getMessages(receiverUuid ?? 'technical_support');
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -73,7 +70,8 @@ class ReportAProblemChatSupportScreen extends StatelessWidget {
               receiverUuid,
               receiverImage,
               receiverName,
-              receiverVerify,            ),
+              receiverVerify,
+            ),
             MessageActionBar(
               context,
               receiverUuid ?? 'technical_support',

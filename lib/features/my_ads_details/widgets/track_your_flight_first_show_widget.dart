@@ -2,6 +2,8 @@ import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../core/widgets/handle_ads_tap.dart';
+
 Widget TrackYourFlightFirstShowWidget(
   BuildContext context, {
   required BottomText,
@@ -32,11 +34,17 @@ Widget TrackYourFlightFirstShowWidget(
             ),
             GestureDetector(
               onTap: () {
-                print('!!!!!!!!!!!!!! $page !!!!!!!!!!!!!!');
-                Get.toNamed(
-                  Routes.directSupportMapScreen,
-                  arguments: {'page': page, 'isShow': isShow},
+                handleAdsTap(
+                  context,
+                  isHomePage: false,
+                  onNavigate: () {
+                    Get.toNamed(
+                      Routes.directSupportMapScreen,
+                      arguments: {'page': page, 'isShow': isShow},
+                    );
+                  },
                 );
+                print('!!!!!!!!!!!!!! $page !!!!!!!!!!!!!!');
               },
               child: Container(
                 width: 110.w,

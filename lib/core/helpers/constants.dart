@@ -55,6 +55,9 @@ class AppConstants {
   static const String imageSource = 'imageSource';
   static String referenceType = 'referenceType';
   static String referenceUuid = 'referenceUuid';
+  static String chatReceiverUuid = 'chatReceiverUuid';
+
+  //chatReceiverUuid
   static const String placeName = 'placeName';
   static const String countryKey = 'countryKey';
   static const String register = 'register';
@@ -126,6 +129,12 @@ class AppConstants {
 
   static void startTimer() {
     _timer?.cancel();
+
+    // 🚫 لا تشغل timer إذا كنت داخل chat
+    if (Get.currentRoute.contains('chat')) {
+      log('⛔ Timer skipped: user in chat screen');
+      return;
+    }
     log('statrt timer after 60 seconds');
 
     if (isUserLogin == false) {

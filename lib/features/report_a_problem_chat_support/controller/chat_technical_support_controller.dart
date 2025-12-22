@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
@@ -48,6 +49,8 @@ class ChatTechnicalSupportController extends GetxController
 
     final receiver = receiverUuid;
     print("Receiver UUID: $receiver");
+    AppConstants.chatReceiverUuid = receiverUuid;
+
     initReverb(receiver); // ✅ اشترك أولاً
     getMessages(receiver); // ثم جلب الرسائل السابقة
   }
@@ -70,15 +73,7 @@ class ChatTechnicalSupportController extends GetxController
     }
   }
 
-  void addIncomingMessage(Message newMessage) {
-    messages.add(newMessage);
-    // Scroll to bottom بعد التأكد من إضافة الرسالة
-    WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
-  }
-
-  /// ====== Reverb init and listen (replace Pusher) ======
   void initReverb(String channel) async {
-    print("🟢 Initializing Reverb connection to channel: $channel");
     reverb = SimpleFlutterReverb(
       options: ReverbOptions(
         scheme: 'wss',
@@ -87,36 +82,35 @@ class ChatTechnicalSupportController extends GetxController
         appKey: 'kdgjxo6cgzq8ldqdqjhn',
       ),
     );
+
     reverb.listen((event) {
       if (event.event == 'specialist-chat.message') {
-        try {
-          if (event.data != null) {
-            final message = Message.fromJson(event.data!);
-            addIncomingMessage(message); // استخدم الطريقة الجديدة
-          }
-        } catch (e) {
-          print('❌ Failed to parse incoming message: $e');
+        Map<String, dynamic> data;
+        if (event.data is String) {
+          data = jsonDecode(event.data as String);
+        } else {
+          data = Map<String, dynamic>.from(event.data as Map);
         }
+
+        final incomingMessage = Message.fromJson(data);
+        addIncomingMessage(incomingMessage); // تحديث الـ UI
       }
     }, channel);
+  }
 
-    // reverb.listen((event) {
-    //   print("📩 WebSocket Event received: ${event.event}");
-    //   print("Received event: ${event.event}, data: ${event.data}");
+  void addIncomingMessage(Message newMessage) {
+    messages.add(newMessage);
+    messages.refresh();
 
-    //   if (event.event == 'specialist-chat.message') {
-    //     try {
-    //       final message = Message.fromJson(event.data!);
-    //       log('message: ${message.content}');
-    //       messages.add(message);
-    //       messages.refresh(); // ✅ refresh لضمان تحديث Obx
-    //       scrollToBottom();
-    //     } catch (e) {
-    //       print('❌ Failed to parse incoming message: $e');
-    //     }
-    //     //c585c34f-9e82-4dbc-b935-83559f0bacb6
-    //   }
-    // }, channel);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   /// ====== Fetch messages using your repo (كما كان في الأصل) ======
@@ -285,6 +279,8 @@ class ChatTechnicalSupportController extends GetxController
     } catch (e) {
       print("⚠️ Error closing reverb: $e");
     }
+    AppConstants.chatReceiverUuid = '';
+
     WidgetsBinding.instance.removeObserver(this);
     scrollController.dispose();
   }

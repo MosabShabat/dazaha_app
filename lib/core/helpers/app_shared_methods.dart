@@ -234,6 +234,7 @@ class AppSharedMethods extends GetxService {
   static void showLocationServicesDialog({
     required BuildContext context,
     required VoidCallback onConfirm,
+    required isHome,
   }) {
     showDialog(
       context: context,
@@ -254,7 +255,9 @@ class AppSharedMethods extends GetxService {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop(); // 🔹 يغلق الـ dialog عند رفض
+            },
             child: Text(
               context.reject,
               style: AppTextStyles.font12Black500Medium(context),

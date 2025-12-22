@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:path/path.dart';
+import 'dart:io';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 // import '../../../../core/helpers/constants.dart';
 import '../../../../core/network/models/orders/order_uuid.dart';
 import '../../../../core/network/models/sizes.dart';
@@ -63,6 +66,32 @@ class AdDetailsController extends GetxController {
     submitOrderRequest(context, orderType, page);
   }
 
+  Future<File> compressImage(File file) async {
+    final bytes = await file.readAsBytes();
+    final image = img.decodeImage(bytes);
+    if (image == null) return file;
+
+    // تصغير الأبعاد (حد أقصى للعرض)
+    final resized = img.copyResize(image, width: 1080);
+
+    // ضغط الجودة
+    final compressedBytes = img.encodeJpg(resized, quality: 40);
+
+    final tempDir = await getTemporaryDirectory();
+    final path = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    return File(path).writeAsBytes(compressedBytes);
+  }
+
+  Future<dio.MultipartFile> prepareOrderImage(String path) async {
+    File file = File(path);
+
+    // ضغط الصورة دائمًا
+    file = await compressImage(file);
+
+    return dio.MultipartFile.fromFile(file.path, filename: basename(file.path));
+  }
+
   Future<void> submitOrderRequest(
     BuildContext context,
     String orderType,
@@ -75,10 +104,7 @@ class AdDetailsController extends GetxController {
       if (orderType != "type2") {
         imageFiles = await Future.wait(
           _orderDataController.images.map(
-            (xfile) => dio.MultipartFile.fromFile(
-              xfile.path,
-              filename: basename(xfile.path),
-            ),
+            (xfile) => prepareOrderImage(xfile.path),
           ),
         );
       }

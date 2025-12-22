@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/helpers/constants.dart';
+import '../../../core/widgets/handle_ads_tap.dart';
 import '../../../features/choose_the_service/controller/order_data_controller.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
@@ -18,12 +19,16 @@ class CatRowPayWidget extends StatelessWidget {
     //80f350d7-09ab-4135-87e6-13320dc525ac
     return InkWell(
       onTap: () {
-        orderController.itemUuid.value = '${AppConstants.orderUuid}';
-        orderController.offerItemUuid.value = '${AppConstants.offerUuid}';
-
-        // AppConstants.offerUuid = AppConstants.offerUuid;
-        //
-        Get.toNamed(Routes.itemAdDetailsScreen);
+        handleAdsTap(
+          context,
+          isHomePage: false,
+          onNavigate: () {
+            // 👈 هنا يمكنك تغيير ماذا يحدث عند الضغط
+            orderController.itemUuid.value = '${AppConstants.orderUuid}';
+            orderController.offerItemUuid.value = '${AppConstants.offerUuid}';
+            Get.toNamed(Routes.itemAdDetailsScreen);
+          },
+        );
       },
       child: Row(
         children: [

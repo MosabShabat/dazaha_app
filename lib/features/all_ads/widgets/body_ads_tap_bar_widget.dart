@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import '../../../core/widgets/handle_ads_tap.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../controller/all_ads_controller.dart';
 import 'ser_row_widget.dart';
@@ -74,10 +75,19 @@ Widget BodyAdsTapBarWidget(
 
                         return GestureDetector(
                           onTap: () {
-                            orderDataController.setItemUuid(item.uuid ?? '');
-                            Get.toNamed(
-                              Routes.itemAdDetailsScreen,
-                              arguments: {'isShow': true},
+                            handleAdsTap(
+                              context,
+                              isHomePage: false,
+                              onNavigate: () {
+                                // 👈 هنا يمكنك تغيير ماذا يحدث عند الضغط
+                                orderDataController.setItemUuid(
+                                  item.uuid ?? '',
+                                );
+                                Get.toNamed(
+                                  Routes.itemAdDetailsScreen,
+                                  arguments: {'isShow': true},
+                                );
+                              },
                             );
                           },
                           child: Container(

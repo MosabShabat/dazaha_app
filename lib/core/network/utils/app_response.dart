@@ -28,10 +28,9 @@ class AppResponse {
     this.pages,
     this.errors,
   }) {
-    AppConstants.startTimer();
     AppConstants.setUnreadNotificationsCount(unreadNotificationsCount);
-    AppConstants.setCartCount(cartCount);
-    AppConstants.setUnreadChatsCount(unreadMessagesCount);
+    // AppConstants.setCartCount(cartCount);
+    // AppConstants.setUnreadChatsCount(unreadMessagesCount);
   }
 
   factory AppResponse.fromJson(Map<String, dynamic> json) =>
