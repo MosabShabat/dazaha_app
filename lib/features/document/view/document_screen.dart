@@ -10,7 +10,6 @@ import '../../my_ads/widgets/top_row_widget.dart';
 import '../controller/document_controller.dart';
 import '../../captain_joins/widgets/center_not_driver_widget.dart';
 import '../../captain_membership_request/widgets/mem_cap_widget.dart';
-import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
 import '../widgets/tab_bar__my_offer_widget.dart';
 
 class DocumentScreen extends StatelessWidget {
@@ -81,10 +80,6 @@ class DocumentScreen extends StatelessWidget {
                 backgroundColor: context.colorsCustom.surfacePrimaryWhite,
                 body: SafeArea(
                   child: Obx(() {
-                    if (documentController.isOffline.value) {
-                      return Center(child: NoConnectionTextWidget(context));
-                    }
-
                     return Column(
                       children: [
                         TopRowWidget(
@@ -125,11 +120,6 @@ class DocumentScreen extends StatelessWidget {
                           child: TabBarView(
                             children: List.generate(_statuses.length, (index) {
                               return Obx(() {
-                                if (documentController.isOffline.value) {
-                                  return Center(
-                                    child: NoConnectionTextWidget(context),
-                                  );
-                                }
                                 return TabBarMyOfferWidget(
                                   controller: documentController,
                                   key: ValueKey(

@@ -1,6 +1,5 @@
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
-import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
 import '../../../core/widgets/general_screen_widget.dart';
 import '../../home/controller/home_controller.dart';
 import '../../home_page/controller/home_page_controller.dart';
@@ -64,8 +63,6 @@ class ChooseTheServiceScreen extends StatelessWidget {
   Widget _contentWidget(BuildContext context) {
     if (_homePageController.isLoading.isTrue) {
       return ChooseServiceShimmerWidget();
-    } else if (_homePageController.isOffline.isTrue) {
-      return NoConnectionTextWidget(context);
     } else {
       return ChooseServiceListViewWidget(
         context,

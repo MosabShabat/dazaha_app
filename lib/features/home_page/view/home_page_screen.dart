@@ -2,7 +2,7 @@ import '../../../core/constant/exports_widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/helpers/app_shared_methods.dart';
-import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
+// import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
 import '../../../core/widgets/app_shimmers/custom_shimmer_home.dart';
 import '../controller/home_page_controller.dart';
 import '../widgets/bottom_custom_widget.dart';
@@ -50,10 +50,6 @@ class HomePageScreen extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     if (_homePageController.isLoading.isTrue) {
       return CustomShimmerHome();
-    }
-
-    if (_homePageController.isOffline.isTrue) {
-      return NoConnectionTextWidget(context);
     }
 
     final currentOrder = _homePageController.homeModel.value?.currentOrder;

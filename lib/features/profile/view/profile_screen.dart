@@ -1,6 +1,5 @@
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/constant/exports_libraries.dart';
-import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
 import '../../../core/widgets/app_shimmers/custom_shimmer.dart';
 import '../../home/controller/home_controller.dart';
 import '../controller/profile_controller.dart';
@@ -43,11 +42,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             );
-          }
-
-          if (profileController.isOffline.value) {
-            // عرض NoConnectionTextWidget عند انقطاع الانترنت
-            return NoConnectionTextWidget(context);
           }
 
           final user = profileController.userData.value;

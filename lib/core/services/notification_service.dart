@@ -85,6 +85,7 @@ class NotificationService {
     await fetchAndStoreFCMToken();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      log('🔥 onMessage fired for ${message.messageId}');
       final data = message.data;
       // ❌ تجاهل الإشعار غير الصحيح
       if (!_isValidMessageNotification(data)) {

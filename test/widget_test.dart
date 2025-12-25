@@ -5,11 +5,12 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import '../../../../core/helpers/app_observer.dart';
-import '../../../../core/helpers/app_shared_data.dart';
-import '../../../../core/helpers/app_shared_methods.dart';
-import '../../../../core/routes/app_routes.dart';
-import '../../../../dazaha_app.dart';
+
+import 'package:dazaha_app/core/helpers/app_observer.dart';
+import 'package:dazaha_app/core/helpers/app_shared_data.dart';
+import 'package:dazaha_app/core/helpers/app_shared_methods.dart';
+import 'package:dazaha_app/core/routes/app_routes.dart';
+import 'package:dazaha_app/dazaha_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

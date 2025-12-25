@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/network/utils/api_result.dart';
@@ -33,7 +32,6 @@ class HomePageController extends GetxController {
   var currentLocation = ''.obs;
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
-  var isOffline = false.obs;
   RxBool hasShownLocationDialog = false.obs;
 
   RxBool isLoading = true.obs;
@@ -55,10 +53,18 @@ class HomePageController extends GetxController {
   void onInit() {
     super.onInit();
     loadCurrentUser();
-    listenConnection();
     getLocation();
     AppConstants.startTimer();
   }
+
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   loadCurrentUser();
+  //   listenConnection();
+  //   getLocation();
+  //   AppConstants.startTimer();
+  // }
 
   /// تحميل بيانات المستخدم من AppSharedData عند بدء التطبيق
   void loadCurrentUser() {
@@ -218,23 +224,18 @@ class HomePageController extends GetxController {
           }
         } else {
           if (Get.context != null) {
-            if (isOffline.value) {
-              // إذا الجهاز offline لا تعرض SnackBar
-              log('Offline, skipping snackbar for API error');
-            } else {
-              showErrorSnackbar(
-                Get.context!,
-                response.message ?? '',
-                FirstColor: Colors.red,
-              );
-            }
+            showErrorSnackbar(
+              Get.context!,
+              response.message ?? '',
+              FirstColor: Colors.red,
+            );
           }
         }
       },
       failure: (error) {
         isLoading.value = false;
         // إذا الجهاز offline، لا تعرض SnackBar
-        if (!isOffline.value && Get.context != null) {
+        if (Get.context != null) {
           showSnackbarErrorApi(Get.context!, [error], null);
         }
       },
@@ -293,17 +294,5 @@ class HomePageController extends GetxController {
     homeRefreshController.dispose();
     log('Home Controller close');
     super.onClose();
-  }
-
-  void listenConnection() {
-    Connectivity().onConnectivityChanged.listen((
-      List<ConnectivityResult> results,
-    ) {
-      if (results.contains(ConnectivityResult.none)) {
-        isOffline.value = true;
-      } else {
-        isOffline.value = false;
-      }
-    });
   }
 }

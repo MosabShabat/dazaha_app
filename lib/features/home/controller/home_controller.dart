@@ -22,25 +22,23 @@ class HomeController extends GetxController {
   }
 
   void _init() {
-    // استماع لتغيّر الإنترنت
-    _connectivity.onConnectivityChanged.listen((result) async {
+    // استماع لتغير نوع الشبكة
+    _connectivity.onConnectivityChanged.listen((_) async {
       await _updateConnectionStatus();
     });
 
-    // فحص أولي عند بدء التطبيق
+    // فحص أولي
     _updateConnectionStatus();
   }
 
   Future<void> _updateConnectionStatus() async {
-    isLoading.value = true; // بدء التحميل
+    isLoading.value = true;
 
-    bool online = await InternetConnectionChecker().hasConnection;
+    final online = await InternetConnectionChecker().hasConnection;
     isOffline.value = !online;
-    await Future.delayed(const Duration(milliseconds: 500)); // لتحسين UX
-    isLoading.value = false; // انتهاء التحميل
-    print(
-      'Internet connection status: ${isOffline.value ? "Offline" : "Online"}',
-    );
+
+    await Future.delayed(const Duration(milliseconds: 300));
+    isLoading.value = false;
   }
 
   Future<void> checkInternetStatus() async {

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constant/exports_widgets.dart';
-import '../../../core/widgets/app_delete_bottom_sheet/widgets/no_connection_text_widget.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../../home/controller/home_controller.dart';
 import '../controller/transportation_and_delivery_controller.dart';
@@ -66,10 +65,6 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
               backgroundColor: context.colorsCustom.surfacePrimaryWhite,
               body: SafeArea(
                 child: Obx(() {
-                  if (transportController.isOffline.value) {
-                    return Center(child: NoConnectionTextWidget(context));
-                  }
-
                   return Column(
                     children: [
                       TopRowWidget(
@@ -111,11 +106,6 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
                           children: List.generate(_statuses.length, (index) {
                             // لكل تبويب، اعط RefreshController مستقل
                             return Obx(() {
-                              if (transportController.isOffline.value) {
-                                return Center(
-                                  child: NoConnectionTextWidget(context),
-                                );
-                              }
                               return BodyTabBarWidget(
                                 controller: transportController,
                                 key: ValueKey(

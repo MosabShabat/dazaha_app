@@ -20,208 +20,210 @@ Widget ChooseServiceListViewWidget(
   final services = controller.homeModel.value?.services ?? [];
   final ChooseTheServiceController chooseTheServiceController = Get.find();
 
-  return SizedBox(
-    width: Width,
-    height: Height / 1.5,
-    child: ListView.builder(
-      itemCount: services.length,
-      itemBuilder: (context, index) {
-        final service = services[index];
-        return Obx(() {
-          if (controller.isLoading.isTrue) {
-            return CustomShimmer(
-              width: Width.w,
-              height: 70.w,
-              borderRadius: 12.r,
-            );
-          }
-
-          void openServiceSheet() {
-            if (AppConstants.userToken.isNotEmpty &&
-                AppConstants.userToken != '' &&
-                AppConstants.userUUid.isNotEmpty &&
-                AppConstants.userUUid != '') {
-              orderController.serviceUuid.value = '';
-              orderController
-                ..setServiceUuid(service.uuid ?? '')
-                ..setServiceName(service.title ?? '')
-                ..serviceNumber('$index');
-              chooseTheServiceController.getIntro(
-                "${orderController.serviceUuid}",
+  return SafeArea(
+    child: SizedBox(
+      width: Width,
+      height: Height / 1.5,
+      child: ListView.builder(
+        itemCount: services.length,
+        itemBuilder: (context, index) {
+          final service = services[index];
+          return Obx(() {
+            if (controller.isLoading.isTrue) {
+              return CustomShimmer(
+                width: Width.w,
+                height: 70.w,
+                borderRadius: 12.r,
               );
-
-              switch (index) {
-                case 0:
-                  FirstItemBottomSheetWidget(
-                    context,
-                    controller: chooseTheServiceController,
-                  );
-                  break;
-                case 1:
-                  SecondItemBottomSheetWidget(
-                    context,
-                    topTitle: context.buyForMe,
-                    controller: chooseTheServiceController,
-                    onTap: () {
-                      Get.back();
-                      orderController.setSrvType('1');
-                      if (chooseTheServiceController
-                          .serviceModel!
-                          .value
-                          .intros!
-                          .isEmpty) {
-                        Get.toNamed(
-                          Routes.bookingDateScreen,
-                          arguments: {
-                            'page': Routes.buyMeScreen,
-                            'pageArgs': null,
-                          },
-                        );
-                      } else if (chooseTheServiceController
-                          .serviceModel!
-                          .value
-                          .intros!
-                          .isNotEmpty) {
-                        Get.toNamed(
-                          Routes.removeAndRecycleServiceFeaturesScreen,
-                        );
-                      }
-                    },
-                  );
-                  break;
-                case 2:
-                  SecondItemBottomSheetWidget(
-                    context,
-                    topTitle: context.removeAndRecycle,
-                    controller: chooseTheServiceController,
-                    onTap: () {
-                      orderController.setSrvType('2');
-                      Get.back();
-                      if (chooseTheServiceController
-                          .serviceModel!
-                          .value
-                          .intros!
-                          .isEmpty) {
-                        Get.to(
-                          () => CustomCameraScreen(
-                            page: Routes.bookingDateScreen,
-                            arguments: {
-                              'page': Routes.adDetailsScreen,
-                              'pageArgs': {
-                                'page': Routes.advertisementSummaryScreen,
-                                'isSwitchShow': true,
-                              },
-                            },
-                          ),
-                        );
-                      } else if (chooseTheServiceController
-                          .serviceModel!
-                          .value
-                          .intros!
-                          .isNotEmpty) {
-                        Get.toNamed(
-                          Routes.removeAndRecycleServiceFeaturesScreen,
-                        );
-                      }
-                    },
-                  );
-                  break;
-                case 3:
-                  SecondItemBottomSheetWidget(
-                    context,
-                    topTitle: context.dedication,
-                    controller: chooseTheServiceController,
-                    onTap: () {
-                      orderController.setSrvType('2');
-                      Get.back();
-                      if (chooseTheServiceController
-                          .serviceModel!
-                          .value
-                          .intros!
-                          .isEmpty) {
-                        Get.to(
-                          () => CustomCameraScreen(
-                            page: Routes.bookingDateScreen,
-                            arguments: {
-                              'page': Routes.adDetailsScreen,
-                              'pageArgs': {
-                                'page': Routes.advertisementSummaryScreen,
-                                'isSwitchShow': true,
-                              },
-                            },
-                          ),
-                        );
-                      } else if (chooseTheServiceController
-                          .serviceModel!
-                          .value
-                          .intros!
-                          .isNotEmpty) {
-                        Get.toNamed(
-                          Routes.removeAndRecycleServiceFeaturesScreen,
-                        );
-                      }
-                    },
-                  );
-                  break;
-              }
-            } else {
-              showLoginRequiredBottomSheet(Get.context!);
             }
-          }
 
-          return GestureDetector(
-            onTap: openServiceSheet,
-            child: Container(
-              margin: EdgeInsets.only(bottom: 20.h),
-              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-              width: Width,
-              decoration: BoxDecoration(
-                color: context.colorsCustom.surfacePrimaryWhite,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: context.colorsCustom.CardBorder.withOpacity(0.2),
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: context.colorsCustom.BlueBlue,
-                    radius: 35.r,
-                    child: CachedNetworkImage(
-                      imageUrl: service.image ?? '',
-                      fit: BoxFit.contain,
-                      width: 40.w,
-                      height: 40.w,
-                    ),
-                  ),
-                  horizontalSpace(20.w),
-                  Expanded(
-                    child: TextServiceWidget(
+            void openServiceSheet() {
+              if (AppConstants.userToken.isNotEmpty &&
+                  AppConstants.userToken != '' &&
+                  AppConstants.userUUid.isNotEmpty &&
+                  AppConstants.userUUid != '') {
+                orderController.serviceUuid.value = '';
+                orderController
+                  ..setServiceUuid(service.uuid ?? '')
+                  ..setServiceName(service.title ?? '')
+                  ..serviceNumber('$index');
+                chooseTheServiceController.getIntro(
+                  "${orderController.serviceUuid}",
+                );
+
+                switch (index) {
+                  case 0:
+                    FirstItemBottomSheetWidget(
                       context,
-                      color1: context.colorsCustom.TextPrimary,
-                      text1: service.title ?? '',
-                      size1: 12.sp,
-                      fontFamily1:
-                          context.textStyles.labelMedium.medium.fontFamily!,
-                      color2: context.colorsCustom.TextSecondary,
-                      text2: service.description ?? '',
-                      size2: 12.sp,
-                      fontFamily2:
-                          context.textStyles.labelMedium.regular.fontFamily,
+                      controller: chooseTheServiceController,
+                    );
+                    break;
+                  case 1:
+                    SecondItemBottomSheetWidget(
+                      context,
+                      topTitle: context.buyForMe,
+                      controller: chooseTheServiceController,
+                      onTap: () {
+                        Get.back();
+                        orderController.setSrvType('1');
+                        if (chooseTheServiceController
+                            .serviceModel!
+                            .value
+                            .intros!
+                            .isEmpty) {
+                          Get.toNamed(
+                            Routes.bookingDateScreen,
+                            arguments: {
+                              'page': Routes.buyMeScreen,
+                              'pageArgs': null,
+                            },
+                          );
+                        } else if (chooseTheServiceController
+                            .serviceModel!
+                            .value
+                            .intros!
+                            .isNotEmpty) {
+                          Get.toNamed(
+                            Routes.removeAndRecycleServiceFeaturesScreen,
+                          );
+                        }
+                      },
+                    );
+                    break;
+                  case 2:
+                    SecondItemBottomSheetWidget(
+                      context,
+                      topTitle: context.removeAndRecycle,
+                      controller: chooseTheServiceController,
+                      onTap: () {
+                        orderController.setSrvType('2');
+                        Get.back();
+                        if (chooseTheServiceController
+                            .serviceModel!
+                            .value
+                            .intros!
+                            .isEmpty) {
+                          Get.to(
+                            () => CustomCameraScreen(
+                              page: Routes.bookingDateScreen,
+                              arguments: {
+                                'page': Routes.adDetailsScreen,
+                                'pageArgs': {
+                                  'page': Routes.advertisementSummaryScreen,
+                                  'isSwitchShow': true,
+                                },
+                              },
+                            ),
+                          );
+                        } else if (chooseTheServiceController
+                            .serviceModel!
+                            .value
+                            .intros!
+                            .isNotEmpty) {
+                          Get.toNamed(
+                            Routes.removeAndRecycleServiceFeaturesScreen,
+                          );
+                        }
+                      },
+                    );
+                    break;
+                  case 3:
+                    SecondItemBottomSheetWidget(
+                      context,
+                      topTitle: context.dedication,
+                      controller: chooseTheServiceController,
+                      onTap: () {
+                        orderController.setSrvType('2');
+                        Get.back();
+                        if (chooseTheServiceController
+                            .serviceModel!
+                            .value
+                            .intros!
+                            .isEmpty) {
+                          Get.to(
+                            () => CustomCameraScreen(
+                              page: Routes.bookingDateScreen,
+                              arguments: {
+                                'page': Routes.adDetailsScreen,
+                                'pageArgs': {
+                                  'page': Routes.advertisementSummaryScreen,
+                                  'isSwitchShow': true,
+                                },
+                              },
+                            ),
+                          );
+                        } else if (chooseTheServiceController
+                            .serviceModel!
+                            .value
+                            .intros!
+                            .isNotEmpty) {
+                          Get.toNamed(
+                            Routes.removeAndRecycleServiceFeaturesScreen,
+                          );
+                        }
+                      },
+                    );
+                    break;
+                }
+              } else {
+                showLoginRequiredBottomSheet(Get.context!);
+              }
+            }
+
+            return GestureDetector(
+              onTap: openServiceSheet,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 20.h),
+                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                width: Width,
+                decoration: BoxDecoration(
+                  color: context.colorsCustom.surfacePrimaryWhite,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.colorsCustom.CardBorder.withOpacity(0.2),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      offset: const Offset(0, 4),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: context.colorsCustom.BlueBlue,
+                      radius: 35.r,
+                      child: CachedNetworkImage(
+                        imageUrl: service.image ?? '',
+                        fit: BoxFit.contain,
+                        width: 40.w,
+                        height: 40.w,
+                      ),
+                    ),
+                    horizontalSpace(20.w),
+                    Expanded(
+                      child: TextServiceWidget(
+                        context,
+                        color1: context.colorsCustom.TextPrimary,
+                        text1: service.title ?? '',
+                        size1: 12.sp,
+                        fontFamily1:
+                            context.textStyles.labelMedium.medium.fontFamily!,
+                        color2: context.colorsCustom.TextSecondary,
+                        text2: service.description ?? '',
+                        size2: 12.sp,
+                        fontFamily2:
+                            context.textStyles.labelMedium.regular.fontFamily,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        });
-      },
+            );
+          });
+        },
+      ),
     ),
   );
 }

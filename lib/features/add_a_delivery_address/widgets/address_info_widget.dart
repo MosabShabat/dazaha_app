@@ -285,6 +285,7 @@ Widget buildLocationButton(
             }
           }
         }
+        controller.clearLocation();
       },
       hasBorder: true,
       borderColor: context.colorsCustom.CardBorder,

@@ -71,31 +71,38 @@ Future<dynamic> FirstItemBottomSheetWidget(
                       verticalSpace(50.h),
                       DevDetWidget(context, controller: controller),
                       verticalSpace(50.h),
-                      GeneralBottomAppWidget(
-                        context,
-                        text: context.continuation,
-                        onTap: () {
-                          orderController.setSrvType('2');
+                      SafeArea(
+                        child: GeneralBottomAppWidget(
+                          context,
+                          text: context.continuation,
+                          onTap: () {
+                            orderController.setSrvType('2');
 
-                          if (controller.serviceModel!.value.intros!.isEmpty) {
-                            Get.to(
-                              () => CustomCameraScreen(
-                                page: Routes.bookingDateScreen,
-                                arguments: {
-                                  'page': Routes.pickUpMethodUpOnDeliveryScreen,
-                                },
-                              ),
-                            );
-                          } else if (controller
-                              .serviceModel!
-                              .value
-                              .intros!
-                              .isNotEmpty) {
-                            Get.toNamed(
-                              Routes.removeAndRecycleServiceFeaturesScreen,
-                            );
-                          }
-                        },
+                            if (controller
+                                .serviceModel!
+                                .value
+                                .intros!
+                                .isEmpty) {
+                              Get.to(
+                                () => CustomCameraScreen(
+                                  page: Routes.bookingDateScreen,
+                                  arguments: {
+                                    'page':
+                                        Routes.pickUpMethodUpOnDeliveryScreen,
+                                  },
+                                ),
+                              );
+                            } else if (controller
+                                .serviceModel!
+                                .value
+                                .intros!
+                                .isNotEmpty) {
+                              Get.toNamed(
+                                Routes.removeAndRecycleServiceFeaturesScreen,
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ],
                   );

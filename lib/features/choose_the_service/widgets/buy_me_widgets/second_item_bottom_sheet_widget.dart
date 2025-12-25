@@ -67,10 +67,12 @@ Future<dynamic> SecondItemBottomSheetWidget(
                       DevDetWidget(context, controller: controller),
 
                       SizedBox(height: 50.h),
-                      GeneralBottomAppWidget(
-                        context,
-                        text: context.continuation,
-                        onTap: onTap,
+                      SafeArea(
+                        child: GeneralBottomAppWidget(
+                          context,
+                          text: context.continuation,
+                          onTap: onTap,
+                        ),
                       ),
                     ],
                   );

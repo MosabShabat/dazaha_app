@@ -174,6 +174,7 @@ class DocumentController extends GetxController {
 
   void _setLoading(bool value) => isLoading.value = value;
   void _setLoadingMore(bool value) => isLoadingMore.value = value;
+//      log('🔥 onMessage fired for ${message.messageId}');
 
   @override
   void onClose() {

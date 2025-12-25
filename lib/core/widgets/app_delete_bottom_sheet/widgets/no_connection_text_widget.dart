@@ -1,12 +1,9 @@
 import 'package:lottie/lottie.dart';
-
 import '../../../../features/home/controller/home_controller.dart';
 import '../../../constant/exports_widgets.dart';
 import '../../../constant/exports_libraries.dart';
 
-Widget NoConnectionTextWidget(BuildContext context) {
-  final HomeController controller = Get.find();
-
+Widget NoConnectionTextWidget(BuildContext context, HomeController controller) {
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

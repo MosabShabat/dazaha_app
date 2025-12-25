@@ -63,19 +63,19 @@ class HomeScreen extends StatelessWidget {
         return true;
       },
       child: Obx(() {
-        // إذا لا يوجد إنترنت → يظهر فقط NoConnectionTextWidget
         if (navigationController.isOffline.value) {
-          return Scaffold(body: NoConnectionTextWidget(context));
+          return Scaffold(
+            body: NoConnectionTextWidget(context, navigationController),
+          );
         }
-
-        // الإنترنت موجود → صفحة التطبيق مع BottomNavigationBar
-        final currentPage =
-            pagesRoutes[navigationController.selectedIndex.value];
 
         return Scaffold(
           body: Navigator(
-            key: GlobalKey<NavigatorState>(),
+            key: navigationController
+                .navigators[navigationController.selectedIndex.value],
             onGenerateRoute: (settings) {
+              final currentPage =
+                  pagesRoutes[navigationController.selectedIndex.value];
               final pageConfig = AppRouter().routes.firstWhere(
                 (route) => route.name == currentPage,
               );

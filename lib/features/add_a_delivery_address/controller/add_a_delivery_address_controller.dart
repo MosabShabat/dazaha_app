@@ -61,6 +61,12 @@ class AddADeliveryAddressController extends GetxController {
     locationName.value = placeName;
   }
 
+  void clearLocation() {
+    latitude.value = 0.0;
+    longitude.value = 0.0;
+    locationName.value = '';
+  }
+
   void validateInput(
     BuildContext context, {
     required bool isEdit,
