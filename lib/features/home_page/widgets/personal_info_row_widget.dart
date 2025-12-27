@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
@@ -10,12 +9,8 @@ import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bo
 import '../controller/home_page_controller.dart';
 
 Widget personalInfoRow(BuildContext context, HomePageController controller) {
-  AppConstants.isDriver = '${controller.homeModel.value?.user?.isDriver ?? ''}';
   AppConstants.userToken = '${controller.homeModel.value?.user?.token ?? ''}';
   AppConstants.userUUid = '${controller.homeModel.value?.user?.uuid ?? ''}';
-
-  print('isDriver: ${AppConstants.isDriver}');
-  log('isDriver : ${AppConstants.isDriver}');
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,

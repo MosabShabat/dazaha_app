@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../features/add_a_delivery_address/widgets/country_city_street_widget.dart';
@@ -189,6 +191,11 @@ Widget buildLocationButton(
   isAppBar,
 }) {
   OrderDataController orderDataController = Get.find();
+  log('==========AAA===========');
+  log('isAppBar : $isAppBar');
+  log('AppConstants.lat : ${AppConstants.lat}');
+  log('AppConstants.lng : ${AppConstants.lng}');
+  log('AppConstants.placeName: ${AppConstants.placeName}');
 
   return Obx(
     () => AppTextButton(

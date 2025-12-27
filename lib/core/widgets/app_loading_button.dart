@@ -31,37 +31,42 @@ class AppLoadingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: isEnabled
-          ? () async {
-              isLoading = true;
-              await onPressed();
-              isLoading = false;
-            }
-          : null,
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        backgroundColor: buttonColor ?? context.colorsCustom.TealGreenSecondary,
-        disabledBackgroundColor: isEnabled
-            ? context.colorsCustom.surfacePrimaryWhite
-            : buttonColor ?? context.colorsCustom.TealGreenSecondary,
-        elevation: 0,
-      ),
-      child: Container(
-        width: width,
-        height: height,
-        alignment: Alignment.center,
-        child: isLoading
-            ? AppSharedMethods.buildProgressViewWhite(
-                context,
-                isWhiteProgress,
-              ).box.size(18.w, 18.w).make()
-            : Text(
-                text,
-                style: isEnabled
-                    ? textStyle ?? AppTextStyles.font16White500Medium(context)
-                    : AppTextStyles.font16Black500Medium(context),
-              ),
+    return SafeArea(
+      child: ElevatedButton(
+        onPressed: isEnabled
+            ? () async {
+                isLoading = true;
+                await onPressed();
+                isLoading = false;
+              }
+            : null,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          backgroundColor:
+              buttonColor ?? context.colorsCustom.TealGreenSecondary,
+          disabledBackgroundColor: isEnabled
+              ? context.colorsCustom.surfacePrimaryWhite
+              : buttonColor ?? context.colorsCustom.TealGreenSecondary,
+          elevation: 0,
+        ),
+        child: Container(
+          width: width,
+          height: height,
+          alignment: Alignment.center,
+          child: isLoading
+              ? AppSharedMethods.buildProgressViewWhite(
+                  context,
+                  isWhiteProgress,
+                ).box.size(18.w, 18.w).make()
+              : Text(
+                  text,
+                  style: isEnabled
+                      ? textStyle ?? AppTextStyles.font16White500Medium(context)
+                      : AppTextStyles.font16Black500Medium(context),
+                ),
+        ),
       ),
     );
   }

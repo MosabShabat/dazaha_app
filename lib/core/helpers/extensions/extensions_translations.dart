@@ -36,6 +36,9 @@ extension TranslationsExtension on BuildContext {
   String get confirm => tr('confirm');
   String get yes => tr('yes');
   String get no => tr('no');
+  String get theSuccessfullyConfirmed =>
+      tr('the_order_has_been_successfully_confirmed');
+  String get pleaseHandOverTheAmount => tr('please_hand_over_the_amount');
   String get areYouSureYouWantToLeave => tr('are_you_sure_you_want_to_leave');
   String get transportationAndDelivery => tr('transportation_and_delivery');
   String get buyForMe => tr('buy_for_me');
@@ -228,6 +231,9 @@ extension TranslationsExtension on BuildContext {
   String get enterTheDigitCode => tr('enter_the_digit_code_sent_to_you_on');
   String get iDidNotReceiveTheCode => tr('i_did_not_receive_the_code');
   String get resend => tr('resend');
+  String get takePicturesOfTheObjects => tr('take_pictures_of_the_objects');
+
+  //take_pictures_of_the_objects
 
   String get trackTheFlight => tr('track_the_flight');
   String get tracking => tr('tracking');

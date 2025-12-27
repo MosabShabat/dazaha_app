@@ -20,27 +20,16 @@ class DocumentScreen extends StatelessWidget {
     permanent: true,
   );
   final OrderDataController orderDataController = Get.find();
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
 
   static const _statuses = ['pending', 'in_progress', 'completed'];
 
   @override
   Widget build(BuildContext context) {
-    // HomeController navigationController = Get.find<HomeController>();
+    final driverStatus = userStateController.isDriver.value;
 
-    // if (AppConstants.isDriver != '0' && AppConstants.isDriver != '2') {
-    //   // فقط إذا المستخدم سائق حقيقي
-    //   // تحديث البيانات عند العودة من أي شاشة
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     documentController.refreshOrders();
-    //     final tabController = DefaultTabController.of(context);
-    //     if (navigationController.extraTabIndex.value >= 0 &&
-    //         navigationController.extraTabIndex.value < tabController.length) {
-    //       tabController.animateTo(navigationController.extraTabIndex.value);
-    //     }
-    //   });
-    // }
-
-    if (AppConstants.isDriver == '1') {
+    if (driverStatus == 1) {
       return DefaultTabController(
         length: _statuses.length,
         child: Builder(
@@ -79,69 +68,62 @@ class DocumentScreen extends StatelessWidget {
               child: Scaffold(
                 backgroundColor: context.colorsCustom.surfacePrimaryWhite,
                 body: SafeArea(
-                  child: Obx(() {
-                    return Column(
-                      children: [
-                        TopRowWidget(
-                          context,
-                          isWallet: false,
-                          title: context.myOffers,
-                          size: 20.sp,
-                          style: context.textStyles.titleLarge.bold.fontFamily,
-                          GridList: [
-                            context.transportationAndDelivery,
-                            context.buyForMe,
-                            context.removeAndRecycle,
-                            context.dedication,
-                          ],
-                          subTitle: context.ViewYourRequestsByServiceType,
-                          selectedIndex: documentController.selectedIndex,
-                          onTapSel: (index) =>
-                              documentController.changeSelect(index),
-                          onPress: () =>
-                              documentController.selectedIndex.value = 0,
-                          onTep: () {
-                            final uuid = switch (documentController
-                                .selectedIndex
-                                .value) {
-                              0 => '69fb5c27-11ef-4637-986f-ed484b388c7f',
-                              1 => '9cc543c0-793c-43d9-88a6-6e3db6082ef5',
-                              2 => '7f625412-ca00-431d-a7fd-12863fc851ef',
-                              _ => '153a7042-eb9e-42b8-9d5c-498623adb5da',
-                            };
-                            orderDataController.setServiceUuid(uuid);
-                            documentController.refreshOrders();
-                            Navigator.pop(context);
-                          },
+                  child: Column(
+                    children: [
+                      TopRowWidget(
+                        context,
+                        isWallet: false,
+                        title: context.myOffers,
+                        size: 20.sp,
+                        style: context.textStyles.titleLarge.bold.fontFamily,
+                        GridList: [
+                          context.transportationAndDelivery,
+                          context.buyForMe,
+                          context.removeAndRecycle,
+                          context.dedication,
+                        ],
+                        subTitle: context.ViewYourRequestsByServiceType,
+                        selectedIndex: documentController.selectedIndex,
+                        onTapSel: (index) =>
+                            documentController.changeSelect(index),
+                        onPress: () =>
+                            documentController.selectedIndex.value = 0,
+                        onTep: () {
+                          final uuid =
+                              switch (documentController.selectedIndex.value) {
+                                0 => '69fb5c27-11ef-4637-986f-ed484b388c7f',
+                                1 => '9cc543c0-793c-43d9-88a6-6e3db6082ef5',
+                                2 => '7f625412-ca00-431d-a7fd-12863fc851ef',
+                                _ => '153a7042-eb9e-42b8-9d5c-498623adb5da',
+                              };
+                          orderDataController.setServiceUuid(uuid);
+                          documentController.refreshOrders();
+                          Navigator.pop(context);
+                        },
+                      ),
+                      verticalSpace(10),
+                      TabBarTitleWidget(context, secTap: context.onHold),
+                      Expanded(
+                        child: TabBarView(
+                          children: List.generate(_statuses.length, (index) {
+                            return TabBarMyOfferWidget(
+                              controller: documentController,
+                              key: ValueKey(
+                                index,
+                              ), // منع إعادة استخدام الـ Widget
+                            );
+                          }),
                         ),
-                        verticalSpace(10),
-                        TabBarTitleWidget(context, secTap: context.onHold),
-                        Expanded(
-                          child: TabBarView(
-                            children: List.generate(_statuses.length, (index) {
-                              return Obx(() {
-                                return TabBarMyOfferWidget(
-                                  controller: documentController,
-                                  key: ValueKey(
-                                    index,
-                                  ), // منع إعادة استخدام الـ Widget
-                                );
-                              });
-                            }),
-                          ),
-                        ),
-                      ],
-                    ).paddingAll(16)
-                    // )
-                    ;
-                  }),
+                      ),
+                    ],
+                  ).paddingAll(16),
                 ),
               ),
             );
           },
         ),
       );
-    } else if (AppConstants.isDriver == '2') {
+    } else if (driverStatus == 2) {
       return MemCapWidget(context);
     } else {
       return CenterNotDriverWidget(context);

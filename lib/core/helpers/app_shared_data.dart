@@ -73,6 +73,21 @@ class AppSharedData {
     }
   }
 
+  static Future<void> setDriverStatus(int status) async {
+    await _flutterSecureStorage.write(
+      key: AppSharedKeys.driverStatusKey,
+      value: status.toString(), // 0 / 1 / 2
+    );
+  }
+
+  static Future<int> getDriverStatus() async {
+    final value = await _flutterSecureStorage.read(
+      key: AppSharedKeys.driverStatusKey,
+    );
+
+    return int.tryParse(value ?? '0') ?? 0;
+  }
+
   // static Future<bool> isOpenBefore() async {
   //   try {
   //     final prefs = await _getSharedPreferences();

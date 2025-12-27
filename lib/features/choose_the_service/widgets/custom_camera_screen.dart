@@ -167,6 +167,22 @@ class _CustomCameraScreenState extends State<CustomCameraScreen> {
                   ),
                 ),
                 Positioned(
+                  top:
+                      MediaQuery.of(context).padding.top +
+                      20, // يضيف مساحة الـ status bar
+                  right: Width / 4,
+                  left: Width / 4,
+                  child: Text(
+                    context.takePicturesOfTheObjects,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: context.colorsCustom.surfacePrimaryWhite,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Positioned(
                   top: MediaQuery.of(context).padding.top + 10,
                   left: 20,
                   child: Container(
@@ -304,21 +320,23 @@ class _CustomCameraScreenState extends State<CustomCameraScreen> {
 
                   verticalSpace(20.h),
                   // ✅ زر المتابعة
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            context.colorsCustom.TealGreenSecondary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              context.colorsCustom.TealGreenSecondary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          minimumSize: const Size(double.infinity, 50),
                         ),
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
-                      onPressed: _onContinue,
-                      child: Text(
-                        context.continuation,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        onPressed: _onContinue,
+                        child: Text(
+                          context.continuation,
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
                       ),
                     ),
                   ),

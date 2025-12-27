@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../features/home_page/controller/home_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constant/exports_libraries.dart';
+import '../network/models/auth/user_data.dart';
 import 'app_shared_data.dart';
 
 RxBool isUserLogin = false.obs;
@@ -37,12 +38,28 @@ class AppSharedKeys {
   static const String lat = 'lat';
   static const String lng = 'lng';
   static const String placeName = 'name';
+  static const String driverStatusKey = 'driver_status';
 }
 
 class AppNavigationType {
   static const String toNamed = 'toNamed';
   static const String offNamed = 'offNamed';
   static const String offAllNamed = 'offAllNamed';
+}
+
+class UserStateController extends GetxController {
+  RxInt isDriver = 0.obs; // 0 / 1
+  RxInt status = 0.obs; // 0 / 1 / 2
+  RxString userUuid = ''.obs;
+  RxString token = ''.obs;
+
+  void updateFromUser(UserData user) {
+    isDriver.value = int.tryParse(user.isDriver.toString()) ?? 0;
+    userUuid.value = user.uuid ?? '';
+    token.value = user.token ?? '';
+  }
+
+  bool get isLoggedIn => token.isNotEmpty;
 }
 
 class AppConstants {

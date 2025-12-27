@@ -9,10 +9,12 @@ Widget WithRecRowBottomWidget(
   BuildContext context, {
   required WalletController walletController,
 }) {
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      AppConstants.isDriver == '1'
+      userStateController.isDriver.value == 1
           ? CusButtonWidget(
               context,
               H: 38.0.h,

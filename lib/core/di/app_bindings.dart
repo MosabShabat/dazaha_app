@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../features/choose_the_service/controller/order_data_controller.dart';
 import '../controllers/theme_controller.dart';
 import '../helpers/app_shared_methods.dart';
+import '../helpers/constants.dart';
 
 class AppBindings extends Bindings {
   @override
@@ -10,6 +11,7 @@ class AppBindings extends Bindings {
     Get.put(AppSharedMethods());
     Get.put(ProgressController());
     Get.put(OrderDataController());
+    Get.put(UserStateController(), permanent: true);
     Get.lazyPut(() => ThemeController());
   }
 }

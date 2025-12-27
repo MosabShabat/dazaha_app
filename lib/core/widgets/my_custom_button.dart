@@ -42,16 +42,18 @@ Widget GeneralBottomAppWidget(
   String? fontFamily,
   FontWeight? fontWeight, // ✅ add this
 }) {
-  return CustomButton(
-    context,
-    text: text,
-    textColor: textColorB ?? context.colorsCustom.surfacePrimaryWhite,
-    fontFamily: fontFamily,
-    fontWeight: fontWeight == null ? FontWeight.w500 : fontWeight,
-    fontSize: 16.0.sp,
-    height: 56.0.h,
-    width: Width,
-    backgroundColor:
-        backgroundColorB ?? context.colorsCustom.TealGreenSecondary,
-  ).box.make().onTap(onTap);
+  return SafeArea(
+    child: CustomButton(
+      context,
+      text: text,
+      textColor: textColorB ?? context.colorsCustom.surfacePrimaryWhite,
+      fontFamily: fontFamily,
+      fontWeight: fontWeight == null ? FontWeight.w500 : fontWeight,
+      fontSize: 16.0.sp,
+      height: 56.0.h,
+      width: Width,
+      backgroundColor:
+          backgroundColorB ?? context.colorsCustom.TealGreenSecondary,
+    ).box.make().onTap(onTap),
+  );
 }

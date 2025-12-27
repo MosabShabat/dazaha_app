@@ -157,14 +157,17 @@ class NotificationService {
   bool _isValidMessageNotification(Map<String, dynamic> data) {
     final senderUuid = data['sender_uuid'];
     final link = data['link'];
+    final type = data['type'];
 
-    if (senderUuid == null || senderUuid.toString().isEmpty) {
-      return false;
-    }
+    if (type.toString() == 'new_message') {
+      if (senderUuid == null || senderUuid.toString().isEmpty) {
+        return false;
+      }
 
-    if (link == null ||
-        !link.toString().startsWith('https://panel.dizzha.com')) {
-      return false;
+      if (link == null ||
+          !link.toString().startsWith('https://panel.dizzha.com')) {
+        return false;
+      }
     }
 
     return true;
@@ -201,20 +204,8 @@ class NotificationService {
     final referenceUuid =
         data[NotificationTypes.referenceUuid]?.toString() ?? '';
     final uuid = data[NotificationTypes.uuid]?.toString() ?? '';
-    final name =
-        data[NotificationTypes.receiverName]?.toString() ??
-        data['title']?.toString() ??
-        '';
-    final image =
-        data[NotificationTypes.receiverImage]?.toString() ??
-        data['image']?.toString() ??
-        '';
 
     log('type : $type');
-    log('referenceUuid : $referenceUuid');
-    log('sender_uuid : $uuid');
-    log('name : $name');
-    log('image : $image');
 
     // Notifications
     if ((type == NotificationTypes.general ||
@@ -243,17 +234,6 @@ class NotificationService {
       }
     }
 
-    // if (type == NotificationTypes.newTechnicalSupportMessage &&
-    //     Get.isRegistered<ChatTechnicalSupportController>()) {
-    //   Get.find<ChatTechnicalSupportController>().getMessages(
-    //     'technical_support',
-    //   );
-    // }
-
-    // if (type == NotificationTypes.newMessage &&
-    //     Get.isRegistered<ChatTechnicalSupportController>()) {
-    //   Get.find<ChatTechnicalSupportController>().getMessages('${uuid}');
-    // }
     if (type == NotificationTypes.newMessage &&
         Get.isRegistered<ChatTechnicalSupportController>()) {
       final currentChat = AppConstants.chatReceiverUuid;

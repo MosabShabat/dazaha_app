@@ -11,6 +11,9 @@ Widget ProfileListViewItemsWidget(
   BuildContext context, {
   required ProfileController profileController,
 }) {
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
+
   final items = [
     {
       'icon': ListProfileIcons[0],
@@ -24,7 +27,7 @@ Widget ProfileListViewItemsWidget(
         } else {
           showLoginRequiredBottomSheet(Get.context!);
         }
-      },//homeScreen3
+      }, //homeScreen3
       'title': () =>
           (profileController.userData.value?.name?.trim().isEmpty ?? true)
           ? '${context.welcome}'
@@ -43,7 +46,7 @@ Widget ProfileListViewItemsWidget(
         }
       },
 
-      'title': () => AppConstants.isDriver == '1'
+      'title': () => userStateController.isDriver.value == 1
           ? context.dividendPortfolio
           : context.wallet,
     },

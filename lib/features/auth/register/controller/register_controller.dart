@@ -128,8 +128,8 @@ class RegisterController extends GetxController {
             homeController.loadCurrentUser();
             await homeController.getHome();
 
-            AppConstants.isDriver =
-                '${homeController.userData.value?.isDriver}';
+            final userStateController = Get.find<UserStateController>();
+            userStateController.updateFromUser(userData);
           }
           Get.offAllNamed(
             Routes.homeScreen,

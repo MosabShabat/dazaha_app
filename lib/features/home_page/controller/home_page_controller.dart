@@ -218,6 +218,10 @@ class HomePageController extends GetxController {
             homeModel.value = HomeDataModel.fromJson(
               response.data as Map<String, dynamic>,
             );
+            final userState = Get.find<UserStateController>();
+            if (homeModel.value?.user != null) {
+              userState.updateFromUser(homeModel.value!.user!);
+            }
           } else {
             // إذا أردت، فقط log ولا تعرض SnackBar
             log('No data received from API');

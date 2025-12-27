@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../core/helpers/constants.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
@@ -23,10 +21,11 @@ class ItemAdDetailsScreen extends StatelessWidget {
   ItemAdDetailsScreen({super.key});
   final controller = Get.find<ItemAdDetailsController>();
   final orderDataController = Get.find<OrderDataController>();
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
 
   @override
   Widget build(BuildContext context) {
-    log("AppConstants.isDriver : ${AppConstants.isDriver}");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       orderDataController.clearAll();
     });
@@ -36,6 +35,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
       if (controller.isLoading.isTrue)
         return OrderDetailsShimmerWidget(context);
       _setServiceNumber(controller, orderDataController);
+      final isDriver = userStateController.isDriver.value;
 
       return Scaffold(
         backgroundColor: context.colorsCustom.surfacePrimaryWhite,
@@ -48,7 +48,9 @@ class ItemAdDetailsScreen extends StatelessWidget {
                       controller.orderDetailsItem!.value.myOfferAdded ==
                           false &&
                       controller.orderDetailsItem!.value.isMe == false
-                  ? SafeArea(child: _buildBottomNav(context, controller))
+                  ? SafeArea(
+                      child: _buildBottomNav(context, controller, isDriver),
+                    )
                   : const SizedBox.shrink()
             : _buildBottomNavVisitor(context),
         body: CustomScrollView(
@@ -236,11 +238,12 @@ class ItemAdDetailsScreen extends StatelessWidget {
   Widget _buildBottomNav(
     BuildContext context,
     ItemAdDetailsController controller,
+    isDriver,
   ) {
     final item = controller.orderDetailsItem!.value;
     final orderDataController = Get.find<OrderDataController>();
 
-    return AppConstants.isDriver == '1' || AppConstants.isDriver == 1
+    return isDriver == 1
         ? BottomNavigationBarWidget(
             text: context.addAnOffer,
             context,
@@ -281,9 +284,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
     );
   }
 }
+
 //      _handleForegroundNotification(message.data);
 //      _handleNotificationClick(message.data);
 //      _handleNotificationClick(initialMessage.data);
-
-
-

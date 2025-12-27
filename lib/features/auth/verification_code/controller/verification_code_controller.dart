@@ -140,12 +140,12 @@ class VerificationCodeController extends GetxController {
             // تحديث بيانات الصفحة الرئيسية
             if (Get.isRegistered<HomePageController>()) {
               final homeController = Get.find<HomePageController>();
+              final _userStateController = Get.find<UserStateController>();
 
               homeController.loadCurrentUser();
               await homeController.getHome();
 
-              AppConstants.isDriver =
-                  '${homeController.userData.value?.isDriver}';
+              _userStateController.updateFromUser(verificationModel.user!);
             }
 
             // الانتقال
@@ -252,8 +252,6 @@ class VerificationCodeController extends GetxController {
   //             await homeController.getHome(); // فقط مرة واحدة
 
   //             _localRefreshController.refreshCompleted();
-  //             AppConstants.isDriver =
-  //                 '${homeController.userData.value!.isDriver}';
   //           }
 
   //           // 🔹 الانتقال بعد اكتمال كل شيء

@@ -7,12 +7,14 @@ Widget BottomNavigationBarWidget(
   required text,
   horizontalPadding,
 }) {
-  return GeneralBottomAppWidget(context, text: text, onTap: GetScreen).box
-      .padding(
-        EdgeInsetsGeometry.symmetric(
-          horizontal: horizontalPadding == null ? 16.w : horizontalPadding,
-          vertical: 20.h,
-        ),
-      )
-      .make();
+  return SafeArea(
+    child: GeneralBottomAppWidget(context, text: text, onTap: GetScreen).box
+        .padding(
+          EdgeInsetsGeometry.symmetric(
+            horizontal: horizontalPadding == null ? 16.w : horizontalPadding,
+            vertical: 20.h,
+          ),
+        )
+        .make(),
+  );
 }
