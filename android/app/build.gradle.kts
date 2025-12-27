@@ -13,8 +13,8 @@ val localProperties = Properties().apply {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) load(FileInputStream(localPropertiesFile))
 }
-val flutterVersionCode = localProperties.getProperty("flutter.versionCode")?.toInt() ?: 30
-val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.30"
+val flutterVersionCode = localProperties.getProperty("flutter.versionCode")?.toInt() ?: 32
+val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.32"
 
 // قراءة keystore
 val keystoreProperties = Properties()
