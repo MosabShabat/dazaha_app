@@ -2,12 +2,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/helpers/app_shared_methods.dart';
+import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/def_app_bar_widget.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../controller/all_ads_controller.dart';
 import '../widgets/ads_tab_bar_widget.dart';
 import '../widgets/body_ads_tap_bar_widget.dart';
 
+// ignore: must_be_immutable
 class AllAdsScreen extends StatelessWidget {
   AllAdsScreen({super.key});
 
@@ -31,13 +33,30 @@ class AllAdsScreen extends StatelessWidget {
     });
   }
 
+  int initialTabIndex = 0;
+  void _initOnce(BuildContext context) {
+    _setupScrollListener();
+
+    initialTabIndex = (Get.arguments?['index'] ?? 0).clamp(0, 4);
+
+    _orderDataController.setServiceUuid(_serviceUuidMap[initialTabIndex] ?? '');
+
+    _allAdsController.resetControllerState();
+    _allAdsController.getOrdersAll();
+
+    _allAdsController.scrollController.addListener(() {
+      if (_allAdsController.scrollController.position.extentAfter < 200) {
+        _allAdsController.getOrdersAll(isLoadMore: true);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final int initialTabIndex = (Get.arguments?['index'] ?? 0).clamp(0, 4);
-    _orderDataController.setServiceUuid(_serviceUuidMap[initialTabIndex] ?? '');
-    _allAdsController.resetControllerState();
-    _allAdsController.getOrdersAll();
-    _setupScrollListener();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initOnce(context);
+    });
 
     return DefaultTabController(
       initialIndex: initialTabIndex,
@@ -56,53 +75,66 @@ class AllAdsScreen extends StatelessWidget {
             });
           });
 
-          return Scaffold(
-            backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-            appBar: DefAppBarWidget(context),
-            body: SafeArea(
-              child: SmartRefresher(
-                controller: _refreshController,
-                onRefresh: () async {
-                  _allAdsController.resetControllerState();
-                  await _allAdsController.refreshOrders();
-                  _refreshController.refreshCompleted();
-                },
-                header: CustomHeader(
-                  builder: (context, status) => SizedBox(
-                    height: 60.h,
-                    child: Center(
-                      child: AppSharedMethods.buildProgressViewWhite(
-                        context,
-                        false,
-                      ),
-                    ),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      context.latestAnnouncements,
-                      style: context.textStyles.bodyLarge.bold.copyWith(
-                        color: context.colorsCustom.TextPrimary,
-                        fontSize: 20.sp,
-                      ),
-                    ).paddingSymmetric(horizontal: 16.w),
-                    verticalSpace(10.h),
-                    AdsTabBarWidget(context),
-                    Expanded(
-                      child: TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: List.generate(
-                          _serviceUuidMap.length,
-                          (index) => BodyAdsTapBarWidget(
-                            context,
-                            controller: _allAdsController,
-                          ),
+          return WillPopScope(
+            onWillPop: () async {
+              Get.offAllNamed(
+                Routes.homeScreen,
+                arguments: {'selectedIndex': 0},
+              );
+              return false;
+            },
+            child: Scaffold(
+              backgroundColor: context.colorsCustom.surfacePrimaryWhite,
+              appBar: DefAppBarWidget(
+                context,
+                navigationType: AppNavigationType.offAllNamed,
+                routeName: Routes.homeScreen,
+              ),
+              body: SafeArea(
+                child: SmartRefresher(
+                  controller: _refreshController,
+                  onRefresh: () async {
+                    _allAdsController.resetControllerState();
+                    await _allAdsController.refreshOrders();
+                    _refreshController.refreshCompleted();
+                  },
+                  header: CustomHeader(
+                    builder: (context, status) => SizedBox(
+                      height: 60.h,
+                      child: Center(
+                        child: AppSharedMethods.buildProgressViewWhite(
+                          context,
+                          false,
                         ),
                       ),
                     ),
-                  ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        context.latestAnnouncements,
+                        style: context.textStyles.bodyLarge.bold.copyWith(
+                          color: context.colorsCustom.TextPrimary,
+                          fontSize: 20.sp,
+                        ),
+                      ).paddingSymmetric(horizontal: 16.w),
+                      verticalSpace(10.h),
+                      AdsTabBarWidget(context),
+                      Expanded(
+                        child: TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: List.generate(
+                            _serviceUuidMap.length,
+                            (index) => BodyAdsTapBarWidget(
+                              context,
+                              controller: _allAdsController,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../core/helpers/constants.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar.dart';
@@ -44,7 +45,7 @@ class DocumentController extends GetxController {
         : tabIndex == 1
         ? orderDataController.setOfferStatus('in_progress')
         : orderDataController.setOfferStatus('completed');
-
+    AppConstants.screenName = 'screenName';
     // استماع للاتصال بالإنترنت
     Connectivity().onConnectivityChanged.listen((result) {
       isOffline.value = result == ConnectivityResult.none;
@@ -174,7 +175,7 @@ class DocumentController extends GetxController {
 
   void _setLoading(bool value) => isLoading.value = value;
   void _setLoadingMore(bool value) => isLoadingMore.value = value;
-//      log('🔥 onMessage fired for ${message.messageId}');
+  //      log('🔥 onMessage fired for ${message.messageId}');
 
   @override
   void onClose() {

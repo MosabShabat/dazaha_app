@@ -132,11 +132,9 @@ class MyOfferAdDetailsController extends GetxController {
           final documentController = Get.find<DocumentController>();
           documentController.refreshOrders();
 
-          // 3️⃣ إغلاق الـ BottomSheet والشاشة السابقة
-          if (Navigator.of(context).canPop())
-            Navigator.of(context).pop(); // إغلاق الـ BottomSheet
-          if (Navigator.of(context).canPop())
-            Navigator.of(context).pop(); // العودة للشاشة السابقة
+          if (Get.isBottomSheetOpen ?? false) {
+            Get.back(); // إغلاق BottomSheet فقط
+          }
 
           // 4️⃣ عرض رسالة نجاح
           MyOfferToCustomerWidget(

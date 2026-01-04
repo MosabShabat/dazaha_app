@@ -173,6 +173,7 @@ class ItemAdDetailsController extends GetxController {
             title: '1',
             onTap: () {},
           );
+          AppConstants.screenName = 'allAds';
 
           // التنقل إلى شاشة تفاصيل العرض
           Get.offAllNamed(Routes.myOfferAdDetailsScreen);

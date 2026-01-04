@@ -73,6 +73,7 @@ class AppConstants {
   static String referenceType = 'referenceType';
   static String referenceUuid = 'referenceUuid';
   static String chatReceiverUuid = 'chatReceiverUuid';
+  static String screenName = 'screenName';
 
   //chatReceiverUuid
   static String placeName = 'placeName';
