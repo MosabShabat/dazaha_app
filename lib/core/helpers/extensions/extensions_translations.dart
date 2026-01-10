@@ -254,7 +254,12 @@ extension TranslationsExtension on BuildContext {
   String get joinNow => tr('join_now');
   String get wallet => tr('wallet');
   String get dividendPortfolio => tr('dividend_portfolio');
-
+  String get aboutTheApplicationProgrammer =>
+      tr('about_the_application_programmer');
+  String get mosabShabat => tr('mosab_shabat');
+  String get flutterProg => tr('flutter_prog');
+  String get thisUpdateBy => tr('this_update_by');
+  String get allSave => tr('all_save');
   //dividend_portfolio
   String get theLanguage => tr('the_language');
   String get arabic => tr('arabic');

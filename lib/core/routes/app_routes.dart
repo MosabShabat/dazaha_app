@@ -1,3 +1,5 @@
+import '../../../features/profile/widgets/programmer_info_widget.dart';
+
 import '../../core/helpers/constants.dart';
 import '../../features/about_the_application/binding/about_the_application_binding.dart';
 import '../../features/about_the_application/view/about_the_application_screen.dart';
@@ -163,6 +165,11 @@ class AppRouter {
       page: () => ProfileScreen(),
       binding: ProfileBindings(),
     ),
+    GetPage(
+      name: Routes.programmerInfoWidget,
+      page: () => ProgrammerInfoWidget(),
+    ),
+    //programmerInfoWidget
     GetPage(
       name: Routes.chooseTheServiceScreen,
       page: () => ChooseTheServiceScreen(),

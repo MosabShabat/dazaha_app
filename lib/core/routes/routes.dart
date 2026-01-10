@@ -44,6 +44,9 @@ class Routes {
   static const String aboutTheApplicationScreen = '/aboutTheApplicationScreen';
   static const String savedDeliveryAddressesScreen =
       '/savedDeliveryAddressesScreen';
+  static const String programmerInfoWidget = '/programmerInfoWidget';
+
+  //ProgrammerInfoWidget
   static const String weAreHereToHelpScreen = '/weAreHereToHelpScreen';
   static const String reportAProblemScreen = '/reportAProblemScreen';
   static const String reportReviewDetailsScreen = '/reportReviewDetailsScreen';
