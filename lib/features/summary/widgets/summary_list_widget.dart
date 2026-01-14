@@ -19,7 +19,6 @@ Widget SummaryListWidget(
           color: context.colorsCustom.TextPrimary,
         ),
       ),
-      verticalSpace(10.h),
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

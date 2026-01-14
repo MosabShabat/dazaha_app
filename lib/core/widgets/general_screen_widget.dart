@@ -10,18 +10,25 @@ Widget GeneralScreenWidget(
   return SingleChildScrollView(
     physics: const BouncingScrollPhysics(), // <-- This is what you want
     child: SafeArea(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: wid)
-          .box
-          .width(Width)
-          .padding(
-            EdgeInsets.only(
-              left: horW ?? 16.w,
-              right: horW ?? 16.w,
-              top: verH ?? 16.h,
-            ),
-          )
-          .color(context.colorsCustom.surfacePrimaryWhite)
-          .make(),
+      child: GestureDetector(
+        onTap: () {
+          // يخفي الكيبورد عند الضغط في أي مكان فارغ
+          FocusScope.of(context).unfocus();
+        },
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: wid)
+                .box
+                .width(Width)
+                .padding(
+                  EdgeInsets.only(
+                    left: horW ?? 16.w,
+                    right: horW ?? 16.w,
+                    top: verH ?? 16.h,
+                  ),
+                )
+                .color(context.colorsCustom.surfacePrimaryWhite)
+                .make(),
+      ),
     ),
   );
 }

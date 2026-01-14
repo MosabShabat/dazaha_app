@@ -24,18 +24,27 @@ Widget InPutPriceWidget(
                 color: context.colorsCustom.TextPrimary,
               ),
             )
-          : Container(),
+          : const SizedBox(),
+
       verticalSpace(10.h),
+
       MyTextField(
         Radius: 10.0,
         textAlign: TextAlign.center,
         readOnly: false,
         maxLines: 1,
+        
         initialValue: initialValue,
         obscureText: false,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: controller,
         keyboardType: TextInputType.number,
+        textInputAction: TextInputAction.done,
+        onSubmitted: (_) {
+          FocusScope.of(
+            context,
+          ).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
+        },
         hintText: hintText ?? '0.0',
         hintStyleColor: textColor ?? context.colorsCustom.surfacePrimaryBlack,
         HintTextFontFamily: context.textStyles.bodyLarge.bold.fontFamily,
@@ -55,7 +64,7 @@ Widget InPutPriceWidget(
             fontWeight: FW,
             fontSize: FZ ?? 16.sp,
           ),
-        ).box.padding(EdgeInsetsGeometry.symmetric(vertical: 10.h)).make(),
+        ).box.padding(EdgeInsets.symmetric(vertical: 10.h)).make(),
       ),
     ],
   );

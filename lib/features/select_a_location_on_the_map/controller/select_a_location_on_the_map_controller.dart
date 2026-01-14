@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import '../../../../core/constant/exports_widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -45,6 +44,43 @@ class SelectALocationOnTheMapController extends GetxController
     _getPlaceName(latLng);
   }
 
+  Future<String> getPlaceNameFromLatLng(LatLng latLng) async {
+    try {
+      // 👈 اضبط لغة النتائج قبل الاستعلام (مثلاً عربي)
+      await setLocaleIdentifier('ar_SA');
+
+      final placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+
+      if (placemarks.isEmpty) {
+        return '${latLng.latitude}, ${latLng.longitude}'; // fallback
+      }
+
+      final p = placemarks.first;
+
+      final parts = <String>[
+        if ((p.name ?? '').trim().isNotEmpty) p.name!.trim(),
+        if ((p.street ?? '').trim().isNotEmpty) p.street!.trim(),
+        if ((p.subLocality ?? '').trim().isNotEmpty) p.subLocality!.trim(),
+        if ((p.locality ?? '').trim().isNotEmpty) p.locality!.trim(),
+        if ((p.administrativeArea ?? '').trim().isNotEmpty)
+          p.administrativeArea!.trim(),
+        if ((p.country ?? '').trim().isNotEmpty) p.country!.trim(),
+      ];
+
+      final joined = parts.join('، ');
+      if (joined.isEmpty) {
+        return '${latLng.latitude}, ${latLng.longitude}'; // fallback
+      }
+
+      return joined;
+    } catch (e) {
+      return '${latLng.latitude}, ${latLng.longitude}'; // fallback
+    }
+  }
+
   Future<void> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -81,48 +117,52 @@ class SelectALocationOnTheMapController extends GetxController
   }
 
   Future<void> _getPlaceName(LatLng latLng) async {
-    try {
-      List<Placemark> placeMarks = await placemarkFromCoordinates(
-        latLng.latitude,
-        latLng.longitude,
-      );
-      if (placeMarks.isNotEmpty) {
-        Placemark place = placeMarks[0];
-
-        String? locality = place.locality;
-        String? subLocality = place.subLocality;
-        String? administrativeArea = place.administrativeArea;
-        String? thoroughfare = place.thoroughfare;
-        String? name = place.name;
-
-        placeName.value = (locality?.isNotEmpty == true
-            ? locality
-            : (subLocality?.isNotEmpty == true
-                  ? subLocality
-                  : (administrativeArea?.isNotEmpty == true
-                        ? administrativeArea
-                        : (thoroughfare?.isNotEmpty == true
-                              ? thoroughfare
-                              : (name ?? Get.context!.unknownPlace)))))!;
-      } else {
-        placeName.value = Get.context!.unknownPlace;
-      }
-    } catch (e) {
-      placeName.value = Get.context!.unknownPlace;
-    }
-
-    // try {
-    //   List<Placemark> placemarks =
-    //       await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
-    //   if (placemarks.isNotEmpty) {
-    //     placeName.value = placemarks.first.name ?? Get.context!.unknownPlace;
-    //   } else {
-    //     placeName.value = Get.context!.unknownPlace;
-    //   }
-    // } catch (e) {
-    //   placeName.value = Get.context!.failedGetName;
-    // }
+    placeName.value = await getPlaceNameFromLatLng(latLng);
   }
+
+  // Future<void> _getPlaceName(LatLng latLng) async {
+  //   try {
+  //     List<Placemark> placeMarks = await placemarkFromCoordinates(
+  //       latLng.latitude,
+  //       latLng.longitude,
+  //     );
+  //     if (placeMarks.isNotEmpty) {
+  //       Placemark place = placeMarks[0];
+
+  //       String? locality = place.locality;
+  //       String? subLocality = place.subLocality;
+  //       String? administrativeArea = place.administrativeArea;
+  //       String? thoroughfare = place.thoroughfare;
+  //       String? name = place.name;
+
+  //       placeName.value = (locality?.isNotEmpty == true
+  //           ? locality
+  //           : (subLocality?.isNotEmpty == true
+  //                 ? subLocality
+  //                 : (administrativeArea?.isNotEmpty == true
+  //                       ? administrativeArea
+  //                       : (thoroughfare?.isNotEmpty == true
+  //                             ? thoroughfare
+  //                             : (name ?? Get.context!.unknownPlace)))))!;
+  //     } else {
+  //       placeName.value = Get.context!.unknownPlace;
+  //     }
+  //   } catch (e) {
+  //     placeName.value = Get.context!.unknownPlace;
+  //   }
+
+  //   // try {
+  //   //   List<Placemark> placemarks =
+  //   //       await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+  //   //   if (placemarks.isNotEmpty) {
+  //   //     placeName.value = placemarks.first.name ?? Get.context!.unknownPlace;
+  //   //   } else {
+  //   //     placeName.value = Get.context!.unknownPlace;
+  //   //   }
+  //   // } catch (e) {
+  //   //   placeName.value = Get.context!.failedGetName;
+  //   // }
+  // }
 
   void moveToCurrentLocation() async {
     await _determinePosition();

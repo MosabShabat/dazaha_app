@@ -1,4 +1,3 @@
-import 'dart:io';
 import '../../../../core/constant/exports_libraries.dart';
 
 Widget MyTextField({
@@ -28,6 +27,10 @@ Widget MyTextField({
   keyboardType,
   onChanged,
   counterText,
+  textAlignVertical,
+  isDense,
+  contentPadding,
+  textInputAction,
 }) {
   if (initialValue != null && controller != null && controller.text.isEmpty) {
     controller.text = initialValue;
@@ -40,7 +43,12 @@ Widget MyTextField({
     onTap: onTap,
     validator: validator,
     onChanged: onChanged,
-    onFieldSubmitted: onSubmitted,
+    onFieldSubmitted:
+        onSubmitted ??
+        (_) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+
     keyboardType:
         keyboardType ??
         (maxLines != null && maxLines > 1
@@ -50,14 +58,12 @@ Widget MyTextField({
     maxLength: maxLength,
     textAlign: textAlign ?? TextAlign.start,
     textDirection: textDirection,
-    textAlignVertical: TextAlignVertical.center, // ⭐ مهم
+    textInputAction: textInputAction ?? TextInputAction.done,
+    textAlignVertical: textAlignVertical, // ⭐ مهم
     style: style,
     decoration: InputDecoration(
-      isDense: true, // ⭐ يقلل padding الافتراضي
-      contentPadding: EdgeInsets.symmetric(
-        vertical: Platform.isIOS ? 14.h : 10.h, // ⭐ فرق iOS
-        horizontal: 12.w,
-      ),
+      isDense: isDense, // ⭐ يقلل padding الافتراضي
+      contentPadding: contentPadding,
       filled: true,
       fillColor: fillColor,
       counterText: counterText,

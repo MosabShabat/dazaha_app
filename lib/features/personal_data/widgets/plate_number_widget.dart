@@ -25,6 +25,12 @@ Widget PlateNumberWidget(BuildContext context, {required plateController}) {
         readOnly: false,
         maxLines: 1,
         maxLength: 8,
+        textInputAction: TextInputAction.done, // ✅ زر Done
+        onSubmitted: (_) {
+          FocusScope.of(
+            context,
+          ).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
+        },
         obscureText: false,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: plateController,

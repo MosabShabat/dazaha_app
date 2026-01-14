@@ -19,6 +19,10 @@ Widget LocationTextFieldWidget(
     // controller: _LastNameTextController,
     keyboardType: TextInputType.name,
     hintText: text,
+    textInputAction: TextInputAction.done, // ✅ زر Done
+    onSubmitted: (_) {
+      FocusScope.of(context).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
+    },
     hintStyleColor: textColor,
     HintTextFontFamily: textFontFamily,
     textAlign: TextAlign.start,

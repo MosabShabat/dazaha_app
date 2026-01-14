@@ -10,6 +10,8 @@ Widget EnterStoreNameWidget(BuildContext context, {controller, onSubmitted}) {
     obscureText: false,
     enabledBorderColor: context.colorsCustom.CardBorder,
     controller: controller,
+    textInputAction: TextInputAction.done,
+
     keyboardType: TextInputType.name,
     hintText: context.enterStoreName,
     hintStyleColor: context.colorsCustom.TextSecondary,
