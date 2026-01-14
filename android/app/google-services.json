@@ -16,31 +16,6 @@
       "api_key": [
         {
           "current_key": "AIzaSyBpGO8PYXUHsGCPp6_Vo7XsJROQFqTnv2w"
-        },
-        {
-          "current_key": "AIzaSyC4mxaE5HeeTNQlVKFEpTE57Gp5fdLxWCA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:249932861987:android:54bd429804c326b49a5796",
-        "android_client_info": {
-          "package_name": "com.avocode.dizzha"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBpGO8PYXUHsGCPp6_Vo7XsJROQFqTnv2w"
-        },
-        {
-          "current_key": "AIzaSyC4mxaE5HeeTNQlVKFEpTE57Gp5fdLxWCA"
         }
       ],
       "services": {
