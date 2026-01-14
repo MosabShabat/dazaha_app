@@ -49,7 +49,10 @@ class _BodyTabBarWidgetState extends State<BodyTabBarWidget> {
         Expanded(
           child: Obx(() {
             if (controller.isLoading.value && controller.ordersList.isEmpty) {
-              return listShimmerWidget();
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: listShimmerWidget(),
+              );
             }
 
             if (controller.ordersList.isEmpty) {

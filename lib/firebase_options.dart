@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCICQgxfIyl6qg5-sHO2aZzAfMoMky8kn4',
-    appId: '1:249932861987:ios:49fe38ff308a23a19a5796',
+    appId: '1:249932861987:ios:1f3fc1bcdf63d20c9a5796',
     messagingSenderId: '249932861987',
     projectId: 'dezha-2d128',
     storageBucket: 'dezha-2d128.firebasestorage.app',
-    iosBundleId: 'com.example.dazahaApp',
+    iosBundleId: 'com.avocode.dezha',
   );
 
 }
