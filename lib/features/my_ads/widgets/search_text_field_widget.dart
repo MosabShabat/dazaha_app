@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
@@ -8,25 +10,35 @@ Widget SearchTextFieldWidget(
   onChanged,
 }) {
   return MyTextField(
-    Radius: 10.0.r,
+    controller: controller,
     textAlign: TextAlign.start,
-    readOnly: false,
+    textAlignVertical: TextAlignVertical.center, // ⭐ لمحاذاة النص على iOS
     maxLines: 1,
+    readOnly: false,
     obscureText: false,
     onChanged: onChanged,
     onSubmitted: onSubmitted,
+    textInputAction: TextInputAction.done, // ✅ زر Done
+
     enabledBorderColor: context.colorsCustom.CardBorder,
-    controller: controller,
-    keyboardType: TextInputType.name,
+    fillColor: context.colorsCustom.surfacePrimaryWhite,
     hintText: context.search,
     hintStyleColor: context.colorsCustom.TextSecondary,
     HintTextFontFamily: context.textStyles.bodySmall.regular.fontFamily,
     HintTextFontSize: 12.0.sp,
-    fillColor: context.colorsCustom.surfacePrimaryWhite,
-    prefixIcon: Icon(
-      Icons.search,
-      color: context.colorsCustom.surfacePrimaryBlack,
-      size: 30.w,
+    Radius: 10.0.r,
+    isDense: true, // ⭐ لتقليل padding الافتراضي
+    contentPadding: EdgeInsets.symmetric(
+      vertical: Platform.isIOS ? 14.h : 10.h, // ⭐ فرق بين iOS و Android
+      horizontal: 12.w,
     ),
-  );
+    prefixIcon: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      child: Icon(
+        Icons.search,
+        color: context.colorsCustom.surfacePrimaryBlack,
+        size: 22.w, // ⭐ حجم مناسب على iOS
+      ),
+    ),
+  ).box.width(Width.w - 52.w).make(); // عرض مناسب داخل Row
 }

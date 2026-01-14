@@ -25,19 +25,24 @@ Widget CusRegisterInfoWidget(
           color: titleTextColor,
         ),
       ),
-      verticalSpace(15.h),
+      verticalSpace(10.h), // قلل المسافة شوي لتكون أنسب
       MyTextField(
         Radius: 10.0,
         textAlign: TextAlign.start,
-        
         readOnly: readOnly ?? false,
-        maxLines: maxLines == null ? 1 : maxLines,
+        maxLines: maxLines ?? 1,
         maxLength: maxLength,
         obscureText: false,
-        initialValue:initialValue ,
+        initialValue: initialValue,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: controller,
-        keyboardType:keyboardType ?? TextInputType.name,
+        keyboardType: keyboardType ?? TextInputType.name,
+        textInputAction: TextInputAction.done, // ✅ زر Done
+        onSubmitted: (_) {
+          FocusScope.of(
+            context,
+          ).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
+        },
         hintText: HintText,
         hintStyleColor: HintTextColor ?? context.colorsCustom.TextSecondary,
         HintTextFontFamily:
@@ -47,7 +52,7 @@ Widget CusRegisterInfoWidget(
         fillColor: context.colorsCustom.surfacePrimaryWhite,
         fontWeight: fontWeight,
       ),
-      verticalSpace(20.h),
+      verticalSpace(15.h),
     ],
   );
 }

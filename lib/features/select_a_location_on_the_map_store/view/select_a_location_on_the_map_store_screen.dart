@@ -20,25 +20,31 @@ class SelectALocationOnTheMapStoreScreen extends StatelessWidget {
               decoration: BoxDecoration(color: context.colorsCustom.BlueBlue),
             ),
             SafeArea(
-              child:
-                  Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          verticalSpace(10.h),
-                          AppButtonBack(context: context),
-                          verticalSpace(10.h),
-                          EnterStoreNameWidget(context),
-                          Spacer(),
-                          BottomNavigationBarWidget(
-                            text: context.choice,
-                            context,
-                            horizontalPadding: 0.0,
-                            GetScreen: () {},
-                          ),
-                        ],
-                      ).box
-                      .padding(EdgeInsetsGeometry.symmetric(horizontal: 16.w))
-                      .make(),
+              child: GestureDetector(
+                onTap: () {
+                  // يخفي الكيبورد عند الضغط في أي مكان فارغ
+                  FocusScope.of(context).unfocus();
+                },
+                child:
+                    Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            verticalSpace(10.h),
+                            AppButtonBack(context: context),
+                            verticalSpace(10.h),
+                            EnterStoreNameWidget(context),
+                            Spacer(),
+                            BottomNavigationBarWidget(
+                              text: context.choice,
+                              context,
+                              horizontalPadding: 0.0,
+                              GetScreen: () {},
+                            ),
+                          ],
+                        ).box
+                        .padding(EdgeInsetsGeometry.symmetric(horizontal: 16.w))
+                        .make(),
+              ),
             ),
           ],
         ),

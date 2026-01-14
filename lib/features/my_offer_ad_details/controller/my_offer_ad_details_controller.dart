@@ -19,6 +19,7 @@ class MyOfferAdDetailsController extends GetxController {
   final OfferDetailsRepo _offerDetailsRepo = Get.find<OfferDetailsRepo>();
   final OrderDataController _orderDataController = Get.find();
   final TextEditingController priceController = TextEditingController();
+  final FocusNode priceFocusNode = FocusNode();
 
   RxBool isLoading = true.obs;
   RxBool isButtonPressed = false.obs;

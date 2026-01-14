@@ -45,6 +45,8 @@ class UpdateMobileNumberScreen extends StatelessWidget {
               verticalSpace(20.h),
               LoginTextFieldWidget(
                 context,
+                readOnly: false,
+                textAlign: 'null',
                 controller: _updateMobileNumberController.phoneController,
               ),
               verticalSpace(40.h),
@@ -59,7 +61,8 @@ class UpdateMobileNumberScreen extends StatelessWidget {
                   },
                   isLoading:
                       _updateMobileNumberController.isButtonPressed.value,
-                  isEnabled: !_updateMobileNumberController.isButtonPressed.value,
+                  isEnabled:
+                      !_updateMobileNumberController.isButtonPressed.value,
 
                   isWhiteProgress: true,
                 );

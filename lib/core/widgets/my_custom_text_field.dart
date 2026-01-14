@@ -27,8 +27,11 @@ Widget MyTextField({
   keyboardType,
   onChanged,
   counterText,
+  textAlignVertical,
+  isDense,
+  contentPadding,
+  textInputAction,
 }) {
-  // ✅ لو فيه initialValue و controller فاضي
   if (initialValue != null && controller != null && controller.text.isEmpty) {
     controller.text = initialValue;
   }
@@ -40,7 +43,12 @@ Widget MyTextField({
     onTap: onTap,
     validator: validator,
     onChanged: onChanged,
-    onFieldSubmitted: onSubmitted,
+    onFieldSubmitted:
+        onSubmitted ??
+        (_) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+
     keyboardType:
         keyboardType ??
         (maxLines != null && maxLines > 1
@@ -50,8 +58,12 @@ Widget MyTextField({
     maxLength: maxLength,
     textAlign: textAlign ?? TextAlign.start,
     textDirection: textDirection,
+    textInputAction: textInputAction ?? TextInputAction.done,
+    textAlignVertical: textAlignVertical, // ⭐ مهم
     style: style,
     decoration: InputDecoration(
+      isDense: isDense, // ⭐ يقلل padding الافتراضي
+      contentPadding: contentPadding,
       filled: true,
       fillColor: fillColor,
       counterText: counterText,
@@ -63,7 +75,12 @@ Widget MyTextField({
         fontSize: HintTextFontSize,
       ),
       suffixIcon: suffixIcon,
-      prefixIcon: prefixIcon,
+      prefixIcon: prefixIcon != null
+          ? Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: prefixIcon,
+            )
+          : null,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Radius ?? 8),
         borderSide: BorderSide(

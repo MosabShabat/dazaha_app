@@ -23,6 +23,7 @@ class ItemAdDetailsController extends GetxController {
   final OrderDataController _orderDataController = Get.find();
   RxBool isLoading = true.obs;
   Rx<OrdersDetailsItem>? orderDetailsItem;
+  final FocusNode priceFocusNode = FocusNode();
 
   final TextEditingController priceController = TextEditingController();
   RxBool isButtonPressed = false.obs;

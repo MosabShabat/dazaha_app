@@ -1,4 +1,4 @@
-import 'package:dazaha_app/core/constant/exports_widgets.dart';
+import '../../../core/constant/exports_widgets.dart';
 
 import '../../../core/constant/exports_libraries.dart';
 // import '../../../core/constant/exports_widgets.dart';
@@ -18,29 +18,6 @@ Widget SerRowWidget(
         onChanged: (value) => controller.searchText.value = value,
         onSubmitted: (_) => controller.refreshOrders(),
       ).box.width(Width.w - 52.w).height(45.w).make(),
-      // horizontalSpace(10.w),
-      // Center(child: SvgPicture.asset(AppAssets.svgs.setting_4_icon)).box
-      //     .width(45.w)
-      //     .height(45.w)
-      //     .customRounded(BorderRadiusGeometry.circular(8.r))
-      //     .border(color: context.colorsCustom.CardBorder)
-      //     .make()
-      //     .onTap(() {
-      //       FilteringBottomSheetWidget(
-      //         context,
-      //         gridList: [
-      //           context.transportationAndDelivery,
-      //           context.buyForMe,
-      //           context.removeAndRecycle,
-      //           context.dedication,
-      //         ],
-      //         subTitle: context.ViewYourRequestsByServiceType,
-      //         selectedIndex: controller.selectedIndex,
-      //         onTapSel: (index) => controller.changeSelect(index),
-      //         onPress: () => controller.selectedIndex.value = 0,
-      //         onTep: () {},
-      //       );
-      //     }),
     ],
   );
 }

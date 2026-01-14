@@ -83,6 +83,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   flutter_dotenv: ^6.0.0
   rename: ^3.1.0
+  keyboard_actions: ^4.2.1
   
  
 

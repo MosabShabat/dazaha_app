@@ -186,8 +186,8 @@ class _CustomCameraScreenState extends State<CustomCameraScreen> {
                   top: MediaQuery.of(context).padding.top + 10,
                   left: 20,
                   child: Container(
-                    width: 40.w,
-                    height: 40.w,
+                    width: 35.w,
+                    height: 35.w,
                     decoration: BoxDecoration(
                       color: context.colorsCustom.surfacePrimaryBlack,
                       shape: BoxShape.circle,
@@ -201,7 +201,7 @@ class _CustomCameraScreenState extends State<CustomCameraScreen> {
                         icon: Icon(
                           _isFlashOn ? Icons.flash_on : Icons.flash_off,
                           color: Colors.white,
-                          size: 25.sp,
+                          size: 17.5.sp,
                         ),
                         onPressed: _toggleFlash,
                       ),
