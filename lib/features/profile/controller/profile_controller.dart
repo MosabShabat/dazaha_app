@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dazaha_app/core/constant/exports_libraries.dart';
+import '../../../core/constant/exports_libraries.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:get/get.dart';
 import '../../../core/helpers/app_shared_data.dart';
 import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/helpers/constants.dart';

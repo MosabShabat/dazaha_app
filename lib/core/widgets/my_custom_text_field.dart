@@ -1,3 +1,4 @@
+import 'dart:io';
 import '../../../../core/constant/exports_libraries.dart';
 
 Widget MyTextField({
@@ -28,7 +29,6 @@ Widget MyTextField({
   onChanged,
   counterText,
 }) {
-  // ✅ لو فيه initialValue و controller فاضي
   if (initialValue != null && controller != null && controller.text.isEmpty) {
     controller.text = initialValue;
   }
@@ -50,8 +50,14 @@ Widget MyTextField({
     maxLength: maxLength,
     textAlign: textAlign ?? TextAlign.start,
     textDirection: textDirection,
+    textAlignVertical: TextAlignVertical.center, // ⭐ مهم
     style: style,
     decoration: InputDecoration(
+      isDense: true, // ⭐ يقلل padding الافتراضي
+      contentPadding: EdgeInsets.symmetric(
+        vertical: Platform.isIOS ? 14.h : 10.h, // ⭐ فرق iOS
+        horizontal: 12.w,
+      ),
       filled: true,
       fillColor: fillColor,
       counterText: counterText,
@@ -63,7 +69,12 @@ Widget MyTextField({
         fontSize: HintTextFontSize,
       ),
       suffixIcon: suffixIcon,
-      prefixIcon: prefixIcon,
+      prefixIcon: prefixIcon != null
+          ? Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: prefixIcon,
+            )
+          : null,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Radius ?? 8),
         borderSide: BorderSide(
