@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dazaha_app/core/constant/exports_widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,6 +19,7 @@ class SelectALocationOnTheMapController extends GetxController
   @override
   void onInit() {
     super.onInit();
+    placeName.value = '';
     WidgetsBinding.instance.addObserver(this);
     _determinePosition();
   }
@@ -26,6 +28,7 @@ class SelectALocationOnTheMapController extends GetxController
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
+    placeName.value = '';
   }
 
   @override
@@ -42,43 +45,6 @@ class SelectALocationOnTheMapController extends GetxController
   void updateLocation(LatLng latLng) {
     currentLatLng.value = latLng;
     _getPlaceName(latLng);
-  }
-
-  Future<String> getPlaceNameFromLatLng(LatLng latLng) async {
-    try {
-      // 👈 اضبط لغة النتائج قبل الاستعلام (مثلاً عربي)
-      await setLocaleIdentifier('ar_SA');
-
-      final placemarks = await placemarkFromCoordinates(
-        latLng.latitude,
-        latLng.longitude,
-      );
-
-      if (placemarks.isEmpty) {
-        return '${latLng.latitude}, ${latLng.longitude}'; // fallback
-      }
-
-      final p = placemarks.first;
-
-      final parts = <String>[
-        if ((p.name ?? '').trim().isNotEmpty) p.name!.trim(),
-        if ((p.street ?? '').trim().isNotEmpty) p.street!.trim(),
-        if ((p.subLocality ?? '').trim().isNotEmpty) p.subLocality!.trim(),
-        if ((p.locality ?? '').trim().isNotEmpty) p.locality!.trim(),
-        if ((p.administrativeArea ?? '').trim().isNotEmpty)
-          p.administrativeArea!.trim(),
-        if ((p.country ?? '').trim().isNotEmpty) p.country!.trim(),
-      ];
-
-      final joined = parts.join('، ');
-      if (joined.isEmpty) {
-        return '${latLng.latitude}, ${latLng.longitude}'; // fallback
-      }
-
-      return joined;
-    } catch (e) {
-      return '${latLng.latitude}, ${latLng.longitude}'; // fallback
-    }
   }
 
   Future<void> _determinePosition() async {
@@ -116,8 +82,48 @@ class SelectALocationOnTheMapController extends GetxController
     updateLocation(LatLng(position.latitude, position.longitude));
   }
 
+  Future<String> getPlaceNameFromLatLng(LatLng latLng) async {
+    try {
+      // 👈 اضبط لغة النتائج قبل الاستعلام
+      await setLocaleIdentifier('ar_SA');
+      final placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+
+      if (placemarks.isEmpty) {
+        return _fallbackFromLatLng(latLng);
+      }
+
+      final p = placemarks.first;
+
+      final parts = <String>[
+        if ((p.name ?? '').trim().isNotEmpty) p.name!.trim(),
+        if ((p.street ?? '').trim().isNotEmpty) p.street!.trim(),
+        if ((p.subLocality ?? '').trim().isNotEmpty) p.subLocality!.trim(),
+        if ((p.locality ?? '').trim().isNotEmpty) p.locality!.trim(),
+        if ((p.administrativeArea ?? '').trim().isNotEmpty)
+          p.administrativeArea!.trim(),
+        if ((p.country ?? '').trim().isNotEmpty) p.country!.trim(),
+      ];
+
+      final joined = parts.join('، ');
+      if (joined.isEmpty) {
+        return _fallbackFromLatLng(latLng);
+      }
+
+      return joined;
+    } catch (e) {
+      return _fallbackFromLatLng(latLng);
+    }
+  }
+
   Future<void> _getPlaceName(LatLng latLng) async {
     placeName.value = await getPlaceNameFromLatLng(latLng);
+  }
+
+  String _fallbackFromLatLng(LatLng latLng) {
+    return '${latLng.latitude.toStringAsFixed(5)}, ${latLng.longitude.toStringAsFixed(5)}';
   }
 
   // Future<void> _getPlaceName(LatLng latLng) async {

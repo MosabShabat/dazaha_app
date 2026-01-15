@@ -1,5 +1,7 @@
-import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
+
+import '../../../core/constant/exports_libraries.dart';
 
 Widget InPutPriceWidget(
   BuildContext context, {
@@ -10,62 +12,53 @@ Widget InPutPriceWidget(
   FZ,
   initialValue,
   controller,
-  currency,
+  currency,maxHeight,
 }) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      isShow
-          ? Text(
-              context.howMuchWouldYouLikeToPay,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: context.textStyles.bodyMedium.medium.copyWith(
-                color: context.colorsCustom.TextPrimary,
+  final FocusNode priceFocus = FocusNode();
+
+  return ConstrainedBox(
+    constraints: BoxConstraints(minHeight: 0, maxHeight:maxHeight?? 80.h),
+    child: KeyboardActions(
+      config: KeyboardActionsConfig(
+        keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+        actions: [
+          KeyboardActionsItem(
+            focusNode: priceFocus,
+            toolbarButtons: [
+              (node) => TextButton(
+                onPressed: () => node.unfocus(),
+                child: const Text(
+                  'Done',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            )
-          : const SizedBox(),
-
-      verticalSpace(10.h),
-
-      MyTextField(
-        Radius: 10.0,
-        textAlign: TextAlign.center,
-        readOnly: false,
-        maxLines: 1,
-        
-        initialValue: initialValue,
-        obscureText: false,
-        enabledBorderColor: context.colorsCustom.CardBorder,
-        controller: controller,
-        keyboardType: TextInputType.number,
-        textInputAction: TextInputAction.done,
-        onSubmitted: (_) {
-          FocusScope.of(
-            context,
-          ).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
-        },
-        hintText: hintText ?? '0.0',
-        hintStyleColor: textColor ?? context.colorsCustom.surfacePrimaryBlack,
-        HintTextFontFamily: context.textStyles.bodyLarge.bold.fontFamily,
-        HintTextFontSize: FZ ?? 16.0.sp,
-        fontWeight: FW ?? FontWeight.w700,
-        style: context.textStyles.bodyLarge.bold.copyWith(
-          color: context.colorsCustom.TextPrimary,
-          fontSize: 16.sp,
-        ),
-        fillColor: context.colorsCustom.surfacePrimaryWhite,
-        suffixIcon: Text(
-          currency ?? 'د.ع',
-          textAlign: TextAlign.center,
-          maxLines: 1,
-          style: context.textStyles.bodyLarge.bold.copyWith(
-            color: textColor ?? context.colorsCustom.TextPrimary,
-            fontWeight: FW,
-            fontSize: FZ ?? 16.sp,
+            ],
           ),
-        ).box.padding(EdgeInsets.symmetric(vertical: 10.h)).make(),
+        ],
       ),
-    ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // ⭐ مهم
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isShow)
+            Text(
+              context.howMuchWouldYouLikeToPay,
+              style: context.textStyles.bodyMedium.medium,
+            ),
+          verticalSpace(10.h),
+          MyTextField(
+            focusNode: priceFocus,
+            textAlign: TextAlign.center,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            controller: controller,
+            hintText: hintText ?? '0.0',
+            onSubmitted: (_) => priceFocus.unfocus(),
+            suffixIcon: Text(
+              currency ?? 'د.ع',
+            ).box.padding(EdgeInsets.symmetric(vertical: 10.h)).make(),
+          ),
+        ],
+      ),
+    ),
   );
 }

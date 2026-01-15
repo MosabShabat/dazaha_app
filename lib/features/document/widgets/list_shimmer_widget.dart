@@ -10,8 +10,10 @@ Widget listShimmerWidget() {
 
 Widget _buildShimmerItem() {
   return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      CustomShimmer(width: 100.w, height: 100.w, borderRadius: 8.r),
+      CustomShimmer(width: 80.w, height: 80.w, borderRadius: 8.r),
       horizontalSpace(5.w),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,

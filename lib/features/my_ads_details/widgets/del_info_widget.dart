@@ -1,7 +1,21 @@
 import 'package:url_launcher/url_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import 'dart:io';
+
+Future<void> openMap(double lat, double lng) async {
+  Uri uri;
+
+  if (Platform.isIOS) {
+    // ✅ Apple Maps (أفضل وأضمن حل لـ iOS)
+    uri = Uri.parse('http://maps.apple.com/?daddr=$lat,$lng&dirflg=d');
+  } else {
+    // ✅ Google Maps (Android)
+    uri = Uri.parse('geo:$lat,$lng?q=$lat,$lng');
+  }
+
+  await launchUrl(uri, mode: LaunchMode.externalApplication);
+}
 
 Widget DelInfoWidget(
   BuildContext context, {
@@ -36,38 +50,13 @@ Widget DelInfoWidget(
               : SizedBox.shrink(),
         ],
       ).box.height(20.h).make().onTap(() async {
-        if (lat != null && lng != null) {
-          // التحقق من صلاحية الموقع
-          PermissionStatus status = await Permission.location.status;
+        if (lat == null || lng == null) return;
 
-          if (status.isDenied || status.isRestricted) {
-            // طلب الصلاحية
-            status = await Permission.location.request();
-            if (!status.isGranted) {
-              // إذا رفض المستخدم، أرسل إلى إعدادات التطبيق
-              Get.snackbar('ملاحظة', 'يجب تفعيل الموقع للوصول إلى الخرائط');
-              openAppSettings(); // يفتح إعدادات التطبيق
-              return;
-            }
-          }
+        final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
+        final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
+        if (destinationLat == 0.0 && destinationLng == 0.0) return;
 
-          // إذا الصلاحية متاحة
-          final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
-          final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
-
-          final Uri googleMapsUri = Uri.parse(
-            'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLng&travelmode=driving',
-          );
-
-          if (await canLaunchUrl(googleMapsUri)) {
-            await launchUrl(
-              googleMapsUri,
-              mode: LaunchMode.externalApplication,
-            );
-          } else {
-            Get.snackbar('خطأ', 'تعذّر فتح Google Maps');
-          }
-        }
+        await openMap(destinationLat, destinationLng);
       }),
       Text(
         DelText,

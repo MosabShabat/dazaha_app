@@ -16,7 +16,7 @@ Widget SerRowWidget(
         context,
         controller: controller.searchController,
         onChanged: (value) => controller.searchText.value = value,
-        onSubmitted: (_) => controller.refreshOrders(),
+        onSubmitted: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       ).box.width(Width.w - 52.w).height(45.w).make(),
     ],
   );

@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
@@ -58,34 +59,29 @@ Widget ListTileAdvertisementSummaryWidget(
           : SizedBox.shrink(),
     ],
   ).box.width(Width).make().paddingOnly(bottom: 10.h).onTap(() async {
-    if (isMap) {
-      // تحقق من صلاحية الموقع
-      PermissionStatus status = await Permission.location.status;
+    if (!isMap) return;
 
-      if (status.isDenied || status.isRestricted) {
-        // طلب الصلاحية
-        status = await Permission.location.request();
-        if (!status.isGranted) {
-          // إذا رفض المستخدم، أرسل إلى إعدادات التطبيق
-          Get.snackbar('ملاحظة', 'يجب تفعيل الموقع للوصول إلى الخرائط');
-          openAppSettings(); // يفتح إعدادات التطبيق
-          return;
-        }
-      }
+    final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
+    final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
 
-      // إذا الصلاحية متاحة
-      final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
-      final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
+    Uri uri;
 
-      final Uri googleMapsUri = Uri.parse(
+    if (Platform.isIOS) {
+      // ✅ Apple Maps (أفضل حل لـ iOS)
+      uri = Uri.parse(
+        'http://maps.apple.com/?daddr=$destinationLat,$destinationLng&dirflg=d',
+      );
+    } else {
+      // ✅ Google Maps (Android)
+      uri = Uri.parse(
         'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLng&travelmode=driving',
       );
+    }
 
-      if (await canLaunchUrl(googleMapsUri)) {
-        await launchUrl(googleMapsUri, mode: LaunchMode.externalApplication);
-      } else {
-        Get.snackbar('خطأ', 'تعذّر فتح Google Maps');
-      }
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      Get.snackbar('خطأ', 'تعذّر فتح تطبيق الخرائط');
     }
   });
 }

@@ -1,5 +1,6 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 Widget CusRegisterInfoWidget(
   BuildContext context, {
@@ -15,42 +16,62 @@ Widget CusRegisterInfoWidget(
   readOnly,
   keyboardType,
   initialValue,
+  maxHeight,
 }) {
+  final FocusNode focusNode = FocusNode(); // ✅ أنشئ FocusNode
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        '${titleText}',
+        titleText,
         style: context.textStyles.bodyMedium.medium.copyWith(
           color: titleTextColor,
         ),
       ),
-      verticalSpace(10.h), // قلل المسافة شوي لتكون أنسب
-      MyTextField(
-        Radius: 10.0,
-        textAlign: TextAlign.start,
-        readOnly: readOnly ?? false,
-        maxLines: maxLines ?? 1,
-        maxLength: maxLength,
-        obscureText: false,
-        initialValue: initialValue,
-        enabledBorderColor: context.colorsCustom.CardBorder,
-        controller: controller,
-        keyboardType: keyboardType ?? TextInputType.name,
-        textInputAction: TextInputAction.done, // ✅ زر Done
-        onSubmitted: (_) {
-          FocusScope.of(
-            context,
-          ).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
-        },
-        hintText: HintText,
-        hintStyleColor: HintTextColor ?? context.colorsCustom.TextSecondary,
-        HintTextFontFamily:
-            HintTextFontFamily ??
-            context.textStyles.bodySmall.regular.fontFamily,
-        HintTextFontSize: 12.0.sp,
-        fillColor: context.colorsCustom.surfacePrimaryWhite,
-        fontWeight: fontWeight,
+      verticalSpace(10.h),
+      ConstrainedBox(
+        constraints: BoxConstraints(minHeight: 0, maxHeight: maxHeight ?? 80.h),
+        child: KeyboardActions(
+          config: KeyboardActionsConfig(
+            keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+            actions: [
+              KeyboardActionsItem(
+                focusNode: focusNode,
+                toolbarButtons: [
+                  (node) => TextButton(
+                    onPressed: () => node.unfocus(), // ✅ يخفي الكيبورد
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          child: MyTextField(
+            focusNode: focusNode, // ✅ اربط الـ FocusNode بالـ TextField
+            Radius: 10.0,
+            textAlign: TextAlign.start,
+            readOnly: readOnly ?? false,
+            maxLines: maxLines ?? 1,
+            maxLength: maxLength,
+            obscureText: false,
+            initialValue: initialValue,
+            enabledBorderColor: context.colorsCustom.CardBorder,
+            controller: controller,
+            keyboardType: keyboardType ?? TextInputType.name,
+            hintText: HintText,
+            hintStyleColor: HintTextColor ?? context.colorsCustom.TextSecondary,
+            HintTextFontFamily:
+                HintTextFontFamily ??
+                context.textStyles.bodySmall.regular.fontFamily,
+            HintTextFontSize: 12.0.sp,
+            fillColor: context.colorsCustom.surfacePrimaryWhite,
+            fontWeight: fontWeight,
+          ),
+        ),
       ),
       verticalSpace(15.h),
     ],

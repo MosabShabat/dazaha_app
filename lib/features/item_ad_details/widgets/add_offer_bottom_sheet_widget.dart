@@ -85,8 +85,6 @@ Future<dynamic> AddOfferBottomSheetWidget(
                             .priceController
                       : (controller as ItemAdDetailsController).priceController,
                 ),
-                verticalSpace(20.h),
-
                 // عنوان الوقت حسب نوع الخدمة
                 Text(
                   orderDataController.serviceNumber.value == '0' ||

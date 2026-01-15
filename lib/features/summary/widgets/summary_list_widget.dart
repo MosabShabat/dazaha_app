@@ -19,9 +19,11 @@ Widget SummaryListWidget(
           color: context.colorsCustom.TextPrimary,
         ),
       ),
+      verticalSpace(10.h),
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(0),
         itemCount: itemsLen,
         itemBuilder: (context, index) {
           final item = itemsDet[index];
@@ -45,7 +47,7 @@ Widget SummaryListWidget(
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: DashedVerticalLine(
-                        height: 80.h,
+                        height: 60.h,
                         dashHeight: 6,
                         dashGap: 10,
                         color: teal.withOpacity(0.15),

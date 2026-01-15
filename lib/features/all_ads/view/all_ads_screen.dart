@@ -1,7 +1,5 @@
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
-import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/widgets/def_app_bar_widget.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
@@ -15,7 +13,6 @@ class AllAdsScreen extends StatelessWidget {
 
   final AllAdsController _allAdsController = Get.find();
   final OrderDataController _orderDataController = Get.find();
-  final RefreshController _refreshController = RefreshController();
 
   final Map<int, String> _serviceUuidMap = {
     0: '',
@@ -91,50 +88,30 @@ class AllAdsScreen extends StatelessWidget {
                 routeName: Routes.homeScreen,
               ),
               body: SafeArea(
-                child: SmartRefresher(
-                  controller: _refreshController,
-                  onRefresh: () async {
-                    _allAdsController.resetControllerState();
-                    await _allAdsController.refreshOrders();
-                    _refreshController.refreshCompleted();
-                  },
-                  header: CustomHeader(
-                    builder: (context, status) => SizedBox(
-                      height: 60.h,
-                      child: Center(
-                        child: AppSharedMethods.buildProgressViewWhite(
-                          context,
-                          false,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.latestAnnouncements,
+                      style: context.textStyles.bodyLarge.bold.copyWith(
+                        color: context.colorsCustom.TextPrimary,
+                        fontSize: 20.sp,
                       ),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        context.latestAnnouncements,
-                        style: context.textStyles.bodyLarge.bold.copyWith(
-                          color: context.colorsCustom.TextPrimary,
-                          fontSize: 20.sp,
-                        ),
-                      ).paddingSymmetric(horizontal: 16.w),
-                      verticalSpace(10.h),
-                      AdsTabBarWidget(context),
-                      Expanded(
-                        child: TabBarView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: List.generate(
-                            _serviceUuidMap.length,
-                            (index) => BodyAdsTapBarWidget(
-                              context,
-                              controller: _allAdsController,
-                            ),
+                    ).paddingSymmetric(horizontal: 16.w),
+                    verticalSpace(10.h),
+                    AdsTabBarWidget(context),
+                    Expanded(
+                      child: TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: List.generate(
+                          _serviceUuidMap.length,
+                          (index) => BodyAdsTapBarWidget(
+                            controller: _allAdsController,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

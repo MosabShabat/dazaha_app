@@ -1,8 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../core/network/utils/api_result.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:multiple_image_camera/multiple_image_camera.dart';
-// import 'package:permission_handler/permission_handler.dart';
+
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/network/models/service/service_model.dart';

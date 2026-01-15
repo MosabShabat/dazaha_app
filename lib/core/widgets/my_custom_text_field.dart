@@ -31,6 +31,7 @@ Widget MyTextField({
   isDense,
   contentPadding,
   textInputAction,
+  focusNode,
 }) {
   if (initialValue != null && controller != null && controller.text.isEmpty) {
     controller.text = initialValue;
@@ -38,6 +39,7 @@ Widget MyTextField({
 
   return TextFormField(
     controller: controller,
+    focusNode: focusNode,
     obscureText: obscureText,
     readOnly: readOnly,
     onTap: onTap,

@@ -23,6 +23,7 @@ Widget TopTextFelidsWidget(
         maxLength: 30,
         maxLines: 1,
         controller: adDetailsController.titleController,
+        maxHeight: 80.h,
       ),
       CusRegisterInfoWidget(
         context,
@@ -33,6 +34,7 @@ Widget TopTextFelidsWidget(
         keyboardType: TextInputType.multiline,
         maxLength: 1000,
         maxLines: 5,
+        maxHeight: 160.h,
       ),
     ],
   );
