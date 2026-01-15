@@ -43,14 +43,6 @@ class MyAdsDetailsScreen extends StatelessWidget {
                   'uuid': '11eb94df-09ab-4cd0-8b59-b4d7b1e7d752',
                   'time': '2:00 م - 3:00 م',
                 },
-                {
-                  'uuid': '11eb94df-09ab-4cd0-8b59-b4d7b1e7d752',
-                  'time': '2:00 م - 3:00 م',
-                },
-                {
-                  'uuid': '11eb94df-09ab-4cd0-8b59-b4d7b1e7d752',
-                  'time': '2:00 م - 3:00 م',
-                },
               ],
             ),
         body: SingleChildScrollView(

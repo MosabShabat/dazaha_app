@@ -1,6 +1,7 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 import '../../../core/widgets/top_con_bot_sh_widget.dart';
+import '../../my_ads/controller/transportation_and_delivery_controller.dart';
 import '../../my_ads_details/controller/my_ads_details_controller.dart';
 import '../controller/my_offer_ad_details_controller.dart';
 
@@ -65,7 +66,20 @@ Future<dynamic> DeleteBottomSheetWidget(BuildContext context, offerOrOrder) {
                 onTap: () {
                   if (offerOrOrder == 'order') {
                     final MyAdsDetailsController controllerAdd = Get.find();
+                    TransportationAndDeliveryController?
+                    transportationController;
+                    if (Get.isRegistered<
+                      TransportationAndDeliveryController
+                    >()) {
+                      transportationController =
+                          Get.find<TransportationAndDeliveryController>();
+                    }
+
                     controllerAdd.deleteOrder();
+                    transportationController?.refreshOrders();
+                    transportationController?.refreshController;
+                    transportationController?.resetControllerState();
+                    transportationController?.getMyOrders();
                   } else if (offerOrOrder == 'offer') {
                     final MyOfferAdDetailsController controllerOffer =
                         Get.find();

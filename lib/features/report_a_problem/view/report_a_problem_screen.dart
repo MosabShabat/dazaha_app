@@ -35,7 +35,7 @@ class ReportAProblemScreen extends StatelessWidget {
         context,
         wid: [
           ReportProblemForm(reportAProblemController),
-          verticalSpace(Height.h / 6),
+          verticalSpace(Height.h / 8),
           _buildSaveButton(context, controller: reportAProblemController),
         ],
       ),
