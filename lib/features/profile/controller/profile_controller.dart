@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dazaha_app/features/home_page/controller/home_page_controller.dart';
 import '../../../core/constant/exports_libraries.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../../core/helpers/app_shared_data.dart';
@@ -66,10 +67,28 @@ class ProfileController extends GetxController {
   /// تغيير اللغة
   void setLanguage(bool isArabic) async {
     radioValue.value = isArabic;
+
     final newLocale = isArabic ? const Locale('ar') : const Locale('en');
+
+    // حفظ اللغة في التخزين المؤمّن
+    await AppSharedData.setSecuredString(
+      AppSharedKeys.appLanguage,
+      newLocale.languageCode,
+    );
+
+    // تغيير اللغة في التطبيق
     EasyLocalization.of(Get.context!)?.setLocale(newLocale);
     Get.updateLocale(newLocale);
-    await DioFactory.addDioHeaders();
+
+    // تحديث Header للـ API
+    DioFactory.updateLanguageHeader(newLocale.languageCode);
+
+    // تحديث البيانات بعد تغيير اللغة
+    final homeController = Get.find<HomePageController>();
+    await homeController.refreshData(
+      '${homeController.latitude.value}',
+      '${homeController.longitude.value}',
+    );
   }
 
   /// تسجيل الخروج

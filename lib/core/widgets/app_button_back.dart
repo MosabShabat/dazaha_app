@@ -17,7 +17,14 @@ Widget AppButtonBack({
     padding: EdgeInsets.only(top: 14, right: paddingRight, left: paddingLeft),
     child: IconButton(
       onPressed: () {
+        print('AppButtonBack Pressed');
+        print('routeName : ${routeName}');
+        print('routeName : ${navigationType}');
+
         if (routeName != null && routeName.isNotEmpty) {
+          print(
+            'Navigating to $routeName using $navigationType navigation type',
+          );
           if (navigationType == AppNavigationType.toNamed) {
             Get.toNamed(routeName);
           } else if (navigationType == AppNavigationType.offNamed) {
@@ -26,6 +33,7 @@ Widget AppButtonBack({
             Get.offAllNamed(routeName);
           }
         } else {
+          print('No routeName provided, performing Get.back()');
           Get.back();
         }
       },

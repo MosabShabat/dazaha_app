@@ -15,6 +15,7 @@ AppBar MyOfferAppBarWidget(
   required curr,
   required backStatus,
 }) {
+  print('MyOfferAppBarWidget backStatus: $backStatus');
   return AppBar(
     surfaceTintColor: context.colorsCustom.surfacePrimaryWhite,
     backgroundColor: context.colorsCustom.surfacePrimaryWhite,

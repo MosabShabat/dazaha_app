@@ -12,8 +12,8 @@ Widget ListTileAdvertisementSummaryWidget(
   required bool isShow,
   required bool isSvgImage,
   required bool isMap,
-  lat,
-  lng,
+  dynamic lat,
+  dynamic lng,
 }) {
   final textStyleTitle = context.textStyles.bodyMedium.medium.copyWith(
     color: context.colorsCustom.TextPrimary,
@@ -58,33 +58,58 @@ Widget ListTileAdvertisementSummaryWidget(
           : SizedBox.shrink(),
     ],
   ).box.width(Width).make().paddingOnly(bottom: 10.h).onTap(() async {
-    if (isMap) {
-      // تحقق من صلاحية الموقع
-      PermissionStatus status = await Permission.location.status;
+    if (!isMap) return;
 
-      if (status.isDenied || status.isRestricted) {
-        // طلب الصلاحية
-        status = await Permission.location.request();
-        if (!status.isGranted) {
-          // إذا رفض المستخدم، أرسل إلى إعدادات التطبيق
-          Get.snackbar('ملاحظة', 'يجب تفعيل الموقع للوصول إلى الخرائط');
-          openAppSettings(); // يفتح إعدادات التطبيق
-          return;
-        }
+    // صلاحية الموقع
+    PermissionStatus status = await Permission.location.status;
+    if (!status.isGranted) {
+      status = await Permission.location.request();
+      if (!status.isGranted) {
+        Get.snackbar(
+          'ملاحظة',
+          'يجب تفعيل الموقع للوصول إلى الخرائط',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
       }
+    }
 
-      // إذا الصلاحية متاحة
-      final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
-      final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
+    final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
+    final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
 
-      final Uri googleMapsUri = Uri.parse(
+    if (GetPlatform.isAndroid) {
+      // افتح رابط جوجل مابس للويب/أندرويد
+      final Uri googleMapsUrl = Uri.parse(
         'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLng&travelmode=driving',
       );
-
-      if (await canLaunchUrl(googleMapsUri)) {
-        await launchUrl(googleMapsUri, mode: LaunchMode.externalApplication);
+      if (await canLaunchUrl(googleMapsUrl)) {
+        await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
       } else {
-        Get.snackbar('خطأ', 'تعذّر فتح Google Maps');
+        Get.snackbar(
+          'خطأ',
+          'تعذّر فتح Google Maps',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } else if (GetPlatform.isIOS) {
+      // iOS: جوجل مابس إذا موجودة وإلا افتح Apple Maps
+      final Uri googleMapsAppUri = Uri.parse(
+        'comgooglemaps://?daddr=$destinationLat,$destinationLng&directionsmode=driving',
+      );
+      final Uri appleMapsUri = Uri.parse(
+        'http://maps.apple.com/?daddr=$destinationLat,$destinationLng&dirflg=d',
+      );
+
+      if (await canLaunchUrl(googleMapsAppUri)) {
+        await launchUrl(googleMapsAppUri, mode: LaunchMode.externalApplication);
+      } else if (await canLaunchUrl(appleMapsUri)) {
+        await launchUrl(appleMapsUri, mode: LaunchMode.externalApplication);
+      } else {
+        Get.snackbar(
+          'خطأ',
+          'تعذّر فتح الخرائط',
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     }
   });

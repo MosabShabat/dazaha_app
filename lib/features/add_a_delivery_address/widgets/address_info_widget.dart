@@ -209,6 +209,11 @@ Widget buildLocationButton(
       onPressed: () async {
         // اذهب لاختيار الموقع على الخريطة
         final result = await Get.toNamed(Routes.selectALocationOnTheMapScreen);
+        log("result[AppConstants.lat] : ${result[AppConstants.lat]}");
+        log("result[AppConstants.lng] : ${result[AppConstants.lng]}");
+        log(
+          "result[AppConstants.placeName] : ${result[AppConstants.placeName]}",
+        );
 
         if (result != null) {
           final lat = result[AppConstants.lat];

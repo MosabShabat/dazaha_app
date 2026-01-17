@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
@@ -26,6 +28,20 @@ Widget CusRegisterInfoWidget(
         ),
       ),
       verticalSpace(10.h), // قلل المسافة شوي لتكون أنسب
+      Platform.isIOS
+          ? Text(
+              'Done',
+              textAlign: TextAlign.end,
+              style: context.textStyles.bodyMedium.medium.copyWith(
+                color: context.colorsCustom.TealGreenSecondary,
+              ),
+            ).box.alignBottomLeft.make().onTap(() {
+              FocusScope.of(
+                context,
+              ).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
+            })
+          : SizedBox.shrink(),
+      Platform.isIOS ? verticalSpace(10.h) : SizedBox.shrink(),
       MyTextField(
         Radius: 10.0,
         textAlign: TextAlign.start,

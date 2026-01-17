@@ -18,9 +18,14 @@ class PriceDetailsReviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        AppConstants.screenName == 'aaa';
+        HomeController homeController = Get.find<HomeController>();
         homeController.extraTabIndex.value = 2;
         // ✅ عند الضغط على زر الرجوع من النظام
-        Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 3});
+        Get.offAllNamed(
+          Routes.homeScreen,
+          arguments: {'selectedIndex': 3, 'tabIndex': 2},
+        );
         return false;
       },
       child: Scaffold(
@@ -91,6 +96,8 @@ class PriceDetailsReviewScreen extends StatelessWidget {
       () => AppLoadingButton(
         text: context.submitEvaluation,
         onPressed: () async {
+          
+          AppConstants.screenName == 'aaa';
           controller.postRating(context);
         },
         isLoading: controller.isButtonPressed.value,

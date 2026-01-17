@@ -36,7 +36,10 @@ class WalletScreen extends StatelessWidget {
         () => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TopBoxWidget(context, controller: _walletController),
+            IgnorePointer(
+              ignoring: false,
+              child: TopBoxWidget(context, controller: _walletController),
+            ),
             Expanded(
               child: SmartRefresher(
                 scrollController: _walletController.scrollController,
@@ -72,6 +75,7 @@ class WalletScreen extends StatelessWidget {
                         child: Center(child: ProgressViewWhite(context, false)),
                       )
                     : SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

@@ -42,20 +42,20 @@ Widget TopBoxWidget(
                     color: context.colorsCustom.TextPrimary,
                   ),
                 ).box.alignCenter.make(),
-                verticalSpace(15.h),
+                verticalSpace(40.h),
                 Obx(() {
                   return controller.isLoading.isTrue
                       ? CustomShimmer(width: 100.w, height: 8.h)
                       : Text(
                           '${controller.walletModel!.value.wallet ?? ''}  ${controller.walletModel!.value.currency ?? ''}',
                           textAlign: TextAlign.center,
-                          style: context.textStyles.headlineSmall.medium
-                              .copyWith(
-                                color: context.colorsCustom.BluePrimary,
-                              ),
+                          style: context.textStyles.headlineSmall.bold.copyWith(
+                            color: context.colorsCustom.BluePrimary,
+                            fontSize: 24.sp,
+                          ),
                         ).box.alignCenter.make();
                 }),
-                verticalSpace(60.h),
+                verticalSpace(30.h),
                 WithRecRowBottomWidget(context, walletController: controller),
               ],
             ),

@@ -1,3 +1,5 @@
+import 'package:dazaha_app/core/helpers/constants.dart';
+
 import '../../../core/constant/exports_widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/constant/exports_libraries.dart';
@@ -54,6 +56,14 @@ class HomePageScreen extends StatelessWidget {
 
     final currentOrder = _homePageController.homeModel.value?.currentOrder;
     final currentOffer = _homePageController.homeModel.value?.currentOffer;
+    AppConstants.transportationAndDelivery =
+        _homePageController.homeModel.value?.services![0].title ?? '';
+    AppConstants.buyForMe =
+        _homePageController.homeModel.value?.services![1].title ?? '';
+    AppConstants.removal =
+        _homePageController.homeModel.value?.services![2].title ?? '';
+    AppConstants.dedication =
+        _homePageController.homeModel.value?.services![3].title ?? '';
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),

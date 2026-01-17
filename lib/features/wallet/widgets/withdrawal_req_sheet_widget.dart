@@ -75,7 +75,7 @@ Future<dynamic> WithdrawalReqSheetWidget(
                   controller: walletController.amountController,
                 ),
                 verticalSpace(100.h),
-                _sendAmount(context, walletController, type),
+                SafeArea(child: _sendAmount(context, walletController, type)),
               ],
             ),
           ),

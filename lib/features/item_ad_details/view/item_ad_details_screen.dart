@@ -269,7 +269,9 @@ class ItemAdDetailsScreen extends StatelessWidget {
             text: context.joinAsAnAssistant,
             context,
             GetScreen: () {
-              Get.toNamed(Routes.captainJoinsScreen);
+              isDriver == 2
+                  ? Get.toNamed(Routes.captainMembershipRequestScreen)
+                  : Get.toNamed(Routes.captainJoinsScreen);
             },
           );
   }

@@ -24,7 +24,11 @@ class RegisterScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
-      appBar: DefAppBarWidget(context),
+      appBar: DefAppBarWidget(
+        context,
+        routeName: Routes.loginScreen,
+        navigationType: AppNavigationType.offAllNamed,
+      ),
       bottomNavigationBar: _buildCreateAccountButton(context),
       body: GeneralScreenWidget(
         context,

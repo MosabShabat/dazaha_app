@@ -43,7 +43,7 @@ Future<dynamic> SecondItemBottomSheetWidget(
                           fontSize: 18.sp,
                         ),
                       ),
-                      SizedBox(height: 20.h),
+                      verticalSpace(20.h),
                       RowSheetWidget(
                         context,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -64,9 +64,11 @@ Future<dynamic> SecondItemBottomSheetWidget(
                               () => print('Tapped ${i + 1}'),
                         ),
                       ),
+                      verticalSpace(50.h),
+
                       DevDetWidget(context, controller: controller),
 
-                      SizedBox(height: 50.h),
+                      verticalSpace(50.h),
                       SafeArea(
                         child: GeneralBottomAppWidget(
                           context,

@@ -13,6 +13,7 @@ Widget CusButtonWidget(
   onTap,
 }) {
   return GestureDetector(
+    behavior: HitTestBehavior.opaque,
     onTap: onTap,
     child: Container(
       width: W,

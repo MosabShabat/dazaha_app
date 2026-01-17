@@ -31,7 +31,8 @@ Widget StatusTypeWidget(
     orderDataController.setFrom(orderData.from ?? '');
     orderDataController.setFromAddress(orderData.fromAddress ?? '');
     orderDataController.setFromLat(orderData.fromLat ?? '');
-    orderDataController.setFromLng(orderData.fromLng ?? ''); 
+    orderDataController.setFromLng(orderData.fromLng ?? '');
+    orderDataController.setToLat(orderData.toLat ?? '');
     orderDataController.setToLng(orderData.toLng ?? '');
     orderDataController.setUserImage(orderData.driver!.image ?? '');
     orderDataController.setUserName(orderData.driver!.name ?? '');

@@ -43,7 +43,7 @@ class _BodyTabBarWidgetState extends State<BodyTabBarWidget> {
           context,
           controller: controller.searchController,
           onChanged: (value) => controller.searchText.value = value,
-          onSubmitted: (_) => controller.refreshOrders(),
+          onSubmitted: (_) => FocusScope.of(context).unfocus(),
         ),
         verticalSpace(20.h),
         Expanded(

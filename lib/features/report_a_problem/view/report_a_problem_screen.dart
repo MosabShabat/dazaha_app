@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/widgets/general_screen_widget.dart';
@@ -35,7 +37,9 @@ class ReportAProblemScreen extends StatelessWidget {
         context,
         wid: [
           ReportProblemForm(reportAProblemController),
-          verticalSpace(Height.h / 6),
+          Platform.isIOS
+              ? verticalSpace(Height.h / 10)
+              : verticalSpace(Height.h / 6),
           _buildSaveButton(context, controller: reportAProblemController),
         ],
       ),

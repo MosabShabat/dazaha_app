@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../core/constant/exports_widgets.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../../home/controller/home_controller.dart';

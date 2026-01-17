@@ -29,6 +29,7 @@ class AppSharedKeys {
   static const String userToken = 'userToken';
   static const String userTokenBackup = 'userTokenBackup'; // ← أضف هذا السطر
   static const String userData = 'userData';
+  static const String appLanguage = 'app_language';
   static const locationDialogShown = 'location_dialog_shown';
   static const String isUserLoggedInKey = 'isUserLoggedIn';
   static const String isOpenBeforeKey = 'isOpenBeforeKey';
@@ -111,6 +112,10 @@ class AppConstants {
   static String orderId = '';
   static String userImage = '';
   static String offerUuid = '';
+  static String transportationAndDelivery = '';
+  static String buyForMe = '';
+  static String removal = '';
+  static String dedication = '';
   static String orderTitle = 'orderTitle';
   static String liveSupport = 'liveSupport';
   static String uuid = 'uuid';

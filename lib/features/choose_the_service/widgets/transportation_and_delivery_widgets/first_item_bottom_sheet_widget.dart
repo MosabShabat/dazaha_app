@@ -47,7 +47,7 @@ Future<dynamic> FirstItemBottomSheetWidget(
                           fontSize: 18.sp,
                         ),
                       ),
-                      SizedBox(height: 20.h),
+                      verticalSpace(20.h),
                       RowSheetWidget(
                         context,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

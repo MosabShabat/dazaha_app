@@ -37,38 +37,70 @@ Widget DelInfoWidget(
         ],
       ).box.height(20.h).make().onTap(() async {
         if (lat != null && lng != null) {
-          // التحقق من صلاحية الموقع
+          // 1️⃣ صلاحية الموقع
           PermissionStatus status = await Permission.location.status;
-
-          if (status.isDenied || status.isRestricted) {
-            // طلب الصلاحية
+          if (!status.isGranted) {
             status = await Permission.location.request();
             if (!status.isGranted) {
-              // إذا رفض المستخدم، أرسل إلى إعدادات التطبيق
-              Get.snackbar('ملاحظة', 'يجب تفعيل الموقع للوصول إلى الخرائط');
-              openAppSettings(); // يفتح إعدادات التطبيق
+              Get.snackbar(
+                'ملاحظة',
+                'يجب تفعيل الموقع للوصول إلى الخرائط',
+                snackPosition: SnackPosition.BOTTOM,
+              );
               return;
             }
           }
 
-          // إذا الصلاحية متاحة
           final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
           final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
 
-          final Uri googleMapsUri = Uri.parse(
-            'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLng&travelmode=driving',
-          );
-
-          if (await canLaunchUrl(googleMapsUri)) {
-            await launchUrl(
-              googleMapsUri,
-              mode: LaunchMode.externalApplication,
+          if (GetPlatform.isAndroid) {
+            // Android → رابط جوجل مابس للويب
+            final Uri googleMapsUrl = Uri.parse(
+              'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLng&travelmode=driving',
             );
-          } else {
-            Get.snackbar('خطأ', 'تعذّر فتح Google Maps');
+            if (await canLaunchUrl(googleMapsUrl)) {
+              await launchUrl(
+                googleMapsUrl,
+                mode: LaunchMode.externalApplication,
+              );
+            } else {
+              Get.snackbar(
+                'خطأ',
+                'تعذّر فتح Google Maps',
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            }
+          } else if (GetPlatform.isIOS) {
+            // iOS → Google Maps app إذا موجود، وإلا Apple Maps
+            final Uri googleMapsAppUri = Uri.parse(
+              'comgooglemaps://?daddr=$destinationLat,$destinationLng&directionsmode=driving',
+            );
+            final Uri appleMapsUri = Uri.parse(
+              'http://maps.apple.com/?daddr=$destinationLat,$destinationLng&dirflg=d',
+            );
+
+            if (await canLaunchUrl(googleMapsAppUri)) {
+              await launchUrl(
+                googleMapsAppUri,
+                mode: LaunchMode.externalApplication,
+              );
+            } else if (await canLaunchUrl(appleMapsUri)) {
+              await launchUrl(
+                appleMapsUri,
+                mode: LaunchMode.externalApplication,
+              );
+            } else {
+              Get.snackbar(
+                'خطأ',
+                'تعذّر فتح الخرائط',
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            }
           }
         }
       }),
+
       Text(
         DelText,
         textAlign: TextAlign.start,

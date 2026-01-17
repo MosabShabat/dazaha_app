@@ -1,5 +1,3 @@
-import '../../../core/constant/exports_widgets.dart';
-
 import '../../../core/constant/exports_libraries.dart';
 // import '../../../core/constant/exports_widgets.dart';
 import '../../../features/my_ads/widgets/search_text_field_widget.dart';
@@ -12,12 +10,14 @@ Widget SerRowWidget(
 }) {
   return Row(
     children: [
-      SearchTextFieldWidget(
-        context,
-        controller: controller.searchController,
-        onChanged: (value) => controller.searchText.value = value,
-        onSubmitted: (_) => controller.refreshOrders(),
-      ).box.width(Width.w - 52.w).height(45.w).make(),
+      Expanded(
+        child: SearchTextFieldWidget(
+          context,
+          controller: controller.searchController,
+          onChanged: (value) => controller.searchText.value = value,
+          onSubmitted: (_) => FocusScope.of(context).unfocus(),
+        ),
+      ),
     ],
-  );
+  ).paddingSymmetric(horizontal: 4.w);
 }

@@ -1,13 +1,14 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
+import '../../../core/helpers/constants.dart';
 
 Widget AdsTabBarWidget(BuildContext context) {
   final tabs = [
     context.all,
-    context.transportationAndDelivery,
-    context.buyForMe,
-    context.removeAndRecycle,
-    context.dedication,
+    AppConstants.transportationAndDelivery,
+    AppConstants.buyForMe,
+    AppConstants.removal,
+    AppConstants.dedication,
   ];
 
   return TabBar(
@@ -20,12 +21,12 @@ Widget AdsTabBarWidget(BuildContext context) {
     indicatorSize: TabBarIndicatorSize.tab,
     labelColor: context.colorsCustom.TealGreenSecondary,
     unselectedLabelColor: context.colorsCustom.TextSecondary,
-    labelPadding: EdgeInsets.symmetric(horizontal: 0.w),
+    labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
     labelStyle: TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 12.sp,
       fontFamily: 'Tajawal',
     ),
-    tabs: tabs.map((text) => Tab(text: text)).toList(),
+    tabs: tabs.map((text) => Tab(child: Text(text))).toList(),
   );
 }
