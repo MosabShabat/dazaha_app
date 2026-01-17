@@ -12,13 +12,11 @@ Widget SearchTextFieldWidget(
   return MyTextField(
     controller: controller,
     textAlign: TextAlign.start,
-    textAlignVertical: TextAlignVertical.center, // ⭐ لمحاذاة النص على iOS
+    textAlignVertical: TextAlignVertical.center,
     maxLines: 1,
-    readOnly: false,
-    obscureText: false,
     onChanged: onChanged,
     onSubmitted: onSubmitted,
-    textInputAction: TextInputAction.done, // ✅ زر Done
+    textInputAction: TextInputAction.done,
 
     enabledBorderColor: context.colorsCustom.CardBorder,
     fillColor: context.colorsCustom.surfacePrimaryWhite,
@@ -27,9 +25,9 @@ Widget SearchTextFieldWidget(
     HintTextFontFamily: context.textStyles.bodySmall.regular.fontFamily,
     HintTextFontSize: 12.0.sp,
     Radius: 10.0.r,
-    isDense: true, // ⭐ لتقليل padding الافتراضي
+    isDense: true,
     contentPadding: EdgeInsets.symmetric(
-      vertical: Platform.isIOS ? 14.h : 10.h, // ⭐ فرق بين iOS و Android
+      vertical: Platform.isIOS ? 14.h : 10.h,
       horizontal: 12.w,
     ),
     prefixIcon: Padding(
@@ -37,8 +35,8 @@ Widget SearchTextFieldWidget(
       child: Icon(
         Icons.search,
         color: context.colorsCustom.surfacePrimaryBlack,
-        size: 22.w, // ⭐ حجم مناسب على iOS
+        size: 22.w,
       ),
     ),
-  ).box.width(Width.w - 52.w).make(); // عرض مناسب داخل Row
+  );
 }

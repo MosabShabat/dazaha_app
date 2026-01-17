@@ -11,11 +11,14 @@ Widget SerRowWidget(
   return Row(
     children: [
       Expanded(
-        child: SearchTextFieldWidget(
-          context,
-          controller: controller.searchController,
-          onChanged: (value) => controller.searchText.value = value,
-          onSubmitted: (_) => FocusScope.of(context).unfocus(),
+        child: SizedBox(
+          height: 45.w,
+          child: SearchTextFieldWidget(
+            context,
+            controller: controller.searchController,
+            onChanged: (value) => controller.searchText.value = value,
+            onSubmitted: (_) => controller.refreshOrders(),
+          ),
         ),
       ),
     ],
