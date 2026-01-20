@@ -84,9 +84,9 @@ class SelectALocationOnTheMapScreen extends StatelessWidget {
         zoom: 18.0,
       ),
       onMapCreated: mapController.onMapCreated,
-      onCameraMove: (position) {
-        mapController.updateLocation(position.target);
-      },
+      onCameraMove: mapController.onCameraMove,
+      onCameraIdle: mapController.onCameraIdle, // 🔹 هنا فقط
+
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
@@ -135,8 +135,14 @@ class SelectALocationOnTheMapScreen extends StatelessWidget {
       child: AppTextButton(
         context,
         buttonText: context.choice,
-        onPressed: () {
+        onPressed: () async {
+          if (mapController.isFetchingPlaceName) {
+            Get.snackbar(context.error, 'Please wait, fetching place name...');
+            return;
+          }
+
           orderController.placeName.value = mapController.placeName.value;
+          mapController.onClose();
           Get.back(
             result: {
               AppConstants.lat: mapController.currentLocation!.latitude,
@@ -145,16 +151,42 @@ class SelectALocationOnTheMapScreen extends StatelessWidget {
             },
           );
         },
-        // () => Get.back(
-        //   result: {
-        //     AppConstants.lat: mapController.currentLocation!.latitude,
-        //     AppConstants.lng: mapController.currentLocation!.longitude,
-        //     AppConstants.placeName: mapController.placeName.value,
-        //   },
-        // ),
       ),
     );
   }
+
+  // Widget _buildChooseButton(BuildContext context) {
+  //   return Positioned(
+  //     bottom: 40.h,
+  //     left: 24.w,
+  //     right: 24.w,
+  //     child: AppTextButton(
+  //       context,
+  //       buttonText: context.choice,
+  //       onPressed: () async {
+  //         if (mapController.isFetchingPlaceName)
+  //           return; // منع الخروج قبل اكتمال التحميل
+  //         orderController.placeName.value = mapController.placeName.value;
+  //         mapController.onClose();
+  //         Get.back(
+  //           result: {
+  //             AppConstants.lat: mapController.currentLocation!.latitude,
+  //             AppConstants.lng: mapController.currentLocation!.longitude,
+  //             AppConstants.placeName: mapController.placeName.value,
+  //           },
+  //         );
+  //       },
+
+  //       // () => Get.back(
+  //       //   result: {
+  //       //     AppConstants.lat: mapController.currentLocation!.latitude,
+  //       //     AppConstants.lng: mapController.currentLocation!.longitude,
+  //       //     AppConstants.placeName: mapController.placeName.value,
+  //       //   },
+  //       // ),
+  //     ),
+  //   );
+  // }
 
   // BottomNavigationBarWidget(
   //         text: context.choice,

@@ -281,8 +281,9 @@ extension TranslationsExtension on BuildContext {
   String get edit => tr('edit');
   String get operationFailedTryAgain => tr('operation_failed_try_again');
   String get operationSuccessful => tr('operation_successful');
+  String get operationSuccessfulAmount => tr('operation_successful_amount');
 
-  //operation_failed_try_again
+  //operation_successful_amount
   String get delete => tr('delete');
   String get deleteTheAd => tr('delete_the_ad');
   String get doYouWantToDeleteTheAd => tr('do_you_want_to_delete_the_ad');

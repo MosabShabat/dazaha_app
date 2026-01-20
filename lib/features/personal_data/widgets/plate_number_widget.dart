@@ -20,10 +20,12 @@ Widget PlateNumberWidget(BuildContext context, {required plateController}) {
       ),
       verticalSpace(15.h),
       MyTextField(
+        context,
         Radius: 8.0.r,
         textAlign: TextAlign.center,
         readOnly: false,
         maxLines: 1,
+        showDoneButton: true, // ⭐ هنا
         maxLength: 8,
         textInputAction: TextInputAction.done, // ✅ زر Done
         onSubmitted: (_) {

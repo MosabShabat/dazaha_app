@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import '../../../../core/constant/exports_libraries.dart';
 
-Widget MyTextField({
+Widget MyTextField(
+  BuildContext context, {
   TextEditingController? controller,
   String? initialValue,
   bool obscureText = false,
@@ -31,29 +34,52 @@ Widget MyTextField({
   isDense,
   contentPadding,
   textInputAction,
+  FocusNode? focusNode,
+  bool showDoneButton = false,
 }) {
   if (initialValue != null && controller != null && controller.text.isEmpty) {
     controller.text = initialValue;
   }
-
+  final KeyboardDoneController doneController = KeyboardDoneController();
+  final VoidCallback? userOnTap = onTap;
+  final Function(String)? userOnSubmitted = onSubmitted;
   return TextFormField(
+    focusNode: focusNode,
+
     controller: controller,
     obscureText: obscureText,
     readOnly: readOnly,
-    onTap: onTap,
+    // onTap: onTap,
     validator: validator,
     onChanged: onChanged,
-    onFieldSubmitted:
-        onSubmitted ??
-        (_) {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
 
+    // onFieldSubmitted:
+    //     onSubmitted ??
+    //     (_) {
+    //       FocusManager.instance.primaryFocus?.unfocus();
+    //     },
     keyboardType:
         keyboardType ??
         (maxLines != null && maxLines > 1
             ? TextInputType.multiline
             : TextInputType.name),
+
+    onTap: () {
+      if (Platform.isIOS) {
+        doneController.show(context);
+      }
+      userOnTap?.call(); // يحافظ على منطقك السابق
+    },
+
+    onEditingComplete: () {
+      doneController.hide();
+    },
+
+    onFieldSubmitted: (value) {
+      doneController.hide();
+      userOnSubmitted?.call(value); // ⭐ منطقك
+      FocusManager.instance.primaryFocus?.unfocus();
+    },
     maxLines: maxLines,
     maxLength: maxLength,
     textAlign: textAlign ?? TextAlign.start,
@@ -94,4 +120,56 @@ Widget MyTextField({
       ),
     ),
   );
+}
+
+class KeyboardDoneButton extends StatelessWidget {
+  final VoidCallback onDone;
+
+  const KeyboardDoneButton({super.key, required this.onDone});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        height: 44,
+        color: Colors.grey.shade200,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: TextButton(
+          onPressed: onDone,
+          child: const Text('Done', style: TextStyle(fontSize: 16)),
+        ),
+      ),
+    );
+  }
+}
+
+class KeyboardDoneController {
+  OverlayEntry? _overlayEntry;
+
+  void show(BuildContext context) {
+    if (_overlayEntry != null) return;
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+        left: 0,
+        right: 0,
+        child: KeyboardDoneButton(
+          onDone: () {
+            hide();
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hide() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
 }

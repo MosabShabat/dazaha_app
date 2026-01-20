@@ -2,27 +2,24 @@ import '../../../../core/constant/exports_libraries.dart';
 
 Widget CusButtonWidget(
   BuildContext context, {
-  required backGroundColor,
-  required W,
-  required H,
-  required radius,
-  // required text,
-  // required textStyle,
-  // required isText,
-  required widget,
-  onTap,
+  required Color backGroundColor,
+  required double W,
+  required double H,
+  required double radius,
+  required Widget widget,
+  VoidCallback? onTap,
 }) {
-  return GestureDetector(
-    behavior: HitTestBehavior.opaque,
-    onTap: onTap,
-    child: Container(
-      width: W,
-      height: H,
-      decoration: BoxDecoration(
+  return SizedBox(
+    width: W,
+    height: H,
+    child: Material(
+      color: backGroundColor,
+      borderRadius: BorderRadius.circular(radius),
+      child: InkWell(
         borderRadius: BorderRadius.circular(radius),
-        color: backGroundColor,
+        onTap: onTap,
+        child: Center(child: widget),
       ),
-      child: Center(child: widget),
     ),
   );
 }

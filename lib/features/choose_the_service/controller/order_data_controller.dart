@@ -34,6 +34,7 @@ class OrderDataController extends GetxController {
   RxString toDate = ''.obs;
   RxString typeItemSelected = ''.obs;
   RxString backStatus = ''.obs;
+  
 
   RxList<String> itemNames = <String>[].obs;
   RxList<int> itemQuantities = <int>[].obs;
