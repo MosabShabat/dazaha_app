@@ -39,6 +39,7 @@ class DocumentController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    orderDataController.serviceUuid.value = '';
 
     tabIndex == 0
         ? orderDataController.setOfferStatus('pending')

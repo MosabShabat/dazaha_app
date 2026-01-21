@@ -86,8 +86,12 @@ class DocumentScreen extends StatelessWidget {
                         selectedIndex: documentController.selectedIndex,
                         onTapSel: (index) =>
                             documentController.changeSelect(index),
-                        onPress: () =>
-                            documentController.selectedIndex.value = 0,
+                        onPress: () {
+                          orderDataController.setServiceUuid('');
+                          documentController.resetControllerState();
+                          documentController.refreshOrders();
+                          Navigator.pop(context);
+                        },
                         onTep: () {
                           final uuid =
                               switch (documentController.selectedIndex.value) {
@@ -97,6 +101,7 @@ class DocumentScreen extends StatelessWidget {
                                 _ => '153a7042-eb9e-42b8-9d5c-498623adb5da',
                               };
                           orderDataController.setServiceUuid(uuid);
+                          documentController.resetControllerState();
                           documentController.refreshOrders();
                           Navigator.pop(context);
                         },

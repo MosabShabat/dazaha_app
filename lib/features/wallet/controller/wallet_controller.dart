@@ -14,7 +14,6 @@ import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar_with_button.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
-import '../widgets/payment_web_view_screen.dart';
 import 'wallet_repo.dart';
 
 class WalletController extends GetxController {
@@ -42,8 +41,6 @@ class WalletController extends GetxController {
   }
 
   ExecuteOrderModel? executeOrderModel;
-
- 
 
   void validateInput(String transactionType) {
     if (amountController.text.isEmpty) {
@@ -75,17 +72,22 @@ class WalletController extends GetxController {
             );
             if (executeOrderModel!.status == "initiated") {
               Get.back();
-              if (executeOrderModel!.paymentUrl != null) {
-                Get.to(
-                  () => PaymentWebViewScreen(
-                    paymentUrl: executeOrderModel!.paymentUrl!,
-                  ),
-                );
-              }
+              // if (executeOrderModel!.paymentUrl != null) {
+              //   Get.to(
+              //     () => PaymentWebViewScreen(
+              //       paymentUrl: executeOrderModel!.paymentUrl!,
+              //     ),
+              //   );
+              // }
+              Navigator.of(Get.context!).pop();
               amountController.clear();
               getWallet();
               resetControllerState();
               refreshController.refreshCompleted();
+              showSuccessSnackbar(
+                Get.context!,
+                '${Get.context!.operationSuccessfulAmount}',
+              );
 
               // Get.toNamed(
               //   Routes.moyasarPaymentMethodScreen,

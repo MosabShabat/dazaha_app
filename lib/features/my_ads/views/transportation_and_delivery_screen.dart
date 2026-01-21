@@ -81,8 +81,12 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
                       selectedIndex: transportController.selectedIndex,
                       onTapSel: (index) =>
                           transportController.changeSelect(index),
-                      onPress: () =>
-                          transportController.selectedIndex.value = 0,
+                      onPress: () {
+                        orderDataController.setServiceUuid('');
+                        transportController.resetControllerState();
+                        transportController.refreshOrders();
+                        Navigator.pop(context);
+                      },
                       onTep: () {
                         final uuid =
                             switch (transportController.selectedIndex.value) {

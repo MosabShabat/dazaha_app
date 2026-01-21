@@ -11,6 +11,8 @@ class SelectALocationOnTheMapController extends GetxController
   GoogleMapController? mapController;
   final Rx<LatLng?> currentLatLng = Rx<LatLng?>(null);
   final RxString placeName = ''.obs;
+  LatLng? lastMovedLatLng;
+  bool isFetchingPlaceName = false;
 
   LatLng? get currentLocation => currentLatLng.value;
   var mapType = MapType.normal.obs;
@@ -41,44 +43,74 @@ class SelectALocationOnTheMapController extends GetxController
 
   void updateLocation(LatLng latLng) {
     currentLatLng.value = latLng;
-    _getPlaceName(latLng);
+    getPlaceNameFromLatLng(latLng);
+  }
+
+  // أثناء تحريك الكاميرا فقط خزّن الموقع الأخير
+  void onCameraMove(CameraPosition position) {
+    lastMovedLatLng = position.target;
+  }
+
+  void onCameraIdle() async {
+    if (lastMovedLatLng == null || isFetchingPlaceName) return;
+
+    isFetchingPlaceName = true;
+    currentLatLng.value = lastMovedLatLng!;
+
+    try {
+      await getPlaceNameFromLatLng(currentLatLng.value!);
+    } catch (_) {
+      placeName.value =
+          '${currentLatLng.value!.latitude.toStringAsFixed(5)}, ${currentLatLng.value!.longitude.toStringAsFixed(5)}';
+    }
+
+    isFetchingPlaceName = false;
   }
 
   Future<String> getPlaceNameFromLatLng(LatLng latLng) async {
     try {
-      // 👈 اضبط لغة النتائج قبل الاستعلام (مثلاً عربي)
       await setLocaleIdentifier('ar_SA');
-
       final placemarks = await placemarkFromCoordinates(
         latLng.latitude,
         latLng.longitude,
       );
 
       if (placemarks.isEmpty) {
-        return '${latLng.latitude}, ${latLng.longitude}'; // fallback
+        return _fallbackFromLatLng(latLng);
       }
 
       final p = placemarks.first;
 
+      // اجمع فقط الشارع، المدينة، المحافظة، الدولة
       final parts = <String>[
-        if ((p.name ?? '').trim().isNotEmpty) p.name!.trim(),
-        if ((p.street ?? '').trim().isNotEmpty) p.street!.trim(),
+        if ((p.street ?? '').trim().isNotEmpty) p.street!.trim(), // اختياري
         if ((p.subLocality ?? '').trim().isNotEmpty) p.subLocality!.trim(),
         if ((p.locality ?? '').trim().isNotEmpty) p.locality!.trim(),
         if ((p.administrativeArea ?? '').trim().isNotEmpty)
           p.administrativeArea!.trim(),
-        if ((p.country ?? '').trim().isNotEmpty) p.country!.trim(),
+        // if ((p.country ?? '').trim().isNotEmpty) p.country!.trim(), // يمكن حذف الدولة لو تريد
       ];
 
-      final joined = parts.join('، ');
+      // احذف أي Duplicate
+      final uniqueParts = parts.toSet().toList();
+
+      final joined = uniqueParts.join('، ');
+
       if (joined.isEmpty) {
-        return '${latLng.latitude}, ${latLng.longitude}'; // fallback
+        return _fallbackFromLatLng(latLng);
       }
+
+      print('Joined Place Name: $joined');
+      placeName.value = joined;
 
       return joined;
     } catch (e) {
-      return '${latLng.latitude}, ${latLng.longitude}'; // fallback
+      return _fallbackFromLatLng(latLng);
     }
+  }
+
+  String _fallbackFromLatLng(LatLng latLng) {
+    return '${latLng.latitude.toStringAsFixed(5)}, ${latLng.longitude.toStringAsFixed(5)}';
   }
 
   Future<void> _determinePosition() async {
@@ -116,9 +148,9 @@ class SelectALocationOnTheMapController extends GetxController
     updateLocation(LatLng(position.latitude, position.longitude));
   }
 
-  Future<void> _getPlaceName(LatLng latLng) async {
-    placeName.value = await getPlaceNameFromLatLng(latLng);
-  }
+  // Future<void> _getPlaceName(LatLng latLng) async {
+  //   placeName.value = await getPlaceNameFromLatLng(latLng);
+  // }
 
   // Future<void> _getPlaceName(LatLng latLng) async {
   //   try {

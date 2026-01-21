@@ -21,7 +21,7 @@ Widget AdsTabBarWidget(BuildContext context) {
     indicatorSize: TabBarIndicatorSize.tab,
     labelColor: context.colorsCustom.TealGreenSecondary,
     unselectedLabelColor: context.colorsCustom.TextSecondary,
-    labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
+    labelPadding: EdgeInsets.symmetric(horizontal: 0.w),
     labelStyle: TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 12.sp,

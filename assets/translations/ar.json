@@ -327,6 +327,7 @@
   "enter_description_problem": "يرجى إدخال وصف المشكلة",
   "enter_description": "يرجى إدخال الوصف ",
   "operation_successful":"تمت العملية بنجاح",
+  "operation_successful_amount":"تم طلب شحن الرصيد بنجاح",
   "you_must_have_login":"سجّل دخولك الآن للمتابعة وتجربة أفضل",
   "success_problem": "تم الإبلاغ عن المشكلة بنجاح!",
   "notification_empty_title": "لا يوجد إشعارات",

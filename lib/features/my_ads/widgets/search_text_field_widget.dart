@@ -10,6 +10,7 @@ Widget SearchTextFieldWidget(
   onChanged,
 }) {
   return MyTextField(
+    context,
     controller: controller,
     textAlign: TextAlign.start,
     textAlignVertical: TextAlignVertical.center,
@@ -17,6 +18,7 @@ Widget SearchTextFieldWidget(
     onChanged: onChanged,
     onSubmitted: onSubmitted,
     textInputAction: TextInputAction.done,
+    showDoneButton: true, // ⭐ هنا
 
     enabledBorderColor: context.colorsCustom.CardBorder,
     fillColor: context.colorsCustom.surfacePrimaryWhite,
