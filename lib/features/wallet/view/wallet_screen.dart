@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../features/wallet/widgets/top_box_widget.dart';
 import '../../../../features/wallet/widgets/wallet_move_ment_list_widget.dart';
-import '../../../core/helpers/app_shared_methods.dart';
+// import '../../../core/helpers/app_shared_methods.dart';
 import '../../../core/widgets/progress_view_white.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../../my_ads/widgets/top_row_widget.dart';
@@ -20,16 +18,6 @@ class WalletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    orderDataController.setFromDate('');
-    orderDataController.setToDate('');
-    _walletController.resetControllerState();
-    _walletController.getWallet();
-    _walletController.scrollController.addListener(() {
-      if (_walletController.scrollController.position.extentAfter < 300) {
-        _walletController.loadMoRerecordTransactionsModel();
-      }
-    });
-
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       body: Obx(
@@ -45,101 +33,97 @@ class WalletScreen extends StatelessWidget {
                 scrollController: _walletController.scrollController,
                 controller: _walletController.refreshController,
                 onRefresh: () async {
-                  _walletController.walletModel!.value.recordTransactionsModel!
-                      .clear(); // تنظيف القائمة
-                  await _walletController.getWallet(); // إعادة تحميل البيانات
                   _walletController.resetControllerState();
+                  await _walletController.getWallet();
                   _walletController.refreshController.refreshCompleted();
-                  log(
-                    '_walletController.recordTransactionsModel.length : ${_walletController.recordTransactionsModel.length}',
-                  );
-                }, //46
-                //0592510942
+                },
                 physics: ClampingScrollPhysics(),
-                header: CustomHeader(
-                  builder: (BuildContext context, RefreshStatus? status) {
-                    return Container(
-                      height: 60.h,
-                      color: context.colorsCustom.surfacePrimaryWhite,
-                      child: AppSharedMethods.buildProgressViewWhite(
-                        context,
-                        false,
-                      ),
-                    );
-                  },
-                ),
+                // header: CustomHeader(
+                //   builder: (BuildContext context, RefreshStatus? status) {
+                //     return Container(
+                //       height: 60.h,
+                //       color: context.colorsCustom.surfacePrimaryWhite,
+                //       child: AppSharedMethods.buildProgressViewWhite(
+                //         context,
+                //         false,
+                //       ),
+                //     );
+                //   },
+                // ),
                 child: _walletController.isLoading.isTrue
                     ? Container(
                         height: Height / 2,
                         color: context.colorsCustom.surfacePrimaryWhite,
                         child: Center(child: ProgressViewWhite(context, false)),
                       )
-                    : SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            verticalSpace(10.h),
-                            TopRowWidget(
-                              context,
-                              isWallet: true,
-                              title: context.recordMovements,
-                              size: 20.sp,
-                              style:
-                                  context.textStyles.titleLarge.bold.fontFamily,
-                              GridList: [],
-                              subTitle: context.ViewYourRequestsByServiceType,
-                              selectedIndex: 0.obs,
-                              onTapSel: (index) {},
-                              onPress: () =>
-                                  _walletController.selectedIndex.value = 0,
-                              onTep: () {
-                                orderDataController.setFromDate('');
-                                orderDataController.setToDate('');
-                                _walletController.refreshWallet();
-                                Navigator.pop(context);
-                              },
-                            ).paddingOnly(right: 16.w, left: 0.w),
-                            _walletController
-                                    .walletModel!
-                                    .value
-                                    .recordTransactionsModel!
-                                    .isEmpty
-                                ? Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Lottie.asset(
-                                          AppAssets
-                                              .json
-                                              .the_financial_empty_json,
-                                          width: 300.w,
-                                          height: 300.w,
-                                        ),
-                                        verticalSpace(20.h),
-                                        Text(
-                                          context.dataEmpty,
-                                          textAlign: TextAlign.center,
-                                          style: context
-                                              .textStyles
-                                              .titleLarge
-                                              .bold
-                                              .copyWith(
-                                                color: context
-                                                    .colorsCustom
-                                                    .surfacePrimaryBlack,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : WalletMoveMentListWidget(
-                                    context,
-                                    controller: _walletController,
-                                  ).paddingSymmetric(horizontal: 16.w),
-                          ],
-                        ),
+                    : ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              verticalSpace(10.h),
+                              TopRowWidget(
+                                context,
+                                isWallet: true,
+                                title: context.recordMovements,
+                                size: 20.sp,
+                                style: context
+                                    .textStyles
+                                    .titleLarge
+                                    .bold
+                                    .fontFamily,
+                                GridList: [],
+                                subTitle: context.ViewYourRequestsByServiceType,
+                                selectedIndex: 0.obs,
+                                onTapSel: (index) {},
+                                onPress: () =>
+                                    _walletController.selectedIndex.value = 0,
+                                onTep: () {
+                                  orderDataController.setFromDate('');
+                                  orderDataController.setToDate('');
+                                  _walletController.refreshWallet();
+                                  Navigator.pop(context);
+                                },
+                              ).paddingOnly(right: 16.w, left: 0.w),
+                              _walletController.recordTransactionsModel.isEmpty
+                                  ? Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Lottie.asset(
+                                            AppAssets
+                                                .json
+                                                .the_financial_empty_json,
+                                            width: 300.w,
+                                            height: 300.w,
+                                          ),
+                                          verticalSpace(20.h),
+                                          Text(
+                                            context.dataEmpty,
+                                            textAlign: TextAlign.center,
+                                            style: context
+                                                .textStyles
+                                                .titleLarge
+                                                .bold
+                                                .copyWith(
+                                                  color: context
+                                                      .colorsCustom
+                                                      .surfacePrimaryBlack,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : WalletMoveMentListWidget(
+                                      context,
+                                      controller: _walletController,
+                                    ).paddingSymmetric(horizontal: 16.w),
+                            ],
+                          ),
+                        ],
                       ),
               ),
             ),

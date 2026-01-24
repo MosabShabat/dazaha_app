@@ -22,6 +22,7 @@ Widget MyPriceWidget(BuildContext context, controller, {initialValue}) {
         hintText: context.yourPriceHere,
         textColor: context.colorsCustom.TextSecondary,
         FZ: 12.sp,
+        doneController: controller.doneController, // ⭐ هنا
       ),
     ],
   );

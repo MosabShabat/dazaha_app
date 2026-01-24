@@ -4,6 +4,7 @@ import '../../saved_delivery_addresses/controller/saved_delivery_addresses_contr
 class BuyMeController extends GetxController {
   final SavedDeliveryAddressesController savedDeliveryAddressesController =
       Get.find<SavedDeliveryAddressesController>();
+
   @override
   void onInit() {
     super.onInit();

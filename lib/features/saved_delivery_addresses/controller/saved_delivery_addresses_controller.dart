@@ -5,6 +5,7 @@ import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/network/models/addresses/addresses_model.dart';
 import '../../../core/network/models/addresses/address_item_model.dart';
+import '../../../core/widgets/my_custom_text_field.dart';
 import 'saved_delivery_addresses_repo.dart';
 
 class SavedDeliveryAddressesController extends GetxController {
@@ -12,6 +13,7 @@ class SavedDeliveryAddressesController extends GetxController {
       Get.find<SavedDeliveryAddressesRepo>();
   final RxString? index = '0'.obs;
   TextEditingController searchController = TextEditingController();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   var isLoading = true.obs;
   var addresses = <AddressItemModel>[].obs;

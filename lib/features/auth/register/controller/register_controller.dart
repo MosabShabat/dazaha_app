@@ -14,6 +14,7 @@ import '../../../home_page/controller/home_page_controller.dart';
 class RegisterController extends GetxController {
   final RegisterRepo _createAccountRepo = Get.find<RegisterRepo>();
   final OrderDataController _orderDataController = Get.find();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -37,6 +38,16 @@ class RegisterController extends GetxController {
     } else {
       return true;
     }
+  }
+
+  @override
+  void onClose() {
+    doneController.hide(); // ⭐ يمنع التعليق نهائيًا
+
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    super.onClose();
   }
 
   void validationInputData(

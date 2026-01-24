@@ -17,56 +17,51 @@ Widget ProfileListViewItemsWidget(
   final items = [
     {
       'icon': ListProfileIcons[0],
+      'title': () =>
+          (profileController.userData.value?.name?.trim().isEmpty ?? true)
+          ? '${context.welcome}'
+          : profileController.userData.value!.name!,
       'onTap': () async {
         if (AppConstants.userToken.isNotEmpty &&
-            AppConstants.userToken != '' &&
-            AppConstants.userUUid.isNotEmpty &&
-            AppConstants.userUUid != '') {
+            AppConstants.userUUid.isNotEmpty) {
           final result = await Get.toNamed(Routes.userInfoScreen);
           if (result == true) profileController.fetchUserData();
         } else {
           showLoginRequiredBottomSheet(Get.context!);
         }
-      }, //homeScreen3
-      'title': () =>
-          (profileController.userData.value?.name?.trim().isEmpty ?? true)
-          ? '${context.welcome}'
-          : profileController.userData.value!.name!,
+      },
     },
     {
       'icon': ListProfileIcons[1],
+      'title': () => userStateController.isDriver.value == 1
+          ? context.dividendPortfolio
+          : context.wallet,
       'onTap': () {
         if (AppConstants.userToken.isNotEmpty &&
-            AppConstants.userToken != '' &&
-            AppConstants.userUUid.isNotEmpty &&
-            AppConstants.userUUid != '') {
+            AppConstants.userUUid.isNotEmpty) {
           Get.toNamed(Routes.walletScreen);
         } else {
           showLoginRequiredBottomSheet(Get.context!);
         }
       },
-
-      'title': () => userStateController.isDriver.value == 1
-          ? context.dividendPortfolio
-          : context.wallet,
+      'show':
+          profileController.userData.value?.walletIsVisible ?? true, // <-- هنا
     },
     {
       'icon': ListProfileIcons[2],
+      'title': () => context.deliveryAddresses,
       'onTap': () {
         if (AppConstants.userToken.isNotEmpty &&
-            AppConstants.userToken != '' &&
-            AppConstants.userUUid.isNotEmpty &&
-            AppConstants.userUUid != '') {
+            AppConstants.userUUid.isNotEmpty) {
           Get.toNamed(Routes.savedDeliveryAddressesScreen);
         } else {
           showLoginRequiredBottomSheet(Get.context!);
         }
       },
-      //() => Get.toNamed(Routes.savedDeliveryAddressesScreen),
-      'title': () => context.deliveryAddresses,
     },
     {
       'icon': ListProfileIcons[3],
+      'title': () => context.help,
       'onTap': () => Get.toNamed(
         Routes.weAreHereToHelpScreen,
         arguments: {
@@ -76,51 +71,55 @@ Widget ProfileListViewItemsWidget(
               : profileController.userData.value!.name!,
         },
       ),
-      'title': () => context.help,
     },
     {
       'icon': ListProfileIcons[4],
-      'onTap': () => Get.toNamed(Routes.aboutTheApplicationScreen),
       'title': () => context.aboutTheApp,
+      'onTap': () => Get.toNamed(Routes.aboutTheApplicationScreen),
     },
     {
       'icon': ListProfileIcons[5],
-      'onTap': () => Get.toNamed(Routes.settingsScreen),
       'title': () => context.settings,
+      'onTap': () => Get.toNamed(Routes.settingsScreen),
     },
     {
       'icon': ListProfileIcons[6],
+      'title': () =>
+          (AppConstants.userToken.isNotEmpty &&
+              AppConstants.userUUid.isNotEmpty)
+          ? context.logOut
+          : context.login,
       'onTap': () {
         if (AppConstants.userToken.isNotEmpty &&
-            AppConstants.userToken != '' &&
-            AppConstants.userUUid.isNotEmpty &&
-            AppConstants.userUUid != '') {
+            AppConstants.userUUid.isNotEmpty) {
           LogOutDialogWidget(context, profileController);
         } else {
           showLoginRequiredBottomSheet(Get.context!);
         }
       },
-
-      // 'title': () => context.logOut,
-      'title': () =>
-          (AppConstants.userToken.isNotEmpty &&
-              AppConstants.userToken != '' &&
-              AppConstants.userUUid.isNotEmpty &&
-              AppConstants.userUUid != '')
-          ? context.logOut
-          : context.login,
     },
   ];
+
   return SingleChildScrollView(
     child: ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
-      separatorBuilder: (context, index) => index == items.length - 1
-          ? const SizedBox.shrink()
-          : CustomDividerWidget(context),
+      separatorBuilder: (context, index) {
+        final nextItem = items[index + 1];
+        if (nextItem.containsKey('show') && !(nextItem['show'] as bool)) {
+          return const SizedBox.shrink();
+        }
+        return CustomDividerWidget(context);
+      },
       itemBuilder: (context, index) {
         final item = items[index];
+
+        // تجاهل العناصر الغير مرئية
+        if (item.containsKey('show') && !(item['show'] as bool)) {
+          return const SizedBox.shrink();
+        }
+
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
           child: GestureDetector(

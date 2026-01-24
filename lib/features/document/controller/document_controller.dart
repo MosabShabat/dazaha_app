@@ -9,6 +9,7 @@ import '../../../core/helpers/constants.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar.dart';
+import '../../../core/widgets/my_custom_text_field.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import '../../home/controller/home_controller.dart';
 import 'document_repo.dart';
@@ -27,6 +28,7 @@ class DocumentController extends GetxController {
   RxBool hasMorePages = true.obs;
   RxBool isOffline = false.obs;
   RxString searchText = ''.obs;
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   RxList<Item> offersList = <Item>[].obs;
 

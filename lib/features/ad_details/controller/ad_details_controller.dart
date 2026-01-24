@@ -27,6 +27,7 @@ class AdDetailsController extends GetxController {
   RxBool isDataLoading = true.obs;
 
   RxList<Sizes> sizeMod = <Sizes>[].obs;
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController decController = TextEditingController();

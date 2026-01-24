@@ -24,6 +24,7 @@ class ItemAdDetailsController extends GetxController {
   RxBool isLoading = true.obs;
   Rx<OrdersDetailsItem>? orderDetailsItem;
   final FocusNode priceFocusNode = FocusNode();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   final TextEditingController priceController = TextEditingController();
   RxBool isButtonPressed = false.obs;

@@ -15,6 +15,8 @@ class UserData {
     required this.isDriver,
     required this.email,
     required this.image,
+    required this.walletIsVisible,
+
     required this.token,
   });
 
@@ -38,6 +40,10 @@ class UserData {
   final dynamic isDriver;
   final String? email;
   final String? image;
+
+  @JsonKey(name: 'wallet_is_visible')
+  final bool? walletIsVisible; // ← جديد
+
   final String? token;
 
   factory UserData.fromJson(Map<String, dynamic> json) =>

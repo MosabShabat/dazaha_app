@@ -56,6 +56,7 @@ class PersonalDataScreen extends StatelessWidget {
               ),
               firstNameController: _personalDataController.firstNameController,
               lastNameController: _personalDataController.lastNameController,
+              doneController: _personalDataController.doneController,
             ),
             verticalSpace(20.h),
             PlateNumberWidget(

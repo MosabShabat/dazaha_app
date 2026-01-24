@@ -5,6 +5,7 @@ import '../../../core/network/models/orders/order_service_model.dart';
 import '../../../core/network/utils/api_result.dart';
 import '../../../core/network/utils/app_response.dart';
 import '../../../core/widgets/app_snackbar.dart';
+import '../../../core/widgets/my_custom_text_field.dart';
 import '../../choose_the_service/controller/order_data_controller.dart';
 import 'all_ads_repo.dart';
 
@@ -12,6 +13,8 @@ class AllAdsController extends GetxController {
   final AllAdsRepo _repo = Get.find<AllAdsRepo>();
   TextEditingController searchController = TextEditingController();
   final OrderDataController orderDataController = Get.find();
+  final KeyboardDoneController doneController = KeyboardDoneController();
+
   RxInt selectedIndex = 0.obs; // بدل int
   RxBool isOffline = false.obs; // <-- اتصال الإنترنت
 

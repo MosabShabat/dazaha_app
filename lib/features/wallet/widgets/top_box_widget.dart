@@ -15,53 +15,76 @@ Widget TopBoxWidget(
     decoration: BoxDecoration(
       color: context.colorsCustom.BluePrimary.withOpacity(0.15),
     ),
-    child: Stack(
+    child: Column(
       children: [
-        SvgPicture.asset(
-          AppAssets.svgs.mask_group_sh_icon,
-        ).box.alignTopLeft.make(),
-        SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.arrow_back_ios).onTap(() => Get.back()),
-                verticalSpace(10.h),
-                Text(
-                  context.wallet,
-                  style: context.textStyles.bodyLarge.bold.copyWith(
-                    color: context.colorsCustom.TextPrimary,
-                    fontSize: 20.sp,
-                  ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.arrow_back_ios).onTap(() => Get.back()),
+                    verticalSpace(10.h),
+                    Text(
+                      context.wallet,
+                      style: context.textStyles.bodyLarge.bold.copyWith(
+                        color: context.colorsCustom.TextPrimary,
+                        fontSize: 20.sp,
+                      ),
+                    ),
+                  ],
                 ),
-                verticalSpace(20.h),
-                Text(
-                  context.yourAvailableBalance,
-                  style: context.textStyles.bodyMedium.medium.copyWith(
-                    color: context.colorsCustom.TextPrimary,
-                  ),
-                ).box.alignCenter.make(),
-                verticalSpace(40.h),
-                Obx(() {
-                  return controller.isLoading.isTrue
-                      ? CustomShimmer(width: 100.w, height: 8.h)
-                      : Text(
-                          '${controller.walletModel!.value.wallet ?? ''}  ${controller.walletModel!.value.currency ?? ''}',
-                          textAlign: TextAlign.center,
-                          style: context.textStyles.headlineSmall.bold.copyWith(
-                            color: context.colorsCustom.BluePrimary,
-                            fontSize: 24.sp,
-                          ),
-                        ).box.alignCenter.make();
-                }),
-                verticalSpace(30.h),
-                WithRecRowBottomWidget(context, walletController: controller),
-              ],
+              ),
             ),
-          ),
+            SvgPicture.asset(
+              AppAssets.svgs.mask_group_sh_icon,
+            ).box.alignTopLeft.make(),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.yourAvailableBalance,
+              style: context.textStyles.bodyMedium.medium.copyWith(
+                color: context.colorsCustom.TextPrimary,
+              ),
+            ).box.alignCenter.make(),
+            verticalSpace(40.h),
+            Obx(() {
+              return controller.isLoading.isTrue
+                  ? WalletShimmerWidget()
+                  : Text(
+                      '${controller.walletModel!.value.wallet ?? ''}  ${controller.walletModel!.value.currency ?? ''}',
+                      textAlign: TextAlign.center,
+                      style: context.textStyles.headlineSmall.bold.copyWith(
+                        color: context.colorsCustom.BluePrimary,
+                        fontSize: 24.sp,
+                      ),
+                    ).box.alignCenter.height(40.h).make();
+            }),
+            verticalSpace(30.h),
+
+            WithRecRowBottomWidget(context, walletController: controller),
+          ],
         ),
       ],
     ),
   );
+}
+
+class WalletShimmerWidget extends StatelessWidget {
+  const WalletShimmerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [CustomShimmer(width: 100.w, height: 40.h, borderRadius: 24.r)],
+    ).box.height(40.h).make();
+  }
 }
