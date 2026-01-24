@@ -18,6 +18,7 @@ Widget SerRowWidget(
             controller: controller.searchController,
             onChanged: (value) => controller.searchText.value = value,
             onSubmitted: (_) => controller.refreshOrders(),
+            doneController: controller.doneController,
           ),
         ),
       ),

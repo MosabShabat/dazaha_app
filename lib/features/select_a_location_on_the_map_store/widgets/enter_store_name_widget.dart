@@ -1,7 +1,12 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 
-Widget EnterStoreNameWidget(BuildContext context, {controller, onSubmitted}) {
+Widget EnterStoreNameWidget(
+  BuildContext context, {
+  controller,
+  onSubmitted,
+  KeyboardDoneController? doneController, // ⭐ جديد
+}) {
   return MyTextField(
     context,
     Radius: 10.0.w,
@@ -11,6 +16,7 @@ Widget EnterStoreNameWidget(BuildContext context, {controller, onSubmitted}) {
     obscureText: false,
     enabledBorderColor: context.colorsCustom.CardBorder,
     controller: controller,
+    keyboardDoneController: doneController!, // ⭐ هنا
     textInputAction: TextInputAction.done,
     showDoneButton: true, // ⭐ هنا
     keyboardType: TextInputType.name,

@@ -18,6 +18,8 @@ Widget CusButtonWidget(
       child: InkWell(
         borderRadius: BorderRadius.circular(radius),
         onTap: onTap,
+        splashColor: Colors.white24,
+        highlightColor: Colors.white10,
         child: Center(child: widget),
       ),
     ),

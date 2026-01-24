@@ -14,6 +14,7 @@ Widget MyTextField(
   Widget? prefixIcon,
   Function(String)? onSubmitted,
   double? Radius,
+  required KeyboardDoneController keyboardDoneController,
   Color? fillColor,
   Color? hintStyleColor,
   Color? enabledBorderColor,
@@ -40,7 +41,7 @@ Widget MyTextField(
   if (initialValue != null && controller != null && controller.text.isEmpty) {
     controller.text = initialValue;
   }
-  final KeyboardDoneController doneController = KeyboardDoneController();
+  final doneController = keyboardDoneController;
   final VoidCallback? userOnTap = onTap;
   final Function(String)? userOnSubmitted = onSubmitted;
   return TextFormField(
@@ -138,7 +139,7 @@ class KeyboardDoneButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: TextButton(
           onPressed: onDone,
-          child: const Text('Done', style: TextStyle(fontSize: 16)),
+          child: Text('Done', style: TextStyle(fontSize: 18.sp)),
         ),
       ),
     );

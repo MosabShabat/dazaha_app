@@ -19,6 +19,7 @@ import 'wallet_repo.dart';
 class WalletController extends GetxController {
   final WalletRepo _walletRepo = Get.find<WalletRepo>();
   RxInt selectedIndex = 0.obs; // بدل int
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   RxBool isLoading = false.obs;
   var isLoadingMore = false.obs;
@@ -38,6 +39,22 @@ class WalletController extends GetxController {
 
   void changeSelect(int index) {
     selectedIndex.value = index;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    orderDataController.setFromDate('');
+    orderDataController.setToDate('');
+    refreshWallet();
+
+    scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (scrollController.position.extentAfter < 300) {
+      loadMoRerecordTransactionsModel();
+    }
   }
 
   ExecuteOrderModel? executeOrderModel;
@@ -81,8 +98,8 @@ class WalletController extends GetxController {
               // }
               Navigator.of(Get.context!).pop();
               amountController.clear();
-              getWallet();
-              resetControllerState();
+              refreshWallet();
+
               refreshController.refreshCompleted();
               showSuccessSnackbar(
                 Get.context!,
@@ -143,8 +160,8 @@ class WalletController extends GetxController {
             showButton: false,
           );
           amountController.clear();
-          getWallet();
-          resetControllerState();
+          refreshWallet();
+
           refreshController.refreshCompleted();
           Get.toNamed(Routes.balanceWithdrawalRequestScreen);
         } else {
@@ -164,13 +181,18 @@ class WalletController extends GetxController {
     );
   }
 
-  Future<void> getWallet() async {
-    if (isLoading.value || !hasMorePages.value) return;
-    _setLoading(true);
+  Future<void> fetchWallet({bool loadMore = false}) async {
+    if (loadMore && isLoadingMore.value) return;
+    if (!loadMore && isLoading.value) return;
+    if (!hasMorePages.value) return;
 
-    ApiResult<AppResponse> result;
+    if (loadMore) {
+      _setLoadingMore(true);
+    } else {
+      _setLoading(true);
+    }
 
-    result = await _walletRepo.getWallet(
+    final result = await _walletRepo.getWallet(
       page: currentPage.value,
       fromDate: orderDataController.fromDate.isNotEmpty
           ? AppSharedMethods().normalizeDate(
@@ -184,55 +206,89 @@ class WalletController extends GetxController {
           : '',
     );
 
-    // معالجة النتائج كما هي
     if (result is Success<AppResponse>) {
       final response = result.data;
       if (response.data != null) {
         _processResponse(response);
-      } else {
-        showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
       }
-    } else if (result is Failure) {
-      showSnackbarErrorApi(Get.context!, [], null);
     }
 
     _setLoading(false);
-  }
-
-  Future<void> loadMoRerecordTransactionsModel() async {
-    if (isLoadingMore.value || !hasMorePages.value) return;
-    _setLoadingMore(true);
-
-    ApiResult<AppResponse> result;
-
-    result = await _walletRepo.getWallet(
-      page: currentPage.value,
-      fromDate: orderDataController.fromDate.isNotEmpty
-          ? AppSharedMethods().normalizeDate(
-              '${orderDataController.fromDate.value}',
-            )
-          : '',
-      toDate: orderDataController.toDate.isNotEmpty
-          ? AppSharedMethods().normalizeDate(
-              '${orderDataController.toDate.value}',
-            )
-          : '',
-    );
-
-    // معالجة النتائج
-    if (result is Success<AppResponse>) {
-      final response = result.data;
-      if (response.data != null) {
-        _processResponse(response);
-      } else {
-        showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
-      }
-    } else if (result is Failure) {
-      showSnackbarErrorApi(Get.context!, [], null);
-    }
-
     _setLoadingMore(false);
   }
+
+  getWallet() => fetchWallet();
+  loadMoRerecordTransactionsModel() => fetchWallet(loadMore: true);
+
+  // Future<void> getWallet() async {
+  //   if (isLoading.value || !hasMorePages.value) return;
+  //   _setLoading(true);
+
+  //   ApiResult<AppResponse> result;
+
+  //   result = await _walletRepo.getWallet(
+  //     page: currentPage.value,
+  //     fromDate: orderDataController.fromDate.isNotEmpty
+  //         ? AppSharedMethods().normalizeDate(
+  //             '${orderDataController.fromDate.value}',
+  //           )
+  //         : '',
+  //     toDate: orderDataController.toDate.isNotEmpty
+  //         ? AppSharedMethods().normalizeDate(
+  //             '${orderDataController.toDate.value}',
+  //           )
+  //         : '',
+  //   );
+
+  //   // معالجة النتائج كما هي
+  //   if (result is Success<AppResponse>) {
+  //     final response = result.data;
+  //     if (response.data != null) {
+  //       _processResponse(response);
+  //     } else {
+  //       showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
+  //     }
+  //   } else if (result is Failure) {
+  //     showSnackbarErrorApi(Get.context!, [], null);
+  //   }
+
+  //   _setLoading(false);
+  // }
+
+  // Future<void> loadMoRerecordTransactionsModel() async {
+  //   if (isLoadingMore.value || !hasMorePages.value) return;
+  //   _setLoadingMore(true);
+
+  //   ApiResult<AppResponse> result;
+
+  //   result = await _walletRepo.getWallet(
+  //     page: currentPage.value,
+  //     fromDate: orderDataController.fromDate.isNotEmpty
+  //         ? AppSharedMethods().normalizeDate(
+  //             '${orderDataController.fromDate.value}',
+  //           )
+  //         : '',
+  //     toDate: orderDataController.toDate.isNotEmpty
+  //         ? AppSharedMethods().normalizeDate(
+  //             '${orderDataController.toDate.value}',
+  //           )
+  //         : '',
+  //   );
+
+  //   // معالجة النتائج
+  //   if (result is Success<AppResponse>) {
+  //     final response = result.data;
+  //     if (response.data != null) {
+  //       _processResponse(response);
+  //     } else {
+  //       showSnackbarErrorApi(Get.context!, response.errors ?? [], null);
+  //     }
+  //   } else if (result is Failure) {
+  //     showSnackbarErrorApi(Get.context!, [], null);
+  //   }
+
+  //   _setLoadingMore(false);
+  // }
 
   void _processResponse(response) {
     log("response1");
@@ -275,12 +331,15 @@ class WalletController extends GetxController {
     currentPage.value = 1;
     hasMorePages.value = true;
     recordTransactionsModel.clear();
-    getWallet();
   }
 
   @override
   void onClose() {
-    resetControllerState();
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    refreshController.dispose();
+    amountController.dispose();
+
     super.onClose();
   }
 }

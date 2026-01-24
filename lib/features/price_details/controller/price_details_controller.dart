@@ -13,6 +13,7 @@ class PriceDetailsController extends GetxController {
   //   orderController.serviceUuid.value ==            '153a7042-eb9e-42b8-9d5c-498623adb5da'
   Rxn<OrderDetails> summaryData = Rxn<OrderDetails>();
   RxBool isButtonPressed = false.obs;
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   void submitPrice(BuildContext context, String page) {
     final isOptionalService =

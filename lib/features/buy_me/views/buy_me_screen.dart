@@ -85,6 +85,7 @@ class buyMeScreen extends StatelessWidget {
               context,
               controller: savedAddressesController.searchController,
               onSubmitted: (_) => savedAddressesController.rerefreshData(),
+              doneController: savedAddressesController.doneController,
             ),
             verticalSpace(15.h),
             if (!isNoteClosed)

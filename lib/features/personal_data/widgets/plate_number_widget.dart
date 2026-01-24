@@ -27,6 +27,7 @@ Widget PlateNumberWidget(BuildContext context, {required plateController}) {
         maxLines: 1,
         showDoneButton: true, // ⭐ هنا
         maxLength: 8,
+        keyboardDoneController: plateController.doneController, // ⭐ هنا,
         textInputAction: TextInputAction.done, // ✅ زر Done
         onSubmitted: (_) {
           FocusScope.of(

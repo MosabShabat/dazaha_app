@@ -8,6 +8,7 @@ Widget LocationTextFieldWidget(
   required textColor,
   required textSize,
   required textFontFamily,
+  required KeyboardDoneController keyboardDoneController,
 }) {
   return MyTextField(
     context,
@@ -15,7 +16,7 @@ Widget LocationTextFieldWidget(
     readOnly: true,
     maxLines: 1,
     showDoneButton: true, // ⭐ هنا
-
+    keyboardDoneController: keyboardDoneController,
     BorderSideColor: context.colorsCustom.CardBorder,
     obscureText: false,
     enabledBorderColor: context.colorsCustom.CardBorder,

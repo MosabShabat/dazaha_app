@@ -1,4 +1,3 @@
-
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 
@@ -12,6 +11,7 @@ Widget InPutPriceWidget(
   initialValue,
   controller,
   currency,
+  KeyboardDoneController? doneController, // ⭐ جديد
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,6 +35,7 @@ Widget InPutPriceWidget(
         textAlign: TextAlign.center,
         readOnly: false,
         maxLines: 1,
+        keyboardDoneController: doneController!, // ⭐ هنا
         showDoneButton: true, // ⭐ هنا
         initialValue: initialValue,
         obscureText: false,
@@ -47,6 +48,7 @@ Widget InPutPriceWidget(
             context,
           ).unfocus(); // ✅ لإخفاء الكيبورد عند الضغط على Done
         },
+
         hintText: hintText ?? '0.0',
         hintStyleColor: textColor ?? context.colorsCustom.surfacePrimaryBlack,
         HintTextFontFamily: context.textStyles.bodyLarge.bold.fontFamily,

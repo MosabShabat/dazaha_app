@@ -21,6 +21,7 @@ class PersonalDataController extends GetxController {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final plateController = TextEditingController();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   Rx<dynamic> selectedUserImage = Rx<dynamic>(null);
   Rx<dynamic> selectedIdImage = Rx<dynamic>(null);

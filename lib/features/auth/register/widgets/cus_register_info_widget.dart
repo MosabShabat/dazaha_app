@@ -1,4 +1,3 @@
-
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
@@ -10,6 +9,7 @@ Widget CusRegisterInfoWidget(
   HintTextColor,
   HintTextFontFamily,
   required maxLines,
+  KeyboardDoneController? doneController, // ⭐ جديد
   required maxLength,
   fontWeight,
   controller,
@@ -36,6 +36,7 @@ Widget CusRegisterInfoWidget(
         maxLength: maxLength,
         showDoneButton: true, // ⭐ هنا
         obscureText: false,
+        keyboardDoneController: doneController!, // ⭐ هنا
         initialValue: initialValue,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: controller,

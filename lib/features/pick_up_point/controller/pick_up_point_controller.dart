@@ -3,11 +3,15 @@ import 'dart:developer';
 import '../../../../core/constant/exports_libraries.dart';
 
 import '../../../core/helpers/constants.dart';
+import '../../../core/widgets/my_custom_text_field.dart';
 import '../../saved_delivery_addresses/controller/saved_delivery_addresses_controller.dart';
 
 class PickUpPointController extends GetxController {
   final SavedDeliveryAddressesController _savedDeliveryAddressesController =
       Get.find();
+
+  final KeyboardDoneController doneController = KeyboardDoneController();
+
   @override
   onInit() {
     super.onInit();

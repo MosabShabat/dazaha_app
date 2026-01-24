@@ -46,6 +46,7 @@ class RegisterScreen extends StatelessWidget {
             firstNameController: _registerController.firstNameController,
             lastNameController: _registerController.lastNameController,
             emailController: _registerController.emailController,
+            doneController: _registerController.doneController, // ⭐
           ),
           CheckBoxListTailWidget(context),
           verticalSpace(0.18.sh),

@@ -62,6 +62,7 @@ class PriceDetailsScreen extends StatelessWidget {
             isShow: true,
             controller: priceController.priceController,
             currency: orderController.currencyVar.value,
+            doneController: priceController.doneController, // ⭐ هنا
           ),
           verticalSpace(20.h),
           InfoPriceWidget(context),
