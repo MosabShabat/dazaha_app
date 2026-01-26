@@ -18,6 +18,7 @@ class AddADeliveryAddressController extends GetxController {
   final placeNameController = TextEditingController();
   final StreetController = TextEditingController();
   final phoneController = TextEditingController();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   final RxDouble latitude = 0.0.obs;
   final RxDouble longitude = 0.0.obs;

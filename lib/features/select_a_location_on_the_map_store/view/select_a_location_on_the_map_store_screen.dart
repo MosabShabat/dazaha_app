@@ -10,6 +10,8 @@ class SelectALocationOnTheMapStoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final KeyboardDoneController doneController = KeyboardDoneController();
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -32,7 +34,10 @@ class SelectALocationOnTheMapStoreScreen extends StatelessWidget {
                             verticalSpace(10.h),
                             AppButtonBack(context: context),
                             verticalSpace(10.h),
-                            EnterStoreNameWidget(context),
+                            EnterStoreNameWidget(
+                              context,
+                              doneController: doneController,
+                            ),
                             Spacer(),
                             BottomNavigationBarWidget(
                               text: context.choice,

@@ -24,6 +24,7 @@ class UserInfoController extends GetxController {
 
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   Rx<dynamic> selectedUserImage = Rx<dynamic>(null);
   RxBool isButtonPressed = false.obs;

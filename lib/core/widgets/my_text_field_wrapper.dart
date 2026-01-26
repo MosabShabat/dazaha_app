@@ -1,9 +1,14 @@
 // ملف جديد مثلاً: my_text_field_wrapper.dart
 
+import 'dart:io';
+
+import '../../../core/widgets/my_custom_text_field.dart';
+
 import '../../../../core/widgets/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-Widget MyTextField({
+Widget MyTextField(
+  BuildContext context, {
   TextInputType? keyboardType,
   TextEditingController? controller,
   bool obscureText = false,
@@ -29,7 +34,11 @@ Widget MyTextField({
   VoidCallback? onTap,
   FontWeight? fontWeight,
   String? Function(String?)? validator,
+  required KeyboardDoneController keyboardDoneController,
 }) {
+  final doneController = keyboardDoneController;
+  final VoidCallback? userOnTap = onTap;
+  final Function(String)? userOnSubmitted = onSubmitted;
   return AppTextFormField(
     hintText: hintText ?? '',
     textAlign: 'null',
@@ -41,9 +50,19 @@ Widget MyTextField({
     borderRadius: BorderRadius.circular(Radius),
     maxLength: maxLength,
     textDirection: textDirection,
-    onTap: onTap,
+    onTap: () {
+      if (Platform.isIOS) {
+        doneController.show(context);
+      }
+      userOnTap?.call(); // يحافظ على منطقك السابق
+    },
+
+    onFieldSubmitted: (value) {
+      doneController.hide();
+      userOnSubmitted?.call(value); // ⭐ منطقك
+      FocusManager.instance.primaryFocus?.unfocus();
+    },
     validator: validator ?? (_) => null,
-    onFieldSubmitted: onSubmitted,
     hintStyle: TextStyle(
       color: hintStyleColor,
       fontWeight: fontWeight,

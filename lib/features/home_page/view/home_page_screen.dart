@@ -1,4 +1,4 @@
-import 'package:dazaha_app/core/helpers/constants.dart';
+import '../../../core/helpers/constants.dart';
 
 import '../../../core/constant/exports_widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

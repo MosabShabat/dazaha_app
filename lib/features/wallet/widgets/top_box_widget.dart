@@ -53,7 +53,7 @@ Widget TopBoxWidget(
                 color: context.colorsCustom.TextPrimary,
               ),
             ).box.alignCenter.make(),
-            verticalSpace(40.h),
+            verticalSpace(5.h),
             Obx(() {
               return controller.isLoading.isTrue
                   ? WalletShimmerWidget()
@@ -66,8 +66,7 @@ Widget TopBoxWidget(
                       ),
                     ).box.alignCenter.height(40.h).make();
             }),
-            verticalSpace(30.h),
-
+            verticalSpace(5.h),
             WithRecRowBottomWidget(context, walletController: controller),
           ],
         ),

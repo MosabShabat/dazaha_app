@@ -52,6 +52,7 @@ class MyAdsDetailsScreen extends StatelessWidget {
                   'time': '2:00 م - 3:00 م',
                 },
               ],
+              doneController: myAdsDetailsController.doneController,
             ),
         body: SingleChildScrollView(
           child: SafeArea(

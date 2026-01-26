@@ -9,7 +9,7 @@ Widget CusRegisterInfoWidget(
   HintTextColor,
   HintTextFontFamily,
   required maxLines,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController? doneController, // ⭐ جديد
   required maxLength,
   fontWeight,
   controller,

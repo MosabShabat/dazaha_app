@@ -91,7 +91,6 @@ Widget ListTileAdvertisementSummaryWidget(
     final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
 
     // ================= فتح الخرائط =================
-    // ================= فتح الخرائط =================
     final String googleMapsUrl =
         "https://www.google.com/maps/search/?api=1&query=$destinationLat,$destinationLng";
     final String appleMapsUrl =

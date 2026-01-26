@@ -5,7 +5,7 @@ Widget EnterStoreNameWidget(
   BuildContext context, {
   controller,
   onSubmitted,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController? doneController, // ⭐ جديد
 }) {
   return MyTextField(
     context,

@@ -47,15 +47,21 @@ class AddressInfoWidget extends StatelessWidget {
                 .make(),
           );
         }
-        return _buildForm(context); // كود النموذج كامل
+        return _buildForm(
+          context,
+          doneController: controller.doneController,
+        ); // كود النموذج كامل
       });
     }
 
     // حالة الإضافة مباشرة بدون Obx
-    return _buildForm(context);
+    return _buildForm(context, doneController: controller.doneController);
   }
 
-  Widget _buildForm(BuildContext context) {
+  Widget _buildForm(
+    BuildContext context, {
+    required KeyboardDoneController doneController,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -68,6 +74,7 @@ class AddressInfoWidget extends StatelessWidget {
           maxLines: null,
           controller: controller.placeNameController,
           keyboardType: TextInputType.name,
+          doneController: doneController,
         ),
         CountryCityStreetWidget(context),
         CusRegisterInfoWidget(
@@ -79,6 +86,7 @@ class AddressInfoWidget extends StatelessWidget {
           maxLines: null,
           controller: controller.StreetController,
           keyboardType: TextInputType.name,
+          doneController: doneController,
         ),
         Text(
           '${context.mobileNumber}',

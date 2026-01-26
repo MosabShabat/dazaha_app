@@ -11,7 +11,7 @@ Widget InPutPriceWidget(
   initialValue,
   controller,
   currency,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController? doneController, // ⭐ جديد
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,

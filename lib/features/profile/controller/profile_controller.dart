@@ -1,5 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dazaha_app/features/home_page/controller/home_page_controller.dart';
+import '../../../features/home_page/controller/home_page_controller.dart';
 import '../../../core/constant/exports_libraries.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../../core/helpers/app_shared_data.dart';

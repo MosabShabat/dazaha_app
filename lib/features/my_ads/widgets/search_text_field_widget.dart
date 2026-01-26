@@ -8,7 +8,7 @@ Widget SearchTextFieldWidget(
   controller,
   Function(String)? onSubmitted,
   onChanged,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController? doneController, // ⭐ جديد
 }) {
   return MyTextField(
     context,
