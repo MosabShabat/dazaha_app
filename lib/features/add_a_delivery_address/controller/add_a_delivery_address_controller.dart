@@ -22,6 +22,7 @@ class AddADeliveryAddressController extends GetxController {
   final RxDouble latitude = 0.0.obs;
   final RxDouble longitude = 0.0.obs;
   final RxString locationName = ''.obs;
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   final String countryCode = "964";
 

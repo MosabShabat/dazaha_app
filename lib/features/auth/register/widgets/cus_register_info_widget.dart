@@ -9,7 +9,7 @@ Widget CusRegisterInfoWidget(
   HintTextColor,
   HintTextFontFamily,
   required maxLines,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController doneController, // ⭐ جديد
   required maxLength,
   fontWeight,
   controller,
@@ -36,7 +36,7 @@ Widget CusRegisterInfoWidget(
         maxLength: maxLength,
         showDoneButton: true, // ⭐ هنا
         obscureText: false,
-        keyboardDoneController: doneController!, // ⭐ هنا
+        keyboardDoneController: doneController, // ⭐ هنا
         initialValue: initialValue,
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: controller,

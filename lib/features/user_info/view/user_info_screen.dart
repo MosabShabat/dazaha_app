@@ -62,6 +62,7 @@ class UserInfoScreen extends StatelessWidget {
               firstNameController: _userInfoController.firstNameController,
               lastNameController: _userInfoController.lastNameController,
               emailController: _userInfoController.emailController,
+              doneController: _userInfoController.doneController,
             ),
             verticalSpace(80.h),
             Obx(

@@ -44,8 +44,8 @@ Widget ProfileListViewItemsWidget(
           showLoginRequiredBottomSheet(Get.context!);
         }
       },
-      'show':
-          profileController.userData.value?.walletIsVisible ?? true, // <-- هنا
+      'show': true,
+      //    profileController.userData.value?.walletIsVisible ?? true, // <-- هنا
     },
     {
       'icon': ListProfileIcons[2],

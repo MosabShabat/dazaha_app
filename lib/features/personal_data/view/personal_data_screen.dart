@@ -62,6 +62,7 @@ class PersonalDataScreen extends StatelessWidget {
             PlateNumberWidget(
               context,
               plateController: _personalDataController.plateController,
+              doneController: _personalDataController.doneController,
             ),
             CameraInPutDataIdImageWidget(
               context,

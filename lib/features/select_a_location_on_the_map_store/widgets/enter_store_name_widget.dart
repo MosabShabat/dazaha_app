@@ -5,7 +5,7 @@ Widget EnterStoreNameWidget(
   BuildContext context, {
   controller,
   onSubmitted,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController doneController, // ⭐ جديد
 }) {
   return MyTextField(
     context,
@@ -16,7 +16,7 @@ Widget EnterStoreNameWidget(
     obscureText: false,
     enabledBorderColor: context.colorsCustom.CardBorder,
     controller: controller,
-    keyboardDoneController: doneController!, // ⭐ هنا
+    keyboardDoneController: doneController, // ⭐ هنا
     textInputAction: TextInputAction.done,
     showDoneButton: true, // ⭐ هنا
     keyboardType: TextInputType.name,

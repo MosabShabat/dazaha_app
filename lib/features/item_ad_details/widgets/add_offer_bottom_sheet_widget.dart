@@ -19,6 +19,7 @@ Future<dynamic> AddOfferBottomSheetWidget(
   required dynamic price,
   required String curr,
   required bool isUpdate,
+  required KeyboardDoneController doneController,
 }) {
   final OrderDataController orderDataController = Get.find();
 
@@ -80,6 +81,7 @@ Future<dynamic> AddOfferBottomSheetWidget(
                 MyPriceWidget(
                   context,
                   initialValue: "${price}",
+                  doneController: doneController,
                   isUpdate
                       ? (controller as MyOfferAdDetailsController)
                             .priceController

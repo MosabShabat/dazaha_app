@@ -13,6 +13,7 @@ Future<dynamic> AppBarBottomSheetWidget(
   required List<dynamic> timeItem,
   required dynamic price,
   required String curr,
+  required KeyboardDoneController doneController,
 }) {
   return showModalBottomSheet(
     isScrollControlled: true,
@@ -59,6 +60,7 @@ Future<dynamic> AppBarBottomSheetWidget(
                         timeLen: timeLen,
                         timeItem: timeItem,
                         isUpdate: true,
+                        doneController: doneController,
                       );
                     },
                   ),

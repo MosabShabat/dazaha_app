@@ -14,6 +14,7 @@ AppBar MyOfferAppBarWidget(
   required price,
   required curr,
   required backStatus,
+  required KeyboardDoneController doneController,
 }) {
   print('MyOfferAppBarWidget backStatus: $backStatus');
   return AppBar(
@@ -84,6 +85,7 @@ AppBar MyOfferAppBarWidget(
                         price: price,
                         timeItem: timeItem,
                         timeLen: timeLen,
+                        doneController: doneController,
                       );
                     }),
                 horizontalSpace(10.w),

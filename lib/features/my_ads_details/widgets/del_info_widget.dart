@@ -1,5 +1,5 @@
 import 'package:url_launcher/url_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/constant/exports_widgets.dart';
 
@@ -35,69 +35,24 @@ Widget DelInfoWidget(
                 )
               : SizedBox.shrink(),
         ],
-      ).box.height(20.h).make()..onTap(() async {
-        // ================= صلاحيات الموقع =================
-        PermissionStatus status;
+      ).box.height(20.h).make().onTap(() async {
+        if (lat == null || lng == null) return;
 
-        if (GetPlatform.isIOS) {
-          // iOS: اطلب صلاحية الموقع عند الاستخدام فقط
-          status = await Permission.locationWhenInUse.status;
-          if (!status.isGranted) {
-            status = await Permission.locationWhenInUse.request();
-          }
-        } else {
-          // Android: اطلب صلاحية الموقع
-          status = await Permission.location.status;
-          if (!status.isGranted) {
-            status = await Permission.location.request();
-          }
-        }
-
-        if (!status.isGranted) {
-          Get.snackbar(
-            'ملاحظة',
-            'يجب تفعيل الموقع للوصول إلى الخرائط',
-            snackPosition: SnackPosition.BOTTOM,
-          );
-          return;
-        }
-
-        // ================= تحويل النصوص للـ double =================
         final double destinationLat = double.tryParse(lat.toString()) ?? 0.0;
         final double destinationLng = double.tryParse(lng.toString()) ?? 0.0;
 
-        // ================= فتح الخرائط =================
-        final String googleMapsUrl =
-            "https://www.google.com/maps/search/?api=1&query=$destinationLat,$destinationLng";
-        final String appleMapsUrl =
-            "https://maps.apple.com/?q=$destinationLat,$destinationLng";
-
-        if (GetPlatform.isAndroid) {
-          final Uri uri = Uri.parse(googleMapsUrl);
-          if (await canLaunchUrl(uri)) {
-            await launchUrl(uri, mode: LaunchMode.externalApplication);
-          } else {
-            // إذا فشل جوجل ماب، جرب فتحه في المتصفح كحل أخير
-            await launchUrl(uri, mode: LaunchMode.platformDefault);
-          }
-        } else if (GetPlatform.isIOS) {
-          final Uri googleUri = Uri.parse(
-            "comgooglemaps://?q=$destinationLat,$destinationLng",
-          );
-          final Uri appleUri = Uri.parse(appleMapsUrl);
-
-          if (await canLaunchUrl(googleUri)) {
-            await launchUrl(googleUri, mode: LaunchMode.externalApplication);
-          } else if (await canLaunchUrl(appleUri)) {
-            await launchUrl(appleUri, mode: LaunchMode.externalApplication);
-          } else {
-            Get.snackbar(
-              'خطأ',
-              'تعذّر فتح الخرائط',
-              snackPosition: SnackPosition.BOTTOM,
-            );
-          }
+        if (destinationLat == 0.0 && destinationLng == 0.0) {
+          Get.snackbar('خطأ', 'الموقع غير صالح');
+          return;
         }
+
+        final Uri uri = Uri.parse(
+          "https://www.google.com/maps/dir/?api=1"
+          "&destination=$destinationLat,$destinationLng"
+          "&travelmode=driving",
+        );
+
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       }),
 
       Text(

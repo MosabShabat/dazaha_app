@@ -8,7 +8,7 @@ Widget SearchTextFieldWidget(
   controller,
   Function(String)? onSubmitted,
   onChanged,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController doneController, // ⭐ جديد
 }) {
   return MyTextField(
     context,
@@ -20,7 +20,7 @@ Widget SearchTextFieldWidget(
     onSubmitted: onSubmitted,
     textInputAction: TextInputAction.done,
     showDoneButton: true, // ⭐ هنا
-    keyboardDoneController: doneController!,
+    keyboardDoneController: doneController,
     enabledBorderColor: context.colorsCustom.CardBorder,
     fillColor: context.colorsCustom.surfacePrimaryWhite,
     hintText: context.search,
