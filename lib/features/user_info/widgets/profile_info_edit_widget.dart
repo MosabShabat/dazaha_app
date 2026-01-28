@@ -14,7 +14,7 @@ Widget ProfileInfoEditWidget(
   required TextEditingController firstNameController,
   required TextEditingController lastNameController,
   TextEditingController? emailController,
-  KeyboardDoneController? doneController, // ⭐ جديد
+  required KeyboardDoneController doneController, // ⭐ جديد
 }) {
   Widget buildTextField({
     required String title,

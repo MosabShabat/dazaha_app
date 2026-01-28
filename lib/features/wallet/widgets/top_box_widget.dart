@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../core/widgets/app_shimmers/custom_shimmer.dart';
 
 import '../../../core/constant/exports_libraries.dart';
@@ -53,7 +55,7 @@ Widget TopBoxWidget(
                 color: context.colorsCustom.TextPrimary,
               ),
             ).box.alignCenter.make(),
-            verticalSpace(40.h),
+            verticalSpace(Platform.isIOS ? 5.h : 20.h),
             Obx(() {
               return controller.isLoading.isTrue
                   ? WalletShimmerWidget()
@@ -66,8 +68,7 @@ Widget TopBoxWidget(
                       ),
                     ).box.alignCenter.height(40.h).make();
             }),
-            verticalSpace(30.h),
-
+            verticalSpace(Platform.isIOS ? 5.h : 20.h),
             WithRecRowBottomWidget(context, walletController: controller),
           ],
         ),

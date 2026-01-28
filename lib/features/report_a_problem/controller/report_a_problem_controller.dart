@@ -17,6 +17,7 @@ class ReportAProblemController extends GetxController {
   final descriptionController = TextEditingController();
   final listImages = <XFile>[].obs;
   final ImagePicker _picker = ImagePicker();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   /// اختيار الصور
   Future<void> pickImages(ImageSource source) async {

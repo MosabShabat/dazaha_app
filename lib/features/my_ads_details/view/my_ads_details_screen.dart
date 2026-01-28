@@ -37,6 +37,7 @@ class MyAdsDetailsScreen extends StatelessWidget {
               backStatus: 'home2',
               price: order.likedPrice,
               curr: order.currency,
+              doneController: myAdsDetailsController.doneController,
               timeLen: 3,
               timeItem: [
                 {

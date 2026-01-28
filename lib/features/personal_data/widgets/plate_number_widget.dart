@@ -1,7 +1,11 @@
 import '../../../../core/constant/exports_libraries.dart';
 import '../../../../core/constant/exports_widgets.dart';
 
-Widget PlateNumberWidget(BuildContext context, {required plateController}) {
+Widget PlateNumberWidget(
+  BuildContext context, {
+  required plateController,
+  required KeyboardDoneController doneController,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -27,7 +31,7 @@ Widget PlateNumberWidget(BuildContext context, {required plateController}) {
         maxLines: 1,
         showDoneButton: true, // ⭐ هنا
         maxLength: 8,
-        keyboardDoneController: plateController.doneController, // ⭐ هنا,
+        keyboardDoneController: doneController, // ⭐ هنا,
         textInputAction: TextInputAction.done, // ✅ زر Done
         onSubmitted: (_) {
           FocusScope.of(

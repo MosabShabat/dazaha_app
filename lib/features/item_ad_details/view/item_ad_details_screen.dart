@@ -260,6 +260,7 @@ class ItemAdDetailsScreen extends StatelessWidget {
                     timeLen: item.times?.length ?? 0,
                     timeItem: item.times ?? [],
                     isUpdate: false,
+                    doneController: controller.doneController,
                   );
                 },
               );

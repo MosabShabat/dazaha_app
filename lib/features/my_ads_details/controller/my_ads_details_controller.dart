@@ -14,6 +14,7 @@ import 'my_ads_details_repo.dart';
 class MyAdsDetailsController extends GetxController {
   final MyAdsDetailsRepo _myOrderDetailsRepo = Get.find<MyAdsDetailsRepo>();
   final OrderDataController _orderDataController = Get.find();
+  final KeyboardDoneController doneController = KeyboardDoneController();
 
   var selectedIndex = 0.obs;
   RxBool isLoading = true.obs;

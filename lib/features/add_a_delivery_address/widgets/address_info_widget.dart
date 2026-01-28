@@ -68,6 +68,7 @@ class AddressInfoWidget extends StatelessWidget {
           maxLines: null,
           controller: controller.placeNameController,
           keyboardType: TextInputType.name,
+          doneController: controller.doneController,
         ),
         CountryCityStreetWidget(context),
         CusRegisterInfoWidget(
@@ -79,6 +80,7 @@ class AddressInfoWidget extends StatelessWidget {
           maxLines: null,
           controller: controller.StreetController,
           keyboardType: TextInputType.name,
+          doneController: controller.doneController,
         ),
         Text(
           '${context.mobileNumber}',

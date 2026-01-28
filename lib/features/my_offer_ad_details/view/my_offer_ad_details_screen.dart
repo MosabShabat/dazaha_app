@@ -104,6 +104,7 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
             timeLen: offerDetails.order!.times!.length,
             timeItem: offerDetails.order!.times!,
             backStatus: offerDetails.status ?? '',
+            doneController: controller.doneController,
           ),
           body: SafeArea(
             child: GeneralScreenWidget(

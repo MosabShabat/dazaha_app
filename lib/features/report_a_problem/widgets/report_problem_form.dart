@@ -29,6 +29,7 @@ class ReportProblemForm extends StatelessWidget {
           HintTextColor: context.colorsCustom.TextPrimary,
           fontWeight: FontWeight.w300,
           controller: _reportProblemController.titleController,
+          doneController: _reportProblemController.doneController,
         ),
         verticalSpace(10.h),
         _buildDescriptionField(context),
@@ -71,6 +72,7 @@ class ReportProblemForm extends StatelessWidget {
       HintTextColor: context.colorsCustom.TextPrimary,
       fontWeight: FontWeight.w300,
       controller: _reportProblemController.descriptionController,
+      doneController: _reportProblemController.doneController,
     );
   }
 
