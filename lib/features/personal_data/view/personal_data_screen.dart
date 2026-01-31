@@ -12,17 +12,42 @@ import '../../profile/controller/profile_controller.dart';
 import '../../user_info/controller/user_info_controller.dart';
 import '../controller/personal_data_controller.dart';
 
-class PersonalDataScreen extends StatelessWidget {
-  PersonalDataScreen({super.key});
+class PersonalDataScreen extends StatefulWidget {
+  const PersonalDataScreen({super.key});
 
+  @override
+  State<PersonalDataScreen> createState() => _PersonalDataScreenState();
+}
+
+class _PersonalDataScreenState extends State<PersonalDataScreen> {
   final _profileController = Get.find<ProfileController>();
   final _personalDataController = Get.put(PersonalDataController());
   final _userInfoController = Get.put(UserInfoController());
 
+  late Worker _worker;
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 👇 مراقبة بيانات المستخدم من ProfileController
+    _worker = ever(_profileController.userData, (user) {
+      if (!_initialized && user != null) {
+        _initializeUserData(user);
+        _initialized = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _worker.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _initializeUserData();
-
     return Scaffold(
       appBar: DefAppBarWidget(context),
       body: Obx(() {
@@ -49,8 +74,8 @@ class PersonalDataScreen extends StatelessWidget {
             ProfileInfoEditWidget(
               context,
               isShow: false,
-              firstName: user.firstName ?? '',
-              lastName: user.lastName ?? '',
+              firstName: '',
+              lastName: '',
               mobileNumber: _formatPhoneNumber(
                 '${user.mobileNumber ?? ''}${user.mobilePrefix ?? ''}+',
               ),
@@ -85,7 +110,6 @@ class PersonalDataScreen extends StatelessWidget {
                     await _personalDataController.validateAndSubmit(context),
                 isLoading: _personalDataController.isButtonPressed.value,
                 isEnabled: !_personalDataController.isButtonPressed.value,
-
                 isWhiteProgress: true,
               ),
             ),
@@ -96,15 +120,12 @@ class PersonalDataScreen extends StatelessWidget {
     );
   }
 
-  void _initializeUserData() {
-    final user = _profileController.userData.value;
-    if (user != null) {
-      _userInfoController
-        ..setSelectedImage(user.image ?? '')
-        ..firstNameController.text = user.firstName ?? ''
-        ..lastNameController.text = user.lastName ?? ''
-        ..emailController.text = user.email ?? '';
-    }
+  void _initializeUserData(user) {
+    _userInfoController
+      ..setSelectedImage(user.image ?? '')
+      ..firstNameController.text = user.firstName ?? ''
+      ..lastNameController.text = user.lastName ?? ''
+      ..emailController.text = user.email ?? '';
   }
 
   Widget _buildTitle(BuildContext context) => Text(

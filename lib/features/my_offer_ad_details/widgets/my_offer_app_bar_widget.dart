@@ -15,6 +15,7 @@ AppBar MyOfferAppBarWidget(
   required curr,
   required backStatus,
   required KeyboardDoneController doneController,
+  required statusBack,
 }) {
   print('MyOfferAppBarWidget backStatus: $backStatus');
   return AppBar(
@@ -34,30 +35,69 @@ AppBar MyOfferAppBarWidget(
             if (AppConstants.screenName == 'allAds') {
               Get.toNamed(Routes.allAdsScreen);
             } else {
+              print('offerOrOrder: $offerOrOrder');
+
               if (backStatus == 'completed' || backStatus == 'in_progress') {
                 HomeController homeController = Get.find<HomeController>();
-                homeController.extraTabIndex.value = 2;
+                homeController.extraTabIndex.value = backStatus == 'completed'
+                    ? 2
+                    : backStatus == 'in_progress'
+                    ? 1
+                    : 0;
+                print('offerOrOrder here 1');
+                print(
+                  'offerOrOrder here 1 :${homeController.extraTabIndex.value}',
+                );
+
                 Get.offAllNamed(
                   Routes.homeScreen,
                   arguments: {
-                    'selectedIndex': 3,
-                    'tabIndex': backStatus == 'completed' ? 2 : 1,
+                    'selectedIndex': offerOrOrder == 'offer' ? 3 : 1,
+                    'tabIndex': backStatus == 'completed'
+                        ? 2
+                        : backStatus == 'in_progress'
+                        ? 1
+                        : 0,
                   },
                 );
               } else if (backStatus == 'home2') {
-                {
-                  Get.offAllNamed(
-                    Routes.homeScreen,
-                    arguments: {'selectedIndex': 1},
-                  );
-                }
+                print('offerOrOrder here 2');
+                HomeController homeController = Get.find<HomeController>();
+                homeController.extraTabIndex.value = statusBack == 'completed'
+                    ? 2
+                    : statusBack == 'in_progress'
+                    ? 1
+                    : 0;
+                ;
+                print(
+                  'offerOrOrder here 2 :${homeController.extraTabIndex.value}',
+                );
+
+                Get.offAllNamed(
+                  Routes.homeScreen,
+                  arguments: {
+                    'selectedIndex': 1,
+                    'tabIndex': statusBack == 'completed'
+                        ? 2
+                        : statusBack == 'in_progress'
+                        ? 1
+                        : 0,
+                  },
+                );
+
+                // {
+                //   Get.offAllNamed(
+                //     Routes.homeScreen,
+                //     arguments: {'selectedIndex': 1},
+                //   );
+                // }
               } else {
-                {
-                  Get.offAllNamed(
-                    Routes.homeScreen,
-                    arguments: {'selectedIndex': 3},
-                  );
-                }
+                print('offerOrOrder here 3');
+
+                Get.offAllNamed(
+                  Routes.homeScreen,
+                  arguments: {'selectedIndex': 3},
+                );
               }
             }
           }),

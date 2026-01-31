@@ -9,17 +9,40 @@ import '../../../../features/user_info/widgets/profile_info_edit_widget.dart';
 import '../../../../features/user_info/widgets/user_info_app_bar_widget.dart';
 import '../../../core/widgets/progress_view_white.dart';
 
-class UserInfoScreen extends StatelessWidget {
-  UserInfoScreen({super.key});
+class UserInfoScreen extends StatefulWidget {
+  const UserInfoScreen({super.key});
 
+  @override
+  State<UserInfoScreen> createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
   final _profileController = Get.find<ProfileController>();
   final _userInfoController = Get.put(UserInfoController());
 
+  late Worker _worker;
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _worker = ever(_profileController.userData, (user) {
+      if (!_initialized && user != null) {
+        _initUserData(user);
+        _initialized = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _worker.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Initialize user info after the first frame
-    WidgetsBinding.instance.addPostFrameCallback((_) => _initUserData());
-
     return Scaffold(
       backgroundColor: context.colorsCustom.surfacePrimaryWhite,
       appBar: UserInfoAppBarWidget(
@@ -51,20 +74,24 @@ class UserInfoScreen extends StatelessWidget {
               image: user.image ?? '',
               controller: _userInfoController,
             ),
+
             verticalSpace(20.h),
+
             ProfileInfoEditWidget(
               context,
               isShow: true,
-              firstName: user.firstName ?? '',
-              lastName: user.lastName ?? '',
-              email: user.email ?? '',
-              mobileNumber: _formatPhoneNumber('${user.mobileNumber ?? ''}'),
               firstNameController: _userInfoController.firstNameController,
               lastNameController: _userInfoController.lastNameController,
               emailController: _userInfoController.emailController,
+              mobileNumber: _formatPhoneNumber('${user.mobileNumber ?? ''}'),
               doneController: _userInfoController.doneController,
+              firstName: '',
+              lastName: '',
+              email: '',
             ),
+
             verticalSpace(80.h),
+
             Obx(
               () => AppLoadingButton(
                 text: context.saveChanges,
@@ -84,15 +111,12 @@ class UserInfoScreen extends StatelessWidget {
     );
   }
 
-  void _initUserData() {
-    final user = _profileController.userData.value;
-    if (user != null) {
-      _userInfoController
-        ..setSelectedImage(user.image ?? '')
-        ..firstNameController.text = user.firstName ?? ''
-        ..lastNameController.text = user.lastName ?? ''
-        ..emailController.text = user.email ?? '';
-    }
+  void _initUserData(user) {
+    _userInfoController
+      ..setSelectedImage(user.image ?? '')
+      ..firstNameController.text = user.firstName ?? ''
+      ..lastNameController.text = user.lastName ?? ''
+      ..emailController.text = user.email ?? '';
   }
 
   String _formatPhoneNumber(String phone) {
@@ -102,8 +126,7 @@ class UserInfoScreen extends StatelessWidget {
     final buffer = StringBuffer();
     for (int i = 0; i < phone.length; i++) {
       buffer.write(phone[i]);
-      // أول رقم مفصول ثم بعد كل 3 أرقام نضيف مسافة
-      if (i == 0 || (i > 0 && (i - 0) % 3 == 0 && i + 1 != phone.length)) {
+      if (i == 0 || (i > 0 && (i) % 3 == 0 && i + 1 != phone.length)) {
         buffer.write(' ');
       }
     }

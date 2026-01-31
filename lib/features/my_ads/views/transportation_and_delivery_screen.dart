@@ -35,9 +35,12 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
           final tabController = DefaultTabController.of(context);
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (transportController.tabIndex >= 0 &&
-                transportController.tabIndex < _statuses.length) {
-              tabController.animateTo(transportController.tabIndex);
+            if (transportController.homeController.extraTabIndex.value >= 0 &&
+                transportController.homeController.extraTabIndex.value <
+                    _statuses.length) {
+              tabController.animateTo(
+                transportController.homeController.extraTabIndex.value,
+              );
             }
           });
           tabController.addListener(() {

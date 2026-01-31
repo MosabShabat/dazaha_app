@@ -79,3 +79,33 @@ Widget ListTileAdvertisementSummaryWidget(
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   });
 }
+
+Widget ListTileAdvertisementSummaryReMetSizeWidget(
+  BuildContext context, {
+  required String img,
+  required String title,
+}) {
+  final textStyleTitle = context.textStyles.bodyMedium.medium.copyWith(
+    color: context.colorsCustom.TextPrimary,
+  );
+
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+
+    children: [
+      CachedNetworkImage(
+        imageUrl: img,
+        width: 30.w,
+        height: 30.w,
+        fit: BoxFit.fill,
+      ),
+      horizontalSpace(5.w),
+      Column(
+        children: [
+          verticalSpace(8.h),
+          Text(title, style: textStyleTitle, maxLines: 1),
+        ],
+      ),
+    ],
+  );
+}

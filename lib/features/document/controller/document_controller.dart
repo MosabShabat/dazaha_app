@@ -36,16 +36,16 @@ class DocumentController extends GetxController {
   final ScrollController scrollController = ScrollController();
   final HomeController homeController = Get.find<HomeController>();
 
-  late final tabIndex = homeController.extraTabIndex.value;
+  // late final tabIndex = homeController.extraTabIndex.value;
 
   @override
   void onInit() {
     super.onInit();
     orderDataController.serviceUuid.value = '';
 
-    tabIndex == 0
+    homeController.extraTabIndex.value == 0
         ? orderDataController.setOfferStatus('pending')
-        : tabIndex == 1
+        : homeController.extraTabIndex.value == 1
         ? orderDataController.setOfferStatus('in_progress')
         : orderDataController.setOfferStatus('completed');
     AppConstants.screenName = 'screenName';
