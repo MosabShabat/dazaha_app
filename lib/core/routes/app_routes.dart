@@ -115,7 +115,6 @@ class AppRouter {
         return LoginScreen(resatAll: resatAll);
       },
       binding: LoginBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
@@ -126,7 +125,6 @@ class AppRouter {
         return RegisterScreen(phoneNumber: phoneNumber, code: code);
       },
       binding: RegisterBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.termsAndConditionsScreen,
@@ -136,19 +134,16 @@ class AppRouter {
       },
       // page: () => TermsAndConditionsScreen(),
       binding: TermsAndConditionsBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.homeScreen,
       page: () => HomeScreen(),
       binding: HomeBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.homePageScreen,
       page: () => HomePageScreen(),
       binding: HomePageBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.transportationAndDeliveryScreen,
@@ -174,82 +169,69 @@ class AppRouter {
       name: Routes.chooseTheServiceScreen,
       page: () => ChooseTheServiceScreen(),
       binding: ChooseTheServiceBindings(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.reviewPayMentScreen,
       page: () => ReviewPayMentScreen(),
       binding: ReviewPayMentBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.pickUpMethodUpOnDeliveryScreen,
       page: () => PickUpMethodUpOnDeliveryScreen(),
       binding: PickUpMethodUponDeliveryBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.myAdPayMentScreen,
       page: () => MyAdPayMentScreen(),
       binding: MyAdPayMentBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.itemAdDetailsScreen,
       page: () => ItemAdDetailsScreen(),
       binding: ItemAdDetailsBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.myAdsDetailsScreen,
       page: () => MyAdsDetailsScreen(),
       binding: MyAdsDetailsBindings(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.advertisementSummaryScreen,
       page: () => AdvertisementSummaryScreen(),
       binding: AdvertisementSummaryBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.reviewDetailsScreen,
       page: () => ReviewDetailsScreen(),
       binding: ReviewDetailsBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.selectALocationOnTheMapScreen,
       page: () => SelectALocationOnTheMapScreen(),
       binding: SelectALocationOnTheMapBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.buyMeScreen,
       page: () => buyMeScreen(),
       binding: BuyMeBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.selectALocationOnTheMapStoreScreen,
       page: () => SelectALocationOnTheMapStoreScreen(),
       binding: SelectALocationOnTheMapStoreBindings(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.selectStoreNameScreen,
       page: () => SelectStoreNameScreen(),
       binding: SelectStoreNameBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.summaryScreen,
       page: () => SummaryScreen(),
       binding: SummaryBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.verificationCodeScreen,
@@ -263,21 +245,18 @@ class AppRouter {
         );
       },
       binding: VerificationCodeBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.directSupportMapScreen,
       page: () => DirectSupportMapScreen(),
       binding: DirectSupportMapBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.priceDetailsReviewScreen,
       page: () => PriceDetailsReviewScreen(),
       binding: PriceDetailsReviewBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       //numOfPages
@@ -293,32 +272,27 @@ class AppRouter {
       name: Routes.pickUpPointScreen,
       page: () => PickUpPointScreen.fromRoute(),
       binding: PickUpPointBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.adDetailsScreen,
       page: () => AdDetailsScreen.fromRoute(),
       binding: AdDetailsBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.bookingDateScreen,
       page: () => BookingDateScreen.fromRoute(),
       binding: BookingDateBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.priceDetailsScreen,
       page: () => PriceDetailsScreen.fromRoute(),
       binding: PriceDetailsBindings(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.userInfoScreen,
       page: () => UserInfoScreen(),
       binding: UserInfoBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.updateMobileNumberScreen,
@@ -327,7 +301,6 @@ class AppRouter {
         return UpdateMobileNumberScreen(resatAll: resatAll);
       },
       binding: UpdateMobileNumberBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
@@ -342,31 +315,26 @@ class AppRouter {
         );
       },
       binding: VerCodeMobileBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.addADeliveryAddressScreen,
       page: () => AddADeliveryAddressScreen(),
       binding: AddADeliveryAddressBindings(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.addCusLoacScreen,
       page: () => AddCusLoacScreen(),
       binding: AddCusLoacBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.aboutTheApplicationScreen,
       page: () => AboutTheApplicationScreen(),
       binding: AboutTheApplicationBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.savedDeliveryAddressesScreen,
       page: () => SavedDeliveryAddressesScreen(),
       binding: SavedDeliveryAddressesBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.weAreHereToHelpScreen,
@@ -375,7 +343,6 @@ class AppRouter {
         return WeAreHereToHelpScreen(username: userName);
       },
       binding: WeAreHereToHelpBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.reportAProblemScreen,
@@ -390,7 +357,6 @@ class AppRouter {
         );
       },
       binding: ReportAProblemBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.imagePreviewScreen,
@@ -398,13 +364,11 @@ class AppRouter {
         final dynamic imageSource = Get.arguments[AppConstants.imageSource];
         return ImagePreviewScreen(imageSource);
       },
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.reportReviewDetailsScreen,
       page: () => ReportReviewDetailsScreen(),
       binding: ReportReviewDetailsBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.reportAProblemChatSupportScreen,
@@ -427,72 +391,61 @@ class AppRouter {
       },
       // page: () => ReportAProblemChatSupportScreen(),
       binding: ReportAProblemChatSupportBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.notificationsScreen,
       page: () => NotificationsScreen(),
       binding: NotificationsBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.walletScreen,
       page: () => WalletScreen(),
       binding: WalletBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.balanceWithdrawalRequestScreen,
       page: () => BalanceWithdrawalRequestScreen(),
       binding: BalanceWithdrawalRequestBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.captainJoinsScreen,
       page: () => CaptainJoinsScreen(),
       binding: CaptainJoinsBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.personalDataScreen,
       page: () => PersonalDataScreen(),
       binding: PersonalDataBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.allAdsScreen,
       page: () => AllAdsScreen(),
       binding: AllAdsBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.captainMembershipRequestScreen,
       page: () => CaptainMembershipRequestScreen(),
       binding: CaptainMembershipRequestBinding(),
-      transition: Transition.noTransition,
     ),
 
     GetPage(
       name: Routes.myOfferAdDetailsScreen,
       page: () => MyOfferAdDetailsScreen(),
       binding: MyOfferAdDetailsBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.settingsScreen,
       page: () => SettingsScreen(),
       binding: SettingsBinding(),
-      transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.deleteMyAccountScreen,
       page: () => DeleteMyAccountScreen(),
       binding: DeleteMyAccountBinding(),
-      transition: Transition.noTransition,
     ),
 
     //SettingsScreen
@@ -515,7 +468,7 @@ class AppRouter {
     //       merchantId: merchantId,
     //     );
     //   },
-    //   transition: Transition.noTransition,
+    //
     // ),
   ];
 }
