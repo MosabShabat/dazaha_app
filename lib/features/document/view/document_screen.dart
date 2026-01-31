@@ -39,9 +39,12 @@ class DocumentScreen extends StatelessWidget {
             // ✅ الانتقال للتبويب المطلوب بعد بناء الواجهة لأول مرة فقط
             WidgetsBinding.instance.addPostFrameCallback((_) {
               documentController.refreshOrders();
-              if (documentController.tabIndex >= 0 &&
-                  documentController.tabIndex < _statuses.length) {
-                tabController.animateTo(documentController.tabIndex);
+              if (documentController.homeController.extraTabIndex.value >= 0 &&
+                  documentController.homeController.extraTabIndex.value <
+                      _statuses.length) {
+                tabController.animateTo(
+                  documentController.homeController.extraTabIndex.value,
+                );
               }
             });
 

@@ -37,16 +37,16 @@ class TransportationAndDeliveryController extends GetxController {
 
   final HomeController homeController = Get.find<HomeController>();
 
-  late final tabIndex = homeController.extraTabIndex.value;
+  // late final tabIndex = homeController.extraTabIndex.value;
 
   @override
   void onInit() {
     super.onInit();
     orderDataController.serviceUuid.value = '';
 
-    tabIndex == 0
+    homeController.extraTabIndex.value == 0
         ? orderDataController.setOfferStatus('receiving_offers')
-        : tabIndex == 1
+        : homeController.extraTabIndex.value == 1
         ? orderDataController.setOfferStatus('in_progress')
         : orderDataController.setOfferStatus('completed');
 
@@ -76,6 +76,8 @@ class TransportationAndDeliveryController extends GetxController {
   }
 
   Future<void> getMyOrders() async {
+    //  final int currentRequest = ++_requestId;
+
     if (isLoading.value || !hasMorePages.value) return;
 
     _setLoading(true);
@@ -89,6 +91,7 @@ class TransportationAndDeliveryController extends GetxController {
       search: searchText.value.isNotEmpty ? searchText.value : null,
       page: currentPage.value,
     );
+    // if (currentRequest != _requestId) return; // ✅ تجاهل الطلب القديم
 
     _handleApiResult(result);
     _setLoading(false);

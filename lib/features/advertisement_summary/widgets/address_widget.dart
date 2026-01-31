@@ -111,16 +111,13 @@ class AddressWidget extends StatelessWidget {
             ),
           ),
           verticalSpace(10.h),
-          ListTileAdvertisementSummaryWidget(
+          ListTileAdvertisementSummaryReMetSizeWidget(
             context,
-            isSvgImage: false,
             img: receiptMethodImage ?? '',
             title: receiptMethodTitle ?? '',
-            subTitle: receiptMethodDec ?? '',
-            isShow: true,
-            isMap: false,
           ),
         ],
+        verticalSpace(10.h),
 
         // Size & Helpers
         if (isShow) ...[
@@ -131,15 +128,14 @@ class AddressWidget extends StatelessWidget {
               color: context.colorsCustom.TextSecondary,
             ),
           ),
-          ListTileAdvertisementSummaryWidget(
+          verticalSpace(10.h),
+
+          ListTileAdvertisementSummaryReMetSizeWidget(
             context,
             img: sizeImg ?? '',
             title: sizeTitle,
-            subTitle: '',
-            isShow: false,
-            isSvgImage: false,
-            isMap: false,
           ),
+          verticalSpace(10.h),
           if (!orderDataController.serviceNumber.value.contains('1')) ...[
             Text(
               context.assistants,
