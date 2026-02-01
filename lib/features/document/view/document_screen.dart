@@ -32,21 +32,23 @@ class DocumentScreen extends StatelessWidget {
     if (driverStatus == 1) {
       return DefaultTabController(
         length: _statuses.length,
+        initialIndex: documentController.homeController.extraTabIndex.value
+            .clamp(0, _statuses.length - 1),
         child: Builder(
           builder: (context) {
             final tabController = DefaultTabController.of(context);
 
             // ✅ الانتقال للتبويب المطلوب بعد بناء الواجهة لأول مرة فقط
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              documentController.refreshOrders();
-              if (documentController.homeController.extraTabIndex.value >= 0 &&
-                  documentController.homeController.extraTabIndex.value <
-                      _statuses.length) {
-                tabController.animateTo(
-                  documentController.homeController.extraTabIndex.value,
-                );
-              }
-            });
+            // WidgetsBinding.instance.addPostFrameCallback((_) {
+            //   documentController.refreshOrders();
+            //   if (documentController.homeController.extraTabIndex.value >= 0 &&
+            //       documentController.homeController.extraTabIndex.value <
+            //           _statuses.length) {
+            //     tabController.animateTo(
+            //       documentController.homeController.extraTabIndex.value,
+            //     );
+            //   }
+            // });
 
             // ✅ مستمع لتغيير التبويب
             tabController.addListener(() {

@@ -14,7 +14,7 @@ import '../../../../features/my_ads_details/widgets/top_det_row_widget.dart';
 import '../../../../features/my_offer_ad_details/widgets/my_offer_app_bar_widget.dart';
 import '../../../../features/my_offer_ad_details/widgets/presented_offer_box_widget.dart';
 import '../../../core/widgets/login_required_bottom_sheet/view/login_required_bottom_sheet.dart';
-import '../../home/controller/home_controller.dart';
+// import '../../home/controller/home_controller.dart';
 import '../../my_ads_details/widgets/invoice_box_widget.dart';
 import '../../my_ads_details/widgets/pay_mth_widget.dart';
 import '../../my_ads_details/widgets/t_d_del_widget.dart';
@@ -86,29 +86,30 @@ class MyOfferAdDetailsScreen extends StatelessWidget {
       return WillPopScope(
         onWillPop: () async {
           if (AppConstants.screenName == 'allAds') {
-            Get.toNamed(Routes.allAdsScreen);
+            Get.offNamed(Routes.allAdsScreen);
           } else {
-            HomeController homeController = Get.find<HomeController>();
-            homeController.extraTabIndex.value =
-                offerDetails.status == 'completed'
-                ? 2
-                : offerDetails.status == 'in_progress'
-                ? 1
-                : 0;
-            print('offerOrOrder here 2');
-            print('offerOrOrder here 2 :${homeController.extraTabIndex.value}');
+            Get.back();
+            // HomeController homeController = Get.find<HomeController>();
+            // homeController.extraTabIndex.value =
+            //     offerDetails.status == 'completed'sss
+            //     ? 2
+            //     : offerDetails.status == 'in_progress'
+            //     ? 1
+            //     : 0;
+            // print('offerOrOrder here 2');
+            // print('offerOrOrder here 2 :${homeController.extraTabIndex.value}');
 
-            Get.offAllNamed(
-              Routes.homeScreen,
-              arguments: {
-                'selectedIndex': 3,
-                'tabIndex': offerDetails.status == 'completed'
-                    ? 2
-                    : offerDetails.status == 'in_progress'
-                    ? 1
-                    : 0,
-              },
-            );
+            // Get.offAllNamed(
+            //   Routes.homeScreen,
+            //   arguments: {
+            //     'selectedIndex': 3,
+            //     'tabIndex': offerDetails.status == 'completed'
+            //         ? 2
+            //         : offerDetails.status == 'in_progress'
+            //         ? 1
+            //         : 0,
+            //   },
+            // );
             //  Get.offAllNamed(Routes.homeScreen, arguments: {'selectedIndex': 3});
           }
 

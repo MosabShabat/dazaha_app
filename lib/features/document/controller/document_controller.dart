@@ -184,7 +184,6 @@ class DocumentController extends GetxController {
   void onClose() {
     scrollController.dispose();
     refreshController.dispose();
-    homeController.extraTabIndex.value = 0;
     super.onClose();
     log('DocumentController disposed');
   }

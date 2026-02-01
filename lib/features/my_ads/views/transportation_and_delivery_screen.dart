@@ -30,19 +30,21 @@ class TransportationAndDeliveryScreen extends StatelessWidget {
 
     return DefaultTabController(
       length: _statuses.length,
+      initialIndex: transportController.homeController.extraTabIndex.value
+          .clamp(0, _statuses.length - 1),
       child: Builder(
         builder: (context) {
           final tabController = DefaultTabController.of(context);
 
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (transportController.homeController.extraTabIndex.value >= 0 &&
-                transportController.homeController.extraTabIndex.value <
-                    _statuses.length) {
-              tabController.animateTo(
-                transportController.homeController.extraTabIndex.value,
-              );
-            }
-          });
+          // WidgetsBinding.instance.addPostFrameCallback((_) {
+          //   if (transportController.homeController.extraTabIndex.value >= 0 &&
+          //       transportController.homeController.extraTabIndex.value <
+          //           _statuses.length) {
+          //     tabController.animateTo(
+          //       transportController.homeController.extraTabIndex.value,
+          //     );
+          //   }
+          // });
           tabController.addListener(() {
             if (!tabController.indexIsChanging) {
               orderDataController.setOfferStatus(
