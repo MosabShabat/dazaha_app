@@ -40,7 +40,6 @@ class MyAdPayMentRepo {
         paymentWayUuid,
         couponCode,
       );
-      //AQ.Ab8RN6Lj4is_2CA1DHkcDWWCbq_ZW2NiOsnfYTG4qeabZ-djwQ
       print('getOrdersAll response: $response');
       print('orderUuid orderUuid: ${AppConstants.orderUuid}');
       print('orderUuid offerUuid: ${AppConstants.offerUuid}');
