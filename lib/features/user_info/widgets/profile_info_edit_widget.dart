@@ -9,11 +9,11 @@ Widget ProfileInfoEditWidget(
   required bool isShow,
   required String firstName,
   required String lastName,
-  String? email,
+  // String? email,
   required String mobileNumber,
   required TextEditingController firstNameController,
   required TextEditingController lastNameController,
-  TextEditingController? emailController,
+  // TextEditingController? emailController,
   required KeyboardDoneController doneController, // ⭐ جديد
 }) {
   Widget buildTextField({
@@ -96,12 +96,12 @@ Widget ProfileInfoEditWidget(
       verticalSpace(10.h),
       buildMobileField(),
       verticalSpace(20.h),
-      if (isShow && emailController != null)
-        buildTextField(
-          title: context.email,
-          hint: email ?? '',
-          controller: emailController,
-        ),
+      // if (isShow && emailController != null)
+      //   buildTextField(
+      //     title: context.email,
+      //     hint: email ?? '',
+      //     controller: emailController,
+      //   ),
     ],
   );
 }

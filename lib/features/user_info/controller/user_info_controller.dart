@@ -23,7 +23,7 @@ class UserInfoController extends GetxController {
   final mobileController = TextEditingController();
 
   final lastNameController = TextEditingController();
-  final emailController = TextEditingController();
+  // final emailController = TextEditingController();
   final KeyboardDoneController doneController = KeyboardDoneController();
 
   Rx<dynamic> selectedUserImage = Rx<dynamic>(null);
@@ -44,7 +44,7 @@ class UserInfoController extends GetxController {
   void _initUserInfo(UserData userData) {
     firstNameController.text = userData.firstName ?? '';
     lastNameController.text = userData.lastName ?? '';
-    emailController.text = userData.email ?? '';
+    // emailController.text = userData.email ?? '';
     if (userData.image != null) selectedUserImage.value = userData.image;
   }
 
@@ -89,7 +89,7 @@ class UserInfoController extends GetxController {
         userImage: imageFile,
         firstName: firstNameController.text,
         lastName: lastNameController.text,
-        email: emailController.text,
+        // email: emailController.text,
       );
 
       _handleResponse(result);

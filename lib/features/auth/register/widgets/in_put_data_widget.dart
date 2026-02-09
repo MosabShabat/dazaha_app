@@ -7,7 +7,7 @@ Widget InPutDataWidget(
   BuildContext context, {
   required firstNameController,
   required lastNameController,
-  required emailController,
+  // required emailController,
   required KeyboardDoneController doneController, // ⭐
 }) {
   return Column(
@@ -33,17 +33,17 @@ Widget InPutDataWidget(
         controller: lastNameController,
         doneController: doneController, // ⭐
       ),
-      CusRegisterInfoWidget(
-        context,
-        titleText: context.email,
-        titleTextColor: context.colorsCustom.TextSecondary,
-        HintText: context.enterYourEmail,
-        maxLength: null,
-        keyboardType: TextInputType.emailAddress,
-        maxLines: null,
-        controller: emailController,
-        doneController: doneController, // ⭐
-      ),
+      // CusRegisterInfoWidget(
+      //   context,
+      //   titleText: context.email,
+      //   titleTextColor: context.colorsCustom.TextSecondary,
+      //   HintText: context.enterYourEmail,
+      //   maxLength: null,
+      //   keyboardType: TextInputType.emailAddress,
+      //   maxLines: null,
+      //   controller: emailController,
+      //   doneController: doneController, // ⭐
+      // ),
     ],
   );
 }

@@ -15,7 +15,7 @@ class UserInfoRepo {
     dio.MultipartFile? userImage,
     required String firstName,
     required String lastName,
-    String? email,
+    // String? email,
   }) async {
     try {
       final formData = dio.FormData();
@@ -25,9 +25,9 @@ class UserInfoRepo {
       formData.fields.add(MapEntry('first_name', firstName));
       formData.fields.add(MapEntry('last_name', lastName));
 
-      if (email != null) {
-        formData.fields.add(MapEntry('email', email));
-      }
+      // if (email != null) {
+      //   formData.fields.add(MapEntry('email', email));
+      // }
 
       final response = await _apiService.updateProfile(formData);
       return ApiResult.success(response);

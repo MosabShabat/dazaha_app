@@ -37,7 +37,7 @@ class DazahaApp extends StatelessWidget {
         return MediaQuery(
           data: MediaQuery.of(
             context,
-          ).copyWith(textScaler: const TextScaler.linear(0.973)),
+          ).copyWith(textScaler: const TextScaler.linear(1.15)),
           child: Obx(() {
             // لا تستدعي handleInitialMessage هنا
             return GetMaterialApp(

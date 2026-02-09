@@ -37,7 +37,7 @@ abstract class ApiService {
   Future<AppResponse> register(
     @Field('first_name') String firstName,
     @Field('last_name') String lastName,
-    @Field('email') String email,
+    // @Field('email') String email,
     @Field('mobile') String mobile,
     @Field('code') String code,
     @Field('fcm_token') String fcmToken,

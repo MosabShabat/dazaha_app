@@ -12,7 +12,7 @@ Widget TopContainerWidget(BuildContext context) {
       borderRadius: BorderRadius.circular(12.r),
       onTap: () => Get.toNamed(Routes.captainJoinsScreen),
       child: Container(
-        height: 140.h,
+        height: 150.h,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
         decoration: BoxDecoration(
           color: bgColor,

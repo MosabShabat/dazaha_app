@@ -177,7 +177,7 @@ class _CustomCameraScreenState extends State<CustomCameraScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: context.colorsCustom.surfacePrimaryWhite,
-                      fontSize: 18.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

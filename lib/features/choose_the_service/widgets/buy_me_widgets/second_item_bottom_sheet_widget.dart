@@ -47,7 +47,7 @@ Future<dynamic> SecondItemBottomSheetWidget(
                       RowSheetWidget(
                         context,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                         CircleAvatarRadius: 20.w,
                         width: 50.w,
                         maxLines: 3,
@@ -55,7 +55,7 @@ Future<dynamic> SecondItemBottomSheetWidget(
                             context.colorsCustom.surfacePrimaryWhite,
                         fontFamily:
                             context.textStyles.labelSmall.regular.fontFamily!,
-                        fontSize: 10.sp,
+                        fontSize: 11.sp,
                         textColor: context.colorsCustom.TextSecondary,
                         controller: controller,
                         onTapList: List.generate(
@@ -65,9 +65,7 @@ Future<dynamic> SecondItemBottomSheetWidget(
                         ),
                       ),
                       verticalSpace(50.h),
-
                       DevDetWidget(context, controller: controller),
-
                       verticalSpace(50.h),
                       SafeArea(
                         child: GeneralBottomAppWidget(
@@ -76,6 +74,7 @@ Future<dynamic> SecondItemBottomSheetWidget(
                           onTap: onTap,
                         ),
                       ),
+                      verticalSpace(70.h),
                     ],
                   );
           }),

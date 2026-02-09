@@ -82,12 +82,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               isShow: true,
               firstNameController: _userInfoController.firstNameController,
               lastNameController: _userInfoController.lastNameController,
-              emailController: _userInfoController.emailController,
+              // emailController: _userInfoController.emailController,
               mobileNumber: _formatPhoneNumber('${user.mobileNumber ?? ''}'),
               doneController: _userInfoController.doneController,
-              firstName: '',
-              lastName: '',
-              email: '',
+              firstName: user.firstName ?? '',
+              lastName: user.lastName ?? '',
+              // email: user.email ?? '',
             ),
 
             verticalSpace(80.h),
@@ -115,8 +115,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     _userInfoController
       ..setSelectedImage(user.image ?? '')
       ..firstNameController.text = user.firstName ?? ''
-      ..lastNameController.text = user.lastName ?? ''
-      ..emailController.text = user.email ?? '';
+      ..lastNameController.text = user.lastName ?? '';
+    // ..emailController.text = user.email ?? '';
   }
 
   String _formatPhoneNumber(String phone) {

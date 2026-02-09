@@ -12,21 +12,23 @@ Widget CustomButton(
   required width,
   required height,
 }) {
-  return Container(
-    width: width,
-    height: height,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8.r),
-      color: backgroundColor,
-    ),
-    child: Center(
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: fontSize,
-          fontFamily: fontFamily,
-          fontWeight: fontWeight, // ✅ now we apply it
+  return SafeArea(
+    child: Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.r),
+        color: backgroundColor,
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: fontSize,
+            fontFamily: fontFamily,
+            fontWeight: fontWeight, // ✅ now we apply it
+          ),
         ),
       ),
     ),
