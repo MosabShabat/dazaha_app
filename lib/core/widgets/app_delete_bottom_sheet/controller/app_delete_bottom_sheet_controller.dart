@@ -1,6 +1,5 @@
 import '../../../../core/constant/exports_widgets.dart';
 import '../../../../core/network/utils/api_result.dart';
-import 'package:get/get.dart';
 import '../../../constant/exports_libraries.dart';
 import '../../../helpers/app_shared_data.dart';
 import '../../../helpers/constants.dart';

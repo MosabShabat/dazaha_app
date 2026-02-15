@@ -1,5 +1,4 @@
 import '../../../../core/network/utils/api_result.dart';
-import 'package:get/get.dart';
 
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/models/account/app_info.dart';

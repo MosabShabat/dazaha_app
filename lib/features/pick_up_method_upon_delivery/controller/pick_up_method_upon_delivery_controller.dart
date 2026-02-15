@@ -1,7 +1,6 @@
 import '../../../core/constant/exports_libraries.dart';
 import '../../../core/network/models/receipt_methods.dart';
 import '../../../core/network/utils/api_result.dart';
-import 'package:get/get.dart';
 
 import '../../../core/widgets/app_snackbar.dart';
 import '../../add_a_delivery_address/controller/add_a_delivery_repo.dart';
