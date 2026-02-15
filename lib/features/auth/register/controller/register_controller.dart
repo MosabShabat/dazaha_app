@@ -18,7 +18,7 @@ class RegisterController extends GetxController {
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
-  final emailController = TextEditingController();
+  // final emailController = TextEditingController();
 
   var isChecked = false.obs;
 
@@ -46,7 +46,7 @@ class RegisterController extends GetxController {
 
     firstNameController.dispose();
     lastNameController.dispose();
-    emailController.dispose();
+    // emailController.dispose();
     super.onClose();
   }
 
@@ -61,7 +61,7 @@ class RegisterController extends GetxController {
       return;
     if (_isFieldEmpty(lastNameController, context.enterLastName, context))
       return;
-    if (_isFieldEmpty(emailController, context.enterYourEmail, context)) return;
+    // if (_isFieldEmpty(emailController, context.enterYourEmail, context)) return;
 
     if (isChecked.value == false) {
       showErrorSnackbar(
@@ -76,7 +76,7 @@ class RegisterController extends GetxController {
       context,
       firstNameController.text,
       lastNameController.text,
-      emailController.text,
+      // emailController.text,
       phoneNumber,
       code,
       fcmToken,
@@ -100,7 +100,7 @@ class RegisterController extends GetxController {
     BuildContext context,
     String firstName,
     String lastName,
-    String email,
+    // String email,
     String phoneNumber,
     String code,
     String fcmToken,
@@ -110,7 +110,7 @@ class RegisterController extends GetxController {
     final result = await _createAccountRepo.register(
       firstName,
       lastName,
-      email,
+      // email,
       phoneNumber,
       code,
       fcmToken,

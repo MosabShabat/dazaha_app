@@ -6,7 +6,7 @@ import '../../../features/choose_the_service/controller/order_data_controller.da
 import '../../../features/pick_up_point/widgets/top_text_widget.dart';
 import '../../../features/price_details/widgets/in_put_price_widget.dart';
 import '../../../features/price_details/widgets/info_price_widget.dart';
-import '../../../features/price_details/widgets/price_box_widget.dart';
+// import '../../../features/price_details/widgets/price_box_widget.dart';
 import '../../../core/widgets/app_loading_button.dart';
 import '../controller/price_details_controller.dart';
 
@@ -47,16 +47,16 @@ class PriceDetailsScreen extends StatelessWidget {
           TopTextWidget(
             context,
             Title: context.priceDetails,
-            SubTitle: context.ourPriceEstimate,
+            SubTitle: '',
             isShow: true,
           ),
-          verticalSpace(20.h),
-          PriceBoxWidget(
-            context,
-            expectPrice:
-                '${orderController.exceptPrice.value} ${orderController.currencyVar.value}',
-          ),
-          verticalSpace(20.h),
+          // verticalSpace(20.h),
+          // PriceBoxWidget(
+          //   context,
+          //   expectPrice:
+          //       '${orderController.exceptPrice.value} ${orderController.currencyVar.value}',
+          // ),
+          verticalSpace(10.h),
           InPutPriceWidget(
             context,
             isShow: true,

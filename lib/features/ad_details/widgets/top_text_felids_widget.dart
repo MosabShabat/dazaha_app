@@ -35,6 +35,7 @@ Widget TopTextFelidsWidget(
         maxLength: 1000,
         maxLines: 5,
         doneController: adDetailsController.doneController,
+        textInputAction: TextInputAction.newline,
       ),
     ],
   );

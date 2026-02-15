@@ -58,6 +58,6 @@ Widget GridViewDayBookingDateWidget(
           );
         });
       },
-    ).box.width(Width).height(0.48.sh).make();
+    ).box.width(Width).height(0.47.sh).make();
   });
 }

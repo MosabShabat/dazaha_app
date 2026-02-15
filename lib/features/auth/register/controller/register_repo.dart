@@ -11,7 +11,7 @@ class RegisterRepo {
   Future<ApiResult<AppResponse>> register(
     String firstName,
     String lastName,
-    String email,
+    // String email,
     String phoneNumber,
     String code,
     String fcmToken,
@@ -21,7 +21,7 @@ class RegisterRepo {
       final response = await _apiService.register(
         firstName,
         lastName,
-        email,
+        // email,
         phoneNumber,
         code,
         fcmToken,

@@ -125,7 +125,8 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
       ..setSelectedImage(user.image ?? '')
       ..firstNameController.text = user.firstName ?? ''
       ..lastNameController.text = user.lastName ?? ''
-      ..emailController.text = user.email ?? '';
+      // ..emailController.text = user.email ?? ''
+      ;
   }
 
   Widget _buildTitle(BuildContext context) => Text(

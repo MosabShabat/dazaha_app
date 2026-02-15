@@ -28,7 +28,7 @@ Widget ListViewAdDetailsWidget({
     }
 
     return SizedBox(
-      height: Width * 0.26,
+      height: Width * 0.27,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(4, (index) {

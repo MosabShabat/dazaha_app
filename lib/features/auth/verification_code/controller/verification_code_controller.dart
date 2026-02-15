@@ -15,10 +15,12 @@ import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../features/auth/verification_code/controller/verification_code_repo.dart';
 // import '../../../document/controller/document_controller.dart';
 import '../../../home_page/controller/home_page_controller.dart';
+import '../../login/controller/login_repo.dart';
 
 class VerificationCodeController extends GetxController {
   final VerificationCodeRepo _verificationCodeRepo =
       Get.find<VerificationCodeRepo>();
+  final LoginRepo _loginRepo = Get.find<LoginRepo>();
 
   var phoneNumber = ''.obs;
   RxString otpCode = ''.obs;
@@ -70,10 +72,11 @@ class VerificationCodeController extends GetxController {
     return '$minutes:$seconds';
   }
 
-  void resendCode() {
+  void resendCode() async {
     if (isResendEnabled.value) {
       startCountdown();
       isResendEnabled.value = false;
+      await _loginRepo.senCode(phoneNumber.value);
     }
   }
 
@@ -187,113 +190,6 @@ class VerificationCodeController extends GetxController {
     );
   }
 
-  // void _verificationCodeRequest(
-  //   BuildContext context,
-  //   String code,
-  //   bool resetAll,
-  // ) async {
-  //   isButtonPressed.value = true;
-
-  //   final result = await _verificationCodeRepo.verifyCode(
-  //     phoneNumber.value,
-  //     code,
-  //     await AppSharedData.getSecuredString(AppSharedKeys.fcmTokenKey),
-  //     Platform.isAndroid ? "android" : "ios",
-  //   );
-
-  //   result.when(
-  //     success: (response) async {
-  //       log(
-  //         '${await AppSharedData.getSecuredString(AppSharedKeys.fcmTokenKey)}',
-  //       );
-
-  //       if (response.status == true) {
-  //         isButtonPressed.value = false;
-
-  //         final verificationModel = VerificationModel.fromJson(
-  //           response.data as Map<String, dynamic>,
-  //         );
-
-  //         // 🔹 المستخدم غير موجود → انتقل لتسجيل جديد
-  //         if (verificationModel.userExists == false) {
-  //           Get.offAllNamed(
-  //             Routes.registerScreen,
-  //             arguments: {
-  //               AppConstants.phoneNumber: phoneNumber.value,
-  //               AppConstants.code: verificationModel.code,
-  //             },
-  //           );
-  //           return;
-  //         }
-
-  //         // 🔹 المستخدم موجود → حفظ بيانات الدخول أولًا
-  //         try {
-  //           isUserLogin.value = true;
-  //           // حفظ البيانات في التخزين الآمن بالتوازي
-  //           await Future.wait([
-  //             AppSharedData.setUserLogin(true),
-  //             AppSharedData.setUserInfo(verificationModel.user!),
-  //             saveUserToken(verificationModel.user?.token ?? ''),
-  //           ]);
-
-  //           // تحديث الكنترولر الخاص بالصفحة الرئيسية
-  //           if (Get.isRegistered<HomePageController>()) {
-  //             final RefreshController _localRefreshController =
-  //                 RefreshController();
-
-  //             final homeController = Get.find<HomePageController>();
-  //             // await homeController.refreshAfterLogin();
-  //             // await homeController.refreshData(
-  //             //   '${homeController.latitude.value}',
-  //             //   '${homeController.longitude.value}',
-  //             // );
-
-  //             await homeController.loadCurrentUser();
-  //             await homeController.getHome(); // فقط مرة واحدة
-
-  //             _localRefreshController.refreshCompleted();
-  //           }
-
-  //           // 🔹 الانتقال بعد اكتمال كل شيء
-  //           if (resetAll) {
-  //             Get.offAllNamed(
-  //               Routes.homeScreen,
-  //               arguments: {'selectedIndex': 0},
-  //             );
-  //           } else {
-  //             if (AppConstants.typeItemSelected == 'homeScreen3') {
-  //               Get.find<DocumentController>();
-  //               Get.offAllNamed(
-  //                 Routes.homeScreen,
-  //                 arguments: {'selectedIndex': 3},
-  //               );
-  //             } else {
-  //               Get.close(2);
-  //             }
-  //           }
-  //         } catch (e) {
-  //           log('Error while saving user data: $e');
-  //           showErrorSnackbar(
-  //             context,
-  //             '${e}',
-  //             FirstColor: context.colorsCustom.redColor,
-  //           );
-  //         }
-  //       } else {
-  //         isButtonPressed.value = false;
-  //         showErrorSnackbar(
-  //           context,
-  //           response.message ?? '',
-  //           FirstColor: context.colorsCustom.redColor,
-  //         );
-  //       }
-  //     },
-  //     failure: (error) {
-  //       isButtonPressed.value = false;
-  //       showSnackbarErrorApi(context, [error], null);
-  //     },
-  //   );
-  // }
   Future<void> saveUserToken(String userToken) async {
     log('saveUserToken: $userToken');
     if (userToken.isEmpty) {
@@ -305,12 +201,6 @@ class VerificationCodeController extends GetxController {
     DioFactory.setTokenIntoHeaderAfterLogin(userToken);
     debugPrint('User token saved: $userToken');
   }
-
-  // Future<void> saveUserToken(String userToken) async {
-  //   log('saveUserToken: $userToken');
-  //   await AppSharedData.setSecuredString(AppSharedKeys.userToken, userToken);
-  //   DioFactory.setTokenIntoHeaderAfterLogin(userToken);
-  // }
 
   @override
   void onClose() {

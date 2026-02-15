@@ -9,7 +9,7 @@ Widget AddAddressesWidget(
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      width: 90.w,
+      width: 110.w,
       height: 25.h,
       child: Row(
         children: [

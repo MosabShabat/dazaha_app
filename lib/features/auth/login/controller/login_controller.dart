@@ -79,7 +79,11 @@ class LoginController extends GetxController {
           isButtonPressed.value = false;
           isProcessing.value = false;
 
-          showErrorSnackbar(context, response.message ?? '', FirstColor: Colors.red,);
+          showErrorSnackbar(
+            context,
+            response.message ?? '',
+            FirstColor: Colors.red,
+          );
         }
       },
       failure: (error) {

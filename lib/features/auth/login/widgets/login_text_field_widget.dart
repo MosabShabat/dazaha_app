@@ -11,7 +11,7 @@ Widget LoginTextFieldWidget(
   textAlign,
 }) {
   return Container(
-    height: 52.h,
+    height: 50.h,
     decoration: BoxDecoration(
       border: Border.all(color: context.colorsCustom.CardBorder),
       borderRadius: BorderRadius.circular(10.0),

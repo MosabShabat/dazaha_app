@@ -16,6 +16,7 @@ Widget CusRegisterInfoWidget(
   readOnly,
   keyboardType,
   initialValue,
+  textInputAction,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +42,7 @@ Widget CusRegisterInfoWidget(
         enabledBorderColor: context.colorsCustom.CardBorder,
         controller: controller,
         keyboardType: keyboardType ?? TextInputType.name,
-        textInputAction: TextInputAction.done, // ✅ زر Done
+        textInputAction: textInputAction ?? TextInputAction.done, // ✅ زر Done
         onSubmitted: (_) {
           FocusScope.of(
             context,
