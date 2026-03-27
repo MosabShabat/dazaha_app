@@ -26,11 +26,6 @@ The app connects people who need to transport furniture, deliver items, dispose 
 - Local Storage
 - Push Notifications
 
-## 📸 Screenshots
-
-| Home Screen | Request Screen | Offers Screen |
-|-------------|---------------|---------------|
-| ![1](screenshots/1.png) | ![2](screenshots/2.png) | ![3](screenshots/3.png) |
 ## 🔗 GitHub Repository
 https://github.com/MosabShabat/dazaha_app
 
